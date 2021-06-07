@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.pytest_cache/
+
+# temporary files
+tmp/

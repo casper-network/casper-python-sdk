@@ -1,0 +1,74 @@
+{
+    "id": 5906748761882416599,
+    "jsonrpc": "2.0",
+    "method": "account_put_deploy",
+    "params": {
+        "deploy": {
+            "approvals": [
+                {
+                    "signature": "[130 hex chars]",
+                    "signer": "013e4daed5c2c72e0a47bc3ac0b24ef2acf45569204cb2ec5c819d705528760fc9"
+                }
+            ],
+            "hash": "90e65be3cce6ec568d5b17ec20b4b36fe36c26c4aa1d119f1c22ff9f4e94b19d",
+            "header": {
+                "account": "013e4daed5c2c72e0a47bc3ac0b24ef2acf45569204cb2ec5c819d705528760fc9",
+                "body_hash": "2bf7c38d570c1b1d5432936d91329cb2a59ddb5040ed9dcfe37bceb0a68175f2",
+                "chain_name": "casper-net-1",
+                "dependencies": [],
+                "gas_price": 10,
+                "timestamp": "2021-06-02T21:03:33.300Z",
+                "ttl": "1day"
+            },
+            "payment": {
+                "ModuleBytes": {
+                    "args": [
+                        [
+                            "amount",
+                            {
+                                "bytes": "0500e40b5402",
+                                "cl_type": "U512",
+                                "parsed": "10000000000"
+                            }
+                        ]
+                    ],
+                    "module_bytes": ""
+                }
+            },
+            "session": {
+                "Transfer": {
+                    "args": [
+                        [
+                            "amount",
+                            {
+                                "bytes": "0400f90295",
+                                "cl_type": "U512",
+                                "parsed": "2500000000"
+                            }
+                        ],
+                        [
+                            "target",
+                            {
+                                "bytes": "92a62d72a8e4843027e7cafdfbb945a6c82a0cbd46b628c5a159686dde24f6b6",
+                                "cl_type": {
+                                    "ByteArray": 32
+                                },
+                                "parsed": "92a62d72a8e4843027e7cafdfbb945a6c82a0cbd46b628c5a159686dde24f6b6"
+                            }
+                        ],
+                        [
+                            "id",
+                            {
+                                "bytes": "010100000000000000",
+                                "cl_type": {
+                                    "Option": "U64"
+                                },
+                                "parsed": 1
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    }
+}

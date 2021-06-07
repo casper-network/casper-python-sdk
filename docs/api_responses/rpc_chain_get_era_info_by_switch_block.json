@@ -1,0 +1,84 @@
+{
+    "id": -6177812266567816000,
+    "jsonrpc": "2.0",
+    "result": {
+        "api_version": "1.0.0",
+        "era_summary": {
+            "block_hash": "20957e66ad03494b142e10326425b4a5c0554378bebc86488900642acb46478b",
+            "era_id": 5,
+            "merkle_proof": "2240 chars",
+            "state_root_hash": "e039f4cd0e986ee45352d2ae3dcf4451444f75f4d3bc41c81bdb59474b8029e7",
+            "stored_value": {
+                "EraInfo": {
+                    "seigniorage_allocations": [
+                        {
+                            "Delegator": {
+                                "amount": "48746420205927712059737425",
+                                "delegator_public_key": "01f64b7b610c67545c1fb42269f43912b2d309a460cc611f770286d5dff650055c",
+                                "validator_public_key": "0125c550cd4040647ead8502d6dcaa81069c4405c9781c7fc531b9211ecb4d5c79"
+                            }
+                        },
+                        {
+                            "Validator": {
+                                "amount": "59278887729593533495916399",
+                                "validator_public_key": "0125c550cd4040647ead8502d6dcaa81069c4405c9781c7fc531b9211ecb4d5c79"
+                            }
+                        },
+                        {
+                            "Delegator": {
+                                "amount": "51873752870387733352605954",
+                                "delegator_public_key": "015794dd2093f5cfa8320fdbd60340d259c0a9eb3695c4ced0108a6ccf5fdd0588",
+                                "validator_public_key": "0137f74216967a59bf420d203962c7c615a867c288637f71a1bf9136c29a2aeb2c"
+                            }
+                        },
+                        {
+                            "Validator": {
+                                "amount": "56151555064593385663370263",
+                                "validator_public_key": "0137f74216967a59bf420d203962c7c615a867c288637f71a1bf9136c29a2aeb2c"
+                            }
+                        },
+                        {
+                            "Delegator": {
+                                "amount": "49778061896707389954267338",
+                                "delegator_public_key": "01ed1f1a7ca99fe2f4aa6d5cc6f51cb9994ac7bd8f7caa9ae4047cf36eafcc7ccc",
+                                "validator_public_key": "013ce88355af4f4db816ca5d48609ed29cd02c1e15001d920261b085a9b5dead1b"
+                            }
+                        },
+                        {
+                            "Validator": {
+                                "amount": "58247246038813855601386486",
+                                "validator_public_key": "013ce88355af4f4db816ca5d48609ed29cd02c1e15001d920261b085a9b5dead1b"
+                            }
+                        },
+                        {
+                            "Delegator": {
+                                "amount": "52937802153542447374352019",
+                                "delegator_public_key": "0111a81eafd84a1f5f87366707e4dc88637b37425b6f58e2eaae643ade7668bbf4",
+                                "validator_public_key": "015390a168aebf5c209bf62cff57f1b09b009ae8bcb9ff195383855b11e4f33684"
+                            }
+                        },
+                        {
+                            "Validator": {
+                                "amount": "55087505781438671641624198",
+                                "validator_public_key": "015390a168aebf5c209bf62cff57f1b09b009ae8bcb9ff195383855b11e4f33684"
+                            }
+                        },
+                        {
+                            "Delegator": {
+                                "amount": "50820506118280519973341243",
+                                "delegator_public_key": "015b86b9717f38f5e7e4bdc9b0050044858661de663e67f41adaa0f41eef1611df",
+                                "validator_public_key": "0194169f43e542a5e70d2c46c3cbe5a36ff4cca9867af6b285d1bece6b8d34cdaf"
+                            }
+                        },
+                        {
+                            "Validator": {
+                                "amount": "57204801817240725582312581",
+                                "validator_public_key": "0194169f43e542a5e70d2c46c3cbe5a36ff4cca9867af6b285d1bece6b8d34cdaf"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

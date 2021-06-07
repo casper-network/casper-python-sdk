@@ -1,0 +1,14 @@
+[
+    {
+        "algo": "ED25519",
+        "pbk": "2fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1",
+        "key": "012fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1",
+        "address": "1547c5d44c5a6d079093235329934fde9455b99f2a2bee769a625d0f1f006bbc"
+    },
+    {
+        "algo": "SECP256K1",
+        "pbk": "0339a36013301597daef41fbe593a02cc513d0b55527ec2df1050e2e8ff49c85c2",
+        "key": "020339a36013301597daef41fbe593a02cc513d0b55527ec2df1050e2e8ff49c85c2",
+        "address": "95a90f4a251a8a66621704e0560a51786ce90559448e49bd21934c4aa4d91948"
+    }
+]

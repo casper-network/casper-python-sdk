@@ -1,0 +1,128 @@
+[
+    {
+        "typeof": "BOOL",
+        "value": true,
+        "hex": ""
+    },
+    {
+        "typeof": "BYTE_ARRAY",
+        "value": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e",
+        "hex": ""
+    },
+    {
+        "typeof": "I32",
+        "value": 1896687901,
+        "hex": ""
+    },
+    {
+        "typeof": "I64",
+        "value": 192249568872182655,
+        "hex": ""
+    },
+    {
+        "typeof": "KEY",
+        "value": "1547c5d44c5a6d079093235329934fde9455b99f2a2bee769a625d0f1f006bbc",
+        "hex": ""
+    },
+    {
+        "typeof": "LIST",
+        "typeof_item": "U64",
+        "value": [
+            10222542040955046838,
+            10276207219237930607,
+            15939564377751427208
+        ],
+        "hex": ""
+    },
+    {
+        "typeof": "MAP",
+        "typeof_key": "STRING",
+        "typeof_value": "U64",
+        "value": {
+            "a": 10222542040955046838,
+            "b": 10276207219237930607,
+            "c": 15939564377751427208
+        },
+        "hex": ""
+    },
+    {
+        "typeof": "PUBLIC_KEY",
+        "value": "012fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1",
+        "hex": ""
+    },
+    {
+        "typeof": "STRING",
+        "value": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
+        "hex": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
+    },
+    {
+        "typeof": "TUPLE_1",
+        "typeof_t0": "U64",
+        "value": [
+            10222542040955046838
+        ],
+        "hex": ""
+    },
+    {
+        "typeof": "TUPLE_2",
+        "typeof_t0": "U64",
+        "typeof_t1": "STRING",
+        "value": [
+            10222542040955046838,
+            "al-kindi"
+        ],
+        "hex": ""
+    },
+    {
+        "typeof": "TUPLE_3",
+        "typeof_t0": "U64",
+        "typeof_t1": "STRING",
+        "typeof_t2": "BOOL",
+        "value": [
+            10222542040955046838,
+            "al-kindi",
+            false
+        ],
+        "hex": ""
+    },
+    {
+        "typeof": "U8",
+        "value": 38,
+        "hex": ""
+    },
+    {
+        "typeof": "U32",
+        "value": 3316244803,
+        "hex": ""
+    },
+    {
+        "typeof": "U64",
+        "value": 17872713829529530073,
+        "hex": ""
+    },
+    {
+        "typeof": "U128",
+        "value": 217021024364351886430112374790508812932,
+        "hex": ""
+    },
+    {
+        "typeof": "U256",
+        "value": 68217215508771748957126665040775426160726554090344148359612291502737120518813,
+        "hex": ""
+    },
+    {
+        "typeof": "U512",
+        "value": 3618733144750325837958790227950415868742292184814728655972723411435898710232007994755759630545001033316379250637667110010115434549409256374699329574956472,
+        "hex": ""
+    },
+    {
+        "typeof": "UNIT",
+        "value": null,
+        "hex": ""
+    },
+    {
+        "typeof": "UREF",
+        "value": "uref-5d338c21a84c6ddcbea763c1db3c18383cc03d6088046540411bdcd12d7ac42e-007",
+        "hex": ""
+    }
+]

@@ -1,0 +1,15 @@
+[
+    {
+        "data": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
+        "signingKey": {
+            "algo": "ED25519",
+            "pvk": "2fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1"
+        },
+        "signatures": [
+            {
+                "encoding": "HEX",
+                "sig": "1b351aea89b1f030349f317841daaf80aa5984d4bda1df908b6adaedeca8e02514182e10b53deabe0e41115a6ef689185b4633012edf9b3ae17859e9e8bdda0c"
+            }
+        ]
+    }
+]
