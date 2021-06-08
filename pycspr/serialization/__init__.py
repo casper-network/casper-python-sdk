@@ -4,13 +4,12 @@ from pycspr.serialization import byte_array
 from pycspr.serialization import byte_stream
 from pycspr.serialization import hex_string
 from pycspr.serialization.utils import ByteArray
-from pycspr.serialization.utils import CLType
 from pycspr.serialization.utils import ByteStream
 from pycspr.serialization.utils import CLEncoding
-from pycspr.serialization.utils import CLType
 from pycspr.serialization.utils import DecoderError
 from pycspr.serialization.utils import EncoderError
 from pycspr.serialization.utils import HexString
+from pycspr.types.cl import CLTypeKey
 
 
 
@@ -39,7 +38,7 @@ def decode(data: typing.Union[ByteArray, ByteStream, HexString], encoding: CLEnc
     return codec.decode(data)
 
 
-def encode(typeof: CLType, value: object, encoding: CLEncoding = CLEncoding.BYTE_STREAM) -> typing.Union[ByteArray, ByteStream, HexString]:
+def encode(typeof: CLTypeKey, value: object, encoding: CLEncoding = CLEncoding.BYTE_STREAM) -> typing.Union[ByteArray, ByteStream, HexString]:
     """Returns an instance of a domain type encoded as a byte array.
 
     :param typeof: Domain type to which data can be mapped, e.g. BOOL.

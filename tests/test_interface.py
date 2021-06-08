@@ -60,7 +60,7 @@ _INTERFACE_OF_LIBRARY = {
     },
     _has_enum: {
         "CLEncoding",
-        "CLType",
+        "CLTypeKey",
         "NodeEventType",
     },
     _has_constant: {
@@ -102,8 +102,8 @@ _INTERFACE_OF_LIBRARY = {
 _INTERFACE_OF_FACTORY = {
     _has_member: {
         "accounts",
-        "cl_type_info",
-        "deploy",
+        "cl_types",
+        "deploys",
     },
 }
 

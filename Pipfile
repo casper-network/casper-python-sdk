@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "*"
 tox = "*"
 
 [packages]
@@ -13,6 +12,7 @@ ecdsa = "*"
 jsonrpcclient = "*"
 requests = "*"
 sseclient-py = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.9"

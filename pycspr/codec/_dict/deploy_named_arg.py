@@ -1,23 +1,13 @@
 
 from pycspr.codec._bytearray import cl
 from pycspr.codec._bytearray import deploy_named_arg
-from pycspr.types import CLType
-from pycspr.types import DeployExecutable
-from pycspr.types import DeployNamedArg
-
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType
+from pycspr.types.cl import CLTypeKey
+from pycspr.types.deploy import ExecutionInfo
+from pycspr.types.deploy import ExecutionArgument
 
 
 
-def _not_implemented(arg: DeployNamedArg):
+def _not_implemented(arg: ExecutionInfo):
     raise NotImplementedError("CL value type unencodeable")
 
 
@@ -35,36 +25,36 @@ def _encode_option(arg):
 
 # Map: cl-type <-> encoder.
 _CL_TYPE_ENCODERS = {
-    CLType.BOOL: lambda arg: arg.cl_typeof.name,
-    CLType.I32: lambda arg: arg.cl_typeof.name,
-    CLType.I64: lambda arg: arg.cl_typeof.name,
-    CLType.U8: lambda arg: arg.cl_typeof.name,
-    CLType.U32: lambda arg: arg.cl_typeof.name,
-    CLType.U64: lambda arg: arg.cl_typeof.name,
-    CLType.U128: lambda arg: arg.cl_typeof.name,
-    CLType.U256: lambda arg: arg.cl_typeof.name,
-    CLType.U512: lambda arg: arg.cl_typeof.name,
-    CLType.UNIT: _not_implemented,
-    CLType.STRING: _not_implemented,
-    CLType.KEY: _not_implemented,
-    CLType.UREF: _not_implemented,
-    CLType.OPTION: _encode_option,
-    CLType.LIST: _not_implemented,
-    CLType.BYTE_ARRAY: _encode_byte_array,
-    CLType.RESULT: _not_implemented,
-    CLType.MAP: _not_implemented,
-    CLType.TUPLE_1: _not_implemented,
-    CLType.TUPLE_2: _not_implemented,
-    CLType.TUPLE_3: _not_implemented,
-    CLType.ANY: _not_implemented,
-    CLType.PUBLIC_KEY: _not_implemented
+    CLTypeKey.BOOL: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.I32: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.I64: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U8: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U32: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U64: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U128: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U256: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.U512: lambda arg: arg.cl_typeof.name,
+    CLTypeKey.UNIT: _not_implemented,
+    CLTypeKey.STRING: _not_implemented,
+    CLTypeKey.KEY: _not_implemented,
+    CLTypeKey.UREF: _not_implemented,
+    CLTypeKey.OPTION: _encode_option,
+    CLTypeKey.LIST: _not_implemented,
+    CLTypeKey.BYTE_ARRAY: _encode_byte_array,
+    CLTypeKey.RESULT: _not_implemented,
+    CLTypeKey.MAP: _not_implemented,
+    CLTypeKey.TUPLE_1: _not_implemented,
+    CLTypeKey.TUPLE_2: _not_implemented,
+    CLTypeKey.TUPLE_3: _not_implemented,
+    CLTypeKey.ANY: _not_implemented,
+    CLTypeKey.PUBLIC_KEY: _not_implemented
 }
 
 
-def to_json(arg: DeployNamedArg) -> bytearray:
+def to_json(arg: ExecutionInfo) -> bytearray:
     """Maps domain type instance to a JSON string for interpretation by a CSPR node.
     
-    :param DeployNamedArg instance: Named argument data to be encoded.
+    :param ExecutionInfo instance: An execution argument data to be encoded.
 
     """
     try:

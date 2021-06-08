@@ -1,16 +1,22 @@
-import datetime
 import typing
 
 from pycspr import crypto
-from pycspr.types.account import AccountKeyInfo
+from pycspr.types.account import AccountInfo
 
 
 
 def create_account_info(
-    pbk: typing.Union[str, bytes],
-    pvk: typing.Union[str, bytes],
     algo: typing.Union[str, crypto.KeyAlgorithm],
-):
+    pvk: typing.Union[str, bytes],
+    pbk: typing.Union[str, bytes],
+    ):
+    """Returns an approval by an account to the effect of authorizing deploy processing.
+    
+    :param algo: ECC key algorithm identifier.
+    :param pvk: ECC private key.
+    :param pbk: ECC public key.
+
+    """
     if isinstance(pbk, str):
         pbk = bytes.fromhex(pbk)
     if isinstance(pvk, str):
@@ -18,4 +24,4 @@ def create_account_info(
     if isinstance(algo, str):
         algo = crypto.KeyAlgorithm[algo]
     
-    return AccountKeyInfo(pvk, pbk, algo)    
+    return AccountInfo(pvk, pbk, algo)    

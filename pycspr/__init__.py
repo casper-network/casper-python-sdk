@@ -39,7 +39,7 @@ from pycspr.types.node    import NODE_SSE_ENDPOINTS
 from pycspr.serialization import decode
 from pycspr.serialization import encode
 from pycspr.serialization import CLEncoding
-from pycspr.serialization import CLType
+from pycspr.serialization import CLTypeKey
 
 
 

@@ -5,7 +5,7 @@ from pycspr import crypto
 
 
 @dataclasses.dataclass
-class AccountKeyInfo:
+class AccountInfo:
     """Encapsulates information associated with an external account.
     
     """
@@ -29,6 +29,14 @@ class AccountKeyInfo:
     def public_key(self):
         """Property synonym."""
         return self.pbk
+
+
+    @property
+    def account_hash(self):
+        """Returns on-chain account hash.
+
+        """ 
+        return crypto.get_account_hash(self.account_key)
 
 
     @property

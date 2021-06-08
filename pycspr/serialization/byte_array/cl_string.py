@@ -1,9 +1,9 @@
-from pycspr.serialization.utils import CLType
+from pycspr.types.cl import CLTypeKey
 
 
 
 # Formal type within CL type system.
-TYPEOF = CLType.STRING
+TYPEOF = CLTypeKey.STRING
 
 # Default character encoding.
 _ENCODING = "utf-8"

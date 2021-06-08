@@ -1,3 +1,4 @@
+import datetime
 import json
 import operator
 import os
@@ -116,13 +117,13 @@ def TYPES(LIB):
 
 
 @pytest.fixture(scope="session")
-def a_test_account(FACTORY, vectors_3) -> pycspr.types.AccountKeyInfo:
+def a_test_account(FACTORY, vectors_3) -> pycspr.types.AccountInfo:
     """Returns a test account key. 
     
     """
     algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vectors_3[0])
     
-    return FACTORY.accounts.create_account_info(pbk, pvk, algo)
+    return FACTORY.accounts.create_account_info(algo, pvk, pbk)
 
 
 @pytest.fixture(scope="session")
@@ -133,7 +134,15 @@ def a_test_chain_id() -> str:
     return "casper-net-1"
 
 
-def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountKeyInfo:
+@pytest.fixture(scope="session")
+def a_test_timestamp() -> int:
+    """Returns a test timestamp. 
+    
+    """
+    return datetime.datetime.utcnow()
+
+
+def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInfo:
     """Returns account information related to NCTL user 1. 
     
     """
@@ -141,7 +150,7 @@ def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountKey
     path = path / "assets" / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.AccountKeyInfo(
+    return LIB.types.AccountInfo(
         pbk=pbk,
         pvk=pvk,
         algo=LIB.crypto.KeyAlgorithm.ED25519
@@ -149,7 +158,7 @@ def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountKey
 
 
 @pytest.fixture(scope="session")
-def cp1(LIB) -> pycspr.types.AccountKeyInfo:
+def cp1(LIB) -> pycspr.types.AccountInfo:
     """Returns a test account key. 
     
     """
@@ -157,11 +166,26 @@ def cp1(LIB) -> pycspr.types.AccountKeyInfo:
 
 
 @pytest.fixture(scope="session")
-def cp2(LIB) -> pycspr.types.AccountKeyInfo:
+def cp2(LIB) -> pycspr.types.AccountInfo:
     """Returns a test account key. 
     
     """
     return _get_account_info_of_nctl_user(LIB, 2)
+
+
+@pytest.fixture(scope="session")
+def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParameters:
+    """Returns a test account key. 
+    
+    """
+    return FACTORY.deploys.create_standard_parameters(
+            account=cp1,
+            chain_name=a_test_chain_id,
+            dependencies=[],
+            gas_price=1,
+            timestamp=datetime.datetime.utcnow(),
+            ttl="1day"
+        )
 
 
 @pytest.fixture(scope="session")

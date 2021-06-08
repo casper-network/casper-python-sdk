@@ -1,9 +1,9 @@
-from pycspr.serialization.utils import CLType
+from pycspr.serialization.utils import CLTypeKey
 
 
 
 # Formal type within CL type system.
-TYPEOF = CLType.BOOL
+TYPEOF = CLTypeKey.BOOL
 
 # Length when encoded.
 _ENCODED_LENGTH: int = 1
@@ -17,7 +17,7 @@ decode = lambda v: bool(v[0])
 
 
 # Encodes a domain type instance.
-to_bytes = lambda v: [CLType.BOOL.value, int(v)]
+to_bytes = lambda v: [CLTypeKey.BOOL.value, int(v)]
 
 
 # Returns length in bytes of encoded data.

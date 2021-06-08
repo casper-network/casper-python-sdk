@@ -1,10 +1,10 @@
-from pycspr.serialization.utils import CLType
+from pycspr.types.cl import CLTypeKey
 from typing import Callable
 
 
 
 # Formal type within CL type system.
-TYPEOF = CLType.UNIT
+TYPEOF = CLTypeKey.UNIT
 
 # Length when encoded.
 _ENCODED_LENGTH: int = 0

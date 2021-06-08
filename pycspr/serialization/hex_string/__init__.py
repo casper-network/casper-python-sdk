@@ -1,6 +1,6 @@
 from pycspr.serialization import byte_stream
 from pycspr.serialization.utils import HexString
-from pycspr.serialization.utils import CLType
+from pycspr.types.cl import CLTypeKey
 from pycspr.serialization.utils import DecoderError
 from pycspr.serialization.utils import EncoderError
 
@@ -22,7 +22,7 @@ def decode(data: HexString) -> object:
     return byte_stream.decode(bytes.fromhex(data))
 
 
-def encode(typeof: CLType, value: object) -> HexString:
+def encode(typeof: CLTypeKey, value: object) -> HexString:
     """Returns a domain type instance encoded as a byte stream.
 
     :param typeof: Domain type to which data can be mapped, e.g. BOOL.

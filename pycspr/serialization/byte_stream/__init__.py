@@ -1,7 +1,7 @@
 from pycspr.serialization import byte_array
 from pycspr.serialization.utils import ByteStream
 from pycspr.serialization.utils import CLEncoding
-from pycspr.serialization.utils import CLType
+from pycspr.types.cl import CLTypeKey
 from pycspr.serialization.utils import DecoderError
 from pycspr.serialization.utils import EncoderError
 
@@ -27,7 +27,7 @@ def decode(data: ByteStream) -> object:
     return byte_array.decode(list(data))
 
 
-def encode(typeof: CLType, value: object) -> ByteStream:
+def encode(typeof: CLTypeKey, value: object) -> ByteStream:
     """Returns a domain type instance encoded as a byte stream.
 
     :param typeof: Domain type to which data can be mapped, e.g. BOOL.

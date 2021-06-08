@@ -3,36 +3,36 @@ import datetime
 import typing
 
 from pycspr.types.cl import CLType
-from pycspr.types.cl import CLTypeInfo
+from pycspr.types.cl import CLValue
 
 
-# Domain type: chain name.
+# Name of target chain to which deploys may be dispatched.
 ChainName = typing.NewType("Simple chain identifer", str)
 
-# Domain type: output of a hashing function.
+# On chain contract identifer.
 ContractHash = typing.NewType("32 byte array emitted by a hashing algorithm representing a static contract pointer", bytes)
 
-# Domain type: representing a output of a hashing function.
+# On chain contract version.
 ContractVersion = typing.NewType("U32 integer representing", int)
 
-# Domain type: representing a public key derived from an ECC key pair.
+# A public key derived from an ECC key pair.
 PublicKey = typing.NewType("Either 32 or 33 bytes (compressed) depending upon ECC type", bytes)
 
-# Domain type: representing a output of a hashing function.
+# Output of a hashing function.
 Digest = typing.NewType("32 byte array emitted by a hashing algorithm", bytes)
 
-# Domain type: representing a output of a hashing function.
+# Output of an ECC signing function.
 Signature = typing.NewType("64 byte array emitted by an ECC algorithm", bytes)
 
-# Domain type: representing a output of a hashing function.
+# A timestamp encodeable as milli-seconds since epoch.
 Timestamp = typing.NewType("ISO compliant timestamp", datetime.datetime)
 
-# Domain type: representing a temporal delta.
+# A human recognizable temporal delta.
 HumamizedTimeDelta = typing.NewType("A temporal offset from now", str)
 
 
 @dataclasses.dataclass
-class DeployApproval:
+class Approval:
     """A digital signature approving deploy processing.
     
     """
@@ -44,31 +44,28 @@ class DeployApproval:
 
 
 @dataclasses.dataclass
-class DeployNamedArg():
-    """Domain type: a named argument to be mapped to a contract function parameter.
+class ExecutionArgument():
+    """An argument to be passed to vm for execution.
     
     """
-    # Associated CL type information.
-    cl_type_info: CLTypeInfo
-
     # Argument name mapped to an entry point parameter.
     name: str
     
-    # Argument value. 
-    value: object
+    # Argument cl type system value. 
+    value: CLValue
 
 
 @dataclasses.dataclass
-class DeployExecutable():
-    """Encapsulates vm executable information.
+class ExecutionInfo():
+    """Encapsulates vm execution information.
     
     """
     # Set of arguments mapped to endpoint parameters.
-    args: typing.List[DeployNamedArg]
+    args: typing.List[ExecutionArgument]
 
 
 @dataclasses.dataclass
-class DeployExecutable_ModuleBytes(DeployExecutable):
+class ExecutionInfo_ModuleBytes(ExecutionInfo):
     """Encapsulates information required to execute an in-line wasm binary.
     
     """
@@ -77,7 +74,7 @@ class DeployExecutable_ModuleBytes(DeployExecutable):
 
 
 @dataclasses.dataclass
-class DeployExecutable_StoredContract(DeployExecutable):
+class ExecutionInfo_StoredContract(ExecutionInfo):
     """Encapsulates information required to execute an on-chain smart contract.
     
     """
@@ -86,7 +83,7 @@ class DeployExecutable_StoredContract(DeployExecutable):
 
 
 @dataclasses.dataclass
-class DeployExecutable_StoredContractByHash(DeployExecutable_StoredContract):
+class ExecutionInfo_StoredContractByHash(ExecutionInfo_StoredContract):
     """Encapsulates information required to execute an on-chain smart contract referenced by hash.
     
     """
@@ -95,7 +92,7 @@ class DeployExecutable_StoredContractByHash(DeployExecutable_StoredContract):
 
 
 @dataclasses.dataclass
-class DeployExecutable_StoredContractByHashVersioned(DeployExecutable_StoredContractByHash):
+class ExecutionInfo_StoredContractByHashVersioned(ExecutionInfo_StoredContractByHash):
     """Encapsulates information required to execute a versioned on-chain smart contract referenced by hash.
     
     """
@@ -104,7 +101,7 @@ class DeployExecutable_StoredContractByHashVersioned(DeployExecutable_StoredCont
     
 
 @dataclasses.dataclass
-class DeployExecutable_StoredContractByName(DeployExecutable_StoredContract):
+class ExecutionInfo_StoredContractByName(ExecutionInfo_StoredContract):
     """Encapsulates information required to execute an on-chain smart contract referenced by name.
     
     """
@@ -113,7 +110,7 @@ class DeployExecutable_StoredContractByName(DeployExecutable_StoredContract):
 
 
 @dataclasses.dataclass
-class DeployExecutable_StoredContractByNameVersioned(DeployExecutable_StoredContractByName):
+class ExecutionInfo_StoredContractByNameVersioned(ExecutionInfo_StoredContractByName):
     """Encapsulates information required to execute a versioned on-chain smart contract referenced by name.
     
     """
@@ -122,11 +119,31 @@ class DeployExecutable_StoredContractByNameVersioned(DeployExecutable_StoredCont
 
 
 @dataclasses.dataclass
-class DeployExecutable_Transfer(DeployExecutable):
+class ExecutionInfo_Transfer(ExecutionInfo):
     """Encapsulates information required to execute a host-side balance transfer.
     
     """
     pass
+
+
+@dataclasses.dataclass
+class DeployBody():
+    """Encapsulates a deploy's body, i.e. executable payload.
+    
+    """
+    # Executable information passed to chain's VM for taking payment required to process session logic.
+    payment: ExecutionInfo
+
+    # Executable information passed to chain's VM.
+    session: ExecutionInfo
+
+    @property
+    def hash(self) -> bytes:
+        """Derives deploy hash based upon header attributes + body hash.
+        
+        """
+        # TODO: calculate hash base upon session.to_bytes + payment.to_bytes
+        return bytes.fromhex("44682ea86b704fb3c65cd16f84a76b621e04bbdb3746280f25cf062220e471b4")
 
 
 @dataclasses.dataclass
@@ -137,20 +154,31 @@ class DeployHeader():
     # Public key of account dispatching deploy to a node.
     account: PublicKey
 
+    # Hash of deploy payload.
+    body_hash: Digest
+
+    # Name of target chain to which deploy will be dispatched.
+    chain_name: ChainName
+
+    # Set of deploys that must be executed prior to this one.
+    dependencies: typing.List[Digest]
+
+    # Multiplier in motes used to calculate final gas price.
+    gas_price: int
+
     # Timestamp at point of deploy creation.
     timestamp: Timestamp
 
     # Time interval after which the deploy will no longer be considered for processing by a node.
     ttl: HumamizedTimeDelta
 
-    # Hash of deploy payload.
-    body_hash: Digest
-
-    # Set of deploys that must be executed prior to this one.
-    dependencies: typing.List[Digest]
-
-    # Name of target chain to which deploy will be dispatched.
-    chain_name: ChainName
+    @property
+    def hash(self) -> bytes:
+        """Derives deploy hash based upon header attributes + body hash.
+        
+        """
+        # TODO: calculate hash based upon attributes + body-hash.
+        return bytes.fromhex("44682ea86b704fb3c65cd16f84a76b621e04bbdb3746280f25cf062220e471b4")
 
 
 @dataclasses.dataclass
@@ -159,7 +187,7 @@ class Deploy():
     
     """
     # Set of signatures approving this deploy for execution.
-    approvals: typing.List[DeployApproval]
+    approvals: typing.List[Approval]
 
     # Unique identifier.
     hash: Digest
@@ -168,7 +196,31 @@ class Deploy():
     header: DeployHeader
 
     # Executable information passed to chain's VM for taking payment required to process session logic.
-    payment: DeployExecutable
+    payment: ExecutionInfo
 
     # Executable information passed to chain's VM.
-    session: DeployExecutable
+    session: ExecutionInfo
+
+
+@dataclasses.dataclass
+class StandardParameters():
+    """Encapsulates standard information associated with a deploy.
+    
+    """
+    # Public key of account dispatching deploy to a node.
+    account: PublicKey
+
+    # Name of target chain to which deploy will be dispatched.
+    chain_name: ChainName
+
+    # Set of deploys that must be executed prior to this one.
+    dependencies: typing.List[Digest]
+
+    # Multiplier in motes used to calculate final gas price.
+    gas_price: int
+
+    # Timestamp at point of deploy creation.
+    timestamp: Timestamp
+
+    # Time interval after which the deploy will no longer be considered for processing by a node.
+    ttl: HumamizedTimeDelta

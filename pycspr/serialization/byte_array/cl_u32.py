@@ -1,11 +1,11 @@
-from pycspr.serialization.utils import CLType
+from pycspr.types.cl import CLTypeKey
 from pycspr.serialization.utils import int_from_le_bytes
 from pycspr.serialization.utils import int_to_le_bytes
 
 
 
 # Formal type within CL type system.
-TYPEOF = CLType.U32
+TYPEOF = CLTypeKey.U32
 
 # Length when encoded.
 _ENCODED_LENGTH: int = 4

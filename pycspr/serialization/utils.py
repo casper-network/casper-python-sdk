@@ -16,7 +16,7 @@ ByteStream = typing.NewType("Byte stream", bytes)
 HexString = typing.NewType("Hexadecimal string", str)
 
 
-class CLType(enum.Enum):
+class CLTypeKey(enum.Enum):
     """Enumeration over set of supported CL types.
     
     """
@@ -74,7 +74,7 @@ class DecoderError(Exception):
     """Raised whenever domain type instance decoding fails.
 
     """
-    def __init__(self, typeof: CLType, msg: str):
+    def __init__(self, typeof: CLTypeKey, msg: str):
         """Object constructor.
 
         """
@@ -85,7 +85,7 @@ class EncoderError(Exception):
     """Raised whenever domain type instance encoding fails.
 
     """
-    def __init__(self, typeof: CLType, msg: str):
+    def __init__(self, typeof: CLTypeKey, msg: str):
         """Object constructor.
 
         """

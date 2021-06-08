@@ -10,10 +10,12 @@ from pycspr.serialization.byte_array import cl_u256
 from pycspr.serialization.byte_array import cl_u512
 from pycspr.serialization.byte_array import cl_unit
 from pycspr.serialization.utils import ByteArray
-from pycspr.serialization.utils import CLEncoding
-from pycspr.serialization.utils import CLType
 from pycspr.serialization.utils import DecoderError
 from pycspr.serialization.utils import EncoderError
+
+from pycspr.serialization.utils import CLEncoding
+
+from pycspr.types.cl import CLTypeKey
 
 
 # Type of encoder.
@@ -21,21 +23,21 @@ ENCODING = CLEncoding.BYTE_ARRAY
 
 # Map: CL type <-> codec.
 CODECS = {
-    CLType.BOOL: cl_boolean,
-    CLType.I32: cl_i32,
-    CLType.I64: cl_i64,    
-    CLType.STRING: cl_string,
-    CLType.U8: cl_u8,
-    CLType.U32: cl_u32,
-    CLType.U64: cl_u64,
-    CLType.U128: cl_u128,
-    CLType.U256: cl_u256,
-    CLType.U512: cl_u512,
-    CLType.UNIT: cl_unit,
+    CLTypeKey.BOOL: cl_boolean,
+    CLTypeKey.I32: cl_i32,
+    CLTypeKey.I64: cl_i64,    
+    CLTypeKey.STRING: cl_string,
+    CLTypeKey.U8: cl_u8,
+    CLTypeKey.U32: cl_u32,
+    CLTypeKey.U64: cl_u64,
+    CLTypeKey.U128: cl_u128,
+    CLTypeKey.U256: cl_u256,
+    CLTypeKey.U512: cl_u512,
+    CLTypeKey.UNIT: cl_unit,
 }
 
 # Set of supported type prefixes.
-TYPE_TAGS = set([i.value for i in list(CLType)])
+TYPE_TAGS = set([i.value for i in list(CLTypeKey)])
 
 
 def decode(data: ByteArray) -> object:
@@ -57,7 +59,7 @@ def decode(data: ByteArray) -> object:
 
     # Map type tag -> CL type.
     try:
-        typeof = CLType(tag)
+        typeof = CLTypeKey(tag)
     except ValueError:
         raise DecoderError(ENCODING, f"Input data cannot be decoded.")    
 
@@ -76,7 +78,7 @@ def decode(data: ByteArray) -> object:
     return codec.decode(data)
 
 
-def encode(typeof: CLType, value: object) -> ByteArray:
+def encode(typeof: CLTypeKey, value: object) -> ByteArray:
     """Returns a domain type instance encoded as a byte array.
 
     :param typeof: Domain type to which data can be mapped, e.g. BOOL.

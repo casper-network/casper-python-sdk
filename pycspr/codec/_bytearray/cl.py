@@ -21,35 +21,35 @@ from pycspr.codec._bytearray import cl_u256
 from pycspr.codec._bytearray import cl_u512
 from pycspr.codec._bytearray import cl_unit
 from pycspr.codec._bytearray import cl_uref
-from pycspr.types.cl import CLType
+from pycspr.types.cl import CLTypeKey
 
 
 _ENCODERS = {
-    CLType.ANY: cl_any,
-    CLType.BOOL: cl_boolean,
-    CLType.BYTE_ARRAY: cl_byte_array,
-    CLType.I32: cl_i32,
-    CLType.I64: cl_i64,
-    CLType.KEY: cl_key,
-    CLType.LIST: cl_list,
-    CLType.MAP: cl_map,
-    CLType.OPTION: cl_option,
-    CLType.PUBLIC_KEY: cl_public_key,
-    CLType.RESULT: cl_result,
-    CLType.STRING: cl_string,
-    CLType.TUPLE_1: cl_tuple1,
-    CLType.TUPLE_2: cl_tuple2,
-    CLType.TUPLE_3: cl_tuple3,
-    CLType.U8: cl_u8,
-    CLType.U32: cl_u32,
-    CLType.U64: cl_u64,
-    CLType.U128: cl_u128,
-    CLType.U256: cl_u256,
-    CLType.U512: cl_u512,
-    CLType.UNIT: cl_unit,
-    CLType.UREF: cl_uref,
+    CLTypeKey.ANY: cl_any,
+    CLTypeKey.BOOL: cl_boolean,
+    CLTypeKey.BYTE_ARRAY: cl_byte_array,
+    CLTypeKey.I32: cl_i32,
+    CLTypeKey.I64: cl_i64,
+    CLTypeKey.KEY: cl_key,
+    CLTypeKey.LIST: cl_list,
+    CLTypeKey.MAP: cl_map,
+    CLTypeKey.OPTION: cl_option,
+    CLTypeKey.PUBLIC_KEY: cl_public_key,
+    CLTypeKey.RESULT: cl_result,
+    CLTypeKey.STRING: cl_string,
+    CLTypeKey.TUPLE_1: cl_tuple1,
+    CLTypeKey.TUPLE_2: cl_tuple2,
+    CLTypeKey.TUPLE_3: cl_tuple3,
+    CLTypeKey.U8: cl_u8,
+    CLTypeKey.U32: cl_u32,
+    CLTypeKey.U64: cl_u64,
+    CLTypeKey.U128: cl_u128,
+    CLTypeKey.U256: cl_u256,
+    CLTypeKey.U512: cl_u512,
+    CLTypeKey.UNIT: cl_unit,
+    CLTypeKey.UREF: cl_uref,
 }
 
 
-def to_bytes(typeof: CLType, value: object) -> bytearray:
+def to_bytes(typeof: CLTypeKey, value: object) -> bytearray:
     return [typeof.value] + _ENCODERS[typeof](value)
