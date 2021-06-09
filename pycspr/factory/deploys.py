@@ -2,7 +2,7 @@ import datetime
 import typing
 
 from pycspr import crypto
-from pycspr.factory.cl_types import create_value as create_cl_value
+from pycspr.factory import cl_types
 from pycspr.types.account import AccountInfo
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import CLType
@@ -79,7 +79,7 @@ def create_execution_arg(
     """
     return ExecutionArgument(
         name = name,
-        value = create_cl_value(cl_type, parsed)
+        value = cl_types.create_value(cl_type, parsed)
     )
 
 
@@ -112,7 +112,11 @@ def create_payment_for_transfer(amount: int = 10000) -> ExecutionInfo_ModuleByte
     """
     return ExecutionInfo_ModuleBytes(
         args=[
-            create_execution_arg("amount", amount, CLTypeKey.U512),
+            create_execution_arg(
+                "amount",
+                amount,
+                cl_types.create_simple(CLTypeKey.U512)
+                ),
         ],
         module_bytes=bytes([])
         )
@@ -130,11 +134,24 @@ def create_session_for_transfer(
     :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
     
     """
+    print(target)
     return ExecutionInfo_Transfer(
         args=[
-            create_execution_arg("amount", amount, CLTypeKey.U512),
-            create_execution_arg("target", target, CLTypeKey.PUBLIC_KEY),
-            create_execution_arg("id", correlation_id, CLTypeKey.U64),
+            create_execution_arg(
+                "amount",
+                amount,
+                cl_types.create_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "target",
+                target,
+                cl_types.create_byte_array(32)
+                ),
+            create_execution_arg(
+                "id",
+                correlation_id,
+                cl_types.create_simple(CLTypeKey.U64)
+                ),
         ]
     )
 

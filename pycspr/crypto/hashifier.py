@@ -37,4 +37,7 @@ def get_hash(
     :returns: Encoded hash of input data.
 
     """ 
-    return ENCODERS[encoding](ALGOS[algo].get_hash(data, size))
+    encoder = ENCODERS[encoding]
+    algo = ALGOS[algo]
+
+    return encoder(algo.get_hash(data, size))

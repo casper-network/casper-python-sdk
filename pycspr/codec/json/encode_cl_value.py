@@ -1,4 +1,5 @@
 from pycspr.types.cl import CLValue
+from pycspr.codec.json.encode_cl_type import encode as encode_cl_type
 
 
 
@@ -9,5 +10,7 @@ def encode(entity: CLValue):
 
     """
     return {
-        "TODO": entity.cl_type,
+        "bytes": entity.bytes.hex(),
+        "cl_type": encode_cl_type(entity.cl_type),
+        "parsed": str(entity.parsed),
     }

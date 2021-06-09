@@ -2,6 +2,7 @@ import random
 
 
 def test_encode_transfer(LIB, FACTORY, TYPES, deploy_params, cp1, cp2):
+    print(cp2.account_hash)
     deploy=FACTORY.deploys.create_deploy(
         deploy_params,
         FACTORY.deploys.create_session_for_transfer(

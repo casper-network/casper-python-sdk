@@ -10,7 +10,7 @@ from pycspr.crypto.hashifier import get_hash
 _DIGEST_LENGTH = 32
 
 
-def get_account_hash(account_key: str) -> str:
+def get_account_hash(account_key: str, encoding: HashEncoding = HashEncoding.HEX) -> str:
     """Returns an on-chain account identifier (hex format) as derived from an account key.
 
     :param account_key: An on-chain account identifier.
@@ -26,4 +26,4 @@ def get_account_hash(account_key: str) -> str:
         bytearray(1) + \
         bytes.fromhex(public_key)
 
-    return get_hash(as_bytes, _DIGEST_LENGTH, HashAlgorithm.BLAKE2B, HashEncoding.HEX)
+    return get_hash(as_bytes, _DIGEST_LENGTH, HashAlgorithm.BLAKE2B, encoding)
