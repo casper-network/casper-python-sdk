@@ -41,6 +41,8 @@ from pycspr.serialization import encode
 from pycspr.serialization import CLEncoding
 from pycspr.serialization import CLTypeKey
 
+from pycspr.codec import encode as encode_1
+
 
 
 # Lib metadata.
