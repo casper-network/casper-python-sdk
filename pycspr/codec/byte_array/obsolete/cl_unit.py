@@ -15,7 +15,7 @@ decode = lambda _: None
 
 
 # Encodes a domain type instance.
-to_bytes = lambda _: []
+encode = lambda _: []
 
 
 # Returns length in bytes of encoded data.

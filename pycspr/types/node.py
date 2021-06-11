@@ -12,13 +12,13 @@ class NodeConnectionInfo:
     host: str = "localhost"
 
     # Number of exposed REST port.
-    port_rest: int = 50101
+    port_rest: int = 14101
 
     # Number of exposed RPC port.
-    port_rpc: int = 40101
+    port_rpc: int = 11101
     
     # Number of exposed SSE port.
-    port_sse: int = 60101
+    port_sse: int = 18101
 
     @property
     def address(self) -> str:

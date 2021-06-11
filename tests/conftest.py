@@ -92,8 +92,8 @@ def LIB() -> pycspr:
     # Initialise with default NCTL node 1 connection info.
     pycspr.initialise(pycspr.NodeConnectionInfo(
         host="localhost",
-        port_rest=50101,
-        port_rpc=40101,
+        port_rest=14101,
+        port_rpc=11101,
         port_sse=60101
     ))
 

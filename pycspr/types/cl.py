@@ -179,4 +179,4 @@ class CLValue():
     parsed: object
 
     # Byte array representation of underlying data.
-    bytes: bytes = b''
+    bytes: bytes = None
