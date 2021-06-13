@@ -28,21 +28,16 @@ from pycspr.api           import get_rpc_schema
 from pycspr.api           import get_state_item
 from pycspr.api           import get_state_root_hash
 from pycspr.api           import get_switch_block
+from pycspr.codec         import encode as encode_1
 from pycspr.crypto        import get_account_hash as get_account_address
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key
+from pycspr.types.cl      import CLTypeKey
 from pycspr.types.node    import NodeConnectionInfo
 from pycspr.types.node    import NodeEventType
 from pycspr.types.node    import NODE_REST_ENDPOINTS
 from pycspr.types.node    import NODE_RPC_ENDPOINTS
 from pycspr.types.node    import NODE_SSE_ENDPOINTS
-from pycspr.serialization import decode
-from pycspr.serialization import encode
-from pycspr.serialization import CLEncoding
-from pycspr.serialization import CLTypeKey
-
-from pycspr.codec import encode as encode_1
-
 
 
 # Lib metadata.

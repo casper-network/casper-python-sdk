@@ -1,4 +1,4 @@
-from pycspr.serialization.utils import CLTypeKey
+from pycspr.types.cl import CLTypeKey
 
 
 

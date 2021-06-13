@@ -1,4 +1,6 @@
-from pycspr.serialization.utils import int_to_le_bytes
+import typing
+
+from pycspr.codec.byte_array.utils import int_to_le_bytes
 
 
 
@@ -6,9 +8,15 @@ from pycspr.serialization.utils import int_to_le_bytes
 _ENCODED_LENGTH: int = 4
 
 # Dimension constraints.
-MIN_SIZE = 0
-MAX_SIZE = (2 ** 32) - 1
+MIN = 0
+MAX = (2 ** 32) - 1
 
 
-# Encodes parsed data.
-encode = lambda v: int_to_le_bytes(int(v), _ENCODED_LENGTH, False)
+def encode(value: int) -> typing.List[int]:
+    """Maps parsed value to it's CL byte array representation.
+
+    :param value: Value to be mapped.
+    :returns: CL byte array representation.
+        
+    """
+    return int_to_le_bytes(value, _ENCODED_LENGTH, False)

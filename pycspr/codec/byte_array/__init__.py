@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.codec.byte_array import cl_boolean
 from pycspr.codec.byte_array import cl_bytearray
 from pycspr.codec.byte_array import cl_i32
@@ -15,6 +17,8 @@ from pycspr.codec.byte_array import cl_unit
 from pycspr.codec.byte_array import cl_uref
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import CLValue
+from pycspr.types.cl import CL_TYPES_NUMERIC_SIGNED
+from pycspr.types.cl import CL_TYPES_NUMERIC_UNSIGNED
 
 
 # OPTION = 13
@@ -27,7 +31,7 @@ from pycspr.types.cl import CLValue
 # ANY = 21
 
 
-# Map: entity type <-> encoder.
+# Map: entity type <-> codec.
 _CODECS = {
     CLTypeKey.BOOL: cl_boolean,
     CLTypeKey.BYTE_ARRAY: cl_bytearray,
@@ -46,10 +50,38 @@ _CODECS = {
     CLTypeKey.UREF: cl_uref,
 }
 
+
+CL_TYPES_NUMERIC_DOWNSIZEABLE = {
+    CLTypeKey.U64,
+    CLTypeKey.U128,
+    CLTypeKey.U256,
+    CLTypeKey.U512,
+}
+
+
 def encode(value: CLValue):
     """Encodes a value as an array of bytes decodeable by a CSPR agent.
     
     """
-    return [value.cl_type.typeof.value] + \
-           _CODECS[value.cl_type.typeof].encode(value.parsed)
+    type_key = _get_type_key(value)
+
+    return [type_key.value] + _CODECS[type_key].encode(value.parsed)
+
+
+def _get_type_key(value: CLValue) -> typing.List[int]:
+    """Returns effective type key - can be overriden for numerics.
     
+    """ 
+    if value.cl_type.typeof in CL_TYPES_NUMERIC_DOWNSIZEABLE:
+        if value.parsed >= cl_u32.MIN and value.parsed <= cl_u32.MAX:
+            return CLTypeKey.U32
+        elif value.parsed >= cl_u64.MIN and value.parsed <= cl_u64.MAX:
+            return CLTypeKey.U64
+        elif value.parsed >= cl_u128.MIN and value.parsed <= cl_u128.MAX:
+            return CLTypeKey.U128
+        elif value.parsed >= cl_u256.MIN and value.parsed <= cl_u256.MAX:
+            return CLTypeKey.U256
+        else:
+            return CLTypeKey.U512
+    else:
+        return value.cl_type.typeof

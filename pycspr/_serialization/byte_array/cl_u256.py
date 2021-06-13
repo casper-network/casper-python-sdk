@@ -11,8 +11,8 @@ TYPEOF = CLTypeKey.U256
 _ENCODED_LENGTH: int = 32
 
 # Dimension constraint.
-_MIN_SIZE = 0
-_MAX_SIZE = (2 ** 256) - 1
+_MIN = 0
+_MAX = (2 ** 256) - 1
 
 
 # Decodes input data.
@@ -32,4 +32,4 @@ is_decodeable = lambda encoded: isinstance(encoded, list) and len(encoded) == _E
 
 
 # A predicate returning a flag indicating whether domain type instance can be encoded.
-is_encodeable = lambda v: isinstance(v, int) and _MIN_SIZE <= v <= _MAX_SIZE
+is_encodeable = lambda v: isinstance(v, int) and _MIN <= v <= _MAX

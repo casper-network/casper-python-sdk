@@ -94,7 +94,7 @@ def LIB() -> pycspr:
         host="localhost",
         port_rest=14101,
         port_rpc=11101,
-        port_sse=60101
+        port_sse=18101
     ))
 
     return pycspr

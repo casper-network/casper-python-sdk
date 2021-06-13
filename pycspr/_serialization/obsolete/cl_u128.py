@@ -1,18 +1,18 @@
-from pycspr.serialization.utils import CLTypeKey
+from pycspr.types.cl import CLTypeKey
 from pycspr.serialization.utils import int_from_le_bytes
 from pycspr.serialization.utils import int_to_le_bytes
 
 
 
 # Formal type within CL type system.
-TYPEOF = CLTypeKey.U32
+TYPEOF = CLTypeKey.U128
 
 # Length when encoded.
-_ENCODED_LENGTH: int = 4
+_ENCODED_LENGTH: int = 16
 
 # Dimension constraint.
-_MIN_SIZE = 0
-_MAX_SIZE = (2 ** 32) - 1
+_MIN = 0
+_MAX = (2 ** 128) - 1
 
 
 # Decodes input data.
@@ -32,4 +32,4 @@ is_decodeable = lambda encoded: isinstance(encoded, list) and len(encoded) == _E
 
 
 # A predicate returning a flag indicating whether domain type instance can be encoded.
-is_encodeable = lambda v: isinstance(v, int) and _MIN_SIZE <= v <= _MAX_SIZE
+is_encodeable = lambda v: isinstance(v, int) and _MIN <= v <= _MAX

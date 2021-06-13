@@ -50,7 +50,26 @@ CL_TYPES_SIMPLE = {
     CLTypeKey.UREF,
 }
             
-                
+# Set of types considered to be numeric signed.
+CL_TYPES_NUMERIC_SIGNED = {
+    CLTypeKey.I32,
+    CLTypeKey.I64,
+}
+
+# Set of types considered to be numeric unsigned.
+CL_TYPES_NUMERIC_UNSIGNED = {
+    CLTypeKey.U8,
+    CLTypeKey.U32,
+    CLTypeKey.U64,
+    CLTypeKey.U128,
+    CLTypeKey.U256,
+    CLTypeKey.U512,
+}
+
+# Set of types considered to be numeric.
+CL_TYPES_NUMERIC = CL_TYPES_NUMERIC_SIGNED.union(CL_TYPES_NUMERIC_UNSIGNED)
+
+
 @dataclasses.dataclass
 class CLType():
     """Encapsulates CL type information associated with a value.
@@ -60,6 +79,10 @@ class CLType():
     def type_tag(self) -> int:
         """Returns a tag used when encoding/decoding."""
         return self.typeof.value
+
+    def is_a_numeric_type(self):
+        """Returns a flag indicating whether type is a member of the set of numeric types."""
+        return self.typeof in CL_TYPES_NUMERIC
 
 
 @dataclasses.dataclass

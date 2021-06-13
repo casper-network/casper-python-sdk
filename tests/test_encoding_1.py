@@ -9,11 +9,9 @@ def test_encode_transfer(LIB, FACTORY, TYPES, deploy_params, cp1, cp2):
         FACTORY.deploys.create_session_for_transfer(
             amount=2500000000,
             target=cp2.account_hash,
-            correlation_id=random.randint(0, 124)
+            correlation_id=1
             ),
-        FACTORY.deploys.create_payment_for_transfer(
-            1e6
-            ),
+        FACTORY.deploys.create_payment_for_transfer(10000000000),
         )
     as_json = LIB.encode_1(deploy, 'json')
 

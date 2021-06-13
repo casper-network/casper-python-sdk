@@ -1,8 +1,10 @@
 import typing
 
-from pycspr.serialization.utils import int_to_le_bytes
 from pycspr.codec.byte_array import cl_u32
 from pycspr.codec.byte_array import cl_u64
+from pycspr.codec.byte_array.utils import int_to_le_bytes
+from pycspr.types.cl import CLTypeKey
+from pycspr.types.cl import CLValue
 
 
 
@@ -10,19 +12,15 @@ from pycspr.codec.byte_array import cl_u64
 _ENCODED_LENGTH: int = 16
 
 # Dimension constraints.
-MIN_SIZE = 0
-MAX_SIZE = (2 ** 128) - 1
+MIN = 0
+MAX = (2 ** 128) - 1
 
 
-def encode(v: int) -> typing.List[int]:
-    """Maps a parsed value to a CL byte array representation.
+def encode(value: int) -> typing.List[int]:
+    """Maps parsed value to it's CL byte array representation.
 
-    :param v: Value to be mapped.
-
+    :param value: Value to be mapped.
+    :returns: CL byte array representation.
+        
     """
-    if v < cl_u32.MAX_SIZE:
-        return cl_u32.encode(v)
-    elif v < cl_u64.MAX_SIZE:
-        return cl_u64.encode(v)
-    else:
-        return int_to_le_bytes(int(v), _ENCODED_LENGTH, False)
+    return int_to_le_bytes(value, _ENCODED_LENGTH, False)
