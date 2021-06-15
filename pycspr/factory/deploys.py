@@ -93,13 +93,15 @@ def create_header(
     :param params: Standard parameters associated with a deploy.
 
     """
+    timestamp = params.timestamp or datetime.datetime.utcnow().timestamp()
+
     return DeployHeader(
         account=params.account,
         body_hash=body.hash,
         chain_name=params.chain_name,
         dependencies=params.dependencies,
         gas_price=params.gas_price,
-        timestamp=params.timestamp or datetime.datetime.utcnow(),
+        timestamp=timestamp,
         ttl=params.ttl,
     )
 
@@ -150,7 +152,7 @@ def create_session_for_transfer(
             create_execution_arg(
                 "id",
                 correlation_id,
-                cl_types.create_simple(CLTypeKey.U64)
+                cl_types.create_option(cl_types.create_simple(CLTypeKey.U64))
                 ),
         ]
     )
@@ -174,11 +176,13 @@ def create_standard_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
+    timestamp = timestamp or datetime.datetime.utcnow().timestamp()
+
     return StandardParameters(
         account=account.account_key,
         chain_name=chain_name,
         dependencies=dependencies,
         gas_price=gas_price,
-        timestamp=timestamp or datetime.datetime.utcnow(),
+        timestamp=timestamp,
         ttl=ttl,
     )

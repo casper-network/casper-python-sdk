@@ -24,8 +24,8 @@ Digest = typing.NewType("32 byte array emitted by a hashing algorithm", bytes)
 # Output of an ECC signing function.
 Signature = typing.NewType("64 byte array emitted by an ECC algorithm", bytes)
 
-# A timestamp encodeable as milli-seconds since epoch.
-Timestamp = typing.NewType("ISO compliant timestamp", datetime.datetime)
+# A timestamp encodeable as millisecond precise seconds since epoch.
+Timestamp = typing.NewType("POSIX timestamp", datetime.datetime)
 
 # A human recognizable temporal delta.
 HumamizedTimeDelta = typing.NewType("A temporal offset from now", str)

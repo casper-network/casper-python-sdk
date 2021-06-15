@@ -15,4 +15,4 @@ def encode(value: int) -> typing.List[int]:
     :returns: CL byte array representation.
         
     """
-    return int_to_le_bytes(value, _ENCODED_LENGTH, False)
+    return int_to_le_bytes(value, _ENCODED_LENGTH, True)

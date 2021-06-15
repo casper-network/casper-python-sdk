@@ -10,62 +10,45 @@ from pycspr.types.cl import CLType_Tuple3
 
 
 
-def _encode_byte_array(entity: CLType_ByteArray) -> dict:
-    return {
-        "ByteArray": entity.size
-    }
-
-
-def _encode_list(entity: CLType_List) -> dict:
-    return {
-        "List": encode(entity.inner_type_info)
-    }
-
-
-def _encode_map(entity: CLType_Map) -> dict:
-    return {
-        "Map": encode(entity.inner_type_info)
-    }
-
-
-def _encode_option(entity: CLType_Option) -> dict:
-    return {
-        "Option": encode(entity.inner_type_info)
-    }
-
-
-def _encode_simple(entity: CLType_Simple) -> str:
-    return entity.typeof.name
-
-
-def _encode_tuple_1(entity: CLType_Tuple1) -> dict:
-    return {
-        "Tuple1": encode(entity.t0_type_info)
-    }
-
-
-def _encode_tuple_2(entity: CLType_Tuple2) -> dict:
-    return {
-        "Tuple2": [encode(entity.t0_type_info), encode(entity.t1_type_info)]
-    }
-
-
-def _encode_tuple_3(entity: CLType_Tuple3) -> dict:
-    return {
-        "Tuple3": [encode(entity.t0_type_info), encode(entity.t1_type_info), encode(entity.t2_type_info)]
-    }
-
-
 # Map: domain type <-> encoder.
 _ENCODERS = {
-    CLType_ByteArray: _encode_byte_array,
-    CLType_List: _encode_list,
-    CLType_Map: _encode_map,
-    CLType_Option: _encode_option,
-    CLType_Simple: _encode_simple,
-    CLType_Tuple1: _encode_tuple_1,
-    CLType_Tuple2: _encode_tuple_2,
-    CLType_Tuple3: _encode_tuple_3,
+    # Byte array.
+    CLType_ByteArray: lambda e: {
+        "ByteArray": e.size
+    },
+
+    # List.
+    CLType_List: lambda e: {
+        "List": encode(e.inner_type)
+    },
+
+    # Map.
+    CLType_Map: lambda e: {
+        "Map": encode(e.inner_type)
+    },
+
+    # Optional.
+    CLType_Option: lambda e: {
+        "Option": encode(e.inner_type)
+    },
+
+    # Simple type.
+    CLType_Simple: lambda e: e.typeof.name,
+
+    # 1-ary tuple.
+    CLType_Tuple1: lambda e: {
+        "Tuple1": encode(e.t0_type)
+    },
+
+    # 2-ary tuple.
+    CLType_Tuple2: lambda e: {
+        "Tuple2": [encode(e.t0_type), encode(e.t1_type)]
+    },
+
+    # 3-ary tuple.
+    CLType_Tuple3: lambda e: {
+        "Tuple3": [encode(e.t0_type), encode(e.t1_type), encode(e.t2_type)]
+    },
 }
 
 

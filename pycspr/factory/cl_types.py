@@ -21,35 +21,35 @@ def create_byte_array(size: int) -> CLType_ByteArray:
     return CLType_ByteArray(size=size)
 
 
-def create_list(inner_type_info: CLType) -> CLType_List:
+def create_list(inner_type: CLType) -> CLType_List:
     """Returns CL type information for a list.
     
-    :param CLType inner_type_info: Type information pertaining to each element within list.
+    :param CLType inner_type: Type information pertaining to each element within list.
 
     """
-    return CLType_List(inner_type_info=inner_type_info)
+    return CLType_List(inner_type=inner_type)
 
 
-def create_map(key_type_info: CLType, value_type_info: CLType) -> CLType_Map:
+def create_map(key_type: CLType, value_type: CLType) -> CLType_Map:
     """Returns CL type information for a map.
     
-    :param CLType key_type_info: Type information pertaining to each key within the map.
-    :param CLType value_type_info: Type information pertaining to each value within the map.
+    :param CLType key_type: Type information pertaining to each key within the map.
+    :param CLType value_type: Type information pertaining to each value within the map.
 
     """
     return CLType_Map(
-        key_type_info=key_type_info,
-        value_type_info=value_type_info
+        key_type=key_type,
+        value_type=value_type
     )
 
 
-def create_option(inner_type_info: CLType):
+def create_option(inner_type: CLType):
     """Returns CL type information for a byte array.
     
-    :param CLType inner_type_info: Type information pertaining to the optional value.
+    :param CLType inner_type: Type information pertaining to the optional value.
 
     """
-    return CLType_Option(inner_type_info=inner_type_info)
+    return CLType_Option(inner_type=inner_type)
 
 
 def create_simple(typeof: CLTypeKey) -> CLType_Simple:
@@ -61,52 +61,53 @@ def create_simple(typeof: CLTypeKey) -> CLType_Simple:
     return CLType_Simple(typeof)
 
 
-def create_tuple_1(t0_type_info: CLType):
+def create_tuple_1(t0_type: CLType):
     """Returns CL type information for a byte array.
     
-    :param CLType t0_type_info: Type information pertaining to first tuple element.
+    :param CLType t0_type: Type information pertaining to first tuple element.
 
     """
     return CLType_Tuple1(
-        t0_type_info=t0_type_info
+        t0_type=t0_type
     )
 
 
-def create_tuple_2(t0_type_info: CLType, t1_type_info: CLType):
+def create_tuple_2(t0_type: CLType, t1_type: CLType):
     """Returns CL type information for a byte array.
     
-    :param CLType t0_type_info: Type information pertaining to first tuple element.
-    :param CLType t1_type_info: Type information pertaining to second tuple element.
+    :param CLType t0_type: Type information pertaining to first tuple element.
+    :param CLType t1_type: Type information pertaining to second tuple element.
 
     """
     return CLType_Tuple2(
-        t0_type_info=t0_type_info,
-        t1_type_info=t1_type_info
+        t0_type=t0_type,
+        t1_type=t1_type
     )
 
 
-def create_tuple_3(t0_type_info: CLType, t1_type_info: CLType, t2_type_info: CLType):
+def create_tuple_3(t0_type: CLType, t1_type: CLType, t2_type: CLType):
     """Returns CL type information for a byte array.
     
-    :param CLType t0_type_info: Type information pertaining to first tuple element.
-    :param CLType t1_type_info: Type information pertaining to second tuple element.
-    :param CLType t2_type_info: Type information pertaining to third tuple element.
+    :param CLType t0_type: Type information pertaining to first tuple element.
+    :param CLType t1_type: Type information pertaining to second tuple element.
+    :param CLType t2_type: Type information pertaining to third tuple element.
 
     """
     return CLType_Tuple3(
-        t0_type_info=t0_type_info,
-        t1_type_info=t1_type_info,
-        t2_type_info=t2_type_info
+        t0_type=t0_type,
+        t1_type=t1_type,
+        t2_type=t2_type
     )
 
 
-def create_value(cl_type: CLTypeKey, parsed: object) -> CLValue:
+def create_value(cl_type: CLType, parsed: object) -> CLValue:
     """Returns a value encoded for interpretation by a node.
 
     :param CLType cl_type: Type information for interpretation by a node.
     :param object parsed: Actual data to be processed by a node.
 
     """
+    print(cl_type)
     return CLValue(
         cl_type = cl_type,
         parsed = parsed

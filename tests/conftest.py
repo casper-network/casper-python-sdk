@@ -183,7 +183,7 @@ def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParamet
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=1,
-            timestamp=datetime.datetime.utcnow(),
+            timestamp=datetime.datetime.utcnow().timestamp(),
             ttl="1day"
         )
 

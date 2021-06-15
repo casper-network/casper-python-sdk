@@ -49,25 +49,6 @@ CL_TYPES_SIMPLE = {
     CLTypeKey.UNIT,
     CLTypeKey.UREF,
 }
-            
-# Set of types considered to be numeric signed.
-CL_TYPES_NUMERIC_SIGNED = {
-    CLTypeKey.I32,
-    CLTypeKey.I64,
-}
-
-# Set of types considered to be numeric unsigned.
-CL_TYPES_NUMERIC_UNSIGNED = {
-    CLTypeKey.U8,
-    CLTypeKey.U32,
-    CLTypeKey.U64,
-    CLTypeKey.U128,
-    CLTypeKey.U256,
-    CLTypeKey.U512,
-}
-
-# Set of types considered to be numeric.
-CL_TYPES_NUMERIC = CL_TYPES_NUMERIC_SIGNED.union(CL_TYPES_NUMERIC_UNSIGNED)
 
 
 @dataclasses.dataclass
@@ -76,13 +57,9 @@ class CLType():
     
     """
     @property
-    def type_tag(self) -> int:
+    def tag(self) -> int:
         """Returns a tag used when encoding/decoding."""
         return self.typeof.value
-
-    def is_a_numeric_type(self):
-        """Returns a flag indicating whether type is a member of the set of numeric types."""
-        return self.typeof in CL_TYPES_NUMERIC
 
 
 @dataclasses.dataclass
@@ -103,7 +80,7 @@ class CLType_List(CLType):
     
     """
     # Inner type within CSPR type system.
-    inner_type_info: CLType
+    inner_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.LIST
@@ -115,10 +92,10 @@ class CLType_Map(CLType):
     
     """
     # Type info of map's key.
-    key_type_info: CLType
+    key_type: CLType
 
     # Type info of map's value.
-    value_type_info: CLType
+    value_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.MAP
@@ -130,7 +107,7 @@ class CLType_Option(CLType):
     
     """
     # Inner type within CSPR type system.
-    inner_type_info: CLType
+    inner_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.OPTION
@@ -151,7 +128,7 @@ class CLType_Tuple1(CLType):
     
     """
     # Type of first value within 1-ary tuple value.
-    t0_type_info: CLType
+    t0_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.TUPLE_1
@@ -163,10 +140,10 @@ class CLType_Tuple2(CLType):
     
     """
     # Type of first value within 1-ary tuple value.
-    t0_type_info: CLType
+    t0_type: CLType
 
     # Type of first value within 2-ary tuple value.
-    t1_type_info: CLType
+    t1_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.TUPLE_2
@@ -178,13 +155,13 @@ class CLType_Tuple3(CLType):
     
     """
     # Type of first value within 1-ary tuple value.
-    t0_type_info: CLType
+    t0_type: CLType
 
     # Type of first value within 2-ary tuple value.
-    t1_type_info: CLType
+    t1_type: CLType
 
     # Type of first value within 3-ary tuple value.
-    t2_type_info: CLType
+    t2_type: CLType
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.TUPLE_3

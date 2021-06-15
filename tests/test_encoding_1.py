@@ -21,11 +21,11 @@ def test_encode_transfer(LIB, FACTORY, TYPES, deploy_params, cp1, cp2):
     raise NotImplementedError()
 
 
-def test_create_execution_arg_simple(LIB, FACTORY, TYPES, vectors_1):
-    for type_key in TYPES.CL_TYPES_SIMPLE:
-        vector = vectors_1.get_vector(type_key)
-        cl_type = FACTORY.cl_types.create_simple(type_key)
-        cl_value = FACTORY.cl_types.create_value(cl_type, vector["value"])
-        as_bytes = LIB.encode_1(cl_value, "byte-array")
-        print(f"{cl_value} :: {bytes(as_bytes).hex()}")
-    raise NotImplementedError()
+# def test_create_execution_arg_simple(LIB, FACTORY, TYPES, vectors_1):
+#     for type_key in TYPES.CL_TYPES_SIMPLE:
+#         vector = vectors_1.get_vector(type_key)
+#         cl_type = FACTORY.cl_types.create_simple(type_key)
+#         cl_value = FACTORY.cl_types.create_value(cl_type, vector["value"])
+#         as_bytes = LIB.encode_1(cl_value, "byte-array")
+#         print(f"{cl_value} :: {bytes(as_bytes).hex()}")
+#     raise NotImplementedError()

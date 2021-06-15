@@ -6,12 +6,11 @@ from pycspr.types.cl import CLValue
 
 
 # Length when encoded.
-_ENCODED_LENGTH: int = 8
+ENCODED_LENGTH: int = 8
 
 # Dimension constraints.
 MIN = 0
 MAX = (2 ** 64) - 1
-
 
 
 def encode(value: int) -> typing.List[int]:
@@ -21,4 +20,4 @@ def encode(value: int) -> typing.List[int]:
     :returns: CL byte array representation.
         
     """
-    return int_to_le_bytes(value, _ENCODED_LENGTH, False)
+    return int_to_le_bytes(value, ENCODED_LENGTH, False)

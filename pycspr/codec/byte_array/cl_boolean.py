@@ -1,8 +1,5 @@
 import typing
 
-from pycspr.types.cl import CLTypeKey
-from pycspr.types.cl import CLValue
-
 
 
 # Decodes input data.
