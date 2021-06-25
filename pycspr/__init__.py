@@ -28,7 +28,7 @@ from pycspr.api           import get_rpc_schema
 from pycspr.api           import get_state_item
 from pycspr.api           import get_state_root_hash
 from pycspr.api           import get_switch_block
-from pycspr.codec         import encode as encode_1
+from pycspr.codec         import encode
 from pycspr.crypto        import get_account_hash as get_account_address
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key

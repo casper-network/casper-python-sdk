@@ -21,7 +21,6 @@ def int_to_le_bytes_trimmed(x: int, length: int, signed: bool):
 
     """    
     value = int_to_le_bytes(x, length, signed)
-    print(value)
     while value[-1] == 0:
         value = value[0:-1]
     

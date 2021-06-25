@@ -87,10 +87,8 @@ def encode_cl_value(entity: CLValue):
     :param entity: Domain entity being mapped.
 
     """
-    print(entity.cl_type.typeof, byte_array_encoder.encode(entity))
-
     return {
-        "bytes": bytes(byte_array_encoder.encode(entity)).hex(),
+        "bytes": bytes(byte_array_encoder(entity)).hex(),
         "cl_type": encode_cl_type(entity.cl_type),
         "parsed": str(entity.parsed),
     }
@@ -123,6 +121,10 @@ def encode_deploy_header(entity: DeployHeader):
     }
 
 
+def encode_digest(entity: Digest) -> str:
+    return entity.hex()
+
+
 def encode_execution_argument(entity: ExecutionArgument):
     return [
         entity.name,
@@ -134,7 +136,7 @@ def encode_execution_info(entity: ExecutionInfo) -> str:
     def _encode_module_bytes() -> dict:
         return {
             "ModuleBytes": {
-                "args": [encode_execution_arg(i) for i in entity.args],
+                "args": [encode_execution_argument(i) for i in entity.args],
                 "module_bytes": entity.module_bytes.hex()
             }
         }
@@ -143,7 +145,7 @@ def encode_execution_info(entity: ExecutionInfo) -> str:
     def _encode_transfer() -> dict:
         return {
             "Transfer": {
-                "args": [encode_execution_arg(i) for i in entity.args]            
+                "args": [encode_execution_argument(i) for i in entity.args]            
             }
         }
 
@@ -169,3 +171,19 @@ def encode_timestamp(entity: Timestamp) -> str:
     timestamp_iso = datetime.datetime.fromtimestamp(timestamp_ms).isoformat()
 
     return f"{timestamp_iso[:-3]}Z"
+
+
+# Map: entity type <-> encoder.
+_ENCODERS = {
+    Deploy: encode_deploy,
+}
+
+
+def encode(entity: object) -> str:
+    """Maps domain entity to it's JSON representation.
+    
+    :param entity: A domain entity.
+    :returns: JSON encoded representation.
+
+    """
+    return _ENCODERS[type(entity)](entity)
