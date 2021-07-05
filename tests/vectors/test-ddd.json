@@ -1,18 +1,13 @@
 {
-    "approvals": [
-        {
-            "signature": "[130 hex chars]",
-            "signer": "0103fa1f67d685188c8e9ec9c5bc645bdcd0b2236f2553a9899a05623690db02c4"
-        }
-    ],
-    "hash": "35c841fef86222a9713799c38f56ec5f9094fb46c41c7fad7be732e2d641f3d9",
+    "approvals": [],
+    "hash": "e2f2e5dad2e8ba1ae09da5d8dfb29bf638d722d4e515f1995fc18ada3a1771d9",
     "header": {
         "account": "0103fa1f67d685188c8e9ec9c5bc645bdcd0b2236f2553a9899a05623690db02c4",
-        "body_hash": "5c786a108fe72a23bfa2c45fda19c17782f065608bdfc35e262ef4e9dcea23fc",
+        "body_hash": "bf0face02dece17fd951c888361a9d6ada1524d3453d714c100c4094488ca34c",
         "chain_name": "casper-net-1",
         "dependencies": [],
         "gas_price": 10,
-        "timestamp": "2021-06-28T15:55:25.335Z",
+        "timestamp": "2021-06-28T17:55:25.335Z",
         "ttl": "1day"
     },
     "payment": {
@@ -58,7 +53,7 @@
                         "cl_type": {
                             "Option": "U64"
                         },
-                        "parsed": 1
+                        "parsed": "1"
                     }
                 ]
             ]

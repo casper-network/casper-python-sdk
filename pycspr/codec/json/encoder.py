@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from pycspr.codec.byte_array import encode as byte_array_encoder
 from pycspr.types.cl import CLValue
@@ -122,7 +123,11 @@ def encode_deploy_header(entity: DeployHeader):
 
 
 def encode_digest(entity: Digest) -> str:
-    return entity.hex()
+    if isinstance(entity, bytes):
+        return entity.hex()
+    elif isinstance(entity, list):
+        return bytes(entity).hex()
+    return entity
 
 
 def encode_execution_argument(entity: ExecutionArgument):
@@ -186,4 +191,6 @@ def encode(entity: object) -> str:
     :returns: JSON encoded representation.
 
     """
-    return _ENCODERS[type(entity)](entity)
+    as_dict = _ENCODERS[type(entity)](entity)
+
+    return json.dumps(as_dict, indent=4)

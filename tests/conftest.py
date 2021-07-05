@@ -11,77 +11,83 @@ import pytest
 import pycspr
 
 
+
+# A known deploy timestamp for use in various scenarios.
+_A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
+
+# A known deploy time to live.
+_A_KNOWN_DEPLOY_TTL = "1day"
+
 # Path to test vectors.
 _VECTORS = pathlib.Path(os.path.dirname(__file__)) / "vectors"
 
 
-def _get_vector(fname: str, parser: typing.Callable = None):
+def _get_vector(fname: str, parser: typing.Callable = json.load):
     """Returns contents of a test vector.
     
     """
     with open(_VECTORS / fname) as fhandle:
         return fhandle.read() if parser is None else parser(fhandle)
-        
-
-class VectorSet1_Accessor():
-    """Vector 1 access simplifier.
-    
-    """
-    def __init__(self):
-        self.fixture = _get_vector("for_data_tests.json", json.load)
-    
-    def get_vectors(self, typeof: str) -> list:
-        typeof = typeof if isinstance(typeof, str) else typeof.name
-        return [i for i in self.fixture if i["typeof"] == typeof.upper()]
-
-    def get_vector(self, typeof: str) -> dict:
-        return self.get_vectors(typeof)[0]
-
-    def get_value(self, typeof: str) -> object:
-        return self.get_vector(typeof)["value"]
-
-    def get_value_as_bytes(self, typeof: str) -> bytes:
-        return bytes.fromhex(self.get_value(typeof))
 
 
 @pytest.fixture(scope="session")
-def vectors_1() -> list:
+def vector_cl_data_1() -> list:
     """Returns a set of fixtures for use as input to upstream data tests. 
     
     """
-    return VectorSet1_Accessor()
+    class _Accessor():
+        """Vector 1 access simplifier.
+        
+        """
+        def __init__(self):
+            self.fixture = _get_vector("for_cl_data.json")
+        
+        def get_vectors(self, typeof: str) -> list:
+            typeof = typeof if isinstance(typeof, str) else typeof.name
+            return [i for i in self.fixture if i["typeof"] == typeof.upper()]
+
+        def get_vector(self, typeof: str) -> dict:
+            return self.get_vectors(typeof)[0]
+
+        def get_value(self, typeof: str) -> object:
+            return self.get_vector(typeof)["value"]
+
+        def get_value_as_bytes(self, typeof: str) -> bytes:
+            return bytes.fromhex(self.get_value(typeof))
+    
+    return _Accessor()
 
 
 @pytest.fixture(scope="session")
-def vectors_2() -> list:
+def vector_crypto_1() -> list:
     """Returns a set of fixtures for use as input to upstream hashing tests. 
     
     """
-    return _get_vector("for_hash_tests.json", json.load)
+    return _get_vector("for_crypto_hash_tests.json")
 
 
 @pytest.fixture(scope="session")
-def vectors_3() -> list:
+def vector_crypto_2() -> list:
     """Returns a set of fixtures for use as input to upstream key-pair tests. 
     
     """
-    return _get_vector("for_key_pair_tests.json", json.load)
+    return _get_vector("for_crypto_key_pair_tests.json")
 
 
 @pytest.fixture(scope="session")
-def fixtures_for_public_key_tests() -> list:
-    """Returns a set of fixtures for use as input to upstream key tests. 
-    
-    """
-    return _get_vector("for_public_key_tests.json", json.load)
-
-
-@pytest.fixture(scope="session")
-def vectors_4() -> list:
+def vector_crypto_3() -> list:
     """Returns a set of fixtures for use as input to upstream signature tests. 
     
     """
-    return _get_vector("for_signature_tests.json", json.load)
+    return _get_vector("for_crypto_signature_tests.json")
+
+
+@pytest.fixture(scope="session")
+def vector_deploy_1() -> list:
+    """Returns a set of fixtures for use as input to upstream hashing tests. 
+    
+    """
+    return _get_vector("for_deploy_tests_1.json")
 
 
 @pytest.fixture(scope="session")
@@ -117,11 +123,11 @@ def TYPES(LIB):
 
 
 @pytest.fixture(scope="session")
-def a_test_account(FACTORY, vectors_3) -> pycspr.types.AccountInfo:
+def a_test_account(FACTORY, vector_crypto_2) -> pycspr.types.AccountInfo:
     """Returns a test account key. 
     
     """
-    algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vectors_3[0])
+    algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vector_crypto_2[0])
     
     return FACTORY.accounts.create_account_info(algo, pvk, pbk)
 
@@ -142,6 +148,21 @@ def a_test_timestamp() -> int:
     return datetime.datetime.utcnow()
 
 
+def _get_account_info_of_nctl_faucet(LIB) -> pycspr.types.AccountInfo:
+    """Returns account information related to NCTL faucet. 
+    
+    """
+    path = pathlib.Path(os.getenv("NCTL"))
+    path = path / "assets" / "net-1" / "faucet" / "secret_key.pem"
+    (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
+
+    return LIB.types.AccountInfo(
+        pbk=pbk,
+        pvk=pvk,
+        algo=LIB.crypto.KeyAlgorithm.ED25519
+    )
+
+
 def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInfo:
     """Returns account information related to NCTL user 1. 
     
@@ -159,23 +180,23 @@ def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInf
 
 @pytest.fixture(scope="session")
 def cp1(LIB) -> pycspr.types.AccountInfo:
-    """Returns a test account key. 
+    """Returns counter-party 1 test account key. 
+    
+    """
+    return _get_account_info_of_nctl_faucet(LIB)
+
+
+@pytest.fixture(scope="session")
+def cp2(LIB) -> pycspr.types.AccountInfo:
+    """Returns counter-party 2 test account key. 
     
     """
     return _get_account_info_of_nctl_user(LIB, 1)
 
 
-@pytest.fixture(scope="session")
-def cp2(LIB) -> pycspr.types.AccountInfo:
-    """Returns a test account key. 
-    
-    """
-    return _get_account_info_of_nctl_user(LIB, 2)
-
-
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParameters:
-    """Returns a test account key. 
+    """Returns standard deploy parameters with current timestamp. 
     
     """
     return FACTORY.deploys.create_standard_parameters(
@@ -185,6 +206,21 @@ def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParamet
             gas_price=10,
             timestamp=datetime.datetime.utcnow().timestamp(),
             ttl="1day"
+        )
+
+
+@pytest.fixture(scope="function")
+def deploy_params_static(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParameters:
+    """Returns standard deploy parameters with known timestamp. 
+    
+    """
+    return FACTORY.deploys.create_standard_parameters(
+            account=cp1,
+            chain_name=a_test_chain_id,
+            dependencies=[],
+            gas_price=10,
+            timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
+            ttl=_A_KNOWN_DEPLOY_TTL
         )
 
 

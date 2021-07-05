@@ -2,7 +2,7 @@ import datetime
 import typing
 
 from pycspr import crypto
-from pycspr.factory import cl_types
+from pycspr import factory
 from pycspr.types.account import AccountInfo
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import CLType
@@ -35,17 +35,19 @@ def create_approval(account: AccountInfo, data: bytes) -> Approval:
         )
 
 
-def create_body(session: ExecutionInfo, payment: ExecutionInfo) -> DeployBody:
+def create_body(payment: ExecutionInfo, session: ExecutionInfo) -> DeployBody:
     """Returns hash of a deploy's so-called body.
     
-    :param session: Session execution information.
     :param payment: Payment execution information.
+    :param session: Session execution information.
 
     """
-    return DeployBody(session, payment)
+    body_hash = factory.digests.get_digest_of_deploy_body(payment, session)
+
+    return DeployBody(session, payment, body_hash)
 
 
-def create_deploy(params: StandardParameters, session: ExecutionInfo, payment: ExecutionInfo):
+def create_deploy(params: StandardParameters, payment: ExecutionInfo, session: ExecutionInfo):
     """Returns a deploy for subsequent dispatch to a node.
     
     :param params: Standard parameters used when creating a deploy.
@@ -53,12 +55,13 @@ def create_deploy(params: StandardParameters, session: ExecutionInfo, payment: E
     :param payment: Payment execution information.
 
     """
-    body = create_body(session, payment)
+    body = create_body(payment, session)
     header = create_header(body, params)
+    deploy_hash = factory.digests.get_digest_of_deploy(header)  
 
     return Deploy(
         approvals=[],
-        hash=header.hash,
+        hash=deploy_hash,
         header=header,
         payment=payment,
         session=session
@@ -79,7 +82,7 @@ def create_execution_arg(
     """
     return ExecutionArgument(
         name = name,
-        value = cl_types.create_value(cl_type, parsed)
+        value = factory.cl.create_value(cl_type, parsed)
     )
 
 
@@ -117,7 +120,7 @@ def create_payment_for_transfer(amount: int = 10000) -> ExecutionInfo_ModuleByte
             create_execution_arg(
                 "amount",
                 amount,
-                cl_types.create_simple(CLTypeKey.U512)
+                factory.cl.create_simple(CLTypeKey.U512)
                 ),
         ],
         module_bytes=bytes([])
@@ -141,17 +144,17 @@ def create_session_for_transfer(
             create_execution_arg(
                 "amount",
                 amount,
-                cl_types.create_simple(CLTypeKey.U512)
+                factory.cl.create_simple(CLTypeKey.U512)
                 ),
             create_execution_arg(
                 "target",
                 target,
-                cl_types.create_byte_array(32)
+                factory.cl.create_byte_array(32)
                 ),
             create_execution_arg(
                 "id",
                 correlation_id,
-                cl_types.create_option(cl_types.create_simple(CLTypeKey.U64))
+                factory.cl.create_option(factory.cl.create_simple(CLTypeKey.U64))
                 ),
         ]
     )

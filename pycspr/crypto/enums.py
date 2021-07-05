@@ -39,4 +39,5 @@ class HashEncoding(enum.Enum):
     
     """
     BYTES = enum.auto()
+    BYTE_ARRAY = enum.auto()
     HEX = enum.auto()

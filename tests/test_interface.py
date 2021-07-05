@@ -101,7 +101,7 @@ _INTERFACE_OF_LIBRARY = {
 _INTERFACE_OF_FACTORY = {
     _has_member: {
         "accounts",
-        "cl_types",
+        "cl",
         "deploys",
     },
 }

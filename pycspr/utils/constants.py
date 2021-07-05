@@ -3,6 +3,7 @@ import collections
 from pycspr.types.cl import CLTypeKey
 
 
+
 # Data structure representing numerical constraints.
 NumericConstraints = collections.namedtuple("NumericConstraints", ["LENGTH", "MIN", "MAX"])
 

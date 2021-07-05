@@ -2,8 +2,8 @@ import dataclasses
 import datetime
 import typing
 
-from pycspr.types.cl import CLType
 from pycspr.types.cl import CLValue
+
 
 
 # Name of target chain to which deploys may be dispatched.
@@ -137,13 +137,8 @@ class DeployBody():
     # Executable information passed to chain's VM.
     session: ExecutionInfo
 
-    @property
-    def hash(self) -> bytes:
-        """Derives deploy hash based upon header attributes + body hash.
-        
-        """
-        # TODO: calculate hash base upon session.to_bytes + payment.to_bytes
-        return bytes.fromhex("44682ea86b704fb3c65cd16f84a76b621e04bbdb3746280f25cf062220e471b4")
+    # Hash of payload.
+    hash: Digest
 
 
 @dataclasses.dataclass
@@ -171,14 +166,6 @@ class DeployHeader():
 
     # Time interval after which the deploy will no longer be considered for processing by a node.
     ttl: HumamizedTimeDelta
-
-    @property
-    def hash(self) -> bytes:
-        """Derives deploy hash based upon header attributes + body hash.
-        
-        """
-        # TODO: calculate hash based upon attributes + body-hash.
-        return bytes.fromhex("44682ea86b704fb3c65cd16f84a76b621e04bbdb3746280f25cf062220e471b4")
 
 
 @dataclasses.dataclass

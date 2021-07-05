@@ -107,8 +107,4 @@ def create_value(cl_type: CLType, parsed: object) -> CLValue:
     :param object parsed: Actual data to be processed by a node.
 
     """
-    print(cl_type)
-    return CLValue(
-        cl_type = cl_type,
-        parsed = parsed
-    )
+    return CLValue(cl_type, parsed)

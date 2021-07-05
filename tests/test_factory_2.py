@@ -4,9 +4,9 @@ import random
 
 
 
-def test_create_approval(FACTORY, TYPES, vectors_1, vectors_3):
-    _bytes = vectors_1.get_value_as_bytes(TYPES.CLTypeKey.BYTE_ARRAY)
-    for algo, pbk, pvk in [operator.itemgetter("algo", "pbk", "pvk")(i) for i in vectors_3]:
+def test_create_approval(FACTORY, TYPES, vector_cl_data_1, vector_crypto_2):
+    _bytes = vector_cl_data_1.get_value_as_bytes(TYPES.CLTypeKey.BYTE_ARRAY)
+    for algo, pbk, pvk in [operator.itemgetter("algo", "pbk", "pvk")(i) for i in vector_crypto_2]:
         account_info = FACTORY.accounts.create_account_info(algo, pvk, pbk)
         approval = FACTORY.deploys.create_approval(account_info, _bytes)
         assert isinstance(approval, TYPES.Approval)
@@ -47,29 +47,29 @@ def test_create_transfer_payment(FACTORY, TYPES):
 
 
 def test_create_transfer_body(FACTORY, TYPES, deploy_params):
+    payment = FACTORY.deploys.create_payment_for_transfer(
+        amount = random.randint(0, 1e5),
+        )
     session = FACTORY.deploys.create_session_for_transfer(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
         target = bytes([]),
         )
-    payment = FACTORY.deploys.create_payment_for_transfer(
-        amount = random.randint(0, 1e5),
-        )
-    body = FACTORY.deploys.create_body(session, payment)
+    body = FACTORY.deploys.create_body(payment, session)
     assert isinstance(body, TYPES.DeployBody)
     assert len(body.hash) == 32
 
 
 def test_create_transfer_header(FACTORY, TYPES, deploy_params):
+    payment = FACTORY.deploys.create_payment_for_transfer(
+        amount = random.randint(0, 1e5),
+        )
     session = FACTORY.deploys.create_session_for_transfer(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
         target = bytes([]),
         )
-    payment = FACTORY.deploys.create_payment_for_transfer(
-        amount = random.randint(0, 1e5),
-        )
-    body = FACTORY.deploys.create_body(session, payment)
+    body = FACTORY.deploys.create_body(payment, session)
     header = FACTORY.deploys.create_header(body, deploy_params)
     assert isinstance(header, TYPES.DeployHeader)
     assert len(header.hash) == 32
@@ -84,6 +84,6 @@ def test_create_transfer_deploy(FACTORY, TYPES, deploy_params):
     payment = FACTORY.deploys.create_payment_for_transfer(
         amount = random.randint(0, 1e5),
         )
-    deploy = FACTORY.deploys.create_deploy(deploy_params, session, payment)
+    deploy = FACTORY.deploys.create_deploy(deploy_params, payment, session)
     assert isinstance(deploy, TYPES.Deploy)
     assert len(deploy.hash) == 32

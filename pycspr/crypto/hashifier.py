@@ -14,19 +14,20 @@ ALGOS = {
 # Map: Hash encoding <-> encoder.
 ENCODERS = {
     HashEncoding.BYTES: lambda x: x,
+    HashEncoding.BYTE_ARRAY: lambda x: [int(i) for i in x],
     HashEncoding.HEX: lambda x: x.hex(),
 }
 
 # Default length of a hash digest.
-_DIGEST_LENGTH = 32
+DIGEST_LENGTH = 32
 
 
 def get_hash(
-    data: bytes,
-    size: int = _DIGEST_LENGTH,
+    data: typing.Union[bytes, typing.List[int], str],
+    size: int = DIGEST_LENGTH,
     algo: HashAlgorithm = HashAlgorithm.BLAKE2B,
     encoding: HashEncoding = HashEncoding.BYTES,
-    ) -> typing.Union[bytes, str]:
+    ) -> typing.Union[bytes, typing.List[int], str]:
     """Maps input to a blake2b hash.
     
     :param data: Data to be hashed.
@@ -40,4 +41,16 @@ def get_hash(
     encoder = ENCODERS[encoding]
     algo = ALGOS[algo]
 
-    return encoder(algo.get_hash(data, size))
+    return encoder(algo.get_hash(_get_data(data), size))
+
+
+def _get_data(data: typing.Union[bytes, typing.List[int], str]) -> bytes:
+    """Maps input data to bytes in readiness for hashing.
+    
+    """
+    if isinstance(data, str):
+        return bytes.fromhex(data)
+    elif isinstance(data, list):
+        return bytes(data)
+    else:
+        return data

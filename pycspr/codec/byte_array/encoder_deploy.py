@@ -358,35 +358,8 @@ def encode_vector_of_t(value: list):
     return encode_u32(len(value)) + [i for j in value for i in j]
 
 
-# Map: CL type <-> encoder.
-_ENCODERS_CL = {
-    CLTypeKey.ANY: encode_any,
-    CLTypeKey.BOOL: encode_bool,
-    CLTypeKey.BYTE_ARRAY: encode_byte_array,
-    CLTypeKey.I32: encode_i32,
-    CLTypeKey.I64: encode_i64,
-    CLTypeKey.KEY: encode_key,
-    CLTypeKey.LIST: encode_list,    
-    CLTypeKey.MAP: encode_map,    
-    CLTypeKey.OPTION: encode_option,    
-    CLTypeKey.PUBLIC_KEY: encode_public_key,
-    CLTypeKey.STRING: encode_string,
-    CLTypeKey.TUPLE_1: encode_tuple1,
-    CLTypeKey.TUPLE_2: encode_tuple2,
-    CLTypeKey.TUPLE_3: encode_tuple3,
-    CLTypeKey.U8: encode_u8,
-    CLTypeKey.U32: encode_u32,
-    CLTypeKey.U64: encode_u64,
-    CLTypeKey.U128: encode_u128,    
-    CLTypeKey.U256: encode_u256,
-    CLTypeKey.U512: encode_u512,
-    CLTypeKey.UNIT: encode_unit,
-    CLTypeKey.RESULT: encode_result,
-    CLTypeKey.UREF: encode_uref,
-}
-
 # Map: Deploy type <-> encoder.
-_ENCODERS_DEPLOY = {
+_ENCODERS = {
     Deploy: None,
     DeployHeader: None,
     ExecutionArgument: encode_execution_argument,
@@ -398,21 +371,14 @@ _ENCODERS_DEPLOY = {
     ExecutionInfo_Transfer: encode_execution_info,
 }
 
-# Map: entity type <-> encoder.
-_ENCODERS = _ENCODERS_CL | _ENCODERS_DEPLOY
-
 
 def encode(value) -> typing.List[int]:
     """Encodes a domain value as an array of bytes.
     
     """
-    if type(value) == CLValue:        
-        encoder = _ENCODERS[value.cl_type.typeof]
-        if value.cl_type.typeof == CLTypeKey.OPTION:
-            return encoder(value.parsed, _ENCODERS[value.cl_type.inner_type.typeof])
-        else:
-            return encoder(value.parsed)
+    try:
+        encoder = _ENCODERS[type(value)]
+    except KeyError:
+        raise ValueError("Unencodeable type: {type(value)}")
     else:
-        if type(value) not in _ENCODERS:
-            raise ValueError("Unencodeable type: {type(value)}")
-        return _ENCODERS[type(value)](value)
+        return encoder(value)
