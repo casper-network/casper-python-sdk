@@ -47,8 +47,8 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
 
     # Element 6: dependencies. 
     cl_dependencies = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.STRING),
-        header.chain_name
+        factory.cl.create_list(factory.cl.create_simple(CLTypeKey.STRING)),
+        header.dependencies
     )
 
     # Element 7: chain-name. 
@@ -57,17 +57,23 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
         header.chain_name
     )
 
-    print(cl_timestamp)
+    print(1, codec.to_bytes(cl_account))
+    print(2, codec.to_bytes(cl_timestamp))
+    print(3, codec.to_bytes(cl_ttl))
+    print(4, codec.to_bytes(cl_gas_price))
+    print(5, codec.to_bytes(cl_body_hash))
+    print(6, codec.to_bytes(cl_dependencies))
+    print(7, codec.to_bytes(cl_chain_name))
 
     # Set data to be hashed.
     data = \
-        codec.encode(cl_account, 'byte-array') + \
-        codec.encode(cl_timestamp, 'byte-array') + \
-        codec.encode(cl_ttl, 'byte-array') + \
-        codec.encode(cl_gas_price, 'byte-array') + \
-        codec.encode(cl_body_hash, 'byte-array') + \
-        codec.encode(cl_dependencies, 'byte-array') + \
-        codec.encode(cl_chain_name, 'byte-array')
+        codec.to_bytes(cl_account) + \
+        codec.to_bytes(cl_timestamp) + \
+        codec.to_bytes(cl_ttl) + \
+        codec.to_bytes(cl_gas_price) + \
+        codec.to_bytes(cl_body_hash) + \
+        codec.to_bytes(cl_dependencies) + \
+        codec.to_bytes(cl_chain_name)
     
     return crypto.get_hash(data, encoding=crypto.HashEncoding.HEX)
 
@@ -82,7 +88,7 @@ def get_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) ->
     """
     # Set data to be hashed.
     data = \
-        codec.encode(payment, 'byte-array') + \
-        codec.encode(session, 'byte-array')
+        codec.to_bytes(payment) + \
+        codec.to_bytes(session)
 
     return crypto.get_hash(data, encoding=crypto.HashEncoding.HEX)

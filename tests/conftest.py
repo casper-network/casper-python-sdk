@@ -18,15 +18,18 @@ _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25
 # A known deploy time to live.
 _A_KNOWN_DEPLOY_TTL = "1day"
 
+# Path to test accounts.
+_PATH_TO_ACCOUNTS = pathlib.Path(os.path.dirname(__file__)) / "accounts"
+
 # Path to test vectors.
-_VECTORS = pathlib.Path(os.path.dirname(__file__)) / "vectors"
+_PATH_TO_VECTORS = pathlib.Path(os.path.dirname(__file__)) / "vectors"
 
 
 def _get_vector(fname: str, parser: typing.Callable = json.load):
     """Returns contents of a test vector.
     
     """
-    with open(_VECTORS / fname) as fhandle:
+    with open(_PATH_TO_VECTORS / fname) as fhandle:
         return fhandle.read() if parser is None else parser(fhandle)
 
 
@@ -148,6 +151,21 @@ def a_test_timestamp() -> int:
     return datetime.datetime.utcnow()
 
 
+@pytest.fixture(scope="session")
+def test_account_1(LIB) -> pycspr.types.AccountInfo:
+    """Returns test user account information. 
+    
+    """
+    path = pathlib.Path(_PATH_TO_ACCOUNTS) / "account-1"  / "secret_key.pem"
+    (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
+
+    return LIB.types.AccountInfo(
+        pbk=pbk,
+        pvk=pvk,
+        algo=LIB.crypto.KeyAlgorithm.ED25519
+    )
+
+
 def _get_account_info_of_nctl_faucet(LIB) -> pycspr.types.AccountInfo:
     """Returns account information related to NCTL faucet. 
     
@@ -210,12 +228,12 @@ def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParamet
 
 
 @pytest.fixture(scope="function")
-def deploy_params_static(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParameters:
+def deploy_params_static(FACTORY, a_test_chain_id, test_account_1) -> pycspr.types.StandardParameters:
     """Returns standard deploy parameters with known timestamp. 
     
     """
     return FACTORY.deploys.create_standard_parameters(
-            account=cp1,
+            account=test_account_1,
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,

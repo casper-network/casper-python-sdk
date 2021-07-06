@@ -26,3 +26,13 @@ def encode(entity: object, encoding: str = "json") -> typing.Union[typing.List[i
         raise ValueError(f"Invalid encoding: {encoding}")
 
     return _ENCODERS[encoding].encode(entity)
+
+
+# Entity to byte array mapper.
+to_bytes = lambda e: encode(e, "byte-array")
+
+# Entity to hex string mapper.
+to_hex = lambda e: encode(e, "hex-string")
+
+# Entity to JSON mapper.
+to_json = lambda e: encode(e, "json")

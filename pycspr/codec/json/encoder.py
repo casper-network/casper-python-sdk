@@ -28,8 +28,8 @@ from pycspr.types.deploy import Timestamp
 
 def encode_approval(entity: Approval):
     return {
-        "signer": encode_public_key(entity.signer),
-        "signature": encode_signature(entity.signature),
+        "signer": entity.signer.hex(),
+        "signature": entity.signature.hex(),
     }
 
 
@@ -162,18 +162,10 @@ def encode_execution_info(entity: ExecutionInfo) -> str:
     return _ENCODERS[type(entity)]()
 
 
-def encode_public_key(entity: PublicKey) -> str:
-    return entity.hex()
-
-
-def encode_signature(entity: Signature) -> str:
-    return entity.hex()
-
-
 def encode_timestamp(entity: Timestamp) -> str:
     # NOTE: assume timestamp is UTC millisecond precise.
     timestamp_ms = round(entity, 3)
-    timestamp_iso = datetime.datetime.fromtimestamp(timestamp_ms).isoformat()
+    timestamp_iso = datetime.datetime.utcfromtimestamp(timestamp_ms).isoformat()
 
     return f"{timestamp_iso[:-3]}Z"
 

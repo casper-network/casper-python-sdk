@@ -115,11 +115,11 @@ def encode_key(value: str):
     return encode_string(value)
 
 
-def encode_list(value: list):
+def encode_list(value: list, inner_encoder: typing.Callable):
     """Encodes a domain value: A list of values.
     
     """
-    raise NotImplementedError()
+    return encode_vector_of_t(list(map(inner_encoder, value)))
 
 
 def encode_map(value: list):
@@ -290,7 +290,7 @@ def encode_vector_of_t(value: list):
 
 
 # Map: CL type <-> encoder.
-_ENCODERS_CL = {
+ENCODERS = {
     CLTypeKey.ANY: encode_any,
     CLTypeKey.BOOL: encode_bool,
     CLTypeKey.BYTE_ARRAY: encode_byte_array,
@@ -321,9 +321,17 @@ def encode(value: CLValue) -> typing.List[int]:
     """Encodes a domain value as an array of bytes.
     
     """
-    encoder = _ENCODERS[value.cl_type.typeof]
-    if value.cl_type.typeof == CLTypeKey.OPTION:
-        inner_encoder = _ENCODERS[value.cl_type.inner_type.typeof]
-        return encoder(value.parsed, inner_encoder)
+    try:
+        assert isinstance(value, CLValue)
+    except AssertionError:
+        raise ValueError(f"Unencodeable type: {type(value)}")
+
+    try:
+        encoder = ENCODERS[value.cl_type.typeof]
+    except KeyError:
+        raise ValueError(f"Unencodeable type: {type(value)}")
+
+    if encoder in (encode_list, encode_option):
+        return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.typeof])
     else:
         return encoder(value.parsed)
