@@ -111,13 +111,13 @@ def encode_deploy(entity: Deploy):
 
 def encode_deploy_header(entity: DeployHeader):
     return {
-        "account": entity.account.account_key,
+        "account": entity.accountPublicKey.account_key,
         "body_hash": encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
         "timestamp": encode_timestamp(entity.timestamp),
-        "ttl": entity.ttl
+        "ttl": entity.ttl.humanized
     }
 
 

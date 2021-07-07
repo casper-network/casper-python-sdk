@@ -30,7 +30,7 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
     # Element 3: ttl. 
     cl_ttl = factory.cl.create_value(
         factory.cl.create_simple(CLTypeKey.U64),
-        header.ttl
+        header.ttl.as_milliseconds
     )
 
     # Element 4: gas-price. 
