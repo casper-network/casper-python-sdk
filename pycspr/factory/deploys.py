@@ -4,10 +4,12 @@ import typing
 from pycspr import crypto
 from pycspr import factory
 from pycspr.types.account import AccountInfo
+from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import CLType
 from pycspr.types.deploy import Approval
 from pycspr.types.deploy import Deploy
+from pycspr.types.deploy import DeployTimeToLive
 from pycspr.types.deploy import DeployBody
 from pycspr.types.deploy import DeployHeader
 from pycspr.types.deploy import Digest
@@ -15,7 +17,7 @@ from pycspr.types.deploy import ExecutionArgument
 from pycspr.types.deploy import ExecutionInfo
 from pycspr.types.deploy import ExecutionInfo_ModuleBytes
 from pycspr.types.deploy import ExecutionInfo_Transfer
-from pycspr.types.deploy import StandardParameters
+from pycspr.types.deploy import DeployStandardParameters
 
 
 def create_approval(account: AccountInfo, data: bytes) -> Approval:
@@ -47,7 +49,7 @@ def create_body(payment: ExecutionInfo, session: ExecutionInfo) -> DeployBody:
     return DeployBody(session, payment, body_hash)
 
 
-def create_deploy(params: StandardParameters, payment: ExecutionInfo, session: ExecutionInfo):
+def create_deploy(params: DeployStandardParameters, payment: ExecutionInfo, session: ExecutionInfo):
     """Returns a deploy for subsequent dispatch to a node.
     
     :param params: Standard parameters used when creating a deploy.
@@ -55,6 +57,8 @@ def create_deploy(params: StandardParameters, payment: ExecutionInfo, session: E
     :param payment: Payment execution information.
 
     """
+    print(params)
+
     body = create_body(payment, session)
     header = create_header(body, params)
     deploy_hash = factory.digests.get_digest_of_deploy(header)  
@@ -66,6 +70,17 @@ def create_deploy(params: StandardParameters, payment: ExecutionInfo, session: E
         payment=payment,
         session=session
     )
+
+
+def create_deploy_ttl(humanized_ttl: str = "1day") -> DeployTimeToLive:
+    """Returns a deploy's time to live after which it will not longer be accepted by a node.
+    
+    :param humanized_ttl: A humanized ttl, e.g. 1 day.
+
+    """
+    # TODO convert humanized to milliseconds.
+
+    return DeployTimeToLive(humanized=humanized_ttl, as_milliseconds=1 * 24 * 60 * 60 * 1000)
 
 
 def create_execution_arg(
@@ -86,10 +101,7 @@ def create_execution_arg(
     )
 
 
-def create_header(
-    body: DeployBody,
-    params: StandardParameters,
-    ) -> DeployHeader:
+def create_header(body: DeployBody, params: DeployStandardParameters) -> DeployHeader:
     """Returns header information associated with a deploy.
     
     :param body: Deploy body, i.e. it's session/payment execution information.
@@ -99,7 +111,7 @@ def create_header(
     timestamp = params.timestamp or datetime.datetime.utcnow().timestamp()
 
     return DeployHeader(
-        account=params.account,
+        accountPublicKey=params.accountPublicKey,
         body_hash=body.hash,
         chain_name=params.chain_name,
         dependencies=params.dependencies,
@@ -161,13 +173,13 @@ def create_session_for_transfer(
 
 
 def create_standard_parameters(
-    account: AccountInfo,
+    account: typing.Union[AccountInfo, PublicKey],
     chain_name: str,
     dependencies: typing.List[Digest] = [],
     gas_price: int = 1,
     timestamp: datetime.datetime = None,
     ttl: str = "1day"
-    ) -> StandardParameters:
+    ) -> DeployStandardParameters:
     """Returns header information associated with a deploy.
     
     :param account: Account dispatching deploy.
@@ -178,10 +190,12 @@ def create_standard_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
+    public_key = account if isinstance(account, PublicKey) else \
+                 factory.accounts.create_public_key(account.algo, account.pbk)
     timestamp = timestamp or datetime.datetime.utcnow().timestamp()
 
-    return StandardParameters(
-        account=account.account_key,
+    return DeployStandardParameters(
+        accountPublicKey=public_key,
         chain_name=chain_name,
         dependencies=dependencies,
         gas_price=gas_price,

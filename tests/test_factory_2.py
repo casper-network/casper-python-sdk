@@ -15,6 +15,10 @@ def test_create_approval(FACTORY, TYPES, vector_cl_data_1, vector_crypto_2):
 def test_create_standard_parameters(FACTORY, TYPES, a_test_account, a_test_chain_id):
     assert isinstance(
         FACTORY.deploys.create_standard_parameters(
+            account=FACTORY.accounts.create_public_key(
+                a_test_account.algo,
+                a_test_account.pbk
+            ),
             account=a_test_account,
             chain_name=a_test_chain_id,
             dependencies=[],
@@ -22,7 +26,7 @@ def test_create_standard_parameters(FACTORY, TYPES, a_test_account, a_test_chain
             timestamp=datetime.datetime.utcnow(),
             ttl="1day",
         ),
-        TYPES.StandardParameters
+        TYPES.DeployStandardParameters
         )
 
 

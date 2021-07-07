@@ -47,16 +47,36 @@ class AccountInfo:
         return crypto.get_account_key(self.algo, self.pbk.hex())
 
 
-    @property
-    def address(self):
-        """Returns on-chain account address.
-
-        """ 
-        return crypto.get_account_hash(self.account_key)
-
-
     def get_signature(self, data: bytes) -> bytes:
         """Get signature over payload.
         
         """
         return crypto.get_signature(data, self.pvk, self.algo)
+
+
+@dataclasses.dataclass
+class PublicKey:
+    """Encapsulates information associated with an account's public key.
+    
+    """
+    # Algorithm used to generate ECC key pair.
+    algo: crypto.KeyAlgorithm
+
+    # Public key as raw bytes.
+    bytes_raw: bytes
+
+
+    @property
+    def account_hash(self):
+        """Returns on-chain account hash.
+
+        """ 
+        return crypto.get_account_hash(self.account_key)
+
+
+    @property
+    def account_key(self):
+        """Returns on-chain account key.
+
+        """ 
+        return crypto.get_account_key(self.algo, self.bytes_raw.hex())

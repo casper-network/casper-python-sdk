@@ -18,20 +18,20 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
     # Element 1: account. 
     cl_account = factory.cl.create_value(
         factory.cl.create_simple(CLTypeKey.PUBLIC_KEY),
-        header.account
+        header.accountPublicKey
     )
 
     # Element 2: timestamp. 
     cl_timestamp = factory.cl.create_value(
         factory.cl.create_simple(CLTypeKey.U64),
-        header.timestamp
+        int(header.timestamp * 1000)
     )
 
     # Element 3: ttl. 
     cl_ttl = factory.cl.create_value(
         factory.cl.create_simple(CLTypeKey.U64),
-        header.timestamp
-    )    
+        header.ttl
+    )
 
     # Element 4: gas-price. 
     cl_gas_price = factory.cl.create_value(
@@ -57,14 +57,6 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
         header.chain_name
     )
 
-    print(1, codec.to_bytes(cl_account))
-    print(2, codec.to_bytes(cl_timestamp))
-    print(3, codec.to_bytes(cl_ttl))
-    print(4, codec.to_bytes(cl_gas_price))
-    print(5, codec.to_bytes(cl_body_hash))
-    print(6, codec.to_bytes(cl_dependencies))
-    print(7, codec.to_bytes(cl_chain_name))
-
     # Set data to be hashed.
     data = \
         codec.to_bytes(cl_account) + \
@@ -74,7 +66,7 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
         codec.to_bytes(cl_body_hash) + \
         codec.to_bytes(cl_dependencies) + \
         codec.to_bytes(cl_chain_name)
-    
+
     return crypto.get_hash(data, encoding=crypto.HashEncoding.HEX)
 
 

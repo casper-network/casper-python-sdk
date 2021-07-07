@@ -3,20 +3,15 @@ import datetime
 import typing
 
 from pycspr.types.cl import CLValue
+from pycspr.types.account import PublicKey
 
 
-
-# Name of target chain to which deploys may be dispatched.
-ChainName = typing.NewType("Simple chain identifer", str)
 
 # On chain contract identifer.
 ContractHash = typing.NewType("32 byte array emitted by a hashing algorithm representing a static contract pointer", bytes)
 
 # On chain contract version.
 ContractVersion = typing.NewType("U32 integer representing", int)
-
-# A public key derived from an ECC key pair.
-PublicKey = typing.NewType("Either 32 or 33 bytes (compressed) depending upon ECC type", bytes)
 
 # Output of a hashing function.
 Digest = typing.NewType("32 byte array emitted by a hashing algorithm", bytes)
@@ -142,18 +137,55 @@ class DeployBody():
 
 
 @dataclasses.dataclass
+class DeployTimeToLive():
+    """Encapsulates a timeframe within which a deploy must be processed.
+    
+    """
+    # TTL in milliseconds.
+    as_milliseconds: int
+
+    # Humanized representation of the ttl.
+    humanized: str
+
+
+#   const dehumanizeUnit = (s: string): number => {
+#     if (s.includes('ms')) {
+#       return Number(s.replace('ms', ''));
+#     }
+#     if (s.includes('s') && !s.includes('m')) {
+#       return Number(s.replace('s', '')) * 1000;
+#     }
+#     if (s.includes('m') && !s.includes('s')) {
+#       return Number(s.replace('m', '')) * 60 * 1000;
+#     }
+#     if (s.includes('h')) {
+#       return Number(s.replace('h', '')) * 60 * 60 * 1000;
+#     }
+#     if (s.includes('day')) {
+#       return Number(s.replace('day', '')) * 24 * 60 * 60 * 1000;
+#     }
+#     throw Error('Unsuported TTL unit');
+#   };
+
+#   return ttl
+#     .split(' ')
+#     .map(dehumanizeUnit)
+#     .reduce((acc, val) => (acc += val));
+
+
+@dataclasses.dataclass
 class DeployHeader():
     """Encapsulates header information associated with a deploy.
     
     """
     # Public key of account dispatching deploy to a node.
-    account: PublicKey
+    accountPublicKey: PublicKey
 
     # Hash of deploy payload.
     body_hash: Digest
 
     # Name of target chain to which deploy will be dispatched.
-    chain_name: ChainName
+    chain_name: str
 
     # Set of deploys that must be executed prior to this one.
     dependencies: typing.List[Digest]
@@ -165,7 +197,7 @@ class DeployHeader():
     timestamp: Timestamp
 
     # Time interval after which the deploy will no longer be considered for processing by a node.
-    ttl: HumamizedTimeDelta
+    ttl: DeployTimeToLive
 
 
 @dataclasses.dataclass
@@ -190,15 +222,15 @@ class Deploy():
 
 
 @dataclasses.dataclass
-class StandardParameters():
+class DeployStandardParameters():
     """Encapsulates standard information associated with a deploy.
     
     """
     # Public key of account dispatching deploy to a node.
-    account: PublicKey
+    accountPublicKey: PublicKey
 
     # Name of target chain to which deploy will be dispatched.
-    chain_name: ChainName
+    chain_name: str
 
     # Set of deploys that must be executed prior to this one.
     dependencies: typing.List[Digest]
@@ -209,5 +241,5 @@ class StandardParameters():
     # Timestamp at point of deploy creation.
     timestamp: Timestamp
 
-    # Time interval after which the deploy will no longer be considered for processing by a node.
+    # Time interval in milliseconds after which the deploy will no longer be considered for processing by a node.
     ttl: HumamizedTimeDelta

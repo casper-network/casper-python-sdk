@@ -1,7 +1,6 @@
 import typing
 
-from pycspr.utils.conversion import int_to_le_bytes
-from pycspr.utils.conversion import int_to_le_bytes_trimmed
+from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLType
 from pycspr.types.cl import CLType_ByteArray
 from pycspr.types.cl import CLType_List
@@ -14,8 +13,9 @@ from pycspr.types.cl import CLType_Tuple3
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import CLType_Option
 from pycspr.types.cl import CLValue
-from pycspr.types.deploy import PublicKey
 from pycspr.utils.constants import NUMERIC_CONSTRAINTS
+from pycspr.utils.conversion import int_to_le_bytes
+from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
 
 
@@ -140,7 +140,7 @@ def encode_public_key(value: PublicKey):
     """Encodes a domain value: A public key.
     
     """
-    return encode_string(value)
+    return [value.algo.value] + [int(i) for i in value.bytes_raw]
 
 
 def encode_result(value: object):

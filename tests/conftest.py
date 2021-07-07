@@ -15,9 +15,6 @@ import pycspr
 # A known deploy timestamp for use in various scenarios.
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
 
-# A known deploy time to live.
-_A_KNOWN_DEPLOY_TTL = "1day"
-
 # Path to test accounts.
 _PATH_TO_ACCOUNTS = pathlib.Path(os.path.dirname(__file__)) / "accounts"
 
@@ -126,7 +123,7 @@ def TYPES(LIB):
 
 
 @pytest.fixture(scope="session")
-def a_test_account(FACTORY, vector_crypto_2) -> pycspr.types.AccountInfo:
+def a_test_account(FACTORY, vector_crypto_2):
     """Returns a test account key. 
     
     """
@@ -152,21 +149,21 @@ def a_test_timestamp() -> int:
 
 
 @pytest.fixture(scope="session")
-def test_account_1(LIB) -> pycspr.types.AccountInfo:
+def test_account_1(LIB):
     """Returns test user account information. 
     
     """
     path = pathlib.Path(_PATH_TO_ACCOUNTS) / "account-1"  / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.AccountInfo(
+    return LIB.types.account.AccountInfo(
         pbk=pbk,
         pvk=pvk,
         algo=LIB.crypto.KeyAlgorithm.ED25519
     )
 
 
-def _get_account_info_of_nctl_faucet(LIB) -> pycspr.types.AccountInfo:
+def _get_account_info_of_nctl_faucet(LIB):
     """Returns account information related to NCTL faucet. 
     
     """
@@ -174,14 +171,14 @@ def _get_account_info_of_nctl_faucet(LIB) -> pycspr.types.AccountInfo:
     path = path / "assets" / "net-1" / "faucet" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.AccountInfo(
+    return LIB.types.account.AccountInfo(
         pbk=pbk,
         pvk=pvk,
         algo=LIB.crypto.KeyAlgorithm.ED25519
     )
 
 
-def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInfo:
+def _get_account_info_of_nctl_user(LIB, user_id: int):
     """Returns account information related to NCTL user 1. 
     
     """
@@ -189,7 +186,7 @@ def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInf
     path = path / "assets" / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.AccountInfo(
+    return LIB.types.account.AccountInfo(
         pbk=pbk,
         pvk=pvk,
         algo=LIB.crypto.KeyAlgorithm.ED25519
@@ -197,7 +194,7 @@ def _get_account_info_of_nctl_user(LIB, user_id: int) -> pycspr.types.AccountInf
 
 
 @pytest.fixture(scope="session")
-def cp1(LIB) -> pycspr.types.AccountInfo:
+def cp1(LIB):
     """Returns counter-party 1 test account key. 
     
     """
@@ -205,7 +202,7 @@ def cp1(LIB) -> pycspr.types.AccountInfo:
 
 
 @pytest.fixture(scope="session")
-def cp2(LIB) -> pycspr.types.AccountInfo:
+def cp2(LIB):
     """Returns counter-party 2 test account key. 
     
     """
@@ -213,32 +210,42 @@ def cp2(LIB) -> pycspr.types.AccountInfo:
 
 
 @pytest.fixture(scope="function")
-def deploy_params(FACTORY, a_test_chain_id, cp1) -> pycspr.types.StandardParameters:
+def deploy_params(FACTORY, a_test_chain_id, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
     return FACTORY.deploys.create_standard_parameters(
-            account=cp1,
+            account=FACTORY.accounts.create_public_key(
+                test_account_1.algo,
+                test_account_1.pbk
+            ),
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,
             timestamp=datetime.datetime.utcnow().timestamp(),
-            ttl="1day"
+            ttl=FACTORY.deploys.create_deploy_ttl(
+                "1day"
+            ),
         )
 
 
 @pytest.fixture(scope="function")
-def deploy_params_static(FACTORY, a_test_chain_id, test_account_1) -> pycspr.types.StandardParameters:
+def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
     """Returns standard deploy parameters with known timestamp. 
     
     """
     return FACTORY.deploys.create_standard_parameters(
-            account=test_account_1,
+            account=FACTORY.accounts.create_public_key(
+                test_account_1.algo,
+                test_account_1.pbk
+            ),
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,
             timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
-            ttl=_A_KNOWN_DEPLOY_TTL
+            ttl=FACTORY.deploys.create_deploy_ttl(
+                "1day"
+            ),
         )
 
 

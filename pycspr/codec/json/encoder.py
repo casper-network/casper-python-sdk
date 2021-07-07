@@ -20,7 +20,6 @@ from pycspr.types.deploy import ExecutionArgument
 from pycspr.types.deploy import ExecutionInfo
 from pycspr.types.deploy import ExecutionInfo_ModuleBytes
 from pycspr.types.deploy import ExecutionInfo_Transfer
-from pycspr.types.deploy import PublicKey
 from pycspr.types.deploy import Signature
 from pycspr.types.deploy import Timestamp
 
@@ -112,7 +111,7 @@ def encode_deploy(entity: Deploy):
 
 def encode_deploy_header(entity: DeployHeader):
     return {
-        "account": entity.account,
+        "account": entity.account.account_key,
         "body_hash": encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
