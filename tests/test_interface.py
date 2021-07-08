@@ -70,9 +70,9 @@ _INTERFACE_OF_LIBRARY = {
     },
     _has_exception: set(),
     _has_function: {
-        "decode",
-        "encode",
-        "get_account_address",
+        "to_bytes",
+        "to_hex",
+        "to_json",
         "get_account_balance",
         "get_account_hash",
         "get_account_info",
@@ -92,7 +92,7 @@ _INTERFACE_OF_LIBRARY = {
         "get_rpc_schema",
         "get_state_item",
         "get_state_root_hash",
-        "get_switch_block",        
+        "get_switch_block",
     },
 }
 

@@ -3,7 +3,7 @@ def test_encode_transfer_payment(LIB, FACTORY, vector_deploy_1):
         entity = FACTORY.deploys.create_payment_for_transfer(
             vector["payment"]["amount"]
         )
-        assert LIB.encode(entity, 'hex-string') == vector["payment"]["as_hex"]
+        assert LIB.to_hex(entity) == vector["payment"]["as_hex"]
 
 
 def test_encode_transfer_session(LIB, FACTORY, vector_deploy_1):
@@ -13,7 +13,7 @@ def test_encode_transfer_session(LIB, FACTORY, vector_deploy_1):
             vector["session"]["target"],
             vector["session"]["transfer_id"]
             )
-        assert LIB.encode(entity, 'hex-string') == vector["session"]["as_hex"]
+        assert LIB.to_hex(entity) == vector["session"]["as_hex"]
 
 
 def test_encode_transfer_body(FACTORY, vector_deploy_1):
