@@ -5,7 +5,7 @@ import requests
 import sseclient
 
 import pycspr
-from pycspr.types.node import NodeEventType
+from pycspr.types import NodeEventType
 
 
 

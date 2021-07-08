@@ -2,26 +2,26 @@ import datetime
 import json
 
 from pycspr.codec.byte_array import encode as byte_array_encoder
-from pycspr.types.cl import CLValue
-from pycspr.types.cl import CLType
-from pycspr.types.cl import CLType_ByteArray
-from pycspr.types.cl import CLType_List
-from pycspr.types.cl import CLType_Map
-from pycspr.types.cl import CLType_Option
-from pycspr.types.cl import CLType_Simple
-from pycspr.types.cl import CLType_Tuple1
-from pycspr.types.cl import CLType_Tuple2
-from pycspr.types.cl import CLType_Tuple3
-from pycspr.types.deploy import Deploy
-from pycspr.types.deploy import DeployApproval
-from pycspr.types.deploy import DeployHeader
-from pycspr.types.deploy import Digest
-from pycspr.types.deploy import ExecutionArgument
-from pycspr.types.deploy import ExecutionInfo
-from pycspr.types.deploy import ExecutionInfo_ModuleBytes
-from pycspr.types.deploy import ExecutionInfo_Transfer
-from pycspr.types.deploy import Signature
-from pycspr.types.deploy import Timestamp
+from pycspr.types import CLValue
+from pycspr.types import CLType
+from pycspr.types import CLType_ByteArray
+from pycspr.types import CLType_List
+from pycspr.types import CLType_Map
+from pycspr.types import CLType_Option
+from pycspr.types import CLType_Simple
+from pycspr.types import CLType_Tuple1
+from pycspr.types import CLType_Tuple2
+from pycspr.types import CLType_Tuple3
+from pycspr.types import Deploy
+from pycspr.types import DeployApproval
+from pycspr.types import DeployHeader
+from pycspr.types import Digest
+from pycspr.types import ExecutionArgument
+from pycspr.types import ExecutionInfo
+from pycspr.types import ExecutionInfo_ModuleBytes
+from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import Signature
+from pycspr.types import Timestamp
 
 
 

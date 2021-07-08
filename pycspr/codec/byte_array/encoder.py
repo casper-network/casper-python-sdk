@@ -2,7 +2,7 @@ import typing
 
 from pycspr.codec.byte_array.encoder_cl import encode as encoder_cl
 from pycspr.codec.byte_array.encoder_deploy import encode as encoder_deploy
-from pycspr.types.cl import CLValue
+from pycspr.types import CLValue
 
 
 

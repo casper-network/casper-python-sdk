@@ -33,7 +33,7 @@ class CLTypeKey(enum.Enum):
 
 
 # Set of types considered to be simple.
-CL_TYPES_SIMPLE = {
+TYPES_SIMPLE = {
     CLTypeKey.BOOL,
     CLTypeKey.I32,
     CLTypeKey.I64,

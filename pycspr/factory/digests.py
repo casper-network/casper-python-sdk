@@ -3,9 +3,9 @@ import typing
 from pycspr import factory
 from pycspr import codec
 from pycspr import crypto
-from pycspr.types.cl import CLTypeKey
-from pycspr.types.deploy import ExecutionInfo
-from pycspr.types.deploy import DeployHeader
+from pycspr.types import CLTypeKey
+from pycspr.types import ExecutionInfo
+from pycspr.types import DeployHeader
 
 
 

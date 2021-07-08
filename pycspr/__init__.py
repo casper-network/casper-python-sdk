@@ -33,11 +33,11 @@ from pycspr.codec         import to_hex
 from pycspr.codec         import to_json
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key
-from pycspr.types.node    import NodeConnectionInfo
-from pycspr.types.node    import NodeEventType
-from pycspr.types.node    import NODE_REST_ENDPOINTS
-from pycspr.types.node    import NODE_RPC_ENDPOINTS
-from pycspr.types.node    import NODE_SSE_ENDPOINTS
+from pycspr.types         import NodeConnectionInfo
+from pycspr.types         import NodeEventType
+from pycspr.types         import NODE_REST_ENDPOINTS
+from pycspr.types         import NODE_RPC_ENDPOINTS
+from pycspr.types         import NODE_SSE_ENDPOINTS
 
 
 # Lib metadata.

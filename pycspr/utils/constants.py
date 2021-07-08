@@ -1,6 +1,6 @@
 import collections
 
-from pycspr.types.cl import CLTypeKey
+from pycspr.types import CLTypeKey
 
 
 

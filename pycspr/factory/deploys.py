@@ -3,21 +3,21 @@ import typing
 
 from pycspr import crypto
 from pycspr import factory
-from pycspr.types.account import AccountInfo
-from pycspr.types.account import PublicKey
-from pycspr.types.cl import CLTypeKey
-from pycspr.types.cl import CLType
-from pycspr.types.deploy import Deploy
-from pycspr.types.deploy import DeployApproval
-from pycspr.types.deploy import DeployBody
-from pycspr.types.deploy import DeployHeader
-from pycspr.types.deploy import DeployTimeToLive
-from pycspr.types.deploy import Digest
-from pycspr.types.deploy import ExecutionArgument
-from pycspr.types.deploy import ExecutionInfo
-from pycspr.types.deploy import ExecutionInfo_ModuleBytes
-from pycspr.types.deploy import ExecutionInfo_Transfer
-from pycspr.types.deploy import DeployStandardParameters
+from pycspr.types import AccountInfo
+from pycspr.types import PublicKey
+from pycspr.types import CLTypeKey
+from pycspr.types import CLType
+from pycspr.types import Deploy
+from pycspr.types import DeployApproval
+from pycspr.types import DeployBody
+from pycspr.types import DeployHeader
+from pycspr.types import DeployTimeToLive
+from pycspr.types import Digest
+from pycspr.types import ExecutionArgument
+from pycspr.types import ExecutionInfo
+from pycspr.types import ExecutionInfo_ModuleBytes
+from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import DeployStandardParameters
 
 
 

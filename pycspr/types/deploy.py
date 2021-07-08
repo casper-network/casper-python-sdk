@@ -2,8 +2,8 @@ import dataclasses
 import datetime
 import typing
 
-from pycspr.types.cl import CLValue
 from pycspr.types.account import PublicKey
+from pycspr.types.cl import CLValue
 
 
 

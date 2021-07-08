@@ -1,8 +1,8 @@
 import typing
 
 from pycspr import crypto
-from pycspr.types.account import AccountInfo
-from pycspr.types.account import PublicKey
+from pycspr.types import AccountInfo
+from pycspr.types import PublicKey
 
 
 

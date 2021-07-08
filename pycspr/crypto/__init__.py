@@ -16,10 +16,3 @@ from pycspr.crypto.enums import KeyAlgorithm
 from pycspr.crypto.enums import KeyEncoding
 from pycspr.crypto.enums import SignatureEncoding
 from pycspr.crypto.hashifier import get_hash
-
-# Defaults.
-DEFAULT_KEY_ALGO=KeyAlgorithm.ED25519
-DEFAULT_KEY_ENCODING=KeyEncoding.BYTES
-DEFAULT_SIGNATURE_ENCODING=SignatureEncoding.BYTES
-DEFAULT_HASH_ALGO=HashAlgorithm.BLAKE2B
-DEFAULT_HASH_ENCODING=HashEncoding.BYTES

@@ -5,17 +5,17 @@ from pycspr.codec.byte_array.encoder_cl import encode_string
 from pycspr.codec.byte_array.encoder_cl import encode_byte_array
 from pycspr.codec.byte_array.encoder_cl import encode_u8_array
 from pycspr.codec.byte_array.encoder_cl import encode_vector_of_t
-from pycspr.types.deploy import Deploy
-from pycspr.types.deploy import DeployHeader
-from pycspr.types.deploy import ExecutionArgument
-from pycspr.types.deploy import ExecutionInfo
-from pycspr.types.deploy import ExecutionInfo_ModuleBytes
-from pycspr.types.deploy import ExecutionInfo_StoredContract
-from pycspr.types.deploy import ExecutionInfo_StoredContractByHash
-from pycspr.types.deploy import ExecutionInfo_StoredContractByHashVersioned
-from pycspr.types.deploy import ExecutionInfo_StoredContractByName
-from pycspr.types.deploy import ExecutionInfo_StoredContractByNameVersioned
-from pycspr.types.deploy import ExecutionInfo_Transfer
+from pycspr.types import Deploy
+from pycspr.types import DeployHeader
+from pycspr.types import ExecutionArgument
+from pycspr.types import ExecutionInfo
+from pycspr.types import ExecutionInfo_ModuleBytes
+from pycspr.types import ExecutionInfo_StoredContract
+from pycspr.types import ExecutionInfo_StoredContractByHash
+from pycspr.types import ExecutionInfo_StoredContractByHashVersioned
+from pycspr.types import ExecutionInfo_StoredContractByName
+from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
+from pycspr.types import ExecutionInfo_Transfer
 
 
 
