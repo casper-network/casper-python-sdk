@@ -20,44 +20,44 @@ def create_digest_of_deploy(
 
     """
     # Element 1: account. 
-    cl_account = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY),
+    cl_account = factory.create_cl_value(
+        factory.create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY),
         header.accountPublicKey
     )
 
     # Element 2: timestamp. 
-    cl_timestamp = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
+    cl_timestamp = factory.create_cl_value(
+        factory.create_cl_type_of_simple(CLTypeKey.U64),
         int(header.timestamp * 1000)
     )
 
     # Element 3: ttl. 
-    cl_ttl = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
+    cl_ttl = factory.create_cl_value(
+        factory.create_cl_type_of_simple(CLTypeKey.U64),
         header.ttl.as_milliseconds
     )
 
     # Element 4: gas-price. 
-    cl_gas_price = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
+    cl_gas_price = factory.create_cl_value(
+        factory.create_cl_type_of_simple(CLTypeKey.U64),
         header.gas_price
     )
 
     # Element 5: body-hash. 
-    cl_body_hash = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_byte_array(32),
+    cl_body_hash = factory.create_cl_value(
+        factory.create_cl_type_of_byte_array(32),
         header.body_hash
     )
 
     # Element 6: dependencies. 
-    cl_dependencies = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_list(factory.cl.create_cl_type_of_simple(CLTypeKey.STRING)),
+    cl_dependencies = factory.create_cl_value(
+        factory.create_cl_type_of_list(factory.create_cl_type_of_simple(CLTypeKey.STRING)),
         header.dependencies
     )
 
     # Element 7: chain-name. 
-    cl_chain_name = factory.cl.create_cl_value(
-        factory.cl.create_cl_type_of_simple(CLTypeKey.STRING),
+    cl_chain_name = factory.create_cl_value(
+        factory.create_cl_type_of_simple(CLTypeKey.STRING),
         header.chain_name
     )
 

@@ -3,7 +3,6 @@ import json
 import operator
 import os
 import pathlib
-import random
 import typing
 
 import pytest
@@ -12,35 +11,23 @@ import pycspr
 
 
 
-# A known deploy timestamp for use in various scenarios.
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
-
-# Path to test accounts.
-_PATH_TO_ACCOUNTS = pathlib.Path(os.path.dirname(__file__)) / "accounts"
-
-# Path to test vectors.
-_PATH_TO_VECTORS = pathlib.Path(os.path.dirname(__file__)) / "vectors"
+_PATH_TO_HERE = pathlib.Path(os.path.dirname(__file__))
+_PATH_TO_ACCOUNTS = _PATH_TO_HERE / "assets" / "accounts"
+_PATH_TO_VECTORS = _PATH_TO_HERE / "assets" / "vectors"
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets"
 
 
 def _get_vector(fname: str, parser: typing.Callable = json.load):
-    """Returns contents of a test vector.
-    
-    """
     with open(_PATH_TO_VECTORS / fname) as fhandle:
         return fhandle.read() if parser is None else parser(fhandle)
 
 
 @pytest.fixture(scope="session")
 def vector_cl_data_1() -> list:
-    """Returns a set of fixtures for use as input to upstream data tests. 
-    
-    """
     class _Accessor():
-        """Vector 1 access simplifier.
-        
-        """
         def __init__(self):
-            self.fixture = _get_vector("for_cl_data.json")
+            self.fixture = _get_vector("cl_types.json")
         
         def get_vectors(self, typeof: str) -> list:
             typeof = typeof if isinstance(typeof, str) else typeof.name
@@ -60,34 +47,22 @@ def vector_cl_data_1() -> list:
 
 @pytest.fixture(scope="session")
 def vector_crypto_1() -> list:
-    """Returns a set of fixtures for use as input to upstream hashing tests. 
-    
-    """
-    return _get_vector("for_crypto_hash_tests.json")
+    return _get_vector("crypto_hashes.json")
 
 
 @pytest.fixture(scope="session")
 def vector_crypto_2() -> list:
-    """Returns a set of fixtures for use as input to upstream key-pair tests. 
-    
-    """
-    return _get_vector("for_crypto_key_pair_tests.json")
+    return _get_vector("crypto_key_pairs.json")
 
 
 @pytest.fixture(scope="session")
 def vector_crypto_3() -> list:
-    """Returns a set of fixtures for use as input to upstream signature tests. 
-    
-    """
-    return _get_vector("for_crypto_signature_tests.json")
+    return _get_vector("crypto_signatures.json")
 
 
 @pytest.fixture(scope="session")
 def vector_deploy_1() -> list:
-    """Returns a set of fixtures for use as input to upstream hashing tests. 
-    
-    """
-    return _get_vector("for_deploy_tests_1.json")
+    return _get_vector("deploys_1.json")
 
 
 @pytest.fixture(scope="session")
@@ -112,22 +87,6 @@ def FACTORY(LIB):
     
     """    
     return LIB.factory
-
-
-@pytest.fixture(scope="session")
-def CL_FACTORY(FACTORY):
-    """Returns pointer to the library's CL type factory. 
-    
-    """    
-    return FACTORY.cl
-
-
-@pytest.fixture(scope="session")
-def DEPLOY_FACTORY(FACTORY):
-    """Returns pointer to the library's DEPLOY type factory. 
-    
-    """    
-    return FACTORY.deploys
 
 
 @pytest.fixture(scope="session")
@@ -161,7 +120,7 @@ def a_test_account(FACTORY, vector_crypto_2):
     """
     algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vector_crypto_2[0])
     
-    return FACTORY.accounts.create_account_info(algo, pvk, pbk)
+    return FACTORY.create_account_info(algo, pvk, pbk)
 
 
 @pytest.fixture(scope="session")
@@ -199,8 +158,7 @@ def _get_account_info_of_nctl_faucet(LIB):
     """Returns account information related to NCTL faucet. 
     
     """
-    path = pathlib.Path(os.getenv("NCTL"))
-    path = path / "assets" / "net-1" / "faucet" / "secret_key.pem"
+    path = _PATH_TO_NCTL_ASSETS / "net-1" / "faucet" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
     return LIB.types.account.AccountInfo(
@@ -214,8 +172,7 @@ def _get_account_info_of_nctl_user(LIB, user_id: int):
     """Returns account information related to NCTL user 1. 
     
     """
-    path = pathlib.Path(os.getenv("NCTL"))
-    path = path / "assets" / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
+    path = _PATH_TO_NCTL_ASSETS / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
     return LIB.types.account.AccountInfo(
@@ -246,8 +203,8 @@ def deploy_params(FACTORY, a_test_chain_id, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
-    return FACTORY.deploys.create_deploy_parameters(
-            account=FACTORY.accounts.create_public_key(
+    return FACTORY.create_deploy_parameters(
+            account=FACTORY.create_public_key(
                 cp1.algo,
                 cp1.pbk
             ),
@@ -264,8 +221,8 @@ def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
     """Returns standard deploy parameters with known timestamp. 
     
     """
-    return FACTORY.deploys.create_deploy_parameters(
-            account=FACTORY.accounts.create_public_key(
+    return FACTORY.create_deploy_parameters(
+            account=FACTORY.create_public_key(
                 test_account_1.algo,
                 test_account_1.pbk
             ),
@@ -273,7 +230,7 @@ def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
             dependencies=[],
             gas_price=10,
             timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
-            ttl=FACTORY.deploys.create_deploy_ttl(
+            ttl=FACTORY.create_deploy_ttl(
                 "1day"
             ),
         )

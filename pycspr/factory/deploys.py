@@ -148,7 +148,7 @@ def create_execution_arg(
     """
     return ExecutionArgument(
         name = name,
-        value = factory.cl.create_cl_value(cl_type, parsed)
+        value = factory.create_cl_value(cl_type, parsed)
     )
 
 
@@ -169,17 +169,17 @@ def create_session_for_transfer(
             create_execution_arg(
                 "amount",
                 amount,
-                factory.cl.create_cl_type_of_simple(CLTypeKey.U512)
+                factory.create_cl_type_of_simple(CLTypeKey.U512)
                 ),
             create_execution_arg(
                 "target",
                 target,
-                factory.cl.create_cl_type_of_byte_array(32)
+                factory.create_cl_type_of_byte_array(32)
                 ),
             create_execution_arg(
                 "id",
                 correlation_id,
-                factory.cl.create_cl_type_of_option(factory.cl.create_cl_type_of_simple(CLTypeKey.U64))
+                factory.create_cl_type_of_option(factory.create_cl_type_of_simple(CLTypeKey.U64))
                 ),
         ]
     )
@@ -196,7 +196,7 @@ def create_standard_payment(amount: int = 1e4) -> ExecutionInfo_ModuleBytes:
             create_execution_arg(
                 "amount",
                 amount,
-                factory.cl.create_cl_type_of_simple(CLTypeKey.U512)
+                factory.create_cl_type_of_simple(CLTypeKey.U512)
                 ),
         ],
         module_bytes=bytes([])
