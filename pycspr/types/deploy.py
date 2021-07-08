@@ -27,18 +27,6 @@ HumamizedTimeDelta = typing.NewType("A temporal offset from now", str)
 
 
 @dataclasses.dataclass
-class Approval:
-    """A digital signature approving deploy processing.
-    
-    """
-    # The public key component to the signing key used to sign a deploy.
-    signer: PublicKey
-
-    # The digital signatutre signalling approval of deploy processing.
-    signature: Signature
-
-
-@dataclasses.dataclass
 class ExecutionArgument():
     """An argument to be passed to vm for execution.
     
@@ -119,6 +107,18 @@ class ExecutionInfo_Transfer(ExecutionInfo):
     
     """
     pass
+
+
+@dataclasses.dataclass
+class DeployApproval:
+    """A digital signature approving deploy processing.
+    
+    """
+    # The public key component to the signing key used to sign a deploy.
+    signer: PublicKey
+
+    # The digital signatutre signalling approval of deploy processing.
+    signature: Signature
 
 
 @dataclasses.dataclass
@@ -206,7 +206,7 @@ class Deploy():
     
     """
     # Set of signatures approving this deploy for execution.
-    approvals: typing.List[Approval]
+    approvals: typing.List[DeployApproval]
 
     # Unique identifier.
     hash: Digest

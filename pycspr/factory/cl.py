@@ -12,7 +12,7 @@ from pycspr.types.cl import CLValue
 
 
 
-def create_byte_array(size: int) -> CLType_ByteArray:
+def create_cl_type_of_byte_array(size: int) -> CLType_ByteArray:
     """Returns CL type information for a byte array.
     
     :param int size: Size of byte array.
@@ -21,7 +21,7 @@ def create_byte_array(size: int) -> CLType_ByteArray:
     return CLType_ByteArray(size=size)
 
 
-def create_list(inner_type: CLType) -> CLType_List:
+def create_cl_type_of_list(inner_type: CLType) -> CLType_List:
     """Returns CL type information for a list.
     
     :param CLType inner_type: Type information pertaining to each element within list.
@@ -30,7 +30,7 @@ def create_list(inner_type: CLType) -> CLType_List:
     return CLType_List(inner_type=inner_type)
 
 
-def create_map(key_type: CLType, value_type: CLType) -> CLType_Map:
+def create_cl_type_of_map(key_type: CLType, value_type: CLType) -> CLType_Map:
     """Returns CL type information for a map.
     
     :param CLType key_type: Type information pertaining to each key within the map.
@@ -43,7 +43,7 @@ def create_map(key_type: CLType, value_type: CLType) -> CLType_Map:
     )
 
 
-def create_option(inner_type: CLType):
+def create_cl_type_of_option(inner_type: CLType):
     """Returns CL type information for a byte array.
     
     :param CLType inner_type: Type information pertaining to the optional value.
@@ -52,7 +52,7 @@ def create_option(inner_type: CLType):
     return CLType_Option(inner_type=inner_type)
 
 
-def create_simple(typeof: CLTypeKey) -> CLType_Simple:
+def create_cl_type_of_simple(typeof: CLTypeKey) -> CLType_Simple:
     """Returns CL type information for a byte array.
     
     :param CLTypeKey typeof: Type of simple type being processed.
@@ -61,7 +61,7 @@ def create_simple(typeof: CLTypeKey) -> CLType_Simple:
     return CLType_Simple(typeof)
 
 
-def create_tuple_1(t0_type: CLType):
+def create_cl_type_of_tuple_1(t0_type: CLType):
     """Returns CL type information for a byte array.
     
     :param CLType t0_type: Type information pertaining to first tuple element.
@@ -72,7 +72,7 @@ def create_tuple_1(t0_type: CLType):
     )
 
 
-def create_tuple_2(t0_type: CLType, t1_type: CLType):
+def create_cl_type_of_tuple_2(t0_type: CLType, t1_type: CLType):
     """Returns CL type information for a byte array.
     
     :param CLType t0_type: Type information pertaining to first tuple element.
@@ -85,7 +85,7 @@ def create_tuple_2(t0_type: CLType, t1_type: CLType):
     )
 
 
-def create_tuple_3(t0_type: CLType, t1_type: CLType, t2_type: CLType):
+def create_cl_type_of_tuple_3(t0_type: CLType, t1_type: CLType, t2_type: CLType):
     """Returns CL type information for a byte array.
     
     :param CLType t0_type: Type information pertaining to first tuple element.
@@ -100,7 +100,7 @@ def create_tuple_3(t0_type: CLType, t1_type: CLType, t2_type: CLType):
     )
 
 
-def create_value(cl_type: CLType, parsed: object) -> CLValue:
+def create_cl_value(cl_type: CLType, parsed: object) -> CLValue:
     """Returns a value encoded for interpretation by a node.
 
     :param CLType cl_type: Type information for interpretation by a node.

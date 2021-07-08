@@ -246,7 +246,7 @@ def deploy_params(FACTORY, a_test_chain_id, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
-    return FACTORY.deploys.create_standard_parameters(
+    return FACTORY.deploys.create_deploy_parameters(
             account=FACTORY.accounts.create_public_key(
                 cp1.algo,
                 cp1.pbk
@@ -264,7 +264,7 @@ def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
     """Returns standard deploy parameters with known timestamp. 
     
     """
-    return FACTORY.deploys.create_standard_parameters(
+    return FACTORY.deploys.create_deploy_parameters(
             account=FACTORY.accounts.create_public_key(
                 test_account_1.algo,
                 test_account_1.pbk

@@ -59,7 +59,6 @@ _INTERFACE_OF_LIBRARY = {
         "NodeConnectionInfo",
     },
     _has_enum: {
-        "CLTypeKey",
         "NodeEventType",
     },
     _has_constant: {

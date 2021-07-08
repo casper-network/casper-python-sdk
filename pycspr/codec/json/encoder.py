@@ -12,8 +12,8 @@ from pycspr.types.cl import CLType_Simple
 from pycspr.types.cl import CLType_Tuple1
 from pycspr.types.cl import CLType_Tuple2
 from pycspr.types.cl import CLType_Tuple3
-from pycspr.types.deploy import Approval
 from pycspr.types.deploy import Deploy
+from pycspr.types.deploy import DeployApproval
 from pycspr.types.deploy import DeployHeader
 from pycspr.types.deploy import Digest
 from pycspr.types.deploy import ExecutionArgument
@@ -25,7 +25,7 @@ from pycspr.types.deploy import Timestamp
 
 
 
-def encode_approval(entity: Approval):
+def encode_approval(entity: DeployApproval):
     return {
         "signer": entity.signer.hex(),
         "signature": entity.signature.hex(),

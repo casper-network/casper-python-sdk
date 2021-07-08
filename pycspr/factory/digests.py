@@ -9,7 +9,7 @@ from pycspr.types.deploy import DeployHeader
 
 
 
-def get_digest_of_deploy(
+def create_digest_of_deploy(
     header: DeployHeader,
     encoding=crypto.HashEncoding.HEX
     ) -> typing.Union[str, bytes, typing.List[int]]:
@@ -20,44 +20,44 @@ def get_digest_of_deploy(
 
     """
     # Element 1: account. 
-    cl_account = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.PUBLIC_KEY),
+    cl_account = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY),
         header.accountPublicKey
     )
 
     # Element 2: timestamp. 
-    cl_timestamp = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.U64),
+    cl_timestamp = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
         int(header.timestamp * 1000)
     )
 
     # Element 3: ttl. 
-    cl_ttl = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.U64),
+    cl_ttl = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
         header.ttl.as_milliseconds
     )
 
     # Element 4: gas-price. 
-    cl_gas_price = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.U64),
+    cl_gas_price = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_simple(CLTypeKey.U64),
         header.gas_price
     )
 
     # Element 5: body-hash. 
-    cl_body_hash = factory.cl.create_value(
-        factory.cl.create_byte_array(32),
+    cl_body_hash = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_byte_array(32),
         header.body_hash
     )
 
     # Element 6: dependencies. 
-    cl_dependencies = factory.cl.create_value(
-        factory.cl.create_list(factory.cl.create_simple(CLTypeKey.STRING)),
+    cl_dependencies = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_list(factory.cl.create_cl_type_of_simple(CLTypeKey.STRING)),
         header.dependencies
     )
 
     # Element 7: chain-name. 
-    cl_chain_name = factory.cl.create_value(
-        factory.cl.create_simple(CLTypeKey.STRING),
+    cl_chain_name = factory.cl.create_cl_value(
+        factory.cl.create_cl_type_of_simple(CLTypeKey.STRING),
         header.chain_name
     )
 
@@ -74,7 +74,7 @@ def get_digest_of_deploy(
     return crypto.get_hash(data, encoding=encoding)
 
 
-def get_digest_of_deploy_body(
+def create_digest_of_deploy_body(
     payment: ExecutionInfo,
     session: ExecutionInfo,
     encoding=crypto.HashEncoding.HEX
