@@ -1,3 +1,4 @@
+import typing
 
 from pycspr import factory
 from pycspr import codec
@@ -8,7 +9,10 @@ from pycspr.types.deploy import DeployHeader
 
 
 
-def get_digest_of_deploy(header: DeployHeader) -> str:
+def get_digest_of_deploy(
+    header: DeployHeader,
+    encoding=crypto.HashEncoding.HEX
+    ) -> typing.Union[str, bytes, typing.List[int]]:
     """Returns a deploy's digest.
     
     :param header: Deploy header information.
@@ -67,10 +71,14 @@ def get_digest_of_deploy(header: DeployHeader) -> str:
         codec.to_bytes(cl_dependencies) + \
         codec.to_bytes(cl_chain_name)
 
-    return crypto.get_hash(data, encoding=crypto.HashEncoding.HEX)
+    return crypto.get_hash(data, encoding=encoding)
 
 
-def get_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> str:
+def get_digest_of_deploy_body(
+    payment: ExecutionInfo,
+    session: ExecutionInfo,
+    encoding=crypto.HashEncoding.HEX
+    ) -> typing.Union[str, bytes, typing.List[int]]:
     """Returns a deploy body's digest.
     
     :param payment: Deploy payment execution logic.
@@ -83,4 +91,4 @@ def get_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) ->
         codec.to_bytes(payment) + \
         codec.to_bytes(session)
 
-    return crypto.get_hash(data, encoding=crypto.HashEncoding.HEX)
+    return crypto.get_hash(data, encoding=encoding)

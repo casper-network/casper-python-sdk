@@ -115,11 +115,43 @@ def FACTORY(LIB):
 
 
 @pytest.fixture(scope="session")
+def CL_FACTORY(FACTORY):
+    """Returns pointer to the library's CL type factory. 
+    
+    """    
+    return FACTORY.cl
+
+
+@pytest.fixture(scope="session")
+def DEPLOY_FACTORY(FACTORY):
+    """Returns pointer to the library's DEPLOY type factory. 
+    
+    """    
+    return FACTORY.deploys
+
+
+@pytest.fixture(scope="session")
 def TYPES(LIB):
     """Returns pointer to the library's typeset. 
     
     """  
     return LIB.types
+
+
+@pytest.fixture(scope="session")
+def CL_TYPES(TYPES):
+    """Returns pointer to the library's CL typeset. 
+    
+    """  
+    return TYPES.cl
+
+
+@pytest.fixture(scope="session")
+def DEPLOY_TYPES(TYPES):
+    """Returns pointer to the library's Deploys typeset. 
+    
+    """  
+    return TYPES.deploy
 
 
 @pytest.fixture(scope="session")
@@ -216,16 +248,14 @@ def deploy_params(FACTORY, a_test_chain_id, cp1):
     """
     return FACTORY.deploys.create_standard_parameters(
             account=FACTORY.accounts.create_public_key(
-                test_account_1.algo,
-                test_account_1.pbk
+                cp1.algo,
+                cp1.pbk
             ),
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,
             timestamp=datetime.datetime.utcnow().timestamp(),
-            ttl=FACTORY.deploys.create_deploy_ttl(
-                "1day"
-            ),
+            ttl="1day"
         )
 
 

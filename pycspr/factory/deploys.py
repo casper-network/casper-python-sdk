@@ -57,8 +57,6 @@ def create_deploy(params: DeployStandardParameters, payment: ExecutionInfo, sess
     :param payment: Payment execution information.
 
     """
-    print(params)
-
     body = create_body(payment, session)
     header = create_header(body, params)
     deploy_hash = factory.digests.get_digest_of_deploy(header)  
@@ -79,7 +77,6 @@ def create_deploy_ttl(humanized_ttl: str = "1day") -> DeployTimeToLive:
 
     """
     # TODO convert humanized to milliseconds.
-
     return DeployTimeToLive(humanized=humanized_ttl, as_milliseconds=1 * 24 * 60 * 60 * 1000)
 
 
@@ -178,7 +175,7 @@ def create_standard_parameters(
     dependencies: typing.List[Digest] = [],
     gas_price: int = 1,
     timestamp: datetime.datetime = None,
-    ttl: str = "1day"
+    ttl: typing.Union[str, DeployTimeToLive] = "1day"
     ) -> DeployStandardParameters:
     """Returns header information associated with a deploy.
     
@@ -193,6 +190,7 @@ def create_standard_parameters(
     public_key = account if isinstance(account, PublicKey) else \
                  factory.accounts.create_public_key(account.algo, account.pbk)
     timestamp = timestamp or datetime.datetime.utcnow().timestamp()
+    ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
     return DeployStandardParameters(
         accountPublicKey=public_key,
