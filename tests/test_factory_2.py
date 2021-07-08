@@ -80,11 +80,11 @@ def test_create_transfer_header(DEPLOY_TYPES, DEPLOY_FACTORY, deploy_params):
     assert len(header.body_hash) == 64
 
 
-def test_create_transfer_deploy(DEPLOY_TYPES, DEPLOY_FACTORY, deploy_params):
+def test_create_transfer_deploy(DEPLOY_TYPES, DEPLOY_FACTORY, deploy_params, cp2):
     session = DEPLOY_FACTORY.create_session_for_transfer(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
-        target = bytes([]),
+        target = cp2.account_hash,
         )
     payment = DEPLOY_FACTORY.create_payment_for_transfer(
         amount = random.randint(0, 1e5),
