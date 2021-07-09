@@ -16,7 +16,8 @@ from pycspr.factory.deploys import create_deploy_header
 from pycspr.factory.deploys import create_deploy_parameters
 from pycspr.factory.deploys import create_deploy_ttl
 from pycspr.factory.deploys import create_execution_arg
-from pycspr.factory.deploys import create_session_for_transfer
+from pycspr.factory.deploys import create_standard_transfer
+from pycspr.factory.deploys import create_standard_transfer_session
 from pycspr.factory.deploys import create_standard_payment
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body

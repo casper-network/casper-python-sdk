@@ -17,7 +17,7 @@ from pycspr.types.deploy import DeployApproval
 from pycspr.types.deploy import DeployBody
 from pycspr.types.deploy import DeployHeader
 from pycspr.types.deploy import DeployTimeToLive
-from pycspr.types.deploy import DeployStandardParameters
+from pycspr.types.deploy import DeployParameters
 from pycspr.types.deploy import Digest
 from pycspr.types.deploy import ExecutionArgument
 from pycspr.types.deploy import ExecutionInfo

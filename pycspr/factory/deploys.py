@@ -17,20 +17,21 @@ from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutionInfo
 from pycspr.types import ExecutionInfo_ModuleBytes
 from pycspr.types import ExecutionInfo_Transfer
-from pycspr.types import DeployStandardParameters
+from pycspr.types import DeployParameters
+from pycspr.utils import constants
 
 
 
-def create_deploy(params: DeployStandardParameters, payment: ExecutionInfo, session: ExecutionInfo):
+def create_deploy(std_params: DeployParameters, payment: ExecutionInfo, session: ExecutionInfo):
     """Returns a deploy for subsequent dispatch to a node.
     
-    :param params: Standard parameters used when creating a deploy.
+    :param std_params: Standard parameters used when creating a deploy.
     :param session: Session execution information.
     :param payment: Payment execution information.
 
     """
     body = create_deploy_body(payment, session)
-    header = create_deploy_header(body, params)
+    header = create_deploy_header(body, std_params)
     deploy_hash = factory.create_digest_of_deploy(header)  
 
     return Deploy(
@@ -71,7 +72,7 @@ def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> Deploy
     return DeployBody(session, payment, body_hash)
 
 
-def create_deploy_header(body: DeployBody, params: DeployStandardParameters) -> DeployHeader:
+def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHeader:
     """Returns header information associated with a deploy.
     
     :param body: Deploy body, i.e. it's session/payment execution information.
@@ -98,7 +99,7 @@ def create_deploy_parameters(
     gas_price: int = 1,
     timestamp: datetime.datetime = None,
     ttl: typing.Union[str, DeployTimeToLive] = "1day"
-    ) -> DeployStandardParameters:
+    ) -> DeployParameters:
     """Returns header information associated with a deploy.
     
     :param account: Account dispatching deploy.
@@ -114,7 +115,7 @@ def create_deploy_parameters(
     timestamp = timestamp or datetime.datetime.utcnow().timestamp()
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
-    return DeployStandardParameters(
+    return DeployParameters(
         accountPublicKey=public_key,
         chain_name=chain_name,
         dependencies=dependencies,
@@ -152,7 +153,53 @@ def create_execution_arg(
     )
 
 
-def create_session_for_transfer(
+def create_standard_payment(
+    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
+    ) -> ExecutionInfo_ModuleBytes:
+    """Returns standard payment execution information.
+    
+    :param amount: Maximum amount in motes to be used for standard payment.
+
+    """
+    return ExecutionInfo_ModuleBytes(
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                factory.create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+        ],
+        module_bytes=bytes([])
+        )
+
+
+def create_standard_transfer(
+    std_params: DeployParameters,
+    amount: int,
+    target: bytes,
+    correlation_id: int,
+    ) -> Deploy:
+    """Returns a native transfer deploy.
+
+    :param std_params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be transferred.
+    :param target: Target account hash.
+    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
+    :returns: A native transfer deploy.
+
+    """
+    return create_deploy(
+        std_params,
+        create_standard_transfer_session(
+            amount,
+            target,
+            correlation_id
+        ),
+        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS)
+        )
+
+
+def create_standard_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int,
@@ -183,21 +230,3 @@ def create_session_for_transfer(
                 ),
         ]
     )
-
-
-def create_standard_payment(amount: int = 1e4) -> ExecutionInfo_ModuleBytes:
-    """Returns standard payment execution information.
-    
-    :param amount: Maximum amount in motes to be used for standard payment.
-
-    """
-    return ExecutionInfo_ModuleBytes(
-        args=[
-            create_execution_arg(
-                "amount",
-                amount,
-                factory.create_cl_type_of_simple(CLTypeKey.U512)
-                ),
-        ],
-        module_bytes=bytes([])
-        )

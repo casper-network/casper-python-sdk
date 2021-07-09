@@ -18,3 +18,6 @@ NUMERIC_CONSTRAINTS ={
     CLTypeKey.U256: NumericConstraints(32, 0, (2 ** 256) - 1),
     CLTypeKey.U512: NumericConstraints(64, 0, (2 ** 512) - 1)
 }
+
+# Default number of motes to pay for standard payments.
+STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = 1e4

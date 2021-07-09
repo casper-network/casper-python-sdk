@@ -25,22 +25,11 @@ def test_create_deploy_parameters(TYPES, FACTORY, a_test_account, a_test_chain_i
             timestamp=datetime.datetime.utcnow(),
             ttl="1day",
         ),
-        TYPES.DeployStandardParameters
+        TYPES.DeployParameters
         )
 
 
-def test_create_transfer_session(TYPES, FACTORY):
-    assert isinstance(
-        FACTORY.create_session_for_transfer(
-            amount = random.randint(0, 1e9),
-            correlation_id = random.randint(0, 1e9),
-            target = bytes([]),
-            ),
-        TYPES.ExecutionInfo_Transfer
-        )
-
-
-def test_create_transfer_payment(TYPES, FACTORY):
+def test_create_standard_payment(TYPES, FACTORY):
     assert isinstance(
         FACTORY.create_standard_payment(
             amount = random.randint(0, 1e5),
@@ -49,11 +38,22 @@ def test_create_transfer_payment(TYPES, FACTORY):
         )
 
 
-def test_create_transfer_body(TYPES, FACTORY, deploy_params):
+def test_create_standard_transfer_session(TYPES, FACTORY):
+    assert isinstance(
+        FACTORY.create_standard_transfer_session(
+            amount = random.randint(0, 1e9),
+            correlation_id = random.randint(0, 1e9),
+            target = bytes([]),
+            ),
+        TYPES.ExecutionInfo_Transfer
+        )
+
+
+def test_create_standard_transfer_body(TYPES, FACTORY, deploy_params):
     payment = FACTORY.create_standard_payment(
         amount = random.randint(0, 1e5),
         )
-    session = FACTORY.create_session_for_transfer(
+    session = FACTORY.create_standard_transfer_session(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
         target = bytes([]),
@@ -64,11 +64,11 @@ def test_create_transfer_body(TYPES, FACTORY, deploy_params):
     assert len(body.hash) == 64
 
 
-def test_create_transfer_header(TYPES, FACTORY, deploy_params):
+def test_create_standard_transfer_header(TYPES, FACTORY, deploy_params):
     payment = FACTORY.create_standard_payment(
         amount = random.randint(0, 1e5),
         )
-    session = FACTORY.create_session_for_transfer(
+    session = FACTORY.create_standard_transfer_session(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
         target = bytes([]),
@@ -80,8 +80,8 @@ def test_create_transfer_header(TYPES, FACTORY, deploy_params):
     assert len(header.body_hash) == 64
 
 
-def test_create_transfer_deploy(TYPES, FACTORY, deploy_params, cp2):
-    session = FACTORY.create_session_for_transfer(
+def test_create_standard_transfer_deploy(TYPES, FACTORY, deploy_params, cp2):
+    session = FACTORY.create_standard_transfer_session(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
         target = cp2.account_hash,

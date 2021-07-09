@@ -69,6 +69,9 @@ _INTERFACE_OF_LIBRARY = {
     },
     _has_exception: set(),
     _has_function: {
+        "create_deploy",
+        "create_standard_payment",
+        "create_standard_transfer",
         "to_bytes",
         "to_hex",
         "to_json",

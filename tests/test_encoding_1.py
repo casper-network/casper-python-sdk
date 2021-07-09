@@ -8,7 +8,7 @@ def test_encode_transfer_payment(LIB, FACTORY, vector_deploy_1):
 
 def test_encode_transfer_session(LIB, FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
-        entity = FACTORY.create_session_for_transfer(
+        entity = FACTORY.create_standard_transfer_session(
             vector["session"]["amount"],
             vector["session"]["target"],
             vector["session"]["transfer_id"]
@@ -22,7 +22,7 @@ def test_encode_transfer_body(FACTORY, vector_deploy_1):
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
             ),
-            FACTORY.create_session_for_transfer(
+            FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]
@@ -38,7 +38,7 @@ def test_encode_transfer(LIB, FACTORY, deploy_params_static, vector_deploy_1):
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
             ),
-            FACTORY.create_session_for_transfer(
+            FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]

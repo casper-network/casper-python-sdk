@@ -32,6 +32,10 @@ from pycspr.codec         import to_hex
 from pycspr.codec         import to_json
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key
+from pycspr.crypto        import get_account_key_algo
+from pycspr.factory       import create_deploy
+from pycspr.factory       import create_standard_payment
+from pycspr.factory       import create_standard_transfer
 from pycspr.types         import NodeConnectionInfo
 from pycspr.types         import NodeEventType
 from pycspr.types         import NODE_REST_ENDPOINTS
@@ -42,7 +46,7 @@ from pycspr.types         import NODE_SSE_ENDPOINTS
 
 # Lib metadata.
 __title__ = "pycspr"
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "Mark A. Greenslade"
 __license__ = "Apache 2.0"
 

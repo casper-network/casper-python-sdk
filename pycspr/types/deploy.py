@@ -222,7 +222,7 @@ class Deploy():
 
 
 @dataclasses.dataclass
-class DeployStandardParameters():
+class DeployParameters():
     """Encapsulates standard information associated with a deploy.
     
     """
