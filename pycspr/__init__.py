@@ -12,10 +12,10 @@ from pycspr               import factory
 from pycspr               import types
 from pycspr.api           import get_account_balance
 from pycspr.api           import get_account_info
-from pycspr.api           import get_account_info_by_account_hash
 from pycspr.api           import get_account_main_purse_uref
 from pycspr.api           import get_auction_info
 from pycspr.api           import get_block
+from pycspr.api           import get_block_at_era_switch
 from pycspr.api           import get_block_transfers
 from pycspr.api           import get_deploy
 from pycspr.api           import get_era_info
@@ -27,7 +27,6 @@ from pycspr.api           import get_rpc_endpoint
 from pycspr.api           import get_rpc_schema
 from pycspr.api           import get_state_item
 from pycspr.api           import get_state_root_hash
-from pycspr.api           import get_switch_block
 from pycspr.codec         import to_bytes
 from pycspr.codec         import to_hex
 from pycspr.codec         import to_json
@@ -38,6 +37,7 @@ from pycspr.types         import NodeEventType
 from pycspr.types         import NODE_REST_ENDPOINTS
 from pycspr.types         import NODE_RPC_ENDPOINTS
 from pycspr.types         import NODE_SSE_ENDPOINTS
+
 
 
 # Lib metadata.

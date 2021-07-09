@@ -126,12 +126,12 @@ def test_get_block_02(LIB, block_hash):
     _assert(LIB.get_block(block_hash))
 
 
-def test_get_switch_block(LIB):
+def test_get_block_at_era_switch(LIB):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_chain_get_block.json
         assert response["header"]["era_end"] is not None
 
-    _assert(LIB.get_switch_block())
+    _assert(LIB.get_block_at_era_switch())
 
 
 def test_get_era_info(LIB, switch_block_hash):

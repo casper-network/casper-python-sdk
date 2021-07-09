@@ -1,4 +1,6 @@
 from pycspr.api.get_account_info import execute as get_account_info
+from pycspr.crypto import get_account_hash
+
 
 
 def execute(
@@ -13,6 +15,7 @@ def execute(
     :returns: Account main purse unforgeable reference.
 
     """
-    account_info = get_account_info(account_key, state_root_hash)
+    account_hash = get_account_hash(account_key)
+    account_info = get_account_info(account_hash, state_root_hash)
     
     return account_info["main_purse"]

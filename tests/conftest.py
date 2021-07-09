@@ -138,7 +138,7 @@ def test_account_1(LIB):
     )
 
 
-def _get_account_info_of_nctl_faucet(LIB):
+def _get_account_of_nctl_faucet(LIB):
     """Returns account information related to NCTL faucet. 
     
     """
@@ -152,7 +152,7 @@ def _get_account_info_of_nctl_faucet(LIB):
     )
 
 
-def _get_account_info_of_nctl_user(LIB, user_id: int):
+def _get_account_of_nctl_user(LIB, user_id: int):
     """Returns account information related to NCTL user 1. 
     
     """
@@ -171,7 +171,7 @@ def cp1(LIB):
     """Returns counter-party 1 test account key. 
     
     """
-    return _get_account_info_of_nctl_faucet(LIB)
+    return _get_account_of_nctl_faucet(LIB)
 
 
 @pytest.fixture(scope="session")
@@ -179,7 +179,7 @@ def cp2(LIB):
     """Returns counter-party 2 test account key. 
     
     """
-    return _get_account_info_of_nctl_user(LIB, 1)
+    return _get_account_of_nctl_user(LIB, 1)
 
 
 @pytest.fixture(scope="function")
@@ -298,7 +298,7 @@ def switch_block(LIB) -> str:
     """Returns hash of most next switch. 
     
     """
-    return LIB.get_switch_block()
+    return LIB.get_block_at_era_switch()
 
 
 @pytest.fixture(scope="session")

@@ -75,11 +75,11 @@ _INTERFACE_OF_LIBRARY = {
         "get_account_balance",
         "get_account_hash",
         "get_account_info",
-        "get_account_info_by_account_hash",
         "get_account_key",
         "get_account_main_purse_uref",
         "get_auction_info",
         "get_block",
+        "get_block_at_era_switch",
         "get_block_transfers",
         "get_deploy",
         "get_era_info",
@@ -91,7 +91,6 @@ _INTERFACE_OF_LIBRARY = {
         "get_rpc_schema",
         "get_state_item",
         "get_state_root_hash",
-        "get_switch_block",
     },
 }
 
