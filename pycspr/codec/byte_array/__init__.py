@@ -13,4 +13,4 @@ def encode(value) -> typing.List[int]:
     if type(value) == CLValue:       
         return encoder_cl(value) 
     else:
-        return encoder_deploy(value) 
+        return encoder_deploy(value)

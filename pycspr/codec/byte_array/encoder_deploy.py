@@ -19,15 +19,29 @@ from pycspr.types import ExecutionInfo_Transfer
 
 
 
+def encode_deploy(entity: Deploy) -> typing.List[int]:
+    """Encodes a deploy.
+    
+    """
+    raise NotImplementedError()
+
+
+def encode_deploy_header(entity: DeployHeader) -> typing.List[int]:
+    """Encodes a deploy header.
+    
+    """
+    raise NotImplementedError()
+
+
 def encode_execution_argument(entity: ExecutionArgument) -> typing.List[int]:
-    """Encodes a domain value: CL execution argument.
+    """Encodes an execution argument.
     
     """
     return encode_string(entity.name) + encode_cl_value(entity.value)
 
 
 def encode_execution_info(entity: ExecutionInfo) -> typing.List[int]:
-    """Encodes a domain value: CL execution information.
+    """Encodes execution information for subsequent interpretation by VM.
     
     """
     def _encode_args(args: typing.List[ExecutionArgument]):
@@ -54,33 +68,26 @@ def encode_execution_info(entity: ExecutionInfo) -> typing.List[int]:
         return _encode_args(entity.args)
 
     _ENCODERS = {
-        ExecutionInfo_ModuleBytes: _encode_module_bytes,
-        ExecutionInfo_StoredContractByHash: _encode_stored_contract_by_hash,
-        ExecutionInfo_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-        ExecutionInfo_StoredContractByName: _encode_stored_contract_by_name,
-        ExecutionInfo_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-        ExecutionInfo_Transfer: _encode_transfer,
+        ExecutionInfo_ModuleBytes: (0, _encode_module_bytes),
+        ExecutionInfo_StoredContractByHash: (1, _encode_stored_contract_by_hash),
+        ExecutionInfo_StoredContractByHashVersioned: (3, _encode_stored_contract_by_hash_versioned),
+        ExecutionInfo_StoredContractByName: (2, _encode_stored_contract_by_name),
+        ExecutionInfo_StoredContractByNameVersioned: (4, _encode_stored_contract_by_name_versioned),
+        ExecutionInfo_Transfer: (5, _encode_transfer),
     }
 
-    _TYPE_TAGS = {
-        ExecutionInfo_ModuleBytes: 0,
-        ExecutionInfo_StoredContractByHash: 1,
-        ExecutionInfo_StoredContractByHashVersioned: 3,
-        ExecutionInfo_StoredContractByName: 2,
-        ExecutionInfo_StoredContractByNameVersioned: 4,
-        ExecutionInfo_Transfer: 5,
-    }
-
-    if type(entity) not in _ENCODERS or type(entity) not in _TYPE_TAGS:
-        raise ValueError("Invalid domain type.")
-
-    return [_TYPE_TAGS[type(entity)]] + _ENCODERS[type(entity)]()
+    try:
+        type_tag, encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError("Unencodeable domain type.")
+    else:
+        return [type_tag] + encoder()
 
 
 # Map: Deploy type <-> encoder.
 ENCODERS = {
-    Deploy: None,
-    DeployHeader: None,
+    Deploy: encode_deploy,
+    DeployHeader: encode_deploy_header,
     ExecutionArgument: encode_execution_argument,
     ExecutionInfo_ModuleBytes: encode_execution_info,
     ExecutionInfo_StoredContractByHash: encode_execution_info,

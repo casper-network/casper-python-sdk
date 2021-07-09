@@ -20,21 +20,21 @@ from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
 
 def encode_any(value: object):
-    """Encodes a domain value: a value under CL storage with an unassigned type.
+    """Encodes a value of an unassigned type.
     
     """
     raise NotImplementedError()
 
 
 def encode_bool(value: bool):
-    """Encodes a domain value: bool.
+    """Encodes a boolean.
     
     """
     return [int(value)]
 
 
 def encode_byte_array(value: typing.Union[bytes, str]):    
-    """Encodes a domain value: byte array.
+    """Encodes a byte array.
     
     """
     if isinstance(value, bytes):
@@ -46,14 +46,14 @@ def encode_byte_array(value: typing.Union[bytes, str]):
 
 
 def encode_cl_value(entity: CLValue) -> typing.List[int]:
-    """Encodes a domain value: CL value.
+    """Encodes a CL value.
     
     """
     return encode_u8_array(encode(entity)) + encode_cl_type(entity.cl_type)
 
 
 def encode_cl_type(entity: CLType) -> typing.List[int]:
-    """Encodes a domain value: CL type.
+    """Encodes a CL type definition.
     
     """
     def _encode_byte_array():
@@ -95,63 +95,63 @@ def encode_cl_type(entity: CLType) -> typing.List[int]:
 
 
 def encode_i32(value: int):
-    """Encodes a domain value: Signed 32 bit integer.
+    """Encodes a signed 32 bit integer.
     
     """
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.I32].LENGTH, True)
 
 
 def encode_i64(value: int):
-    """Encodes a domain value: Signed 64 bit integer.
+    """Encodes a signed 64 bit integer.
     
     """
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.I64].LENGTH, True)
     
 
 def encode_key(value: str):
-    """Encodes a domain value: A key mapping to data within global state.
+    """Encodes a key mapping to data within global state.
     
     """
     return encode_string(value)
 
 
 def encode_list(value: list, inner_encoder: typing.Callable):
-    """Encodes a domain value: A list of values.
+    """Encodes a list of values.
     
     """
     return encode_vector_of_t(list(map(inner_encoder, value)))
 
 
 def encode_map(value: list):
-    """Encodes a domain value: A map of keys to associated values.
+    """Encodes a map of keys to associated values.
     
     """
     raise NotImplementedError()
 
 
 def encode_option(value: object, inner_encoder: typing.Callable):
-    """Encodes a domain value: An optional CL value.
+    """Encodes an optional CL value.
     
     """
     return [0] if value is None else [1] + inner_encoder(value)
 
 
 def encode_public_key(value: PublicKey):
-    """Encodes a domain value: A public key.
+    """Encodes a public key.
     
     """
     return [value.algo.value] + [int(i) for i in value.bytes_raw]
 
 
 def encode_result(value: object):
-    """Encodes a domain value: A smart contract execution result.
+    """Encodes a smart contract execution result.
     
     """
     raise NotImplementedError()
 
 
 def encode_string(value: str):
-    """Encodes a domain value: A CL string.
+    """Encodes a string.
     
     """
     value = encode_byte_array((value or "").encode("utf-8"))
@@ -160,56 +160,56 @@ def encode_string(value: str):
 
 
 def encode_tuple1(value: tuple):
-    """Encodes a domain value: A 1-ary tuple of CL values.
+    """Encodes a 1-ary tuple of CL values.
     
     """
     raise NotImplementedError()
 
 
 def encode_tuple2(value: tuple):
-    """Encodes a domain value: A 2-ary tuple of CL values.
+    """Encodes a 2-ary tuple of CL values.
     
     """
     raise NotImplementedError()
 
 
 def encode_tuple3(value: tuple):
-    """Encodes a domain value: A 3-ary tuple of CL values.
+    """Encodes a 3-ary tuple of CL values.
     
     """
     raise NotImplementedError()
 
 
 def encode_u8(value: int):
-    """Encodes a domain value: Unsigned 8 bit integer.
+    """Encodes an unsigned 8 bit integer.
     
     """
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH, False)
 
 
 def encode_u8_array(value: typing.List[int]) -> typing.List[int]:
-    """Encodes a domain value: Array of unsigned 8 bit integers.
+    """Encodes an array of unsigned 8 bit integers.
     
     """
     return encode_u32(len(value)) + value
 
 
 def encode_u32(value: int):
-    """Encodes a domain value: Unsigned 32 bit integer.
+    """Encodes an unsigned 32 bit integer.
     
     """
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH, False)
 
 
 def encode_u64(value: int):
-    """Encodes a domain value: Unsigned 64 bit integer.
+    """Encodes an unsigned 64 bit integer.
     
     """
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH, False)
 
 
 def encode_u128(value: int):
-    """Encodes a domain value: Unsigned 128 bit integer.
+    """Encodes an unsigned 128 bit integer.
     
     """
     if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN or \
@@ -239,7 +239,7 @@ def encode_u128(value: int):
 
 
 def encode_u256(value: int):
-    """Encodes a domain value: Unsigned 256 bit integer.
+    """Encodes an unsigned 256 bit integer.
     
     """
     if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN or \
@@ -254,7 +254,7 @@ def encode_u256(value: int):
 
 
 def encode_u512(value: int):
-    """Encodes a domain value: Unsigned 512 bit integer.
+    """Encodes an unsigned 512 bit integer.
     
     """
     if value < NUMERIC_CONSTRAINTS[CLTypeKey.U512].MIN or \
@@ -269,21 +269,21 @@ def encode_u512(value: int):
 
 
 def encode_unit(value: None):
-    """Encodes a domain value: A unitary CL value, i.e. a null.
+    """Encodes a unitary CL value, i.e. a null.
     
     """
     return []
 
 
 def encode_uref(value: str):
-    """Encodes a domain value: An unforgeable reference.
+    """Encodes an unforgeable reference.
     
     """
     return encode_byte_array((value or "").encode("utf-8"))
 
 
 def encode_vector_of_t(value: list):
-    """Encodes a domain value: An unbound vector.
+    """Encodes an unbound vector.
     
     """
     return encode_u32(len(value)) + [i for j in value for i in j]
@@ -332,6 +332,7 @@ def encode(value: CLValue) -> typing.List[int]:
         raise ValueError(f"Unencodeable type: {type(value)}")
 
     if encoder in (encode_list, encode_option):
-        return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.typeof])
+        inner_type_encoder = ENCODERS[value.cl_type.inner_type.typeof]
+        return encoder(value.parsed, inner_type_encoder)
     else:
         return encoder(value.parsed)
