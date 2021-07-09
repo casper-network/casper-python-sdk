@@ -94,6 +94,7 @@ _INTERFACE_OF_LIBRARY = {
         "get_rpc_schema",
         "get_state_item",
         "get_state_root_hash",
+        "write_deploy",
     },
 }
 
@@ -109,7 +110,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.3.0"
+    assert LIB.__version__ == "0.4.0"
 
 
 def test_exports_of_library(LIB):

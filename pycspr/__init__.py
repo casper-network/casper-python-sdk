@@ -41,6 +41,8 @@ from pycspr.types         import NodeEventType
 from pycspr.types         import NODE_REST_ENDPOINTS
 from pycspr.types         import NODE_RPC_ENDPOINTS
 from pycspr.types         import NODE_SSE_ENDPOINTS
+from pycspr.utils.io      import read_deploy
+from pycspr.utils.io      import write_deploy
 
 
 

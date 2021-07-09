@@ -1,6 +1,7 @@
 import datetime
 
 from pycspr.types import Digest
+from pycspr.types import PublicKey
 from pycspr.types import Timestamp
 
 
@@ -15,6 +16,13 @@ def encode_digest(entity: Digest) -> str:
         return bytes(entity).hex()
     return entity
 
+
+def encode_public_key(entity: PublicKey) -> str:
+    """Encodes a public key.
+
+    """
+    return entity.account_key
+    
 
 def encode_timestamp(entity: Timestamp) -> str:
     """Encodes a millisecond precise timestamp.

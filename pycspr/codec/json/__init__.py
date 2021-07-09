@@ -1,6 +1,7 @@
 import json
 
 from pycspr.codec.json.encoder_deploy import encode_deploy
+from pycspr.codec.json.decoder_deploy import decode_deploy as decode
 from pycspr.types import Deploy
 
 

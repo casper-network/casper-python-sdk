@@ -6,17 +6,6 @@ from pycspr.codec import json as json_codec
 
 
 
-# Entity to byte array mapper.
-to_bytes = lambda e: _encode(e, "byte-array")
-
-# Entity to hex string mapper.
-to_hex = lambda e: _encode(e, "hex-string")
-
-# Entity to JSON mapper.
-to_json = lambda e: _encode(e, "json")
-
-
-
 # Map: encoding <-> codec.
 _CODECS = {
     "byte-array": byte_array_codec,
@@ -33,3 +22,16 @@ def _encode(entity: object, encoding: str = "json") -> typing.Union[typing.List[
         raise ValueError(f"Invalid encoding: {encoding}.  Must be one of: {_CODECS.keys()}")
 
     return _CODECS[encoding].encode(entity)
+
+
+# Entity to byte array mapper.
+to_bytes = lambda e: _encode(e, "byte-array")
+
+# Entity to hex string mapper.
+to_hex = lambda e: _encode(e, "hex-string")
+
+# Entity to JSON mapper.
+to_json = lambda e: _encode(e, "json")
+
+# JSON to entity.
+from_json = lambda obj: json_codec.decode(obj)

@@ -1,5 +1,6 @@
 from pycspr.codec.json.encoder_cl import encode_cl_value
 from pycspr.codec.json.encoder_misc import encode_digest
+from pycspr.codec.json.encoder_misc import encode_public_key
 from pycspr.codec.json.encoder_misc import encode_timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
@@ -39,7 +40,7 @@ def encode_deploy_header(entity: DeployHeader) -> dict:
 
     """
     return {
-        "account": entity.accountPublicKey.account_key,
+        "account": encode_public_key(entity.accountPublicKey),
         "body_hash": encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,

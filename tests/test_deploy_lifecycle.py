@@ -1,5 +1,5 @@
 import random
-
+import tempfile
 
 
 def test_deploy_is_unapproved_when_instantiated(FACTORY, deploy_params, cp2):
@@ -27,6 +27,21 @@ def test_deploy_approvals_are_deduplicated(FACTORY, deploy_params, cp1, cp2):
         deploy.set_approval(cp1)
         deploy.set_approval(cp2)
     assert len(deploy.approvals) == 2
+
+
+def test_can_write_to_fs(LIB, FACTORY, deploy_params, cp1, cp2):
+    deploy = _create_deploy(FACTORY, deploy_params, cp2)
+    with tempfile.TemporaryFile() as fp:
+        LIB.write_deploy(deploy, fp)        
+
+
+def test_can_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
+    deploy = _create_deploy(FACTORY, deploy_params, cp2)
+    with tempfile.TemporaryFile() as fp:
+        LIB.write_deploy(deploy, fp)
+        deploy_1 = LIB.read_deploy(fp)
+        assert isinstance(deploy_1, type(deploy))
+        assert LIB.to_json(deploy) == LIB.to_json(deploy_1)
 
 
 def _create_deploy(FACTORY, deploy_params, cp2):
