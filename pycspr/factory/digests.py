@@ -85,7 +85,7 @@ def create_digest_of_deploy_body(
     :param session: Deploy session execution logic.
     :returns: Hexademcimal string representation of a deploy body digest.
 
-    """
+    """    
     # Set data to be hashed.
     data = \
         codec.to_bytes(payment) + \

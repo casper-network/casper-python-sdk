@@ -4,14 +4,6 @@ import random
 
 
 
-def test_create_deploy_approval(TYPES, FACTORY, vector_cl_data_1, vector_crypto_2):
-    _bytes = vector_cl_data_1.get_value_as_bytes(TYPES.CLTypeKey.BYTE_ARRAY)
-    for algo, pbk, pvk in [operator.itemgetter("algo", "pbk", "pvk")(i) for i in vector_crypto_2]:
-        account_info = FACTORY.create_account_info(algo, pvk, pbk)
-        approval = FACTORY.create_deploy_approval(account_info, _bytes)
-        assert isinstance(approval, TYPES.DeployApproval)
-
-
 def test_create_deploy_parameters(TYPES, FACTORY, a_test_account, a_test_chain_id):
     assert isinstance(
         FACTORY.create_deploy_parameters(

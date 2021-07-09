@@ -21,3 +21,9 @@ NUMERIC_CONSTRAINTS ={
 
 # Default number of motes to pay for standard payments.
 STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = 1e4
+
+# Default deploy time to live.
+DEFAULT_DEPLOY_TTL = "1day"
+
+# Default deploy gas price.
+DEFAULT_GAS_PRICE = 1

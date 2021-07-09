@@ -44,38 +44,6 @@ def create_deploy(std_params: DeployParameters, payment: ExecutionInfo, session:
     )
 
 
-def create_deploy_approval(account: AccountInfo, deploy: Deploy) -> DeployApproval:
-    """Returns an approval by an account to the effect of authorizing deploy processing.
-    
-    :param account: An account authorising upstream deploy processing.
-    :param data: Payload to be signed.
-
-    """
-    # TODO: push this to deploy dispatcher - i.e. refuse to push to node if approval set is invalid.
-    # Reset approval set if deploy hash has changed since last signattures were applied.
-    if deploy.approvals:
-        deploy_hash_memo = deploy.hash
-        deploy.header.body_hash = create_digest_of_deploy_body(deploy.session, deploy.payment)
-        deploy.hash = create_digest_of_deploy(deploy.header)
-        if deploy.hash != deploy_hash_memo:
-            deploy.approvals = []
-
-    # Extend (de-duplicated) approval set.approval set.
-    deploy.approvals.append(
-        DeployApproval(
-            signer=account.account_key, 
-            signature=crypto.get_signature(
-                bytes.fromhex(deploy.hash),
-                account.private_key,
-                algo=account.algo,
-                encoding=crypto.SignatureEncoding.HEX
-                )
-            )
-        )
-
-    return deploy.approvals[-1]
-
-
 def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> DeployBody:
     """Returns hash of a deploy's so-called body.
     
@@ -114,9 +82,9 @@ def create_deploy_parameters(
     account: typing.Union[AccountInfo, PublicKey],
     chain_name: str,
     dependencies: typing.List[Digest] = [],
-    gas_price: int = 1,
+    gas_price: int = constants.DEFAULT_GAS_PRICE,
     timestamp: datetime.datetime = None,
-    ttl: typing.Union[str, DeployTimeToLive] = "1day"
+    ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL
     ) -> DeployParameters:
     """Returns header information associated with a deploy.
     
@@ -143,7 +111,7 @@ def create_deploy_parameters(
     )
 
 
-def create_deploy_ttl(humanized_ttl: str = "1day") -> DeployTimeToLive:
+def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> DeployTimeToLive:
     """Returns a deploy's time to live after which it will not longer be accepted by a node.
     
     :param humanized_ttl: A humanized ttl, e.g. 1 day.

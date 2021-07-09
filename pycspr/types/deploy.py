@@ -2,6 +2,8 @@ import dataclasses
 import datetime
 import typing
 
+from pycspr import crypto
+from pycspr.types.account import AccountInfo
 from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLValue
 
@@ -148,31 +150,6 @@ class DeployTimeToLive():
     humanized: str
 
 
-#   const dehumanizeUnit = (s: string): number => {
-#     if (s.includes('ms')) {
-#       return Number(s.replace('ms', ''));
-#     }
-#     if (s.includes('s') && !s.includes('m')) {
-#       return Number(s.replace('s', '')) * 1000;
-#     }
-#     if (s.includes('m') && !s.includes('s')) {
-#       return Number(s.replace('m', '')) * 60 * 1000;
-#     }
-#     if (s.includes('h')) {
-#       return Number(s.replace('h', '')) * 60 * 60 * 1000;
-#     }
-#     if (s.includes('day')) {
-#       return Number(s.replace('day', '')) * 24 * 60 * 60 * 1000;
-#     }
-#     throw Error('Unsuported TTL unit');
-#   };
-
-#   return ttl
-#     .split(' ')
-#     .map(dehumanizeUnit)
-#     .reduce((acc, val) => (acc += val));
-
-
 @dataclasses.dataclass
 class DeployHeader():
     """Encapsulates header information associated with a deploy.
@@ -219,6 +196,27 @@ class Deploy():
 
     # Executable information passed to chain's VM.
     session: ExecutionInfo
+
+
+    def set_approval(self, account: AccountInfo):
+        """Appends an approval to associated set.
+        
+        """
+        self.approvals.append(
+            DeployApproval(
+                signer=account.account_key, 
+                signature=crypto.get_signature(
+                    bytes.fromhex(self.hash),
+                    account.private_key,
+                    algo=account.algo,
+                    encoding=crypto.SignatureEncoding.HEX
+                    )
+                )
+            )
+    
+        # Remove potential duplicates.
+        uniques = set()
+        self.approvals = [uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques]
 
 
 @dataclasses.dataclass
