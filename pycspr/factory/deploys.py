@@ -3,6 +3,8 @@ import typing
 
 from pycspr import crypto
 from pycspr import factory
+from pycspr.factory.digests import create_digest_of_deploy
+from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import AccountInfo
 from pycspr.types import PublicKey
 from pycspr.types import CLTypeKey
@@ -32,32 +34,46 @@ def create_deploy(std_params: DeployParameters, payment: ExecutionInfo, session:
     """
     body = create_deploy_body(payment, session)
     header = create_deploy_header(body, std_params)
-    deploy_hash = factory.create_digest_of_deploy(header)  
 
     return Deploy(
         approvals=[],
-        hash=deploy_hash,
+        hash=create_digest_of_deploy(header),
         header=header,
         payment=payment,
         session=session
     )
 
 
-def create_deploy_approval(account: AccountInfo, data: bytes) -> DeployApproval:
+def create_deploy_approval(account: AccountInfo, deploy: Deploy) -> DeployApproval:
     """Returns an approval by an account to the effect of authorizing deploy processing.
     
     :param account: An account authorising upstream deploy processing.
     :param data: Payload to be signed.
 
     """
-    return DeployApproval(
-        signer=account.public_key, 
-        signature=crypto.get_signature(
-            data,
-            account.private_key,
-            algo=account.algo
+    # TODO: push this to deploy dispatcher - i.e. refuse to push to node if approval set is invalid.
+    # Reset approval set if deploy hash has changed since last signattures were applied.
+    if deploy.approvals:
+        deploy_hash_memo = deploy.hash
+        deploy.header.body_hash = create_digest_of_deploy_body(deploy.session, deploy.payment)
+        deploy.hash = create_digest_of_deploy(deploy.header)
+        if deploy.hash != deploy_hash_memo:
+            deploy.approvals = []
+
+    # Extend (de-duplicated) approval set.approval set.
+    deploy.approvals.append(
+        DeployApproval(
+            signer=account.account_key, 
+            signature=crypto.get_signature(
+                bytes.fromhex(deploy.hash),
+                account.private_key,
+                algo=account.algo,
+                encoding=crypto.SignatureEncoding.HEX
+                )
             )
         )
+
+    return deploy.approvals[-1]
 
 
 def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> DeployBody:
@@ -67,9 +83,11 @@ def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> Deploy
     :param session: Session execution information.
 
     """
-    body_hash = factory.create_digest_of_deploy_body(payment, session)
-
-    return DeployBody(session, payment, body_hash)
+    return DeployBody(
+        session,
+        payment,
+        factory.create_digest_of_deploy_body(payment, session)
+        )
 
 
 def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHeader:
