@@ -32,6 +32,19 @@ class CLTypeKey(enum.Enum):
     PUBLIC_KEY = 22
 
 
+# Set of types considered to be numeric.
+TYPES_NUMERIC = {
+    CLTypeKey.I32,
+    CLTypeKey.I64,
+    CLTypeKey.U8,
+    CLTypeKey.U32,
+    CLTypeKey.U64,
+    CLTypeKey.U128,
+    CLTypeKey.U256,
+    CLTypeKey.U512,
+}
+
+
 # Set of types considered to be simple.
 TYPES_SIMPLE = {
     CLTypeKey.BOOL,

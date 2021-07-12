@@ -1,10 +1,10 @@
 import typing
 
-from pycspr.codec.byte_array.encoder_cl import encode_cl_value
-from pycspr.codec.byte_array.encoder_cl import encode_string
-from pycspr.codec.byte_array.encoder_cl import encode_byte_array
-from pycspr.codec.byte_array.encoder_cl import encode_u8_array
-from pycspr.codec.byte_array.encoder_cl import encode_vector_of_t
+from pycspr.codec.byte_array.encoder.cl import encode_cl_value
+from pycspr.codec.byte_array.encoder.cl import encode_string
+from pycspr.codec.byte_array.encoder.cl import encode_byte_array
+from pycspr.codec.byte_array.encoder.cl import encode_u8_array
+from pycspr.codec.byte_array.encoder.cl import encode_vector_of_t
 from pycspr.types import Deploy
 from pycspr.types import DeployHeader
 from pycspr.types import ExecutionArgument

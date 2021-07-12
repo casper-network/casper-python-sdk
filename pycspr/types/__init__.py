@@ -1,6 +1,7 @@
 from pycspr.types.account import AccountInfo
 from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLTypeKey
+from pycspr.types.cl import TYPES_NUMERIC
 from pycspr.types.cl import TYPES_SIMPLE
 from pycspr.types.cl import CLType
 from pycspr.types.cl import CLType_ByteArray

@@ -36,12 +36,15 @@ def test_can_write_to_fs(LIB, FACTORY, deploy_params, cp1, cp2):
 
 
 def test_can_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
-    deploy = _create_deploy(FACTORY, deploy_params, cp2)
+    deploy_1 = _create_deploy(FACTORY, deploy_params, cp2)
     with tempfile.TemporaryFile() as fp:
-        LIB.write_deploy(deploy, fp)
-        deploy_1 = LIB.read_deploy(fp)
-        assert isinstance(deploy_1, type(deploy))
-        assert LIB.to_json(deploy) == LIB.to_json(deploy_1)
+        LIB.write_deploy(deploy_1, fp)
+        deploy_2 = LIB.read_deploy(fp)
+        assert isinstance(deploy_2, type(deploy_1))
+
+        print(LIB.to_json(deploy_1) == LIB.to_json(deploy_2))
+
+        assert LIB.to_json(deploy_1) == LIB.to_json(deploy_2)
 
 
 def _create_deploy(FACTORY, deploy_params, cp2):
