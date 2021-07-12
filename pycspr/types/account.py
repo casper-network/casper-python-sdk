@@ -44,7 +44,7 @@ class AccountInfo:
         """Returns on-chain account key.
 
         """ 
-        return crypto.get_account_key(self.algo, self.pbk.hex())
+        return crypto.get_account_key(self.algo, self.pbk)
 
 
     def get_signature(self, data: bytes) -> bytes:
@@ -79,4 +79,4 @@ class PublicKey:
         """Returns on-chain account key.
 
         """ 
-        return crypto.get_account_key(self.algo, self.bytes_raw.hex())
+        return crypto.get_account_key(self.algo, self.bytes_raw)

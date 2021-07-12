@@ -13,6 +13,7 @@ from pycspr.types import CLTypeKey
 from pycspr.types import CLType_Option
 from pycspr.types import CLValue
 from pycspr.types import PublicKey
+from pycspr.utils.conversion import le_bytes_to_int
 
 
 
@@ -27,14 +28,14 @@ def decode_bool(as_bytes: typing.List[int]) -> bool:
     """Decodes a boolean.
     
     """
-    raise NotImplementedError()
+    return bool(as_bytes[0])
 
 
 def decode_byte_array(as_bytes: typing.List[int]) -> bytes:    
     """Decodes a byte array.
     
     """
-    raise NotImplementedError()
+    return bytes(as_bytes)
 
 
 def decode_cl_value(as_bytes: typing.List[int]) -> CLValue:
@@ -55,14 +56,14 @@ def decode_i32(as_bytes: typing.List[int]) -> int:
     """Decodes a signed 32 bit integer.
     
     """
-    raise NotImplementedError()
+    return le_bytes_to_int(as_bytes, True)
 
 
 def decode_i64(as_bytes: typing.List[int]) -> int:
     """Decodes a signed 64 bit integer.
     
     """
-    raise NotImplementedError()    
+    return le_bytes_to_int(as_bytes, True)
 
 
 def decode_key(as_bytes: typing.List[int]) -> str:
@@ -86,11 +87,13 @@ def decode_map(as_bytes: typing.List[int]) -> dict:
     raise NotImplementedError()
 
 
-def decode_option(as_bytes: typing.List[int], inner_decoder: typing.Callable):
+def decode_option(as_bytes: typing.List[int], inner_cl_type: CLType):
     """Decodes an optional CL value.
     
     """
-    raise NotImplementedError()
+    is_defined, rem_bytes = bool(as_bytes[0]), as_bytes[1:]
+
+    return decode(inner_cl_type, rem_bytes) if is_defined else None
 
 
 def decode_public_key(as_bytes: typing.List[int]) -> PublicKey:
@@ -139,7 +142,7 @@ def decode_u8(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 8 bit integer.
     
     """
-    raise NotImplementedError()
+    return le_bytes_to_int(as_bytes, False)
 
 
 def decode_u8_array(as_bytes: typing.List[int]) -> typing.List[int]:
@@ -153,37 +156,53 @@ def decode_u32(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 32 bit integer.
     
     """
-    raise NotImplementedError()
+    return le_bytes_to_int(as_bytes, False)
 
 
 def decode_u64(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 64 bit integer.
     
     """
-    raise NotImplementedError()
+    return le_bytes_to_int(as_bytes, False)
 
 
 def decode_u128(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 128 bit integer.
     
     """
-    raise NotImplementedError()
+    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
+    if type_tag == CLTypeKey.U8:
+        return decode_u8(as_bytes)
+    elif type_tag == CLTypeKey.U32:
+        return decode_u32(as_bytes)
+    elif type_tag == CLTypeKey.U64:
+        return decode_u64(as_bytes)
+    elif type_tag == CLTypeKey.U128:
+        return le_bytes_to_int(rem_bytes, False)
+    else:
+        raise NotImplementedError()
 
 
 def decode_u256(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 256 bit integer.
     
     """
-    raise NotImplementedError()
+    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
+    if type_tag == CLTypeKey.U256:
+        return le_bytes_to_int(rem_bytes, False)
+    else:
+        return decode_u128(as_bytes)
 
 
 def decode_u512(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 512 bit integer.
     
     """
-    print(len(as_bytes), as_bytes.hex(), int(as_bytes[0]), as_bytes)
-
-    raise NotImplementedError()
+    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
+    if type_tag == CLTypeKey.U512:
+        return le_bytes_to_int(rem_bytes, False)
+    else:
+        return decode_u256(as_bytes)
 
 
 def decode_unit(as_bytes: typing.List[int]) -> None:
@@ -214,7 +233,7 @@ _SIMPLE_TYPE_DECODERS = {
     CLTypeKey.I64: decode_i64,
     CLTypeKey.KEY: decode_key,
     CLTypeKey.PUBLIC_KEY: decode_public_key,
-    CLTypeKey.STRING: decode_option,
+    CLTypeKey.STRING: decode_string,
     CLTypeKey.U8: decode_u8,
     CLTypeKey.U32: decode_u32,
     CLTypeKey.U64: decode_u64,
@@ -227,11 +246,18 @@ _SIMPLE_TYPE_DECODERS = {
 
 
 def decode(type_info: CLType, as_bytes: typing.List[int]) -> typing.List[int]:
-    """Decodes a domain value from an array of bytes.
+    """Decodes a domain entity from an array of bytes.
     
     """
     if isinstance(type_info, CLType_Simple):
-        return _SIMPLE_TYPE_DECODERS[type_info.typeof](as_bytes)
+        entity = _SIMPLE_TYPE_DECODERS[type_info.typeof](as_bytes)
+    elif isinstance(type_info, CLType_ByteArray):
+        entity = decode_byte_array(as_bytes)
+    elif isinstance(type_info, CLType_Option):
+        entity = decode_option(as_bytes, type_info.inner_type)
     else:
-        print(type_info, as_bytes)
-        return None
+        entity = None
+
+    print(111, type_info.typeof, as_bytes, entity)
+
+    return entity

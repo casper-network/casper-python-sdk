@@ -1,5 +1,4 @@
 from pycspr import crypto
-from pycspr import factory
 from pycspr.codec.json.decoder.cl import decode_cl_value
 from pycspr.codec.json.decoder.misc import decode_digest
 from pycspr.codec.json.decoder.misc import decode_public_key
@@ -12,9 +11,26 @@ from pycspr.types import DeployTimeToLive
 from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutionInfo
 from pycspr.types import ExecutionInfo_ModuleBytes
+from pycspr.types import ExecutionInfo_StoredContractByHash
+from pycspr.types import ExecutionInfo_StoredContractByHashVersioned
+from pycspr.types import ExecutionInfo_StoredContractByName
+from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
 from pycspr.types import ExecutionInfo_Transfer
 from pycspr.types import PublicKey
 
+
+
+def decode_deploy(obj: dict) -> Deploy:
+    """Maps a dictionary to a deploy.
+    
+    """
+    return Deploy(
+        approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
+        hash=decode_digest(obj["hash"]),
+        header = decode_deploy_header(obj["header"]),
+        payment = decode_execution_info(obj["payment"]),
+        session = decode_execution_info(obj["session"])
+    )
 
 
 def decode_deploy_approval(obj: dict) -> DeployApproval:    
@@ -42,19 +58,6 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
     )
 
 
-def decode_deploy(obj: dict) -> Deploy:
-    """Maps a dictionary to a deploy.
-    
-    """
-    return Deploy(
-        approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
-        hash=decode_digest(obj["hash"]),
-        header = decode_deploy_header(obj["header"]),
-        payment = decode_execution_info(obj["payment"]),
-        session = decode_execution_info(obj["session"])
-    )
-
-
 def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
     """Maps a dictionary to a deploy ttl wrapper object.
     
@@ -79,20 +82,40 @@ def decode_execution_info(obj) -> ExecutionInfo:
     """Maps a dictionary to execution information.
     
     """
-    def _decode_module_bytes(obj):
+    def _decode_module_bytes():
         return ExecutionInfo_ModuleBytes(
-            args=[decode_execution_argument(i) for i in obj["args"]],
-            module_bytes=bytes.fromhex(obj["module_bytes"])
+            args=[decode_execution_argument(i) for i in obj["ModuleBytes"]["args"]],
+            module_bytes=bytes.fromhex(obj["ModuleBytes"]["module_bytes"])
             )        
 
-    def _decode_session_for_transfer(obj):
+    def _decode_stored_contract_by_hash() -> dict:
+        raise NotImplementedError()
+
+    def _decode_stored_contract_by_hash_versioned() -> dict:
+        raise NotImplementedError()
+
+    def _decode_stored_contract_by_name() -> dict:
+        raise NotImplementedError()
+
+    def _decode_stored_contract_by_name_versioned() -> dict:
+        raise NotImplementedError()
+
+    def _decode_session_for_transfer():
         return ExecutionInfo_Transfer(
-            args=[decode_execution_argument(i) for i in obj["args"]],
+            args=[decode_execution_argument(i) for i in obj["Transfer"]["args"]],
             )  
 
     if "ModuleBytes" in obj:
-        return _decode_module_bytes(obj["ModuleBytes"])
+        return _decode_module_bytes()
+    elif "StoredContractByHash" in obj:
+        return _decode_stored_contract_by_hash()
+    elif "StoredVersionedContractByHash" in obj:
+        return _decode_stored_contract_by_hash_versioned()
+    elif "StoredContractByName" in obj:
+        return _decode_stored_contract_by_name()
+    elif "StoredVersionedContractByName" in obj:
+        return _decode_stored_contract_by_name_versioned()
     elif "Transfer" in obj:
-        return _decode_session_for_transfer(obj["Transfer"])
-
-    raise NotImplementError("Unsupported execution information variant")
+        return _decode_session_for_transfer()
+    else:
+        raise NotImplementError("Unsupported execution information variant")

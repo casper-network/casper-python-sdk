@@ -1,4 +1,18 @@
-def int_to_le_bytes(x: int, length: int, signed: bool):
+import typing
+
+
+
+def le_bytes_to_int(as_bytes: typing.List[int], signed: bool) -> int:
+    """Converts a little endian byte array to an integer.
+
+    :param as_bytes: A little endian encoded byte array integer.
+    :param signed: Flag indicating whether integer is signed.
+
+    """
+    return int.from_bytes(as_bytes, byteorder='little', signed=signed)    
+
+
+def int_to_le_bytes(x: int, length: int, signed: bool) -> typing.List[int]:
     """Converts an integer to a little endian byte array.
 
     :param x: An integer to be mapped.
@@ -9,10 +23,9 @@ def int_to_le_bytes(x: int, length: int, signed: bool):
     if not isinstance(x, int):
         x = int(x)
     return [i for i in x.to_bytes(length, 'little', signed=signed)]
-    # return [0xff & x >> 8 * i for i in range(length)]
 
 
-def int_to_le_bytes_trimmed(x: int, length: int, signed: bool):
+def int_to_le_bytes_trimmed(x: int, length: int, signed: bool) -> typing.List[int]:
     """Converts an integer to a little endian byte array with trailing zeros removed.
 
     :param x: An integer to be mapped.

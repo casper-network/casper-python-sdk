@@ -7,17 +7,21 @@ from operator import itemgetter
 
 def test_get_hash(LIB, vector_crypto_1):
     for data, hashes in [operator.itemgetter("data", "hashes")(i) for i in vector_crypto_1]:
-        for algo, encoding, digest in [operator.itemgetter("algo", "encoding", "digest")(j) for j in hashes]:
+        for algo, digest in [operator.itemgetter("algo", "digest")(j) for j in hashes]:
             algo = LIB.crypto.HashAlgorithm[algo]
-            encoding = LIB.crypto.HashEncoding[encoding]
-            assert digest == LIB.crypto.get_hash(data.encode("utf-8"), 32, algo, encoding)
+            digest = bytes.fromhex(digest)
+            assert digest == LIB.crypto.get_hash(data.encode("utf-8"), 32, algo)
 
 
 def test_get_account(LIB, vector_crypto_2):
     for algo, pbk, account_key, accountHash in [operator.itemgetter("algo", "pbk", "accountKey", "accountHash")(i) for i in vector_crypto_2]:
+        pbk = bytes.fromhex(pbk)
+        account_key = bytes.fromhex(account_key)
+        accountHash = bytes.fromhex(accountHash)
         algo = LIB.crypto.KeyAlgorithm[algo]
         assert algo == LIB.crypto.get_account_key_algo(account_key)
         assert account_key == LIB.crypto.get_account_key(algo, pbk)
+        print(LIB.crypto.get_account_hash(account_key).hex())
         assert LIB.crypto.get_account_hash(account_key) == accountHash
 
 

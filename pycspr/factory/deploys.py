@@ -2,7 +2,11 @@ import datetime
 import typing
 
 from pycspr import crypto
-from pycspr import factory
+from pycspr.factory.accounts import create_public_key
+from pycspr.factory.cl import create_cl_type_of_byte_array
+from pycspr.factory.cl import create_cl_type_of_option
+from pycspr.factory.cl import create_cl_type_of_simple
+from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import AccountInfo
@@ -54,7 +58,7 @@ def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> Deploy
     return DeployBody(
         session,
         payment,
-        factory.create_digest_of_deploy_body(payment, session)
+        create_digest_of_deploy_body(payment, session)
         )
 
 
@@ -97,7 +101,7 @@ def create_deploy_parameters(
 
     """
     public_key = account if isinstance(account, PublicKey) else \
-                 factory.accounts.create_public_key(account.algo, account.pbk)
+                 create_public_key(account.algo, account.pbk)
     timestamp = timestamp or datetime.datetime.utcnow().timestamp()
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
@@ -134,8 +138,8 @@ def create_execution_arg(
 
     """
     return ExecutionArgument(
-        name = name,
-        value = factory.create_cl_value(cl_type, parsed)
+        name=name,
+        value=create_cl_value(cl_type, parsed)
     )
 
 
@@ -152,7 +156,7 @@ def create_standard_payment(
             create_execution_arg(
                 "amount",
                 amount,
-                factory.create_cl_type_of_simple(CLTypeKey.U512)
+                create_cl_type_of_simple(CLTypeKey.U512)
                 ),
         ],
         module_bytes=bytes([])
@@ -197,22 +201,24 @@ def create_standard_transfer_session(
     :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
     
     """
+    print(type(amount), type(target), type(correlation_id))
+
     return ExecutionInfo_Transfer(
         args=[
             create_execution_arg(
                 "amount",
                 amount,
-                factory.create_cl_type_of_simple(CLTypeKey.U512)
+                create_cl_type_of_simple(CLTypeKey.U512)
                 ),
             create_execution_arg(
                 "target",
                 target,
-                factory.create_cl_type_of_byte_array(32)
+                create_cl_type_of_byte_array(32)
                 ),
             create_execution_arg(
                 "id",
                 correlation_id,
-                factory.create_cl_type_of_option(factory.create_cl_type_of_simple(CLTypeKey.U64))
+                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
                 ),
         ]
     )

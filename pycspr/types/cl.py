@@ -69,10 +69,7 @@ class CLType():
     """Encapsulates CL type information associated with a value.
     
     """
-    @property
-    def tag(self) -> int:
-        """Returns a tag used when encoding/decoding."""
-        return self.typeof.value
+    pass
 
 
 @dataclasses.dataclass

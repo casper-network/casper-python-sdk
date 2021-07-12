@@ -41,6 +41,8 @@ def encode_byte_array(value: typing.Union[bytes, str]):
         return [int(i) for i in value]
     elif isinstance(value, list):
         return value
+    elif isinstance(value, type(None)):
+        return []
     else:
         return [int(i) for i in bytes.fromhex(value)]
 

@@ -47,7 +47,7 @@ def decode_cl_value(obj: typing.Union[dict, str]) -> CLValue:
     cl_type = decode_cl_type(obj["cl_type"])
     as_bytes = bytes.fromhex(obj["bytes"])
 
-    if isinstance(cl_type, CLType_Simple):
+    if isinstance(cl_type, (CLType_Simple, CLType_ByteArray, CLType_Option)):
         parsed = byte_array_decoder(cl_type, as_bytes)
     else:
         print(cl_type)

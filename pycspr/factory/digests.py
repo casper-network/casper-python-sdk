@@ -9,14 +9,11 @@ from pycspr.types import DeployHeader
 
 
 
-def create_digest_of_deploy(
-    header: DeployHeader,
-    encoding=crypto.HashEncoding.HEX
-    ) -> typing.Union[str, bytes, typing.List[int]]:
-    """Returns a deploy's digest.
+def create_digest_of_deploy(header: DeployHeader) -> bytes:
+    """Returns a deploy's hash digest.
     
     :param header: Deploy header information.
-    :returns: Hexademcimal string representation of a deploy digest.
+    :returns: Hash digest of a deploy.
 
     """
     # Element 1: account. 
@@ -61,8 +58,7 @@ def create_digest_of_deploy(
         header.chain_name
     )
 
-    # Set data to be hashed.
-    data = \
+    return crypto.get_hash(
         codec.to_bytes(cl_account) + \
         codec.to_bytes(cl_timestamp) + \
         codec.to_bytes(cl_ttl) + \
@@ -70,25 +66,18 @@ def create_digest_of_deploy(
         codec.to_bytes(cl_body_hash) + \
         codec.to_bytes(cl_dependencies) + \
         codec.to_bytes(cl_chain_name)
+        )
 
-    return crypto.get_hash(data, encoding=encoding)
 
-
-def create_digest_of_deploy_body(
-    payment: ExecutionInfo,
-    session: ExecutionInfo,
-    encoding=crypto.HashEncoding.HEX
-    ) -> typing.Union[str, bytes, typing.List[int]]:
-    """Returns a deploy body's digest.
+def create_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> bytes:
+    """Returns a deploy body's hash digest.
     
     :param payment: Deploy payment execution logic.
     :param session: Deploy session execution logic.
-    :returns: Hexademcimal string representation of a deploy body digest.
+    :returns: Hash digest of a deploy body.
 
     """    
-    # Set data to be hashed.
-    data = \
+    return crypto.get_hash(
         codec.to_bytes(payment) + \
         codec.to_bytes(session)
-
-    return crypto.get_hash(data, encoding=encoding)
+        )

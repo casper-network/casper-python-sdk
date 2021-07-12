@@ -32,12 +32,3 @@ class HashAlgorithm(enum.Enum):
     
     """
     BLAKE2B = enum.auto()
-
-
-class HashEncoding(enum.Enum):
-    """Enumeration over set of supported hash encodings.
-    
-    """
-    BYTES = enum.auto()
-    BYTE_ARRAY = enum.auto()
-    HEX = enum.auto()

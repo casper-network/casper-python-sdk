@@ -76,22 +76,17 @@ def encode_execution_info(entity: ExecutionInfo) -> dict:
             }
         }
 
-
     def _encode_stored_contract_by_hash() -> dict:
         raise NotImplementedError()
-
 
     def _encode_stored_contract_by_hash_versioned() -> dict:
         raise NotImplementedError()
 
-
     def _encode_stored_contract_by_name() -> dict:
         raise NotImplementedError()
 
-
     def _encode_stored_contract_by_name_versioned() -> dict:
         raise NotImplementedError()
-
 
     def _encode_session_for_transfer() -> dict:
         return {
