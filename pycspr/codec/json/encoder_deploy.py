@@ -73,7 +73,7 @@ def encode_execution_info(entity: ExecutionInfo) -> str:
         }
 
 
-    def _encode_transfer() -> dict:
+    def _encode_session_for_transfer() -> dict:
         return {
             "Transfer": {
                 "args": [encode_execution_argument(i) for i in entity.args]            
@@ -82,7 +82,7 @@ def encode_execution_info(entity: ExecutionInfo) -> str:
 
     _ENCODERS = {
         ExecutionInfo_ModuleBytes: _encode_module_bytes,
-        ExecutionInfo_Transfer: _encode_transfer,
+        ExecutionInfo_Transfer: _encode_session_for_transfer,
     }
 
     return _ENCODERS[type(entity)]()
