@@ -30,15 +30,15 @@ def test_create_standard_payment(TYPES, FACTORY):
         )
 
 
-def test_create_standard_transfer_session(TYPES, FACTORY):
-    assert isinstance(
-        FACTORY.create_standard_transfer_session(
-            amount = random.randint(0, 1e9),
-            correlation_id = random.randint(0, 1e9),
-            target = bytes([]),
-            ),
-        TYPES.ExecutionInfo_Transfer
-        )
+    def test_create_standard_transfer_session(TYPES, FACTORY):
+        assert isinstance(
+            FACTORY.create_standard_transfer_session(
+                amount = random.randint(0, 1e9),
+                correlation_id = random.randint(0, 1e9),
+                target = bytes([]),
+                ),
+            TYPES.ExecutionInfo_Transfer
+            )
 
 
 def test_create_standard_transfer_body(TYPES, FACTORY, deploy_params):
@@ -52,8 +52,8 @@ def test_create_standard_transfer_body(TYPES, FACTORY, deploy_params):
         )
     body = FACTORY.create_deploy_body(payment, session)
     assert isinstance(body, TYPES.DeployBody)
-    assert isinstance(body.hash, str)
-    assert len(body.hash) == 64
+    assert isinstance(body.hash, bytes)
+    assert len(body.hash) == 32
 
 
 def test_create_standard_transfer_header(TYPES, FACTORY, deploy_params):
@@ -68,8 +68,8 @@ def test_create_standard_transfer_header(TYPES, FACTORY, deploy_params):
     body = FACTORY.create_deploy_body(payment, session)
     header = FACTORY.create_deploy_header(body, deploy_params)
     assert isinstance(header, TYPES.DeployHeader)
-    assert isinstance(header.body_hash, str)
-    assert len(header.body_hash) == 64
+    assert isinstance(header.body_hash, bytes)
+    assert len(header.body_hash) == 32
 
 
 def test_create_standard_transfer_deploy(TYPES, FACTORY, deploy_params, cp2):
@@ -83,5 +83,5 @@ def test_create_standard_transfer_deploy(TYPES, FACTORY, deploy_params, cp2):
         )
     deploy = FACTORY.create_deploy(deploy_params, payment, session)
     assert isinstance(deploy, TYPES.Deploy)
-    assert isinstance(deploy.hash, str)
-    assert len(deploy.hash) == 64
+    assert isinstance(deploy.hash, bytes)
+    assert len(deploy.hash) == 32

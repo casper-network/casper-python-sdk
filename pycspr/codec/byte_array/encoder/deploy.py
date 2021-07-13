@@ -19,28 +19,28 @@ from pycspr.types import ExecutionInfo_Transfer
 
 
 
-def encode_deploy(entity: Deploy) -> typing.List[int]:
+def encode_deploy(entity: Deploy) -> bytes:
     """Encodes a deploy.
     
     """
     raise NotImplementedError()
 
 
-def encode_deploy_header(entity: DeployHeader) -> typing.List[int]:
+def encode_deploy_header(entity: DeployHeader) -> bytes:
     """Encodes a deploy header.
     
     """
     raise NotImplementedError()
 
 
-def encode_execution_argument(entity: ExecutionArgument) -> typing.List[int]:
+def encode_execution_argument(entity: ExecutionArgument) -> bytes:
     """Encodes an execution argument.
     
     """
     return encode_string(entity.name) + encode_cl_value(entity.value)
 
 
-def encode_execution_info(entity: ExecutionInfo) -> typing.List[int]:
+def encode_execution_info(entity: ExecutionInfo) -> bytes:
     """Encodes execution information for subsequent interpretation by VM.
     
     """
@@ -81,7 +81,7 @@ def encode_execution_info(entity: ExecutionInfo) -> typing.List[int]:
     except KeyError:
         raise ValueError("Unencodeable domain type.")
     else:
-        return [type_tag] + encoder()
+        return bytes([type_tag]) + encoder()
 
 
 # Map: Deploy type <-> encoder.
@@ -98,8 +98,8 @@ ENCODERS = {
 }
 
 
-def encode(entity) -> typing.List[int]:
-    """Encodes a higher order domain entity as an array of bytes.
+def encode(entity) -> bytes:
+    """Encodes a deploy related domain entity as an array of bytes.
     
     """
     try:
