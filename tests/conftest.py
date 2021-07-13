@@ -81,6 +81,8 @@ def vector_crypto_3() -> list:
 def vector_deploy_1() -> list:
     data = _get_vector("deploys_1.json")
     for i in data:
+        i["bytes"]["payment"] = bytes.fromhex(i["bytes"]["payment"])
+        i["bytes"]["session"] = bytes.fromhex(i["bytes"]["session"])
         i["hashes"]["body"] = bytes.fromhex(i["hashes"]["body"])
         i["hashes"]["deploy"] = bytes.fromhex(i["hashes"]["deploy"])
         i["session"]["target"] = bytes.fromhex(i["session"]["target"])

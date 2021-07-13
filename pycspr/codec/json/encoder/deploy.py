@@ -1,6 +1,7 @@
 from pycspr.codec.json.encoder.cl import encode_cl_value
 from pycspr.codec.json.encoder.misc import encode_digest
 from pycspr.codec.json.encoder.misc import encode_public_key
+from pycspr.codec.json.encoder.misc import encode_signature
 from pycspr.codec.json.encoder.misc import encode_timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
@@ -35,7 +36,7 @@ def encode_deploy_approval(entity: DeployApproval) -> dict:
     """
     return {
         "signer": entity.signer.hex(),
-        "signature": entity.signature.hex(),
+        "signature": encode_signature(entity.signature),
     }
 
 

@@ -63,7 +63,7 @@ class PublicKey:
     algo: crypto.KeyAlgorithm
 
     # Public key as raw bytes.
-    bytes_raw: bytes
+    pbk: bytes
 
 
     @property
@@ -79,4 +79,4 @@ class PublicKey:
         """Returns on-chain account key.
 
         """ 
-        return crypto.get_account_key(self.algo, self.bytes_raw)
+        return crypto.get_account_key(self.algo, self.pbk)

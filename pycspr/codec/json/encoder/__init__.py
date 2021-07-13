@@ -23,4 +23,5 @@ def encode(entity: object) -> str:
     except KeyError:
         raise ValueError(f"Unencodeable type: {type(entity)}")
     else:
+        print(encoder(entity))
         return json.dumps(encoder(entity), indent=4)

@@ -30,17 +30,17 @@ def create_account_info(
 
 def create_public_key(
     algo: typing.Union[str, crypto.KeyAlgorithm],
-    bytes_raw: typing.Union[str, bytes],
+    pbk: typing.Union[str, bytes],
     ) -> PublicKey:
     """Returns an account holder's public key.
     
     :param algo: ECC key algorithm identifier.
-    :param bytes_raw: ECC public key raw bytes.
+    :param pbk: ECC public key raw bytes.
 
     """
-    if isinstance(bytes_raw, str):
-        bytes_raw = bytes.fromhex(bytes_raw)
+    if isinstance(pbk, str):
+        pbk = bytes.fromhex(pbk)
     if isinstance(algo, str):
         algo = crypto.KeyAlgorithm[algo]
     
-    return PublicKey(algo, bytes_raw)
+    return PublicKey(algo, pbk)

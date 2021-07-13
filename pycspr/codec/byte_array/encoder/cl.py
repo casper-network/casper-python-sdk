@@ -135,7 +135,7 @@ def encode_public_key(value: PublicKey) -> bytes:
     """Encodes a public key.
     
     """
-    return bytes([value.algo.value]) + value.bytes_raw
+    return bytes([value.algo.value]) + value.pbk
 
 
 def encode_result(value: object) -> bytes:
@@ -321,9 +321,12 @@ def encode(value: CLValue) -> bytes:
     :returns: A byte array representation conformant to CL serialisation protocol.
     
     """
+    print(value.parsed)
+
     encoder = ENCODERS[value.cl_type.typeof]
+
     if value.cl_type.typeof in {CLTypeKey.LIST, CLTypeKey.OPTION}:
         inner_type_encoder = ENCODERS[value.cl_type.inner_type.typeof]
         return encoder(value.parsed, inner_type_encoder)
-    else:
-        return encoder(value.parsed)
+
+    return encoder(value.parsed)

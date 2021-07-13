@@ -2,6 +2,7 @@ import datetime
 
 from pycspr.types import Digest
 from pycspr.types import PublicKey
+from pycspr.types import Signature
 from pycspr.types import Timestamp
 
 
@@ -10,18 +11,21 @@ def encode_digest(entity: Digest) -> str:
     """Encodes a hash digest.
 
     """
-    if isinstance(entity, bytes):
-        return entity.hex()
-    elif isinstance(entity, list):
-        return bytes(entity).hex()
-    return entity
+    return entity.hex()
 
 
 def encode_public_key(entity: PublicKey) -> str:
     """Encodes a public key.
 
     """
-    return entity.account_key
+    return entity.account_key.hex()
+
+
+def encode_signature(entity: Signature) -> str:
+    """Encodes a payload signature.
+
+    """
+    return entity.hex()
     
 
 def encode_timestamp(entity: Timestamp) -> str:

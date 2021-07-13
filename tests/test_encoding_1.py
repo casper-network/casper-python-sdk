@@ -1,22 +1,22 @@
-def test_encode_transfer_payment(LIB, FACTORY, vector_deploy_1):
+def test_that_a_standard_payment_can_be_encoded_as_bytes(LIB, FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
         entity = FACTORY.create_standard_payment(
             vector["payment"]["amount"]
         )
-        assert LIB.to_hex(entity) == vector["hashes"]["payment"]
+        assert LIB.to_bytes(entity) == vector["bytes"]["payment"]
 
 
-def test_encode_transfer_session(LIB, FACTORY, vector_deploy_1):
+def test_that_a_standard_transfer_session_can_be_encoded_as_bytes(LIB, FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
         entity = FACTORY.create_standard_transfer_session(
             vector["session"]["amount"],
-            bytes.fromhex(vector["session"]["target"]),
+            vector["session"]["target"],
             vector["session"]["transfer_id"]
             )
-        assert LIB.to_hex(entity) == vector["hashes"]["session"]
+        assert LIB.to_bytes(entity) == vector["bytes"]["session"]
 
 
-def test_encode_transfer_body(FACTORY, vector_deploy_1):
+def test_that_a_deploy_body_can_be_encoded_as_bytes(FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
         entity = FACTORY.create_deploy_body(
             FACTORY.create_standard_payment(
@@ -24,14 +24,14 @@ def test_encode_transfer_body(FACTORY, vector_deploy_1):
                 ),
             FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
-                bytes.fromhex(vector["session"]["target"]),
+                vector["session"]["target"],
                 vector["session"]["transfer_id"]
                 )
         )
-        assert entity.hash == bytes.fromhex(vector["hashes"]["body"])
+        assert entity.hash == vector["hashes"]["body"]
 
 
-def test_encode_transfer(LIB, FACTORY, deploy_params_static, vector_deploy_1):
+def test_that_a_deploy_can_be_encoded_as_bytes(LIB, FACTORY, deploy_params_static, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
         entity = FACTORY.create_deploy(
             deploy_params_static,
@@ -40,8 +40,8 @@ def test_encode_transfer(LIB, FACTORY, deploy_params_static, vector_deploy_1):
             ),
             FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
-                bytes.fromhex(vector["session"]["target"]),
+                vector["session"]["target"],
                 vector["session"]["transfer_id"]
             )
         )
-        assert entity.hash == bytes.fromhex(vector["hashes"]["deploy"])
+        assert entity.hash == vector["hashes"]["deploy"]
