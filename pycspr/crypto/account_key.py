@@ -2,10 +2,10 @@ from pycspr.crypto.enums import KeyAlgorithm
 
 
 
-# Map: key algorithm to key prefix.
-_KEY_ALGO_PREFIX = {
-    KeyAlgorithm.ED25519: bytes([1]),
-    KeyAlgorithm.SECP256K1: bytes([2]),
+# Map: Key algorithm <-> length of public key.
+_PUBLIC_KEY_LENGTHS = {
+    KeyAlgorithm.ED25519: 32,
+    KeyAlgorithm.SECP256K1: 33,
 }
 
 
@@ -14,29 +14,23 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
 
     :param key_algo: Algorithm used to generate ECC public key.
     :param public_key: A byte array representation of an ECC public (aka verifying) key.
-
     :returns: An on-chain account key.
 
-    """ 
-    assert key_algo in _KEY_ALGO_PREFIX, f"Unsupported key type: {key_algo}"
-    assert key_algo == KeyAlgorithm.ED25519 and len(public_key) == 32 or \
-           key_algo == KeyAlgorithm.SECP256K1 and len(public_key) == 33, \
-           "Invalid key length."
+    """
+    assert len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo], \
+           f"Invalid {key_algo.name} public key length."
 
-    return _KEY_ALGO_PREFIX[key_algo] + public_key
+    return bytes([key_algo.value]) + public_key
 
 
 def get_account_key_algo(account_key: bytes) -> KeyAlgorithm:
-    """Returns ECC algorithm associated with an account key.
+    """Returns ECC algorithm identifier associated with an account key.
 
-    :param account_key: An account key from which associated ECC algorithm can be derived.
-
-    :returns: An ECC key algorithm.
+    :param account_key: An account key from which associated ECC algorithm identifier can be derived.
+    :returns: An ECC key algorithm identifier.
 
     """
-    if account_key[0] == 1:
-        return KeyAlgorithm.ED25519
-    elif account_key[0] == 2:
-        return KeyAlgorithm.SECP256K1
-    else:
+    try:
+        return KeyAlgorithm(account_key[0])
+    except ValueError:
         raise ValueError("Unsupported account key.")
