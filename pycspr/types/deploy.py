@@ -208,8 +208,7 @@ class Deploy():
                 signature=crypto.get_signature(
                     bytes.fromhex(self.hash),
                     account.private_key,
-                    algo=account.algo,
-                    encoding=crypto.SignatureEncoding.HEX
+                    algo=account.algo
                     )
                 )
             )

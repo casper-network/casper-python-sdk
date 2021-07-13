@@ -226,34 +226,8 @@ def key_pair_specs(LIB) -> typing.Tuple[pycspr.crypto.KeyAlgorithm, str, str]:
     
     """
     return (
-        (
-            LIB.crypto.KeyAlgorithm.ED25519,
-            LIB.crypto.KeyEncoding.BYTES,
-            bytes,
-            32,
-            32,
-        ),
-        (
-            LIB.crypto.KeyAlgorithm.ED25519,
-            LIB.crypto.KeyEncoding.HEX,
-            str,
-            64,
-            64,
-        ),
-        (
-            LIB.crypto.KeyAlgorithm.SECP256K1,
-            LIB.crypto.KeyEncoding.BYTES,
-            bytes,
-            32,
-            33,
-        ),
-        (
-            LIB.crypto.KeyAlgorithm.SECP256K1,
-            LIB.crypto.KeyEncoding.HEX,
-            str,
-            64,
-            66,
-        ),
+        (LIB.crypto.KeyAlgorithm.ED25519, 32, 32),
+        (LIB.crypto.KeyAlgorithm.SECP256K1, 32, 33),
     )
 
 

@@ -3,8 +3,6 @@ import typing
 
 import ecdsa
 
-from pycspr.crypto.enums import KeyEncoding
-
 
 
 # Curve of interest.
