@@ -206,7 +206,7 @@ class Deploy():
             DeployApproval(
                 signer=account.account_key, 
                 signature=crypto.get_signature(
-                    bytes.fromhex(self.hash),
+                    self.hash,
                     account.private_key,
                     algo=account.algo
                     )
