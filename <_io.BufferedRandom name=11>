@@ -1,0 +1,62 @@
+{
+    "approvals": [],
+    "hash": "b22b57cf937af85c4a91d439f9fd130811915ae7c143d8732dd34fa79b8365d5",
+    "header": {
+        "account": "014fb1b8b0639b78c84c3e07b4ce0256ff09b4e8a954af53e413638aff46a7f3d4",
+        "body_hash": "10789823bb9eaea7e278e4adf053caca6eecf741e5f5558010ff439bb95f12c2",
+        "chain_name": "casper-net-1",
+        "dependencies": [],
+        "gas_price": 10,
+        "timestamp": "2021-07-13T14:09:23.766Z",
+        "ttl": "1day"
+    },
+    "payment": {
+        "Transfer": {
+            "args": [
+                [
+                    "amount",
+                    {
+                        "bytes": "0415cd5b07",
+                        "cl_type": "U512",
+                        "parsed": "123456789"
+                    }
+                ],
+                [
+                    "target",
+                    {
+                        "bytes": "d3ffa1bbf9de080d1cd066bb5106092c3105509e12903d29dba373c4218de5ed",
+                        "cl_type": {
+                            "ByteArray": 32
+                        },
+                        "parsed": "d3ffa1bbf9de080d1cd066bb5106092c3105509e12903d29dba373c4218de5ed"
+                    }
+                ],
+                [
+                    "id",
+                    {
+                        "bytes": "010100000000000000",
+                        "cl_type": {
+                            "Option": "U64"
+                        },
+                        "parsed": "1"
+                    }
+                ]
+            ]
+        }
+    },
+    "session": {
+        "ModuleBytes": {
+            "args": [
+                [
+                    "amount",
+                    {
+                        "bytes": "041027",
+                        "cl_type": "U512",
+                        "parsed": "10000"
+                    }
+                ]
+            ],
+            "module_bytes": ""
+        }
+    }
+}

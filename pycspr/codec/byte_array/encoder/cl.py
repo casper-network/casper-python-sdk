@@ -207,22 +207,18 @@ def encode_u128(value: int) -> bytes:
     """Encodes an unsigned 128 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN or \
-       value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
+    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
         raise ValueError("Invalid U128: max size exceeded")
     
-    if value >= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MIN and \
-       value <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MAX:
+    if value >= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MAX:
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH
         type_key = CLTypeKey.U8
 
-    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MIN and \
-         value <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MAX:
+    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MAX:
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH
         type_key = CLTypeKey.U32
 
-    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MIN and \
-         value <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MAX:
+    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MAX:
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH
         type_key = CLTypeKey.U64
 
@@ -237,12 +233,10 @@ def encode_u256(value: int) -> bytes:
     """Encodes an unsigned 256 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN or \
-       value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
+    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
         raise ValueError("Invalid U256: max size exceeded")
 
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN and \
-       value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
+    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN and value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
         return bytes([CLTypeKey.U256.value]) + \
                int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U256].LENGTH, False)
 
@@ -253,12 +247,10 @@ def encode_u512(value: int):
     """Encodes an unsigned 512 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U512].MIN or \
-       value > NUMERIC_CONSTRAINTS[CLTypeKey.U512].MAX:
+    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U512].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U512].MAX:
         raise ValueError("Invalid U512: max size exceeded")
 
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN and \
-       value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
+    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN and value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
         return bytes([CLTypeKey.U512.value]) + \
                int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U512].LENGTH, False)
 
@@ -321,8 +313,6 @@ def encode(value: CLValue) -> bytes:
     :returns: A byte array representation conformant to CL serialisation protocol.
     
     """
-    print(value.parsed)
-
     encoder = ENCODERS[value.cl_type.typeof]
 
     if value.cl_type.typeof in {CLTypeKey.LIST, CLTypeKey.OPTION}:

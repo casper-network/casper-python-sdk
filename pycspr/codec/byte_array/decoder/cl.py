@@ -258,6 +258,4 @@ def decode(type_info: CLType, as_bytes: typing.List[int]) -> typing.List[int]:
     else:
         entity = None
 
-    print(111, type_info.typeof, as_bytes, entity)
-
     return entity
