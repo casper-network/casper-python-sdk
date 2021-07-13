@@ -10,7 +10,7 @@ def test_encode_transfer_session(LIB, FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
         entity = FACTORY.create_standard_transfer_session(
             vector["session"]["amount"],
-            vector["session"]["target"],
+            bytes.fromhex(vector["session"]["target"]),
             vector["session"]["transfer_id"]
             )
         assert LIB.to_hex(entity) == vector["hashes"]["session"]
@@ -21,14 +21,14 @@ def test_encode_transfer_body(FACTORY, vector_deploy_1):
         entity = FACTORY.create_deploy_body(
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
-            ),
+                ),
             FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
-                vector["session"]["target"],
+                bytes.fromhex(vector["session"]["target"]),
                 vector["session"]["transfer_id"]
-            )
+                )
         )
-        assert entity.hash == vector["hashes"]["body"]
+        assert entity.hash == bytes.fromhex(vector["hashes"]["body"])
 
 
 def test_encode_transfer(LIB, FACTORY, deploy_params_static, vector_deploy_1):
@@ -40,8 +40,8 @@ def test_encode_transfer(LIB, FACTORY, deploy_params_static, vector_deploy_1):
             ),
             FACTORY.create_standard_transfer_session(
                 vector["session"]["amount"],
-                vector["session"]["target"],
+                bytes.fromhex(vector["session"]["target"]),
                 vector["session"]["transfer_id"]
             )
         )
-        assert entity.hash == vector["hashes"]["deploy"]
+        assert entity.hash == bytes.fromhex(vector["hashes"]["deploy"])

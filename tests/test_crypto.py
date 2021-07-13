@@ -5,19 +5,16 @@ import operator
 from operator import itemgetter
 
 
+
 def test_get_hash(LIB, vector_crypto_1):
     for data, hashes in [operator.itemgetter("data", "hashes")(i) for i in vector_crypto_1]:
         for algo, digest in [operator.itemgetter("algo", "digest")(j) for j in hashes]:
             algo = LIB.crypto.HashAlgorithm[algo]
-            digest = bytes.fromhex(digest)
             assert digest == LIB.crypto.get_hash(data.encode("utf-8"), 32, algo)
 
 
 def test_get_account(LIB, vector_crypto_2):
     for algo, pbk, account_key, accountHash in [operator.itemgetter("algo", "pbk", "accountKey", "accountHash")(i) for i in vector_crypto_2]:
-        pbk = bytes.fromhex(pbk)
-        account_key = bytes.fromhex(account_key)
-        accountHash = bytes.fromhex(accountHash)
         algo = LIB.crypto.KeyAlgorithm[algo]
         assert algo == LIB.crypto.get_account_key_algo(account_key)
         assert account_key == LIB.crypto.get_account_key(algo, pbk)
@@ -64,34 +61,28 @@ def test_that_a_key_pair_can_be_deserialized_from_a_seed(LIB, key_pair_specs):
 
 def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_byte_array(LIB, vector_crypto_2):
     for fixture in vector_crypto_2:
-        _, pbk = LIB.crypto.get_key_pair_from_bytes(
-            bytes.fromhex(fixture["pvk"]),
-            LIB.crypto.KeyAlgorithm[fixture["algo"]]
-        )
-        assert bytes.fromhex(fixture["pbk"]) == pbk
+        algo = LIB.crypto.KeyAlgorithm[fixture["algo"]]
+        _, pbk = LIB.crypto.get_key_pair_from_bytes(fixture["pvk"], algo)
+        assert fixture["pbk"] == pbk
 
 
 def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_base64(LIB, vector_crypto_2):
     for fixture in vector_crypto_2:
-        _, pbk = LIB.crypto.get_key_pair_from_base64(
-            base64.b64encode(bytes.fromhex(fixture["pvk"])),
-            LIB.crypto.KeyAlgorithm[fixture["algo"]]
-        )
-        assert bytes.fromhex(fixture["pbk"]) == pbk
+        algo = LIB.crypto.KeyAlgorithm[fixture["algo"]]
+        _, pbk = LIB.crypto.get_key_pair_from_base64(base64.b64encode(fixture["pvk"]), algo)
+        assert fixture["pbk"] == pbk
 
 
 def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_hex(LIB, vector_crypto_2):
     for fixture in vector_crypto_2:
-        _, pbk = LIB.crypto.get_key_pair_from_hex_string(
-            fixture["pvk"],
-            LIB.crypto.KeyAlgorithm[fixture["algo"]]
-        )
-        assert bytes.fromhex(fixture["pbk"]) == pbk
+        algo = LIB.crypto.KeyAlgorithm[fixture["algo"]]
+        _, pbk = LIB.crypto.get_key_pair_from_hex_string(fixture["pvk"].hex(), algo)
+        assert fixture["pbk"] == pbk
 
 
 def test_get_signature(LIB, vector_crypto_3):
     for fixture in vector_crypto_3:
         data = fixture["data"].encode("utf-8")
-        key_algo = LIB.crypto.KeyAlgorithm[fixture["signingKey"]["algo"]]
-        key_pvk = bytes.fromhex(fixture["signingKey"]["pvk"])
-        assert fixture["sig"] == LIB.crypto.get_signature(data, key_pvk, key_algo).hex()
+        algo = LIB.crypto.KeyAlgorithm[fixture["signingKey"]["algo"]]
+        pvk = fixture["signingKey"]["pvk"]
+        assert fixture["sig"] == LIB.crypto.get_signature(data, pvk, algo)

@@ -47,17 +47,34 @@ def vector_cl_data_1() -> list:
 
 @pytest.fixture(scope="session")
 def vector_crypto_1() -> list:
-    return _get_vector("crypto_hashes.json")
+    data = _get_vector("crypto_hashes.json")
+    for i in data:
+        for j in i["hashes"]:
+            j["digest"] = bytes.fromhex(j["digest"])
+
+    return data
 
 
 @pytest.fixture(scope="session")
 def vector_crypto_2() -> list:
-    return _get_vector("crypto_key_pairs.json")
+    data = _get_vector("crypto_key_pairs.json")
+    for i in data:
+        i["pvk"] = bytes.fromhex(i["pvk"])
+        i["pbk"] = bytes.fromhex(i["pbk"])
+        i["accountKey"] = bytes.fromhex(i["accountKey"])
+        i["accountHash"] = bytes.fromhex(i["accountHash"])
+
+    return data
 
 
 @pytest.fixture(scope="session")
 def vector_crypto_3() -> list:
-    return _get_vector("crypto_signatures.json")
+    data = _get_vector("crypto_signatures.json")
+    for i in data:
+        i["signingKey"]["pvk"] = bytes.fromhex(i["signingKey"]["pvk"])
+        i["sig"] = bytes.fromhex(i["sig"])
+
+    return data
 
 
 @pytest.fixture(scope="session")

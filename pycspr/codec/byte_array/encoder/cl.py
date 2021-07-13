@@ -37,7 +37,7 @@ def encode_byte_array(value: bytes) -> bytes:
     """Encodes a byte array.
     
     """
-    return bytes([] if isinstance(value, type(None)) else [int(i) for i in value])
+    return bytes([]) if isinstance(value, type(None)) else value
 
 
 def encode_cl_value(entity: CLValue) -> bytes:
@@ -150,8 +150,6 @@ def encode_string(value: str) -> bytes:
     
     """
     value = encode_byte_array((value or "").encode("utf-8"))
-
-    print(encode_u32(len(value)))
 
     return encode_u32(len(value)) + value
 

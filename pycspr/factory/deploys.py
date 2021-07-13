@@ -201,8 +201,6 @@ def create_standard_transfer_session(
     :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
     
     """
-    print(type(amount), type(target), type(correlation_id))
-
     return ExecutionInfo_Transfer(
         args=[
             create_execution_arg(
