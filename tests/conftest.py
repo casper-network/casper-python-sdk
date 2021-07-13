@@ -79,7 +79,13 @@ def vector_crypto_3() -> list:
 
 @pytest.fixture(scope="session")
 def vector_deploy_1() -> list:
-    return _get_vector("deploys_1.json")
+    data = _get_vector("deploys_1.json")
+    for i in data:
+        i["hashes"]["body"] = bytes.fromhex(i["hashes"]["body"])
+        i["hashes"]["deploy"] = bytes.fromhex(i["hashes"]["deploy"])
+        i["session"]["target"] = bytes.fromhex(i["session"]["target"])
+
+    return data
 
 
 @pytest.fixture(scope="session")
