@@ -96,6 +96,12 @@ _INTERFACE_OF_LIBRARY = {
         "get_state_root_hash",
         "write_deploy",
     },
+    _has_member: {
+        "crypto",
+        "factory",
+        "types",
+        "utils"
+    }
 }
 
 

@@ -36,9 +36,8 @@ def decode_timestamp(obj: str) -> Timestamp:
     """Decodes a millisecond precise timestamp.
 
     """
-    return datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
-    return obj
-    # timestamp_ms = round(entity, 3)
-    # timestamp_iso = datetime.datetime.utcfromtimestamp(timestamp_ms).isoformat()
+    # Strip trailing TZ offset - TODO review.
+    if obj.endswith("Z"):
+        obj = obj[:-1]
 
-    # return f"{timestamp_iso[:-3]}Z"
+    return datetime.datetime.fromisoformat(obj).timestamp()

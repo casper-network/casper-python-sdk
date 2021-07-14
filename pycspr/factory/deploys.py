@@ -25,6 +25,7 @@ from pycspr.types import ExecutionInfo_ModuleBytes
 from pycspr.types import ExecutionInfo_Transfer
 from pycspr.types import DeployParameters
 from pycspr.utils import constants
+from pycspr.utils import conversion
 
 
 
@@ -121,8 +122,14 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     :param humanized_ttl: A humanized ttl, e.g. 1 day.
 
     """
-    # TODO convert humanized to milliseconds.
-    return DeployTimeToLive(humanized=humanized_ttl, as_milliseconds=1 * 24 * 60 * 60 * 1000)
+    as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
+    if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
+        raise ValueError(f"Invalid deploy ttl {humanized_ttl} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+
+    return DeployTimeToLive(
+        humanized=humanized_ttl,
+        as_milliseconds=as_milliseconds
+    )
 
 
 def create_execution_arg(

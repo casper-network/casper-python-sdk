@@ -10,6 +10,7 @@
 from pycspr               import crypto
 from pycspr               import factory
 from pycspr               import types
+from pycspr               import utils
 from pycspr.api           import get_account_balance
 from pycspr.api           import get_account_info
 from pycspr.api           import get_account_main_purse_uref

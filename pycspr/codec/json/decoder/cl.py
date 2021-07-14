@@ -51,4 +51,5 @@ def decode_cl_value(obj: typing.Union[dict, str]) -> CLValue:
     else:
         parsed = None
 
-    return CLValue(as_bytes, cl_type, parsed)
+    return CLValue(cl_type, parsed, as_bytes)
+

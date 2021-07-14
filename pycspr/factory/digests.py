@@ -77,9 +77,6 @@ def create_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo)
     :returns: Hash digest of a deploy body.
 
     """   
-    print(codec.to_bytes(payment)) 
-    print(codec.to_bytes(session)) 
-
     return crypto.get_hash(
         codec.to_bytes(payment) + \
         codec.to_bytes(session)

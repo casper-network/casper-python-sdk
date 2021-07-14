@@ -3,6 +3,7 @@ import json
 import operator
 import os
 import pathlib
+import random
 import typing
 
 import pytest
@@ -149,6 +150,22 @@ def a_test_timestamp() -> int:
 
 
 @pytest.fixture(scope="session")
+def a_test_ttl_humanized() -> str:
+    """Returns a humanized time interval. 
+    
+    """
+    (unit, quantity) = random.choice((
+        ("ms", random.randint(1, 1000 * 60 * 60 * 24)),
+        ("s", random.randint(1, 60)),
+        ("m", random.randint(1, 60)),
+        ("h", random.randint(1, 24)),
+        ("day", 1)
+        ))
+
+    return f"{quantity}{unit}"
+
+
+@pytest.fixture(scope="session")
 def test_account_1(LIB):
     """Returns test user account information. 
     
@@ -208,7 +225,7 @@ def cp2(LIB):
 
 
 @pytest.fixture(scope="function")
-def deploy_params(FACTORY, a_test_chain_id, cp1):
+def deploy_params(FACTORY, a_test_chain_id, a_test_ttl_humanized, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
@@ -221,7 +238,7 @@ def deploy_params(FACTORY, a_test_chain_id, cp1):
             dependencies=[],
             gas_price=10,
             timestamp=datetime.datetime.utcnow().timestamp(),
-            ttl="1day"
+            ttl=a_test_ttl_humanized
         )
 
 

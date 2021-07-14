@@ -23,7 +23,10 @@ NUMERIC_CONSTRAINTS ={
 STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = 1e4
 
 # Default deploy time to live.
-DEFAULT_DEPLOY_TTL = "1day"
+DEFAULT_DEPLOY_TTL = "30m"
 
 # Default deploy gas price.
 DEFAULT_GAS_PRICE = 1
+
+# Maximum deploy time to live = 1 day.
+DEPLOY_TTL_MS_MAX = 1000 * 60 * 60 * 24

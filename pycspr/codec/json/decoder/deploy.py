@@ -17,6 +17,7 @@ from pycspr.types import ExecutionInfo_StoredContractByName
 from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
 from pycspr.types import ExecutionInfo_Transfer
 from pycspr.types import PublicKey
+from pycspr.utils import conversion
 
 
 
@@ -52,7 +53,7 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
         body_hash=decode_digest(obj["body_hash"]),
         chain_name=obj["chain_name"],
         dependencies=[],
-        gas_price=obj["chain_name"],
+        gas_price=obj["gas_price"],
         timestamp=decode_timestamp(obj["timestamp"]),
         ttl=decode_deploy_ttl(obj["ttl"])
     )
@@ -62,8 +63,12 @@ def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
     """Maps a dictionary to a deploy ttl wrapper object.
     
     """
+    as_milliseconds = conversion.humanized_time_interval_to_milliseconds(obj)
+    if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
+        raise ValueError(f"Invalid deploy ttl {obj} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+
     return DeployTimeToLive(
-        as_milliseconds=1 * 24 * 60 * 60 * 1000,
+        as_milliseconds=as_milliseconds,
         humanized=obj
     )
 
@@ -119,3 +124,4 @@ def decode_execution_info(obj) -> ExecutionInfo:
         return _decode_session_for_transfer()
     else:
         raise NotImplementError("Unsupported execution information variant")
+
