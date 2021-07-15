@@ -70,15 +70,13 @@ def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHe
     :param params: Standard parameters associated with a deploy.
 
     """
-    timestamp = params.timestamp or datetime.datetime.utcnow().timestamp()
-
     return DeployHeader(
         accountPublicKey=params.accountPublicKey,
         body_hash=body.hash,
         chain_name=params.chain_name,
         dependencies=params.dependencies,
         gas_price=params.gas_price,
-        timestamp=timestamp,
+        timestamp=params.timestamp,
         ttl=params.ttl,
     )
 
@@ -103,7 +101,9 @@ def create_deploy_parameters(
     """
     public_key = account if isinstance(account, PublicKey) else \
                  create_public_key(account.algo, account.pbk)
-    timestamp = timestamp or datetime.datetime.utcnow().timestamp()
+    if timestamp is None:
+        timestamp = datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
+    timestamp = round(timestamp, 3)
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
     return DeployParameters(

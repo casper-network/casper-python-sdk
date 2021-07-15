@@ -41,14 +41,6 @@ def test_can_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
         LIB.write_deploy(deploy_1, fp)
         deploy_2 = LIB.read_deploy(fp)
         assert isinstance(deploy_2, type(deploy_1))
-        print(deploy_1.header.ttl)
-        print(deploy_2.header.ttl)
-
-
-        print(LIB.to_json(deploy_1))
-        print(LIB.to_json(deploy_2))
-
-
         assert LIB.to_json(deploy_1) == LIB.to_json(deploy_2)
 
 

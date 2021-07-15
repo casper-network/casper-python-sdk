@@ -13,6 +13,7 @@ import pycspr
 
 
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
+_A_KNOWN_DEPLOY_HUMANIZED_TTL = "1day"
 _PATH_TO_HERE = pathlib.Path(os.path.dirname(__file__))
 _PATH_TO_ACCOUNTS = _PATH_TO_HERE / "assets" / "accounts"
 _PATH_TO_VECTORS = _PATH_TO_HERE / "assets" / "vectors"
@@ -146,7 +147,7 @@ def a_test_timestamp() -> int:
     """Returns a test timestamp. 
     
     """
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
 
 
 @pytest.fixture(scope="session")
@@ -237,7 +238,7 @@ def deploy_params(FACTORY, a_test_chain_id, a_test_ttl_humanized, cp1):
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,
-            timestamp=datetime.datetime.utcnow().timestamp(),
+            timestamp=datetime.datetime.now(tz=datetime.timezone.utc).timestamp(),
             ttl=a_test_ttl_humanized
         )
 
@@ -256,9 +257,7 @@ def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
             dependencies=[],
             gas_price=10,
             timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
-            ttl=FACTORY.create_deploy_ttl(
-                "1day"
-            ),
+            ttl=FACTORY.create_deploy_ttl(_A_KNOWN_DEPLOY_HUMANIZED_TTL),
         )
 
 

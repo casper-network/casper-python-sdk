@@ -14,7 +14,7 @@ def test_create_deploy_parameters(TYPES, FACTORY, a_test_account, a_test_chain_i
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=random.randint(0, 65),
-            timestamp=datetime.datetime.utcnow(),
+            timestamp=datetime.datetime.now(tz=datetime.timezone.utc).timestamp(),
             ttl="1day",
         ),
         TYPES.DeployParameters

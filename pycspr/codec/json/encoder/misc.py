@@ -32,7 +32,8 @@ def encode_timestamp(entity: Timestamp) -> str:
     """Encodes a millisecond precise timestamp.
 
     """
-    timestamp_ms = round(entity, 3)
-    timestamp_iso = datetime.datetime.utcfromtimestamp(timestamp_ms).isoformat()
+    as_ts_3_decimal_places = round(entity, 3)
+    as_datetime = datetime.datetime.fromtimestamp(as_ts_3_decimal_places, tz=datetime.timezone.utc)
+    as_iso = as_datetime.isoformat()
 
-    return f"{timestamp_iso[:-3]}Z"
+    return f"{as_iso[:-9]}Z"

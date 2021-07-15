@@ -36,8 +36,11 @@ def decode_timestamp(obj: str) -> Timestamp:
     """Decodes a millisecond precise timestamp.
 
     """
+    print(obj)
+
     # Strip trailing TZ offset - TODO review.
     if obj.endswith("Z"):
         obj = obj[:-1]
+        obj = f"{obj}+00:00"
 
     return datetime.datetime.fromisoformat(obj).timestamp()

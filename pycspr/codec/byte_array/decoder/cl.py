@@ -172,11 +172,11 @@ def decode_u128(as_bytes: typing.List[int]) -> int:
     """
     type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
     if type_tag == CLTypeKey.U8:
-        return decode_u8(as_bytes)
+        return decode_u8(rem_bytes)
     elif type_tag == CLTypeKey.U32:
-        return decode_u32(as_bytes)
+        return decode_u32(rem_bytes)
     elif type_tag == CLTypeKey.U64:
-        return decode_u64(as_bytes)
+        return decode_u64(rem_bytes)
     elif type_tag == CLTypeKey.U128:
         return le_bytes_to_int(rem_bytes, False)
     else:

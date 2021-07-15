@@ -17,6 +17,7 @@ from pycspr.types import ExecutionInfo_StoredContractByName
 from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
 from pycspr.types import ExecutionInfo_Transfer
 from pycspr.types import PublicKey
+from pycspr.utils import constants
 from pycspr.utils import conversion
 
 

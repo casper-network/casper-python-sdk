@@ -6,10 +6,12 @@ from pycspr.types import CLType
 
 
 
-def decode(typeof: typing.Union[CLType, object], as_bytes: typing.List[int]) -> object:
+def decode(typeof: typing.Union[CLType, object], as_bytes: bytes) -> object:
     """Decodes a domain entity from an array of bytes.
     
     """
+    as_hex = as_bytes.hex()
+
     if isinstance(as_bytes, bytes):
         as_bytes = [i for i in as_bytes]
     elif isinstance(as_bytes, str):

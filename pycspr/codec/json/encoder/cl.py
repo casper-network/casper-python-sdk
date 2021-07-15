@@ -76,7 +76,6 @@ def encode_cl_value_parsed(type_info: CLType, parsed: object) -> str:
     """Encodes a parsed CL value.
 
     """
-
     if type_info.typeof in TYPES_NUMERIC:
         return str(int(parsed))
     elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
