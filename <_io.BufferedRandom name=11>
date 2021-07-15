@@ -1,14 +1,14 @@
 {
     "approvals": [],
-    "hash": "76e0b409d16f90aaacb577f6b5c8d7f00fa57a6ee47dd0a5eb00b798ccb85cf4",
+    "hash": "f0ad0393d89ed00ae05e6abd7d6fe1e938bd33e69931e2ffe203e8ae4deff7a0",
     "header": {
         "account": "013706eb446f2bb275f25c3e147f53622504b30d0111cc4e69d9a8dbb8d0196ad6",
         "body_hash": "521879afffe93d4472b694ef7ba9350bd159e2f0db9c404eacc6b8829145f60d",
         "chain_name": "casper-net-1",
         "dependencies": [],
         "gas_price": 10,
-        "timestamp": "2021-07-15T08:49:18.061Z",
-        "ttl": "1day"
+        "timestamp": "2021-07-15T08:50:25.129Z",
+        "ttl": "57s"
     },
     "payment": {
         "Transfer": {
