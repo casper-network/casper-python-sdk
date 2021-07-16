@@ -1,14 +1,14 @@
 def test_get_state_root_hash(LIB):
     def _assert(response):
-        # e.g. 6e1f211643d870e1f3135ed85d64ba1ee212304d889692d16d0291d3bbdf1712
         assert isinstance(response, str)
         assert len(response) == 64
+        assert len(bytes.fromhex(response)) == 32
 
     for block_id in (None, 1):
         _assert(LIB.get_state_root_hash(block_id))
 
 
-def test_get_account_info(LIB, account_key, state_root_hash):
+def test_get_account_info(LIB, account_hash: bytes, state_root_hash):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_state_get_item.account.json
         assert isinstance(response, dict)
@@ -26,12 +26,15 @@ def test_get_account_info(LIB, account_key, state_root_hash):
         assert "named_keys" in response
         assert isinstance(response["named_keys"], list)
 
-    _assert(LIB.get_account_info(account_key, state_root_hash))
+    print(account_hash, state_root_hash)
+
+    _assert(LIB.get_account_info(account_hash, state_root_hash))
 
 
-def test_get_account_main_purse_uref(LIB, account_key, state_root_hash):
+def test_get_account_main_purse_uref(LIB, account_key: bytes, state_root_hash: str):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
+        print(response)
         assert isinstance(response, str)
         parts = response.split("-")
         assert len(parts) == 3
@@ -42,7 +45,7 @@ def test_get_account_main_purse_uref(LIB, account_key, state_root_hash):
     _assert(LIB.get_account_main_purse_uref(account_key, state_root_hash))
 
 
-def test_get_account_balance_01(LIB, account_main_purse_uref, state_root_hash):
+def test_get_account_balance_01(LIB, account_main_purse_uref: str, state_root_hash: str):
     def _assert(response):
         # e.g. 1000000000000000000000000000000000
         assert isinstance(response, int)
@@ -162,6 +165,7 @@ def test_get_rpc_endpoint_01(LIB):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_discover.json
         assert isinstance(response, list)
+        print(response)
         assert response == sorted(LIB.NODE_RPC_ENDPOINTS)
 
     _assert(LIB.get_rpc_endpoint())

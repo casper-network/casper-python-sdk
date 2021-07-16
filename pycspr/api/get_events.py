@@ -9,6 +9,21 @@ from pycspr.types import NodeEventType
 
 
 
+# CHANNELS / EVENTS
+# main
+# main:ApiVersion
+# main:BlockAdded
+# main:DeployProcessed
+# main:Fault
+# main:Step
+#
+# deploys
+# deploys:DeployAccepted
+#
+# sigs
+# sigs:FinalitySignature
+
+
 def execute(event_callback: typing.Callable, event_id: int = 0):
     """Binds to a node's event stream - events are passed to callback for processing.
 

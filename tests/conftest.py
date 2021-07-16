@@ -273,7 +273,7 @@ def key_pair_specs(LIB) -> typing.Tuple[pycspr.crypto.KeyAlgorithm, str, str]:
 
 
 @pytest.fixture(scope="session")
-def account_key() -> str:
+def account_key() -> bytes:
     """Returns a test NCTL account key. 
     
     """
@@ -281,11 +281,19 @@ def account_key() -> str:
     path = path / "assets" / "net-1" / "users" / "user-1" / "public_key_hex"
 
     with open(path) as fstream:
-        return fstream.read()
+        return bytes.fromhex(fstream.read())
+
+
+@pytest.fixture(scope="session")
+def account_hash(LIB, account_key: bytes) -> bytes:
+    """Returns a test NCTL account key. 
+    
+    """
+    return LIB.get_account_hash(account_key)
 
 
 @pytest.fixture(scope="function")
-def account_main_purse_uref(LIB, account_key, state_root_hash) -> str:
+def account_main_purse_uref(LIB, account_key: bytes, state_root_hash) -> str:
     """Returns a test account main purse unforgeable reference. 
     
     """
@@ -322,3 +330,16 @@ def switch_block_hash(switch_block) -> str:
     
     """
     return switch_block["hash"]
+
+
+@pytest.fixture(scope="function")
+def a_test_deploy(FACTORY, deploy_params, cp2):
+    """Returns hash of most next switch. 
+    
+    """
+    return FACTORY.create_standard_transfer(
+        deploy_params,
+        amount = 123456789,
+        correlation_id = 1,
+        target = cp2.account_hash,
+        )

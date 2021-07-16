@@ -65,18 +65,19 @@ NODE_REST_ENDPOINTS: set = {
 
 # Set of RPC endpoints.
 NODE_RPC_ENDPOINTS: set = {
-    "account_put_deploy",
-    "info_get_deploy",
-    "info_get_peers",
-    "info_get_status",
-    "chain_get_block",
-    "chain_get_block_transfers",
-    "chain_get_state_root_hash",
-    "state_get_item",
-    "state_get_balance",
-    "chain_get_era_info_by_switch_block",
-    "state_get_auction_info",
-}
+    'account_put_deploy',
+    'chain_get_block',
+    'chain_get_block_transfers',
+    'chain_get_era_info_by_switch_block',
+    'chain_get_state_root_hash',
+    'info_get_deploy',
+    'info_get_peers',
+    'info_get_status',
+    'state_get_account_info',
+    'state_get_auction_info',
+    'state_get_balance',
+    'state_get_item'
+    }
 
 # Set of SSE endpoints.
 NODE_SSE_ENDPOINTS: set = {

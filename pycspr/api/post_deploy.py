@@ -1,9 +1,11 @@
+import json
 import typing
 
 import jsonrpcclient as rpc_client
 
 import pycspr
 from pycspr.types import Deploy
+from pycspr.codec import to_json
 
 
 
@@ -23,6 +25,7 @@ def execute(
     :returns: State root hash at specified block.
 
     """
-    # TODO: validate inputs: null, ttl, timestamp
-    
-    raise NotImplementedError()
+    as_dict = json.loads(to_json(deploy))
+    response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT, deploy=as_dict)
+
+    return response.data.result["deploy_hash"] if parse_response else response.data.result

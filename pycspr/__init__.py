@@ -28,6 +28,7 @@ from pycspr.api           import get_rpc_endpoint
 from pycspr.api           import get_rpc_schema
 from pycspr.api           import get_state_item
 from pycspr.api           import get_state_root_hash
+from pycspr.api           import send_deploy
 from pycspr.codec         import to_bytes
 from pycspr.codec         import to_hex
 from pycspr.codec         import to_json

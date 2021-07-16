@@ -10,7 +10,7 @@ _API_ENDPOINT = "state_get_item"
 
 
 def execute(
-    account_hash: str,
+    account_hash: bytes,
     state_root_hash=None,
     parse_response: bool = True,
     ) -> dict:
@@ -24,7 +24,7 @@ def execute(
 
     """
     response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT,
-        key=f"account-hash-{account_hash}",
+        key=f"account-hash-{account_hash.hex()}",
         state_root_hash=state_root_hash,
         path=[]
         )
