@@ -80,6 +80,41 @@ class NodeClient():
         return api_v1.get_auction_info(self.connection_info)
 
 
+    def get_block(self, block_id: typing.Union[None, str, int] = None) -> dict:
+        """Returns on-chain block information.
+
+        :param block_id: Identifier of a finialised block.
+        :returns: On-chain block information.
+
+        """
+        return api_v1.get_block(self.connection_info, block_id)
+
+
+    def get_block_at_era_switch(
+        self,
+        polling_interval_seconds: float = 1.0,
+        max_polling_time_seconds: float = 120.0
+        ) -> dict:
+        """Returns last finialised block in current era.
+
+        :param polling_interval_seconds: Time interval time (in seconds) before polling for next switch block.
+        :param max_polling_time_seconds: Maximum time in seconds to poll.
+        :returns: On-chain block information.
+
+        """
+        return api_v1.get_block_at_era_switch(self.connection_info, polling_interval_seconds, max_polling_time_seconds)
+
+
+    def get_block_transfers(self, block_id: typing.Union[None, str, int] = None) -> typing.Tuple[str, list]:
+        """Returns on-chain block transfers information.
+
+        :param block_id: Identifier of a finialised block.
+        :returns: On-chain block transfers information.
+
+        """
+        return api_v1.get_block_transfers(self.connection_info, block_id)
+
+
     def get_node_metrics(self) -> list:
         """Returns set of node metrics.
 

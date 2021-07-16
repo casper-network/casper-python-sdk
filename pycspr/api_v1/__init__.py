@@ -2,9 +2,9 @@ from pycspr.api_v1.get_account_balance              import execute as get_accoun
 from pycspr.api_v1.get_account_info                 import execute as get_account_info
 from pycspr.api_v1.get_account_main_purse_uref      import execute as get_account_main_purse_uref
 from pycspr.api_v1.get_auction_info                 import execute as get_auction_info
-# from pycspr.api_v1.get_block                        import execute as get_block
-# from pycspr.api_v1.get_block                        import execute as get_block_transfers
-# from pycspr.api_v1.get_block_at_era_switch          import execute as get_block_at_era_switch
+from pycspr.api_v1.get_block                        import execute as get_block
+from pycspr.api_v1.get_block_transfers              import execute as get_block_transfers
+from pycspr.api_v1.get_block_at_era_switch          import execute as get_block_at_era_switch
 # from pycspr.api_v1.get_deploy                       import execute as get_deploy
 # from pycspr.api_v1.get_era_info                     import execute as get_era_info
 # from pycspr.api_v1.get_events                       import execute as get_events
