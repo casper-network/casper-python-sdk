@@ -16,7 +16,6 @@ def execute(
 
     """
     account_hash = crypto.get_account_hash(account_key)
-    print(account_key, account_hash)
     account_info = get_account_info(account_hash, state_root_hash)
     
     return account_info["main_purse"]

@@ -82,5 +82,6 @@ NODE_RPC_ENDPOINTS: set = {
 # Set of SSE endpoints.
 NODE_SSE_ENDPOINTS: set = {
     "main",
+    "deploys",
     "sigs",
 }

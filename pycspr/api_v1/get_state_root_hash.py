@@ -2,7 +2,7 @@ import typing
 
 import jsonrpcclient as rpc_client
 
-import pycspr
+from pycspr.types import NodeConnectionInfo
 
 
 
@@ -11,18 +11,22 @@ _API_ENDPOINT = "chain_get_state_root_hash"
 
 
 def execute(
+    connection_info: NodeConnectionInfo,
     block_id: typing.Union[None, str, int] = None,
     parse_response: bool = True,
     ) -> typing.Union[dict, str]:
     """Returns an on-chain state root hash at specified block.
 
+    :param connection_info: Information required to connect to a node.
     :param block_id: Identifier of a finialised block.
     :param parse_response: Flag indicating whether to parse web-service response.
 
     :returns: State root hash at specified block.
 
     """
-    response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT,
+    response = rpc_client.request(
+        connection_info.address_rpc,
+        _API_ENDPOINT,
         block_identifier=block_id,
         )
 

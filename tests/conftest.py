@@ -109,6 +109,19 @@ def LIB() -> pycspr:
 
 
 @pytest.fixture(scope="session")
+def CLIENT(LIB):
+    """Returns pointer to a client pointing at NCTL:N1. 
+    
+    """    
+    return LIB.NodeClient(LIB.NodeConnectionInfo(
+        host="localhost",
+        port_rest=14101,
+        port_rpc=11101,
+        port_sse=18101
+    ))
+
+
+@pytest.fixture(scope="session")
 def FACTORY(LIB):
     """Returns pointer to the library's type factory. 
     
@@ -306,6 +319,14 @@ def state_root_hash(LIB) -> str:
     
     """
     return LIB.get_state_root_hash()
+
+
+@pytest.fixture(scope="function")
+def state_root_hash_1(CLIENT) -> bytes:
+    """Returns current state root hash @ NCTL Node 1. 
+    
+    """
+    return CLIENT.get_state_root_hash()
 
 
 @pytest.fixture(scope="function")

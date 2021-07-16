@@ -38,6 +38,7 @@ from pycspr.crypto        import get_account_key_algo
 from pycspr.factory       import create_deploy
 from pycspr.factory       import create_standard_payment
 from pycspr.factory       import create_standard_transfer
+from pycspr.client        import NodeClient
 from pycspr.types         import NodeConnectionInfo
 from pycspr.types         import NodeEventType
 from pycspr.types         import NODE_REST_ENDPOINTS
