@@ -35,8 +35,8 @@ def encode_deploy_approval(entity: DeployApproval) -> dict:
 
     """
     return {
-        "signer": entity.signer.hex(),
         "signature": encode_signature(entity.signature),
+        "signer": entity.signer.hex()
     }
 
 

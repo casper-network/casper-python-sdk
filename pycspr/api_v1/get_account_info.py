@@ -16,7 +16,7 @@ def execute(
     state_root_hash: typing.Union[bytes, None]=None,
     parse_response: bool = True,
     ) -> dict:
-    """api account information at a certain state root hash.
+    """Returns on-chain account information at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.
     :param account_hash: An on-chain account identifier derived from it's associated public key.
@@ -26,16 +26,16 @@ def execute(
     :returns: Account information in JSON format.
 
     """    
-    root_hash = state_root_hash.hex() if state_root_hash else None
     key=f"account-hash-{account_hash.hex()}"
     path = []
+    state_root_hash = state_root_hash.hex() if state_root_hash else None
 
     response = rpc_client.request(
         connection_info.address_rpc,
         _API_ENDPOINT,
         key=key,
-        state_root_hash=root_hash,
-        path=path
+        path=path,
+        state_root_hash=state_root_hash
         )
 
     if parse_response:

@@ -326,7 +326,7 @@ def state_root_hash_1(CLIENT) -> bytes:
     """Returns current state root hash @ NCTL Node 1. 
     
     """
-    return CLIENT.get_state_root_hash()
+    return CLIENT.queries.get_state_root_hash()
 
 
 @pytest.fixture(scope="function")
@@ -354,13 +354,17 @@ def switch_block_hash(switch_block) -> str:
 
 
 @pytest.fixture(scope="function")
-def a_test_deploy(FACTORY, deploy_params, cp2):
+def a_deploy(FACTORY, deploy_params, cp1, cp2):
     """Returns hash of most next switch. 
     
     """
-    return FACTORY.create_standard_transfer(
+    deploy = FACTORY.create_standard_transfer(
         deploy_params,
         amount = 123456789,
         correlation_id = 1,
         target = cp2.account_hash,
         )
+    deploy.set_approval(cp1)
+    
+    return deploy
+

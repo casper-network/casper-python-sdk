@@ -1,13 +1,18 @@
 {
-    "approvals": [],
-    "hash": "bb019d2a616beb73a4a8020d95619ea074a8f219ebcfcefc79e25b4901449a52",
+    "approvals": [
+        {
+            "signer": "01f6fc654e6e4169637c86f2018e07f536d0e8b830dacba5abadb86c943645c15b",
+            "signature": "2314907e23471d18d785c4c1c3267b47be54d6977b9e61f899cdd26bb07975018e14fa778b0c035870e9c4247c85dda59a291c51c9d9c16e87a027c9ce1f8d03"
+        }
+    ],
+    "hash": "1d433923d8eeeede6ad9b1a774fe9693827f94bc9b932062e8acc90c6f10c2b4",
     "header": {
-        "account": "01bf1277b8fb69ab443e8b604e0ba1cc96e2510915105f02ef0298e2109ac497b2",
-        "body_hash": "040264a62a7edb84ecd106ae05562052572cfb9879a6eb76e49b03aee2a75407",
+        "account": "01f6fc654e6e4169637c86f2018e07f536d0e8b830dacba5abadb86c943645c15b",
+        "body_hash": "733eaae8259c1151e5c49ce41073b731671bba2caa8e333f6523fda3445d2ad7",
         "chain_name": "casper-net-1",
         "dependencies": [],
         "gas_price": 10,
-        "timestamp": "2021-07-16T09:33:33.810Z",
+        "timestamp": "2021-07-17T15: 11: 35.028Z",
         "ttl": "1day"
     },
     "payment": {
@@ -24,11 +29,11 @@
                 [
                     "target",
                     {
-                        "bytes": "83ec4b71de015b04d0dedb3381be0b7a2921de2ce94d599c60bb50575171c615",
+                        "bytes": "e85b65ffbd90c54351bf1e2ae0a9e24365c98e1a137274dd195b1e7a5143c0c8",
                         "cl_type": {
                             "ByteArray": 32
                         },
-                        "parsed": "83ec4b71de015b04d0dedb3381be0b7a2921de2ce94d599c60bb50575171c615"
+                        "parsed": "e85b65ffbd90c54351bf1e2ae0a9e24365c98e1a137274dd195b1e7a5143c0c8"
                     }
                 ],
                 [

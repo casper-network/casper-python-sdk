@@ -1,7 +1,7 @@
+import typing
+
 import jsonrpcclient as rpc_client
 
-import pycspr
-from pycspr.crypto import get_account_hash
 from pycspr.types import NodeConnectionInfo
 
 
@@ -11,7 +11,8 @@ _API_ENDPOINT = "chain_get_era_info_by_switch_block"
 
 
 def execute(
-    block_id: str = None,
+    connection_info: NodeConnectionInfo,
+    block_id: typing.Union[None, bytes, str, int] = None,
     parse_response: bool = True,
     ) -> dict:
     """Returns current era information.
@@ -25,11 +26,19 @@ def execute(
     """
     # Get latest.
     if isinstance(block_id, type(None)):
-        response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT)
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
-    # Get by hash.
+    # Get by hash - bytes.
+    elif isinstance(block_id, bytes):
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+            block_identifier={
+                "Hash": block_id.hex()
+            }
+        )
+
+    # Get by hash - hex.
     elif isinstance(block_id, str):
-        response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT, 
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
             block_identifier={
                 "Hash": block_id
             }
@@ -37,7 +46,7 @@ def execute(
 
     # Get by height.
     elif isinstance(block_id, int):
-        response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT, 
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
             block_identifier={
                 "Height": block_id
             }

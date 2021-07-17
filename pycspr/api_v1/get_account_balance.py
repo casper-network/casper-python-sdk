@@ -16,7 +16,7 @@ def execute(
     state_root_hash: bytes = None,
     parse_response: bool = True,
     ) -> typing.Union[int, dict]:
-    """api account balance at a certain state root hash.
+    """Returns account balance at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.
     :param purse_uref: URef of a purse associated with an on-chain account.

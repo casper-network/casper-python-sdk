@@ -29,16 +29,16 @@ from pycspr.utils import conversion
 
 
 
-def create_deploy(std_params: DeployParameters, payment: ExecutionInfo, session: ExecutionInfo):
+def create_deploy(params: DeployParameters, payment: ExecutionInfo, session: ExecutionInfo):
     """Returns a deploy for subsequent dispatch to a node.
     
-    :param std_params: Standard parameters used when creating a deploy.
+    :param params: Standard parameters used when creating a deploy.
     :param session: Session execution information.
     :param payment: Payment execution information.
 
     """
     body = create_deploy_body(payment, session)
-    header = create_deploy_header(body, std_params)
+    header = create_deploy_header(body, params)
 
     return Deploy(
         approvals=[],
@@ -171,14 +171,14 @@ def create_standard_payment(
 
 
 def create_standard_transfer(
-    std_params: DeployParameters,
+    params: DeployParameters,
     amount: int,
     target: bytes,
     correlation_id: int,
     ) -> Deploy:
     """Returns a native transfer deploy.
 
-    :param std_params: Standard parameters used when creating a deploy.
+    :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be transferred.
     :param target: Target account hash.
     :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
@@ -186,13 +186,9 @@ def create_standard_transfer(
 
     """
     return create_deploy(
-        std_params,
-        create_standard_transfer_session(
-            amount,
-            target,
-            correlation_id
-        ),
-        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS)
+        params,
+        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS),
+        create_standard_transfer_session(amount, target, correlation_id)
         )
 
 

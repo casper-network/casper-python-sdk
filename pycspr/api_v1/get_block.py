@@ -28,7 +28,15 @@ def execute(
     if isinstance(block_id, type(None)):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
-    # Get by hash.
+    # Get by hash - bytes.
+    elif isinstance(block_id, bytes):
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+            block_identifier={
+                "Hash": block_id.hex()
+            }
+        )
+
+    # Get by hash - hex.
     elif isinstance(block_id, str):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
             block_identifier={
