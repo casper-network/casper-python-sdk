@@ -7,13 +7,13 @@ from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader
 from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutionInfo
-from pycspr.types import ExecutionInfo_ModuleBytes
-from pycspr.types import ExecutionInfo_StoredContractByHash
-from pycspr.types import ExecutionInfo_StoredContractByHashVersioned
-from pycspr.types import ExecutionInfo_StoredContractByName
-from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
-from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import ExecutableDeployItem
+from pycspr.types import ExecutableDeployItem_ModuleBytes
+from pycspr.types import ExecutableDeployItem_StoredContractByHash
+from pycspr.types import ExecutableDeployItem_StoredContractByHashVersioned
+from pycspr.types import ExecutableDeployItem_StoredContractByName
+from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
+from pycspr.types import ExecutableDeployItem_Transfer
 
 
 
@@ -65,7 +65,7 @@ def encode_execution_argument(entity: ExecutionArgument) -> dict:
     ]
 
 
-def encode_execution_info(entity: ExecutionInfo) -> dict:
+def encode_execution_info(entity: ExecutableDeployItem) -> dict:
     """Encodes execution information to be interpreted at a node.
 
     """
@@ -97,12 +97,12 @@ def encode_execution_info(entity: ExecutionInfo) -> dict:
         }
 
     _ENCODERS = {
-        ExecutionInfo_ModuleBytes: _encode_module_bytes,
-        ExecutionInfo_StoredContractByHash: _encode_stored_contract_by_hash,
-        ExecutionInfo_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-        ExecutionInfo_StoredContractByName: _encode_stored_contract_by_name,
-        ExecutionInfo_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-        ExecutionInfo_Transfer: _encode_session_for_transfer,
+        ExecutableDeployItem_ModuleBytes: _encode_module_bytes,
+        ExecutableDeployItem_StoredContractByHash: _encode_stored_contract_by_hash,
+        ExecutableDeployItem_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
+        ExecutableDeployItem_StoredContractByName: _encode_stored_contract_by_name,
+        ExecutableDeployItem_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
+        ExecutableDeployItem_Transfer: _encode_session_for_transfer,
     }
 
     return _ENCODERS[type(entity)]()

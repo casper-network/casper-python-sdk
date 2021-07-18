@@ -4,7 +4,7 @@ from pycspr import factory
 from pycspr import codec
 from pycspr import crypto
 from pycspr.types import CLTypeKey
-from pycspr.types import ExecutionInfo
+from pycspr.types import ExecutableDeployItem
 from pycspr.types import DeployHeader
 
 
@@ -69,7 +69,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
         )
 
 
-def create_digest_of_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> bytes:
+def create_digest_of_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> bytes:
     """Returns a deploy body's hash digest.
     
     :param payment: Deploy payment execution logic.

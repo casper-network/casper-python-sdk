@@ -9,13 +9,13 @@ from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader
 from pycspr.types import DeployTimeToLive
 from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutionInfo
-from pycspr.types import ExecutionInfo_ModuleBytes
-from pycspr.types import ExecutionInfo_StoredContractByHash
-from pycspr.types import ExecutionInfo_StoredContractByHashVersioned
-from pycspr.types import ExecutionInfo_StoredContractByName
-from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
-from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import ExecutableDeployItem
+from pycspr.types import ExecutableDeployItem_ModuleBytes
+from pycspr.types import ExecutableDeployItem_StoredContractByHash
+from pycspr.types import ExecutableDeployItem_StoredContractByHashVersioned
+from pycspr.types import ExecutableDeployItem_StoredContractByName
+from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
+from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import PublicKey
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -30,8 +30,8 @@ def decode_deploy(obj: dict) -> Deploy:
         approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
         hash=decode_digest(obj["hash"]),
         header = decode_deploy_header(obj["header"]),
-        payment = decode_execution_info(obj["payment"]),
-        session = decode_execution_info(obj["session"])
+        payment = decode_executable_deploy_item(obj["payment"]),
+        session = decode_executable_deploy_item(obj["session"])
     )
 
 
@@ -74,22 +74,12 @@ def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
     )
 
 
-def decode_execution_argument(obj) -> ExecutionArgument:
-    """Maps a dictionary to an execution argument.
-    
-    """
-    return ExecutionArgument(
-        name=obj[0], 
-        value=decode_cl_value(obj[1])
-        )
-
-
-def decode_execution_info(obj) -> ExecutionInfo:
+def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
     """Maps a dictionary to execution information.
     
     """
     def _decode_module_bytes():
-        return ExecutionInfo_ModuleBytes(
+        return ExecutableDeployItem_ModuleBytes(
             args=[decode_execution_argument(i) for i in obj["ModuleBytes"]["args"]],
             module_bytes=bytes.fromhex(obj["ModuleBytes"]["module_bytes"])
             )        
@@ -107,7 +97,7 @@ def decode_execution_info(obj) -> ExecutionInfo:
         raise NotImplementedError()
 
     def _decode_session_for_transfer():
-        return ExecutionInfo_Transfer(
+        return ExecutableDeployItem_Transfer(
             args=[decode_execution_argument(i) for i in obj["Transfer"]["args"]],
             )  
 
@@ -126,3 +116,12 @@ def decode_execution_info(obj) -> ExecutionInfo:
     else:
         raise NotImplementError("Unsupported execution information variant")
 
+
+def decode_execution_argument(obj) -> ExecutionArgument:
+    """Maps a dictionary to an execution argument.
+    
+    """
+    return ExecutionArgument(
+        name=obj[0], 
+        value=decode_cl_value(obj[1])
+        )

@@ -1,6 +1,7 @@
 import json
 import typing
 
+import jsonrpcclient
 import jsonrpcclient as rpc_client
 
 from pycspr.types import Deploy
@@ -21,6 +22,8 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> typing.Union
     :returns: State root hash at specified block.
 
     """
+    print(to_json(deploy))
+
     response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
         deploy=json.loads(to_json(deploy))
         )

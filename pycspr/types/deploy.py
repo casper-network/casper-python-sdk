@@ -41,7 +41,7 @@ class ExecutionArgument():
 
 
 @dataclasses.dataclass
-class ExecutionInfo():
+class ExecutableDeployItem():
     """Encapsulates vm execution information.
     
     """
@@ -50,7 +50,7 @@ class ExecutionInfo():
 
 
 @dataclasses.dataclass
-class ExecutionInfo_ModuleBytes(ExecutionInfo):
+class ExecutableDeployItem_ModuleBytes(ExecutableDeployItem):
     """Encapsulates information required to execute an in-line wasm binary.
     
     """
@@ -59,7 +59,7 @@ class ExecutionInfo_ModuleBytes(ExecutionInfo):
 
 
 @dataclasses.dataclass
-class ExecutionInfo_StoredContract(ExecutionInfo):
+class ExecutableDeployItem_StoredContract(ExecutableDeployItem):
     """Encapsulates information required to execute an on-chain smart contract.
     
     """
@@ -68,7 +68,7 @@ class ExecutionInfo_StoredContract(ExecutionInfo):
 
 
 @dataclasses.dataclass
-class ExecutionInfo_StoredContractByHash(ExecutionInfo_StoredContract):
+class ExecutableDeployItem_StoredContractByHash(ExecutableDeployItem_StoredContract):
     """Encapsulates information required to execute an on-chain smart contract referenced by hash.
     
     """
@@ -77,7 +77,7 @@ class ExecutionInfo_StoredContractByHash(ExecutionInfo_StoredContract):
 
 
 @dataclasses.dataclass
-class ExecutionInfo_StoredContractByHashVersioned(ExecutionInfo_StoredContractByHash):
+class ExecutableDeployItem_StoredContractByHashVersioned(ExecutableDeployItem_StoredContractByHash):
     """Encapsulates information required to execute a versioned on-chain smart contract referenced by hash.
     
     """
@@ -86,7 +86,7 @@ class ExecutionInfo_StoredContractByHashVersioned(ExecutionInfo_StoredContractBy
     
 
 @dataclasses.dataclass
-class ExecutionInfo_StoredContractByName(ExecutionInfo_StoredContract):
+class ExecutableDeployItem_StoredContractByName(ExecutableDeployItem_StoredContract):
     """Encapsulates information required to execute an on-chain smart contract referenced by name.
     
     """
@@ -95,7 +95,7 @@ class ExecutionInfo_StoredContractByName(ExecutionInfo_StoredContract):
 
 
 @dataclasses.dataclass
-class ExecutionInfo_StoredContractByNameVersioned(ExecutionInfo_StoredContractByName):
+class ExecutableDeployItem_StoredContractByNameVersioned(ExecutableDeployItem_StoredContractByName):
     """Encapsulates information required to execute a versioned on-chain smart contract referenced by name.
     
     """
@@ -104,7 +104,7 @@ class ExecutionInfo_StoredContractByNameVersioned(ExecutionInfo_StoredContractBy
 
 
 @dataclasses.dataclass
-class ExecutionInfo_Transfer(ExecutionInfo):
+class ExecutableDeployItem_Transfer(ExecutableDeployItem):
     """Encapsulates information required to execute a host-side balance transfer.
     
     """
@@ -129,10 +129,10 @@ class DeployBody():
     
     """
     # Executable information passed to chain's VM for taking payment required to process session logic.
-    payment: ExecutionInfo
+    payment: ExecutableDeployItem
 
     # Executable information passed to chain's VM.
-    session: ExecutionInfo
+    session: ExecutableDeployItem
 
     # Hash of payload.
     hash: Digest
@@ -192,10 +192,10 @@ class Deploy():
     header: DeployHeader
 
     # Executable information passed to chain's VM for taking payment required to process session logic.
-    payment: ExecutionInfo
+    payment: ExecutableDeployItem
 
     # Executable information passed to chain's VM.
-    session: ExecutionInfo
+    session: ExecutableDeployItem
 
 
     def set_approval(self, account: AccountInfo):

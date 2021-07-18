@@ -26,7 +26,7 @@ def test_create_standard_payment(TYPES, FACTORY):
         FACTORY.create_standard_payment(
             amount = random.randint(0, 1e5),
         ),
-        TYPES.ExecutionInfo_ModuleBytes
+        TYPES.ExecutableDeployItem_ModuleBytes
         )
 
 
@@ -37,7 +37,7 @@ def test_create_standard_payment(TYPES, FACTORY):
                 correlation_id = random.randint(0, 1e9),
                 target = bytes([]),
                 ),
-            TYPES.ExecutionInfo_Transfer
+            TYPES.ExecutableDeployItem_Transfer
             )
 
 

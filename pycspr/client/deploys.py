@@ -13,8 +13,8 @@ from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
 from pycspr.types import Digest
 from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutionInfo
-from pycspr.types import ExecutionInfo_ModuleBytes
+from pycspr.types import ExecutableDeployItem
+from pycspr.types import ExecutableDeployItem_ModuleBytes
 from pycspr.types import PublicKey
 from pycspr.utils import constants
 from pycspr.utils import io as _io
@@ -62,7 +62,7 @@ class DeploysClient():
         _io.write_deploy(deploy, fpath, force)
 
 
-    def create(params: DeployParameters, payment: ExecutionInfo, session: ExecutionInfo):
+    def create(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
         """Returns a deploy for subsequent dispatch to a node.
         
         :param params: Standard parameters used when creating a deploy.
@@ -86,7 +86,7 @@ class DeploysClient():
         return factory.create_execution_arg(name, parsed, cl_type)
 
 
-    def create_standard_payment(amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS) -> ExecutionInfo_ModuleBytes:
+    def create_standard_payment(amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS) -> ExecutableDeployItem_ModuleBytes:
         """Returns standard payment execution information.
         
         :param amount: Maximum amount in motes to be used for standard payment.

@@ -8,14 +8,14 @@ from pycspr.codec.byte_array.encoder.cl import encode_vector_of_t
 from pycspr.types import Deploy
 from pycspr.types import DeployHeader
 from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutionInfo
-from pycspr.types import ExecutionInfo_ModuleBytes
-from pycspr.types import ExecutionInfo_StoredContract
-from pycspr.types import ExecutionInfo_StoredContractByHash
-from pycspr.types import ExecutionInfo_StoredContractByHashVersioned
-from pycspr.types import ExecutionInfo_StoredContractByName
-from pycspr.types import ExecutionInfo_StoredContractByNameVersioned
-from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import ExecutableDeployItem
+from pycspr.types import ExecutableDeployItem_ModuleBytes
+from pycspr.types import ExecutableDeployItem_StoredContract
+from pycspr.types import ExecutableDeployItem_StoredContractByHash
+from pycspr.types import ExecutableDeployItem_StoredContractByHashVersioned
+from pycspr.types import ExecutableDeployItem_StoredContractByName
+from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
+from pycspr.types import ExecutableDeployItem_Transfer
 
 
 
@@ -40,7 +40,7 @@ def encode_execution_argument(entity: ExecutionArgument) -> bytes:
     return encode_string(entity.name) + encode_cl_value(entity.value)
 
 
-def encode_execution_info(entity: ExecutionInfo) -> bytes:
+def encode_execution_info(entity: ExecutableDeployItem) -> bytes:
     """Encodes execution information for subsequent interpretation by VM.
     
     """
@@ -68,12 +68,12 @@ def encode_execution_info(entity: ExecutionInfo) -> bytes:
         return _encode_args(entity.args)
 
     _ENCODERS = {
-        ExecutionInfo_ModuleBytes: (0, _encode_module_bytes),
-        ExecutionInfo_StoredContractByHash: (1, _encode_stored_contract_by_hash),
-        ExecutionInfo_StoredContractByHashVersioned: (3, _encode_stored_contract_by_hash_versioned),
-        ExecutionInfo_StoredContractByName: (2, _encode_stored_contract_by_name),
-        ExecutionInfo_StoredContractByNameVersioned: (4, _encode_stored_contract_by_name_versioned),
-        ExecutionInfo_Transfer: (5, _encode_transfer),
+        ExecutableDeployItem_ModuleBytes: (0, _encode_module_bytes),
+        ExecutableDeployItem_StoredContractByHash: (1, _encode_stored_contract_by_hash),
+        ExecutableDeployItem_StoredContractByHashVersioned: (3, _encode_stored_contract_by_hash_versioned),
+        ExecutableDeployItem_StoredContractByName: (2, _encode_stored_contract_by_name),
+        ExecutableDeployItem_StoredContractByNameVersioned: (4, _encode_stored_contract_by_name_versioned),
+        ExecutableDeployItem_Transfer: (5, _encode_transfer),
     }
 
     try:
@@ -89,12 +89,12 @@ ENCODERS = {
     Deploy: encode_deploy,
     DeployHeader: encode_deploy_header,
     ExecutionArgument: encode_execution_argument,
-    ExecutionInfo_ModuleBytes: encode_execution_info,
-    ExecutionInfo_StoredContractByHash: encode_execution_info,
-    ExecutionInfo_StoredContractByHashVersioned: encode_execution_info,
-    ExecutionInfo_StoredContractByName: encode_execution_info,
-    ExecutionInfo_StoredContractByNameVersioned: encode_execution_info,
-    ExecutionInfo_Transfer: encode_execution_info,
+    ExecutableDeployItem_ModuleBytes: encode_execution_info,
+    ExecutableDeployItem_StoredContractByHash: encode_execution_info,
+    ExecutableDeployItem_StoredContractByHashVersioned: encode_execution_info,
+    ExecutableDeployItem_StoredContractByName: encode_execution_info,
+    ExecutableDeployItem_StoredContractByNameVersioned: encode_execution_info,
+    ExecutableDeployItem_Transfer: encode_execution_info,
 }
 
 

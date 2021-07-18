@@ -20,16 +20,16 @@ from pycspr.types import DeployHeader
 from pycspr.types import DeployTimeToLive
 from pycspr.types import Digest
 from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutionInfo
-from pycspr.types import ExecutionInfo_ModuleBytes
-from pycspr.types import ExecutionInfo_Transfer
+from pycspr.types import ExecutableDeployItem
+from pycspr.types import ExecutableDeployItem_ModuleBytes
+from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import DeployParameters
 from pycspr.utils import constants
 from pycspr.utils import conversion
 
 
 
-def create_deploy(params: DeployParameters, payment: ExecutionInfo, session: ExecutionInfo):
+def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
     """Returns a deploy for subsequent dispatch to a node.
     
     :param params: Standard parameters used when creating a deploy.
@@ -49,7 +49,7 @@ def create_deploy(params: DeployParameters, payment: ExecutionInfo, session: Exe
     )
 
 
-def create_deploy_body(payment: ExecutionInfo, session: ExecutionInfo) -> DeployBody:
+def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> DeployBody:
     """Returns hash of a deploy's so-called body.
     
     :param payment: Payment execution information.
@@ -122,6 +122,7 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     :param humanized_ttl: A humanized ttl, e.g. 1 day.
 
     """
+    humanized_ttl="1day"
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
         raise ValueError(f"Invalid deploy ttl {humanized_ttl} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
@@ -152,13 +153,13 @@ def create_execution_arg(
 
 def create_standard_payment(
     amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-    ) -> ExecutionInfo_ModuleBytes:
+    ) -> ExecutableDeployItem_ModuleBytes:
     """Returns standard payment execution information.
     
     :param amount: Maximum amount in motes to be used for standard payment.
 
     """
-    return ExecutionInfo_ModuleBytes(
+    return ExecutableDeployItem_ModuleBytes(
         args=[
             create_execution_arg(
                 "amount",
@@ -196,7 +197,7 @@ def create_standard_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int,
-    ) -> ExecutionInfo_Transfer:
+    ) -> ExecutableDeployItem_Transfer:
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
@@ -204,7 +205,7 @@ def create_standard_transfer_session(
     :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
     
     """
-    return ExecutionInfo_Transfer(
+    return ExecutableDeployItem_Transfer(
         args=[
             create_execution_arg(
                 "amount",

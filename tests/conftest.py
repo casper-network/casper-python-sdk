@@ -344,7 +344,7 @@ def a_deploy(FACTORY, deploy_params, cp1, cp2):
     """
     deploy = FACTORY.create_standard_transfer(
         deploy_params,
-        amount = 123456789,
+        amount = 2500000000,
         correlation_id = 1,
         target = cp2.account_hash,
         )
