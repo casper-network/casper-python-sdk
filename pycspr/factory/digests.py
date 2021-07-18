@@ -1,7 +1,7 @@
 import typing
 
 from pycspr import factory
-from pycspr import codec
+from pycspr import serialisation
 from pycspr import crypto
 from pycspr.types import CLTypeKey
 from pycspr.types import ExecutableDeployItem
@@ -59,13 +59,13 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     )
 
     return crypto.get_hash(
-        codec.to_bytes(cl_account) + \
-        codec.to_bytes(cl_timestamp) + \
-        codec.to_bytes(cl_ttl) + \
-        codec.to_bytes(cl_gas_price) + \
-        codec.to_bytes(cl_body_hash) + \
-        codec.to_bytes(cl_dependencies) + \
-        codec.to_bytes(cl_chain_name)
+        serialisation.to_bytes(cl_account) + \
+        serialisation.to_bytes(cl_timestamp) + \
+        serialisation.to_bytes(cl_ttl) + \
+        serialisation.to_bytes(cl_gas_price) + \
+        serialisation.to_bytes(cl_body_hash) + \
+        serialisation.to_bytes(cl_dependencies) + \
+        serialisation.to_bytes(cl_chain_name)
         )
 
 
@@ -78,6 +78,6 @@ def create_digest_of_deploy_body(payment: ExecutableDeployItem, session: Executa
 
     """   
     return crypto.get_hash(
-        codec.to_bytes(payment) + \
-        codec.to_bytes(session)
+        serialisation.to_bytes(payment) + \
+        serialisation.to_bytes(session)
         )

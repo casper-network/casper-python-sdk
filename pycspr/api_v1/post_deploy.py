@@ -9,7 +9,7 @@ from jsonrpcclient.clients.http_client import HTTPClient
 
 from pycspr.types import Deploy
 from pycspr.client.connection_info import NodeConnectionInfo
-from pycspr.codec import to_json
+from pycspr.serialisation import to_json
 
 
 

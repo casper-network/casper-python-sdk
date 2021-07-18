@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.codec.byte_array import decode as byte_array_decoder
+from pycspr.serialisation.byte_array import decode as byte_array_decoder
 from pycspr.types import CLValue
 from pycspr.types import CLType
 from pycspr.types import CLTypeKey

@@ -1,6 +1,6 @@
 import json
 
-from pycspr.codec.json.encoder.deploy import encode_deploy
+from pycspr.serialisation.dictionary.encoder.deploy import encode_deploy
 from pycspr.types import Deploy
 
 
@@ -23,4 +23,4 @@ def encode(entity: object) -> str:
     except KeyError:
         raise ValueError(f"Unencodeable type: {type(entity)}")
     else:
-        return json.dumps(encoder(entity), indent=4)
+        return encoder(entity)

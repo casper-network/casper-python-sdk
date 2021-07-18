@@ -1,7 +1,7 @@
 import typing
 
-from pycspr.codec.byte_array.encoder.cl import encode as encode_cl_value
-from pycspr.codec.byte_array.encoder.deploy import encode as encode_deploy
+from pycspr.serialisation.byte_array.encoder.cl import encode as encode_cl_value
+from pycspr.serialisation.byte_array.encoder.deploy import encode as encode_deploy
 from pycspr.types import CLValue
 
 

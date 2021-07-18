@@ -1,11 +1,11 @@
 from pycspr import crypto
 
-from pycspr.codec.json.encoder.cl import encode_cl_value
-from pycspr.codec.json.encoder.misc import encode_account_key
-from pycspr.codec.json.encoder.misc import encode_digest
-from pycspr.codec.json.encoder.misc import encode_public_key
-from pycspr.codec.json.encoder.misc import encode_signature
-from pycspr.codec.json.encoder.misc import encode_timestamp
+from pycspr.serialisation.json.encoder.cl import encode_cl_value
+from pycspr.serialisation.json.encoder.misc import encode_account_key
+from pycspr.serialisation.json.encoder.misc import encode_digest
+from pycspr.serialisation.json.encoder.misc import encode_public_key
+from pycspr.serialisation.json.encoder.misc import encode_signature
+from pycspr.serialisation.json.encoder.misc import encode_timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader

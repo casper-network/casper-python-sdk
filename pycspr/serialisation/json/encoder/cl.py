@@ -1,4 +1,4 @@
-from pycspr.codec.byte_array import encode as byte_array_encoder
+from pycspr.serialisation.byte_array import encode as byte_array_encoder
 from pycspr.types import CLValue
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray

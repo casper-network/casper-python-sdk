@@ -1,16 +1,16 @@
 import typing
 
-from pycspr.codec import byte_array as byte_array_codec
-# from pycspr.codec import dictionary as dictionary_codec
-from pycspr.codec import json as json_codec
+from pycspr.serialisation import byte_array as byte_array_serialisation
+# from pycspr.serialisation import dictionary as dictionary_serialisation
+from pycspr.serialisation import json as json_serialisation
 
 
 
-# Map: encoding <-> codec.
+# Map: encoding <-> serialisation.
 _CODECS = {
-    "bytes": byte_array_codec,
-    # "dict": dictionary_codec,
-    "json": json_codec,
+    "bytes": byte_array_serialisation,
+    # "dict": dictionary_serialisation,
+    "json": json_serialisation,
 }
 
 
@@ -34,7 +34,7 @@ to_bytes = lambda e: _encode(e, "bytes")
 to_json = lambda e: _encode(e, "json")
 
 # Dictionary to entity.
-# from_dict = lambda obj: json_codec.decode(obj)
+# from_dict = lambda obj: json_serialisation.decode(obj)
 
 # JSON to entity.
-from_json = lambda obj: json_codec.decode(obj)
+from_json = lambda obj: json_serialisation.decode(obj)

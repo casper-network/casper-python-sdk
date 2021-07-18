@@ -2,7 +2,7 @@ import json
 import pathlib
 import typing
 
-from pycspr import codec
+from pycspr import serialisation
 from pycspr.types.deploy import Deploy
 
 
@@ -15,7 +15,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
-        return codec.from_json(json.loads(fstream.read()))
+        return serialisation.from_json(json.loads(fstream.read()))
 
 
 def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: bool = True):
@@ -31,4 +31,4 @@ def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: 
         raise IOError("Deploy has already been written to file system")
 
     with open(str(fpath), "w") as fstream:
-        fstream.writelines(codec.to_json(deploy))
+        fstream.writelines(serialisation.to_json(deploy))

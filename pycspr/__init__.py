@@ -20,9 +20,9 @@ from pycspr.client        import NodeConnectionInfo
 from pycspr.client        import NodeEventChannelType
 from pycspr.client        import NodeEventType
 
-from pycspr.codec         import from_json
-from pycspr.codec         import to_bytes
-from pycspr.codec         import to_json
+from pycspr.serialisation         import from_json
+from pycspr.serialisation         import to_bytes
+from pycspr.serialisation         import to_json
 
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key

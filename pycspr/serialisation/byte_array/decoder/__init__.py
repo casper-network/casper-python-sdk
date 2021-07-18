@@ -1,7 +1,7 @@
 import typing
 
-import pycspr.codec.byte_array.decoder.cl as cl_decoder
-import pycspr.codec.byte_array.decoder.deploy as deploy_decoder
+import pycspr.serialisation.byte_array.decoder.cl as cl_decoder
+import pycspr.serialisation.byte_array.decoder.deploy as deploy_decoder
 from pycspr.types import CLType
 
 
