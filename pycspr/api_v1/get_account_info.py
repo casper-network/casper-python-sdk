@@ -10,19 +10,12 @@ from pycspr.types import NodeConnectionInfo
 _API_ENDPOINT = "state_get_item"
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    account_hash: bytes,
-    state_root_hash: typing.Union[bytes, None]=None,
-    parse_response: bool = True,
-    ) -> dict:
+def execute(connection_info: NodeConnectionInfo, account_hash: bytes, state_root_hash: typing.Union[bytes, None] = None) -> dict:
     """Returns on-chain account information at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.
     :param account_hash: An on-chain account identifier derived from it's associated public key.
     :param state_root_hash: A node's root state hash at some point in chain time.
-    :param parse_response: Flag indicating whether to parse web-service response.
-
     :returns: Account information in JSON format.
 
     """    
@@ -38,7 +31,4 @@ def execute(
         state_root_hash=state_root_hash
         )
 
-    if parse_response:
-        response = response.data.result["stored_value"]["Account"]
-    
-    return response
+    return response.data.result["stored_value"]["Account"]

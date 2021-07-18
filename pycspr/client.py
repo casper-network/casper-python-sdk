@@ -179,7 +179,6 @@ class _QueryClient():
 
         :param account_hash: An on-chain account identifier derived from it's associated public key.
         :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
-        :param parse_response: Flag indicating whether to parse web-service response.
 
         :returns: Account information in JSON format.
 

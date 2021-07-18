@@ -7,10 +7,7 @@ from pycspr.api_v1.get_rpc_schema import execute as get_rpc_schema
 from pycspr.types import NodeConnectionInfo
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    endpoint: str = None,
-    ) -> typing.Union[dict, list]:
+def execute(connection_info: NodeConnectionInfo, endpoint: str = None) -> typing.Union[dict, list]:
     """Returns RPC schema.
 
     :param connection_info: Information required to connect to a node.

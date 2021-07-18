@@ -4,7 +4,6 @@ import typing
 import requests
 import sseclient
 
-import pycspr
 from pycspr.types import NodeEventType
 from pycspr.types import NodeConnectionInfo
 
@@ -25,7 +24,11 @@ from pycspr.types import NodeConnectionInfo
 # sigs:FinalitySignature
 
 
-def execute(event_callback: typing.Callable, event_id: int = 0):
+def execute(
+    connection_info: NodeConnectionInfo,
+    event_callback: typing.Callable,
+    event_id: int = 0
+    ):
     """Binds to a node's event stream - events are passed to callback for processing.
 
     :param event_callback: Callback to invoke whenever an event of relevant type is received.
@@ -35,15 +38,15 @@ def execute(event_callback: typing.Callable, event_id: int = 0):
     assert isinstance(event_callback, typing.Callable)
     assert isinstance(event_id, int)
 
-    for event_type, event_id, payload in _yield_events(event_id):
+    for event_type, event_id, payload in _yield_events(connection_info, event_id):
         event_callback(event_type, event_id, payload)
 
 
-def _yield_events(event_id: int) -> typing.Generator:
+def _yield_events(connection_info: NodeConnectionInfo, event_id: int) -> typing.Generator:
     """Yields events streaming from node.
 
     """
-    url = pycspr.CONNECTION.address_sse
+    url = connection_info.address_sse
     if event_id:
         url = f"{url}?start_from={event_id}"
 
@@ -64,10 +67,7 @@ def _yield_events(event_id: int) -> typing.Generator:
             raise err
 
 
-def _parse_event(
-    event_id: int,
-    payload: dict,
-    ) -> typing.Tuple[NodeEventType, int, dict]:
+def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, int, dict]:
     """Parses raw event data for upstream processing.
 
     """

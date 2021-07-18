@@ -9,18 +9,13 @@ from pycspr.types import NodeConnectionInfo
 _API_ENDPOINT = "rpc.discover"
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    parse_response: bool = True,
-    ) -> dict:
+def execute(connection_info: NodeConnectionInfo) -> dict:
     """Returns RPC schema.
 
     :param connection_info: Information required to connect to a node.
-    :param parse_response: Flag indicating whether to parse web-service response.
-
     :returns: Node RPC API schema.
 
     """
-    response = rpc_client.request(pycspr.CONNECTION.address_rpc, _API_ENDPOINT)
+    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
-    return response.data.result["schema"] if parse_response else response.data.result
+    return response.data.result["schema"]

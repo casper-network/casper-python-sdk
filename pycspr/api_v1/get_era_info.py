@@ -10,17 +10,11 @@ from pycspr.types import NodeConnectionInfo
 _API_ENDPOINT = "chain_get_era_info_by_switch_block"
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    block_id: typing.Union[None, bytes, str, int] = None,
-    parse_response: bool = True,
-    ) -> dict:
+def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
     """Returns current era information.
 
     :param connection_info: Information required to connect to a node.
     :param block_id: Identifier of a finialised block.
-    :param parse_response: Flag indicating whether to parse web-service response.
-
     :returns: Era information.
 
     """
@@ -52,4 +46,4 @@ def execute(
             }
         )    
 
-    return response.data.result["era_summary"] if parse_response else response.data.result
+    return response.data.result["era_summary"]

@@ -8,10 +8,7 @@ from pycspr.types import NodeConnectionInfo
 _API_ENDPOINT = "metrics"
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    metric_id: str = None,
-    ) -> list:
+def execute(connection_info: NodeConnectionInfo, metric_id: str = None) -> list:
     """Returns node peers information.
 
     :param connection_info: Information required to connect to a node.

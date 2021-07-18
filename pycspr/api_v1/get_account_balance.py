@@ -10,19 +10,12 @@ from pycspr.types import NodeConnectionInfo
 _API_ENDPOINT = "state_get_balance"
 
 
-def execute(
-    connection_info: NodeConnectionInfo,
-    purse_uref: str,
-    state_root_hash: bytes = None,
-    parse_response: bool = True,
-    ) -> typing.Union[int, dict]:
+def execute(connection_info: NodeConnectionInfo, purse_uref: str, state_root_hash: bytes = None) -> typing.Union[int, dict]:
     """Returns account balance at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.
     :param purse_uref: URef of a purse associated with an on-chain account.
     :param state_root_hash: A node's root state hash at some point in chain time.
-    :param parse_response: Flag indicating whether to parse web-service response.
-
     :returns: Account balance if on-chain account is found.
 
     """
@@ -35,7 +28,4 @@ def execute(
         state_root_hash=state_root_hash,
         )
 
-    if parse_response:
-        response = int(response.data.result["balance_value"])
-    
-    return response
+    return int(response.data.result["balance_value"])

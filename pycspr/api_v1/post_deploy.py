@@ -13,13 +13,11 @@ from pycspr.codec import to_json
 _API_ENDPOINT = "account_put_deploy"
 
 
-def execute(connection_info: NodeConnectionInfo, deploy: Deploy, parse_response: bool = True) -> typing.Union[dict, str]:
+def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> typing.Union[dict, str]:
     """Dispatches a deploy to a node for processing.
 
     :param connection_info: Information required to connect to a node.
     :param block_id: Identifier of a finialised block.
-    :param parse_response: Flag indicating whether to parse web-service response.
-
     :returns: State root hash at specified block.
 
     """
@@ -27,4 +25,4 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy, parse_response:
         deploy=json.loads(to_json(deploy))
         )
 
-    return response.data.result["deploy_hash"] if parse_response else response.data.result
+    return response.data.result["deploy_hash"]
