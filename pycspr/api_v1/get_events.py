@@ -4,8 +4,8 @@ import typing
 import requests
 import sseclient
 
-from pycspr.types import NodeEventType
-from pycspr.types import NodeConnectionInfo
+from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.client.events import NodeEventType
 
 
 

@@ -1,8 +1,6 @@
 import enum
 import inspect
 
-import pytest
-
 
 
 def _has_class(mod, cls):
@@ -56,51 +54,34 @@ def _has_member(mod, member):
 # Expected interface.
 _INTERFACE_OF_LIBRARY = {
     _has_class: {
+        "NodeClient",
         "NodeConnectionInfo",
     },
     _has_enum: {
+        "NodeEventChannelType",
         "NodeEventType",
     },
-    _has_constant: {
-        "CONNECTION",
-        "NODE_REST_ENDPOINTS",
-        "NODE_RPC_ENDPOINTS",
-        "NODE_SSE_ENDPOINTS",
-    },
+    _has_constant: set(),
     _has_exception: set(),
     _has_function: {
         "create_deploy",
+        "create_execution_arg",
         "create_standard_payment",
         "create_standard_transfer",
+        "from_json",
         "to_bytes",
         "to_hex",
         "to_json",
-        "get_account_balance",
         "get_account_hash",
-        "get_account_info",
         "get_account_key",
-        "get_account_main_purse_uref",
-        "get_auction_info",
-        "get_block",
-        "get_block_at_era_switch",
-        "get_block_transfers",
-        "get_deploy",
-        "get_era_info",
-        "get_events",
-        "get_node_metrics",
-        "get_node_peers",
-        "get_node_status",
-        "get_rpc_endpoint",
-        "get_rpc_schema",
-        "get_state_item",
-        "get_state_root_hash",
+        "get_account_key_algo",
+        "read_deploy",
         "write_deploy",
     },
     _has_member: {
         "crypto",
         "factory",
         "types",
-        "utils"
     }
 }
 
@@ -116,7 +97,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.4.0"
+    assert LIB.__version__ == "0.5.0"
 
 
 def test_exports_of_library(LIB):

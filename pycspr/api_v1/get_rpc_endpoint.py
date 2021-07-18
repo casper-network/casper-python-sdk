@@ -4,7 +4,7 @@ import jsonrpcclient as rpc_client
 
 import pycspr
 from pycspr.api_v1.get_rpc_schema import execute as get_rpc_schema
-from pycspr.types import NodeConnectionInfo
+from pycspr.client.connection_info import NodeConnectionInfo
 
 
 def execute(connection_info: NodeConnectionInfo, endpoint: str = None) -> typing.Union[dict, list]:

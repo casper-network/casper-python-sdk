@@ -97,14 +97,6 @@ def LIB() -> pycspr:
     """Returns pointer to configured library instance. 
     
     """
-    # Initialise with default NCTL node 1 connection info.
-    pycspr.initialise(pycspr.NodeConnectionInfo(
-        host="localhost",
-        port_rest=14101,
-        port_rpc=11101,
-        port_sse=18101
-    ))
-
     return pycspr
 
 
