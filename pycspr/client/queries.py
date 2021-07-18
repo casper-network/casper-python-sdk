@@ -96,7 +96,7 @@ class QueriesClient():
         return api_v1.get_block_transfers(self.connection_info, block_id)
 
 
-    def get_era_info(block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+    def get_era_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns current era information.
 
         :param block_id: Identifier of a finialised block.

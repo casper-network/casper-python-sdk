@@ -298,23 +298,15 @@ def account_hash(LIB, account_key: bytes) -> bytes:
 
 
 @pytest.fixture(scope="function")
-def account_main_purse_uref(LIB, account_key: bytes, state_root_hash) -> str:
+def account_main_purse_uref(CLIENT, account_key: bytes, state_root_hash) -> str:
     """Returns a test account main purse unforgeable reference. 
     
     """
-    return LIB.get_account_main_purse_uref(account_key, state_root_hash)
+    return CLIENT.queries.get_account_main_purse_uref(account_key, state_root_hash)
 
 
 @pytest.fixture(scope="function")
-def state_root_hash(LIB) -> str:
-    """Returns current state root hash @ NCTL Node 1. 
-    
-    """
-    return LIB.get_state_root_hash()
-
-
-@pytest.fixture(scope="function")
-def state_root_hash_1(CLIENT) -> bytes:
+def state_root_hash(CLIENT) -> bytes:
     """Returns current state root hash @ NCTL Node 1. 
     
     """
@@ -322,19 +314,19 @@ def state_root_hash_1(CLIENT) -> bytes:
 
 
 @pytest.fixture(scope="function")
-def block_hash(LIB) -> str:
+def block_hash(CLIENT) -> str:
     """Returns hash of most recent block @ NCTL Node 1. 
     
     """
-    return LIB.get_block()["hash"]
+    return CLIENT.queries.get_block()["hash"]
 
 
 @pytest.fixture(scope="session")
-def switch_block(LIB) -> str:
+def switch_block(CLIENT) -> str:
     """Returns hash of most next switch. 
     
     """
-    return LIB.get_block_at_era_switch()
+    return CLIENT.queries.get_block_at_era_switch()
 
 
 @pytest.fixture(scope="session")

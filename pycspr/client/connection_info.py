@@ -1,4 +1,8 @@
+import dataclasses
 
+
+
+@dataclasses.dataclass
 class NodeConnectionInfo:
     """Encapsulates information required to connect to a node.
     
