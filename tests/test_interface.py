@@ -70,7 +70,6 @@ _INTERFACE_OF_LIBRARY = {
         "create_standard_transfer",
         "from_json",
         "to_bytes",
-        "to_hex",
         "to_json",
         "get_account_hash",
         "get_account_key",

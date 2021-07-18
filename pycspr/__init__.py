@@ -22,7 +22,6 @@ from pycspr.client        import NodeEventType
 
 from pycspr.codec         import from_json
 from pycspr.codec         import to_bytes
-from pycspr.codec         import to_hex
 from pycspr.codec         import to_json
 
 from pycspr.crypto        import get_account_hash
