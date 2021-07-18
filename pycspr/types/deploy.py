@@ -202,16 +202,11 @@ class Deploy():
         """Appends an approval to associated set.
         
         """
-        self.approvals.append(
-            DeployApproval(
-                signer=account.account_key, 
-                signature=crypto.get_signature(
-                    self.hash,
-                    account.private_key,
-                    algo=account.algo
-                    )
-                )
-            )
+        # Set signature.
+        signature = crypto.get_signature_for_deploy_approval(self.hash, account.private_key, account.algo)
+
+        # Append new approval.
+        self.approvals.append(DeployApproval(account.account_key, signature))
     
         # Remove potential duplicates.
         uniques = set()

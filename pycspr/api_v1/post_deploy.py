@@ -3,10 +3,14 @@ import typing
 
 import jsonrpcclient
 import jsonrpcclient as rpc_client
+from jsonrpcclient.requests import Request
+from jsonrpcclient.clients.http_client import HTTPClient
+
 
 from pycspr.types import Deploy
 from pycspr.client.connection_info import NodeConnectionInfo
 from pycspr.codec import to_json
+
 
 
 
@@ -22,10 +26,16 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> typing.Union
     :returns: State root hash at specified block.
 
     """
-    print(to_json(deploy))
+    f_client = HTTPClient(connection_info.address_rpc)
+    f_request = Request(_API_ENDPOINT, deploy=json.loads(to_json(deploy)))
+    print(f_request)
 
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
-        deploy=json.loads(to_json(deploy))
-        )
+    response = f_client.send(f_request)
+
+    print(response)
+
+    # response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+    #     deploy=json.loads(to_json(deploy))
+    #     )
 
     return response.data.result["deploy_hash"]
