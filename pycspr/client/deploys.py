@@ -95,24 +95,6 @@ class DeploysClient():
         return factory.create_standard_payment(amount)
 
 
-    def create_standard_transfer(
-        params: DeployParameters,
-        amount: int,
-        target: bytes,
-        correlation_id: int,
-        ) -> Deploy:
-        """Returns a non-approved native transfer deploy.
-
-        :param params: Standard parameters used when creating a deploy.
-        :param amount: Amount in motes to be transferred.
-        :param target: Target account hash.
-        :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
-        :returns: A non-approved native transfer deploy.
-
-        """
-        return factory.create_standard_transfer(params, amount, target, correlation_id)
-
-
     def create_standard_parameters(
         self,
         account: typing.Union[AccountInfo, PublicKey],
@@ -133,3 +115,21 @@ class DeploysClient():
 
         """
         return factory.create_standard_parameters(account, chain_name, dependencies, gas_price, timestamp, ttl)
+
+
+    def create_standard_transfer(
+        params: DeployParameters,
+        amount: int,
+        target: bytes,
+        correlation_id: int,
+        ) -> Deploy:
+        """Returns a non-approved native transfer deploy.
+
+        :param params: Standard parameters used when creating a deploy.
+        :param amount: Amount in motes to be transferred.
+        :param target: Target account hash.
+        :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
+        :returns: A non-approved native transfer deploy.
+
+        """
+        return factory.create_standard_transfer(params, amount, target, correlation_id)

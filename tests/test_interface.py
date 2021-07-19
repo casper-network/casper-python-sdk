@@ -64,6 +64,7 @@ _INTERFACE_OF_LIBRARY = {
     _has_constant: set(),
     _has_exception: set(),
     _has_function: {
+        "create_account_info",
         "create_deploy",
         "create_execution_arg",
         "create_standard_payment",

@@ -193,11 +193,11 @@ def _get_account_of_nctl_faucet(LIB):
     path = _PATH_TO_NCTL_ASSETS / "net-1" / "faucet" / "secret_key.pem"
     (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.AccountInfo(
-        pbk=pbk,
+    return LIB.create_account_info(
+        algo=LIB.crypto.KeyAlgorithm.ED25519,
         pvk=pvk,
-        algo=LIB.crypto.KeyAlgorithm.ED25519
-    )
+        pbk=pbk
+        )
 
 
 def _get_account_of_nctl_user(LIB, user_id: int):
