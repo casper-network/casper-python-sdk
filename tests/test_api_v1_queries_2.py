@@ -48,12 +48,3 @@ def test_get_account_balance(CLIENT, account_main_purse_uref: str, state_root_ha
         assert response >= 0
 
     _assert(CLIENT.queries.get_account_balance(account_main_purse_uref, state_root_hash))
-
-
-def test_get_auction_info(CLIENT):
-    def _assert(response):
-        # e.g. docs/api_reponses/rpc_state_get_auction_info.json
-        assert isinstance(response, dict)
-
-    _assert(CLIENT.queries.get_auction_info())
-

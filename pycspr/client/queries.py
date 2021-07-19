@@ -143,11 +143,11 @@ class QueriesClient():
         return api_v1.get_node_status(self.connection_info)
 
 
-    def get_rpc_endpoint(self, endpoint: str = None) -> dict:
+    def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
 
         :param endpoint: A specific endpoint of interest.
-        :returns: Either list of all RPC endpoints or RPC schema endpoint fragment.
+        :returns: A JSON-RPC schema endpoint fragment.
 
         """
         return api_v1.get_rpc_endpoint(self.connection_info, endpoint)
@@ -156,17 +156,16 @@ class QueriesClient():
     def get_rpc_endpoints(self) -> typing.Union[dict, list]:
         """Returns RPC schema.
 
-        :param endpoint: A specific endpoint of interest.
-        :returns: Either list of all RPC endpoints or RPC schema endpoint fragment.
+        :returns: A list of all supported JSON-RPC endpoints.
 
         """
-        return api_v1.get_rpc_endpoint(self.connection_info)
+        return api_v1.get_rpc_endpoints(self.connection_info)
 
 
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
 
-        :returns: Node RPC API schema.
+        :returns: Node JSON-RPC API schema.
 
         """
         return api_v1.get_rpc_schema(self.connection_info)
