@@ -64,17 +64,13 @@ _INTERFACE_OF_LIBRARY = {
     _has_constant: set(),
     _has_exception: set(),
     _has_function: {
-        "create_account_info",
         "create_deploy",
+        "create_deploy_parameters",
         "create_execution_arg",
         "create_standard_payment",
         "create_standard_transfer",
-        "from_bytes",
-        "from_dict",
-        "from_json",
-        "to_bytes",
-        "to_dict",
-        "to_json",
+        "parse_public_key",
+        "parse_secret_key",
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
@@ -84,6 +80,7 @@ _INTERFACE_OF_LIBRARY = {
     _has_member: {
         "crypto",
         "factory",
+        "serialisation",
         "types",
     }
 }
@@ -100,7 +97,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.5.0"
+    assert LIB.__version__ == "0.5.1"
 
 
 def test_exports_of_library(LIB):

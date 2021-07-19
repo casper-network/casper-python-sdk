@@ -45,7 +45,7 @@ def test_can_write_to_and_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
         fpath = LIB.write_deploy(deploy_1, str(fp))
         deploy_2 = LIB.read_deploy(fp)
         assert isinstance(deploy_2, type(deploy_1))
-        assert LIB.to_json(deploy_1) == LIB.to_json(deploy_2)
+        assert LIB.serialisation.to_json(deploy_1) == LIB.serialisation.to_json(deploy_2)
         os.remove(fpath)
 
 
