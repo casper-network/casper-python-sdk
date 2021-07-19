@@ -17,12 +17,13 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
         return serialisation.from_json(fstream.read())
 
 
-def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: bool = True):
+def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: bool = True) -> str:
     """Writes a deploy to file system.
 
     :deploy: Deploy to be written in JSON format.
     :fpath: Path to target file.
     :force: Flag indicating whether deploy will be written if a file already exists.
+    :returns: Path to written file.
     
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
@@ -31,3 +32,5 @@ def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: 
 
     with open(str(fpath), "w") as fstream:
         fstream.writelines(serialisation.to_json(deploy))
+
+    return str(fpath)
