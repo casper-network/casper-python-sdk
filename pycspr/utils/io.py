@@ -26,6 +26,9 @@ def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: 
     :returns: Path to written file.
     
     """
+    if not isinstance(fpath, (pathlib.Path, str)):
+        raise ValueError("Unrecognized file path type")
+
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     if not force and fpath.exists():
         raise IOError("Deploy has already been written to file system")
