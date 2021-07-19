@@ -1,4 +1,7 @@
+from pycspr import crypto
+
 from pycspr.serialisation.dictionary.encoder.cl import encode_cl_value
+from pycspr.serialisation.dictionary.encoder.misc import encode_account_key
 from pycspr.serialisation.dictionary.encoder.misc import encode_digest
 from pycspr.serialisation.dictionary.encoder.misc import encode_public_key
 from pycspr.serialisation.dictionary.encoder.misc import encode_signature
@@ -35,8 +38,8 @@ def encode_deploy_approval(entity: DeployApproval) -> dict:
 
     """
     return {
-        "signer": entity.signer.hex(),
         "signature": encode_signature(entity.signature),
+        "signer": encode_account_key(entity.signer)
     }
 
 

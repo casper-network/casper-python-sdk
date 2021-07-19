@@ -7,6 +7,13 @@ from pycspr.types import Timestamp
 
 
 
+def encode_account_key(entity: bytes) -> str:
+    """Encodes an on-chain account key.
+
+    """
+    return entity.hex()
+
+
 def encode_digest(entity: Digest) -> str:
     """Encodes a hash digest.
 

@@ -99,16 +99,20 @@ def _main(args: argparse.Namespace):
     # Set deploy.
     deploy = _get_deploy(args, cp1, cp2)
 
+    # Approve deploy.
+    deploy.set_approval(cp1)
+
     # Dispatch deploy to a node.
     client = _get_client(args)
     client.deploys.send(deploy)
+
+    print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
 
 def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     """Returns a pycspr client instance.
 
     """
-    # Set connection.
     connection = pycspr.NodeConnectionInfo(
         host=args.node_host,
         port_rest=args.node_port_rest,
@@ -120,7 +124,7 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
 
 
 def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[AccountInfo, PublicKey]:
-    """Returns objects representing the 2 counter-parties participating in the transfer.
+    """Returns the 2 counter-parties participating in the transfer.
 
     """
     cp1 = pycspr.parse_secret_key(
@@ -138,8 +142,11 @@ def _get_deploy(args: argparse.Namespace, cp1: AccountInfo, cp2: PublicKey) -> D
     """Returns transfer deploy to be dispatched to a node.
 
     """
-    # Set standard parameters.
-    deploy_params = pycspr.create_deploy_parameters(account=cp1, chain_name=args.chain_name)
+    # Set standard deploy parameters.
+    deploy_params = pycspr.create_deploy_parameters(
+        account=cp1,
+        chain_name=args.chain_name
+        )
 
     # Set deploy.
     deploy = pycspr.create_standard_transfer(
@@ -147,7 +154,7 @@ def _get_deploy(args: argparse.Namespace, cp1: AccountInfo, cp2: PublicKey) -> D
         amount=int(2.5e9),
         target=cp2.account_hash,
         correlation_id=random.randint(1, 1e6)
-    )
+        )
 
     return deploy
 

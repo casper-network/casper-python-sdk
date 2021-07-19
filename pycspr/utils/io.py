@@ -1,4 +1,3 @@
-import json
 import pathlib
 import typing
 
@@ -15,7 +14,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
-        return serialisation.from_json(json.loads(fstream.read()))
+        return serialisation.from_json(fstream.read())
 
 
 def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: bool = True):

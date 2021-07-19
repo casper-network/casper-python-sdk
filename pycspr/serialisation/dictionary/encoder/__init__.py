@@ -22,5 +22,5 @@ def encode(entity: object) -> str:
         encoder = _ENCODERS[type(entity)]
     except KeyError:
         raise ValueError(f"Unencodeable type: {type(entity)}")
-    else:
-        return encoder(entity)
+
+    return encoder(entity)
