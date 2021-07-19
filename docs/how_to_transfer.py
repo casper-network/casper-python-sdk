@@ -16,7 +16,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfe
 
 # CLI argument: path to cp1 secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
-    "--path-cp1-secret-key",
+    "--cp1-secret-key-path",
     default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-1" / "secret_key.pem",
     dest="path_to_cp1_secret_key",
     help="Path to counter-party one's secret_key.pem file.",
@@ -25,7 +25,7 @@ _ARGS.add_argument(
 
 # CLI argument: type of cp1 secret key - defaults to ED25519.
 _ARGS.add_argument(
-    "--type-cp1-secret-key",
+    "--cp1-secret-key-type",
     default=pycspr.KeyAlgorithm.ED25519.name,
     dest="type_of_cp1_secret_key",
     help="Type of counter party one's secret key.",
@@ -34,7 +34,7 @@ _ARGS.add_argument(
 
 # CLI argument: path to cp2 account key - defaults to NCTL user 2.
 _ARGS.add_argument(
-    "--path-cp2-account-key",
+    "--cp2-account-key-path",
     default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-2" / "public_key_hex",
     dest="path_to_cp2_account_key",
     help="Path to counter-party two's public_key_hex file.",
