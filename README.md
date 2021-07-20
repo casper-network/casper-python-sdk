@@ -57,3 +57,11 @@ How To: Invoke a smart contract  ?
 --------------------------------------
 
 See [here](how_tos/how_to_invoke_a_contract.py).
+
+How To: Run unit tests against an [NCTL](https://github.com/casper-network/casper-node) network ?
+--------------------------------------
+
+```
+cd YOUR_WORKING_DIRECTORY
+pytest ./tests
+````
