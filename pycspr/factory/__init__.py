@@ -18,6 +18,7 @@ from pycspr.factory.deploys import create_deploy_parameters
 from pycspr.factory.deploys import create_deploy_ttl
 from pycspr.factory.deploys import create_execution_arg
 from pycspr.factory.deploys import create_standard_delegation
+from pycspr.factory.deploys import create_standard_delegation_withdrawal
 from pycspr.factory.deploys import create_standard_transfer
 from pycspr.factory.deploys import create_standard_transfer_session
 from pycspr.factory.deploys import create_standard_payment

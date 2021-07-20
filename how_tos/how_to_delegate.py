@@ -41,7 +41,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to validator's account key - defaults to NCTL bin/eco/delegate.wasm.
+# CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/delegate.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
     default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "delegate.wasm",
@@ -114,8 +114,6 @@ def _main(args: argparse.Namespace):
     # Dispatch deploy to a node.
     client = _get_client(args)
     client.deploys.send(deploy)
-
-    print(pycspr.serialisation.to_json(deploy))
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 

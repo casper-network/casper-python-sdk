@@ -12,7 +12,7 @@ from pycspr.types import PublicKey
 
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to delegate CSPR tokens to a validator.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to undelegate CSPR tokens from a validator.")
 
 # CLI argument: path to delegator secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
@@ -38,6 +38,15 @@ _ARGS.add_argument(
     default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "public_key_hex",
     dest="path_to_validator_account_key",
     help="Path to validator's public_key_hex file.",
+    type=str,
+    )
+
+# CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/undelegate.wasm.
+_ARGS.add_argument(
+    "--path-to-wasm",
+    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "undelegate.wasm",
+    dest="path_to_wasm",
+    help="Path to delegate.wasm file.",
     type=str,
     )
 
@@ -149,10 +158,12 @@ def _get_deploy(args: argparse.Namespace, delegator: AccountInfo, validator: Pub
         )
 
     # Set deploy.
-    deploy = pycspr.create_standard_delegation(
+    deploy = pycspr.create_standard_delegation_withdrawal(
         params=deploy_params,
-        amount=int(2.5e9),
-        target=validator.account_hash
+        amount=int(1e9),
+        public_key_of_delegator=delegator,
+        public_key_of_validator=validator,
+        path_to_contract=args.path_to_wasm
         )
 
     return deploy

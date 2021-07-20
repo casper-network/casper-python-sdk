@@ -172,7 +172,41 @@ def create_standard_delegation(
     return create_deploy(
         params,
         create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION),
-        create_standard_delegation_session(amount, public_key_of_delegator, public_key_of_validator, path_to_contract)
+        create_standard_delegation_session(
+            amount,
+            public_key_of_delegator,
+            public_key_of_validator,
+            path_to_contract
+            )
+        )
+
+
+def create_standard_delegation_withdrawal(
+    params: DeployParameters,
+    amount: int,
+    public_key_of_delegator: PublicKey,
+    public_key_of_validator: PublicKey,
+    path_to_contract: str
+    ) -> Deploy:
+    """Returns a standard withdraw delegation deploy.
+
+    :param params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be delegated.
+    :param public_key_of_delegator: Public key of delegator.
+    :param public_key_of_validator: Public key of validator.
+    :param path_to_contract: Path to compiled delegate.wasm.
+    :returns: A standard delegation deploy.
+
+    """
+    return create_deploy(
+        params,
+        create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL),
+        create_standard_delegation_session(
+            amount,
+            public_key_of_delegator,
+            public_key_of_validator,
+            path_to_contract
+            )
         )
 
 
