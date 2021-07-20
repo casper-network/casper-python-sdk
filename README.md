@@ -38,12 +38,12 @@ How To: Undelegate funds from a validator  ?
 
 See [here](how_tos/how_to_undelegate.py).
 
-How To: Stake funds  ?
+How To: Stake funds as a validator  ?
 --------------------------------------
 
 See [here](how_tos/how_to_stake.py).
 
-How To: Unstake funds  ?
+How To: Unstake funds as a validator ?
 --------------------------------------
 
 See [here](how_tos/how_to_unstake.py).
