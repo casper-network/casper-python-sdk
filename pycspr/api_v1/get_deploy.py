@@ -10,17 +10,18 @@ from pycspr.client.connection_info import NodeConnectionInfo
 _API_ENDPOINT = "info_get_deploy"
 
 
-def execute(connection_info: NodeConnectionInfo, deploy_hash: str) -> dict:
+def execute(connection_info: NodeConnectionInfo, deploy_id: typing.Union[bytes, str]) -> dict:
     """Returns on-chain deploy information.
 
     :param connection_info: Information required to connect to a node.
-    :param block_id: Identifier of a finialised block.
+    :param deploy_id: Identifier of a processed deploy.
 
     :returns: On-chain deploy information.
 
     """
+    deploy_id = deploy_id.hex() if isinstance(deploy_id, bytes) else deploy_id
     response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
-        deploy_hash=deploy_hash
+        deploy_hash=deploy_id
     )
 
     return response.data.result["deploy"]

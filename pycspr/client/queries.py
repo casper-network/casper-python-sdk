@@ -96,6 +96,16 @@ class QueriesClient():
         return api_v1.get_block_transfers(self.connection_info, block_id)
 
 
+    def get_deploy(self, deploy_id: typing.Union[bytes, str]) -> dict:
+        """Returns on-chain deploy information.
+
+        :param deploy_id: Identifier of a finialised block.
+        :returns: On-chain deploy information.
+
+        """
+        return api_v1.get_deploy(self.connection_info, deploy_id)
+
+
     def get_era_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns current era information.
 

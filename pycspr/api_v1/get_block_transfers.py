@@ -23,6 +23,14 @@ def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, st
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
     # Get by hash.
+    elif isinstance(block_id, bytes):
+        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+            block_identifier={
+                "Hash": block_id.hex()
+            }
+        )
+
+    # Get by hash.
     elif isinstance(block_id, str):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
             block_identifier={
