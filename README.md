@@ -38,15 +38,15 @@ How To: Undelegate funds from a validator  ?
 
 See [here](how_tos/how_to_undelegate.py).
 
-How To: Submit a validation bid  ?
+How To: Stake funds  ?
 --------------------------------------
 
-See [here](how_tos/how_to_add_bid.py).
+See [here](how_tos/how_to_stake.py).
 
-How To: Withdraw a validation bid  ?
+How To: Unstake funds  ?
 --------------------------------------
 
-See [here](how_tos/how_to_withdraw_bid.py).
+See [here](how_tos/how_to_unstake.py).
 
 How To: Install a smart contract  ?
 --------------------------------------
