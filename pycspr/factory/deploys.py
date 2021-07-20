@@ -1,4 +1,5 @@
 import datetime
+import pathlib
 import typing
 
 from pycspr import crypto
@@ -10,23 +11,23 @@ from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import AccountInfo
-from pycspr.types import PublicKey
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployBody
 from pycspr.types import DeployHeader
+from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
 from pycspr.types import Digest
 from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutableDeployItem
 from pycspr.types import ExecutableDeployItem_ModuleBytes
 from pycspr.types import ExecutableDeployItem_Transfer
-from pycspr.types import DeployParameters
+from pycspr.types import PublicKey
 from pycspr.utils import constants
 from pycspr.utils import conversion
-
+from pycspr.utils import io as _io
 
 
 def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
@@ -149,6 +150,70 @@ def create_execution_arg(
         name=name,
         value=create_cl_value(cl_type, parsed)
     )
+
+
+def create_standard_delegation(
+    params: DeployParameters,
+    amount: int,
+    public_key_of_delegator: PublicKey,
+    public_key_of_validator: PublicKey,
+    path_to_contract: str
+    ) -> Deploy:
+    """Returns a standard delegation deploy.
+
+    :param params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be delegated.
+    :param public_key_of_delegator: Public key of delegator.
+    :param public_key_of_validator: Public key of validator.
+    :param path_to_contract: Path to compiled delegate.wasm.
+    :returns: A standard delegation deploy.
+
+    """
+    return create_deploy(
+        params,
+        create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION),
+        create_standard_delegation_session(amount, public_key_of_delegator, public_key_of_validator, path_to_contract)
+        )
+
+
+def create_standard_delegation_session(
+    amount: int,
+    public_key_of_delegator: PublicKey,
+    public_key_of_validator: PublicKey,
+    path_to_contract: typing.Union[str, pathlib.Path]
+    ) -> ExecutableDeployItem_ModuleBytes:
+    """Returns session execution information for a standard delegation.
+
+    :param amount: Amount in motes to be delegated.
+    :param public_key_of_delegator: Public key of delegator.
+    :param public_key_of_validator: Public key of validator.
+    :param path_to_contract: Path to compiled delegate.wasm.
+    :returns: A standard delegation deploy.
+
+    """
+    path_to_contract = path_to_contract if isinstance(path_to_contract, pathlib.Path) else pathlib.Path(path_to_contract)
+    assert path_to_contract.exists(), "Invalid delegate.wasm path"
+
+    return ExecutableDeployItem_ModuleBytes(
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "delegator",
+                public_key_of_delegator,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+            create_execution_arg(
+                "validator",
+                public_key_of_validator,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+        ],
+        module_bytes=_io.read_contract(path_to_contract)
+        )
 
 
 def create_standard_payment(

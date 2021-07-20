@@ -22,6 +22,9 @@ NUMERIC_CONSTRAINTS ={
 # Default number of motes to pay for standard payments.
 STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = 1e4
 
+# Default number of motes to pay for standard delegation.
+STANDARD_PAYMENT_FOR_DELEGATION = 3e9
+
 # Default deploy time to live.
 DEFAULT_DEPLOY_TTL = "30m"
 

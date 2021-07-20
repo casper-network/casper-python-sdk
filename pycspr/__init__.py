@@ -30,6 +30,7 @@ from pycspr.crypto        import HashAlgorithm
 from pycspr.factory       import create_deploy
 from pycspr.factory       import create_deploy_parameters
 from pycspr.factory       import create_execution_arg
+from pycspr.factory       import create_standard_delegation
 from pycspr.factory       import create_standard_payment
 from pycspr.factory       import create_standard_transfer
 from pycspr.factory       import parse_public_key

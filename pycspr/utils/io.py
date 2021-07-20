@@ -7,7 +7,7 @@ from pycspr.types.deploy import Deploy
 
 
 def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
-    """Read a deploy from file system.
+    """Reads a deploy from file system.
 
     :fpath: Path to target file.
     
@@ -15,6 +15,17 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
         return serialisation.from_json(fstream.read())
+
+
+def read_contract(fpath: typing.Union[pathlib.Path, str]) -> bytes:
+    """Read a smart contract from file system.
+
+    :fpath: Path to target file.
+    
+    """
+    fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
+    with open(fpath, 'rb') as fstream:
+        return fstream.read()
 
 
 def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: bool = True) -> str:

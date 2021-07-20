@@ -41,7 +41,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: type of cp1 secret key - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to NCTL chain.
 _ARGS.add_argument(
     "--chain",
     default="casper-net-1",

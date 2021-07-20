@@ -16,7 +16,22 @@ from pycspr.types import CLType_Tuple3
 
 
 
+
+# Map: simple type keys to internal enum.
+_SIMPLE_TYPE_TO_ENUM = {
+    "Bool": CLTypeKey.BOOL,
+    "Unit": CLTypeKey.UNIT,
+    "String": CLTypeKey.STRING,
+    "Key": CLTypeKey.KEY,
+    "URef": CLTypeKey.UREF,
+    "PublicKey": CLTypeKey.PUBLIC_KEY,
+}
+
+
 def decode_cl_type(obj) -> CLType:
+    """Decodes a CL type definition.
+
+    """    
     def _decode_byte_array():
         return CLType_ByteArray(size=obj["ByteArray"])
 
@@ -24,7 +39,12 @@ def decode_cl_type(obj) -> CLType:
         return CLType_Option(inner_type=decode_cl_type(obj["Option"]))
     
     def _decode_simple():
-        return CLType_Simple(typeof=CLTypeKey[obj])
+        try:
+            type_key = _SIMPLE_TYPE_TO_ENUM[obj]
+        except KeyError:
+            type_key = CLTypeKey[obj]
+        finally:
+            return CLType_Simple(typeof=type_key)
 
     # Set decoder.
     if isinstance(obj, dict):
