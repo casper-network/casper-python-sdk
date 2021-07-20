@@ -1,3 +1,7 @@
 cryptography
+ecdsa
+jsonrpcclient
+requests
 pytest
+sseclient-py
 tox
