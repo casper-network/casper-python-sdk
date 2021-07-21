@@ -58,7 +58,6 @@ _INTERFACE_OF_LIBRARY = {
         "NodeConnectionInfo",
     },
     _has_enum: {
-        "NodeEventChannelType",
         "NodeEventType",
     },
     _has_constant: set(),

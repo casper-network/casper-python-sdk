@@ -1,6 +1,5 @@
 from pycspr.client.connection_info import NodeConnectionInfo
 from pycspr.client.deploys import DeploysClient as _DeploysClient
-from pycspr.client.events import NodeEventChannelType
 from pycspr.client.events import NodeEventType
 from pycspr.client.events import EventsClient as _EventsClient
 from pycspr.client.queries import QueriesClient as _QueriesClient
