@@ -58,7 +58,7 @@ _INTERFACE_OF_LIBRARY = {
         "NodeConnectionInfo",
     },
     _has_enum: {
-        "NodeEventType",
+        "NodeSseEventType",
     },
     _has_constant: set(),
     _has_exception: set(),
