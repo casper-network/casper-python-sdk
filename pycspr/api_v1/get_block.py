@@ -10,7 +10,7 @@ from pycspr.client.connection_info import NodeConnectionInfo
 _API_ENDPOINT = "chain_get_block"
 
 
-def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, str, int] = None) -> dict:
+def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
     """Returns on-chain block information.
 
     :param connection_info: Information required to connect to a node.
@@ -22,19 +22,11 @@ def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, st
     if isinstance(block_id, type(None)):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
-    # Get by hash - bytes.
-    elif isinstance(block_id, bytes):
+    # Get by hash - bytes | hex.
+    elif isinstance(block_id, (bytes, str)):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
             block_identifier={
-                "Hash": block_id.hex()
-            }
-        )
-
-    # Get by hash - hex.
-    elif isinstance(block_id, str):
-        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
-            block_identifier={
-                "Hash": block_id
+                "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }
         )
 

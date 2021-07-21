@@ -22,16 +22,20 @@ def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, by
     if isinstance(block_id, type(None)):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
 
-    # Get by hash (bytes).
-    elif isinstance(block_id, bytes):
+    # Get by hash - bytes | hex.
+    elif isinstance(block_id, (bytes, str)):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
-            block_identifier=block_id.hex()
+            block_identifier={
+                "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
+            }
         )
 
-    # Get by height | hex.
-    elif isinstance(block_id, (int, str)):
+    # Get by height.
+    elif isinstance(block_id, int):
         response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
-            block_identifier=block_id
+            block_identifier={
+                "Height": block_id
+            }
         )
 
     return response.data.result["state_root_hash"]

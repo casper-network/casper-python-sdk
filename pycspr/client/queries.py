@@ -56,16 +56,16 @@ class QueriesClient():
         return api_v1.get_account_main_purse_uref(self.connection_info, account_key, state_root_hash)
 
 
-    def get_auction_info(self) -> dict:
+    def get_auction_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
 
         """
-        return api_v1.get_auction_info(self.connection_info)
+        return api_v1.get_auction_info(self.connection_info, block_id)
 
 
-    def get_block(self, block_id: typing.Union[None, str, int] = None) -> dict:
+    def get_block(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finialised block.

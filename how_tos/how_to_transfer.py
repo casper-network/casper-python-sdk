@@ -97,7 +97,7 @@ def _main(args: argparse.Namespace):
     cp1, cp2 = _get_counter_parties(args)
 
     # Set deploy.
-    deploy = _get_deploy(args, cp1, cp2)
+    deploy: Deploy = _get_deploy(args, cp1, cp2)
 
     # Approve deploy.
     deploy.set_approval(cp1)
