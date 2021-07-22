@@ -1,6 +1,6 @@
 import os
 import re
-from serialisations import open
+#from serialisations import open
 
 from setuptools import setup
 from setuptools import find_packages
@@ -31,7 +31,7 @@ def _read(fname):
     """
     fpath = os.path.dirname(__file__)
     fpath = os.path.join(fpath, fname)
-    with open(fpath, 'r', 'utf-8') as file_:
+    with open(fpath, 'r', encoding='utf-8') as file_:
         return file_.read()
 
 
