@@ -17,9 +17,6 @@ from pycspr               import serialisation
 from pycspr               import types
 
 from pycspr.client        import NodeClient
-from pycspr.client        import NodeConnectionInfo
-from pycspr.client        import NodeSseChannelType
-from pycspr.client        import NodeSseEventType
 
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key
@@ -36,6 +33,10 @@ from pycspr.factory       import create_standard_payment
 from pycspr.factory       import create_standard_transfer
 from pycspr.factory       import parse_public_key
 from pycspr.factory       import parse_secret_key
+
+from pycspr.types        import NodeConnectionInfo
+from pycspr.types        import NodeSseChannelType
+from pycspr.types        import NodeSseEventType
 
 from pycspr.utils.io      import read_deploy
 from pycspr.utils.io      import write_deploy

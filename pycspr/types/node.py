@@ -1,4 +1,5 @@
 import dataclasses
+import enum
 
 
 
@@ -44,3 +45,30 @@ class NodeConnectionInfo:
         return self.host
 
 
+class NodeSseChannelType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    main = enum.auto()
+    deploys = enum.auto()
+    sigs = enum.auto()
+
+
+class NodeSseEventType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    # All sub-channels.
+    API_VERSION = enum.auto()
+
+    # Main sub-channel.
+    MAIN_BlockAdded = enum.auto()
+    MAIN_DeployProcessed = enum.auto()
+    MAIN_Fault = enum.auto()
+    MAIN_Step = enum.auto()
+
+    # Deploy sub-channel.
+    DEPLOYS_DeployAccepted = enum.auto()
+
+    # Sigs sub-channel.
+    SIGNATURES_FinalitySignature = enum.auto()

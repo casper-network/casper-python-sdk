@@ -1,7 +1,7 @@
 import typing
 
 from pycspr import api_v1
-from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.types import NodeConnectionInfo
 
 
 

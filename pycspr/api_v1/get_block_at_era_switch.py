@@ -1,7 +1,7 @@
 import time
 
 from pycspr.api_v1.get_block import execute as get_block
-from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.types import NodeConnectionInfo
 
 
 

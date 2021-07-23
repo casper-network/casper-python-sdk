@@ -5,7 +5,7 @@ import jsonrpcclient as rpc_client
 
 from pycspr import serialisation
 from pycspr.types import Deploy
-from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.types import NodeConnectionInfo
 
 
 

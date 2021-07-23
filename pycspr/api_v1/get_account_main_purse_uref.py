@@ -2,7 +2,7 @@ import typing
 
 from pycspr import crypto
 from pycspr.api_v1.get_account_info import execute as get_account_info
-from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.types import NodeConnectionInfo
 
 
 

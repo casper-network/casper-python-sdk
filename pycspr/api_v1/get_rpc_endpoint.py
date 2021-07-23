@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api_v1.get_rpc_schema import execute as get_rpc_schema
-from pycspr.client.connection_info import NodeConnectionInfo
+from pycspr.types import NodeConnectionInfo
 
 
 

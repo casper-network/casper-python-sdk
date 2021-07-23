@@ -8,8 +8,8 @@ import pycspr
 from pycspr.types import AccountInfo
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
-from pycspr.client.events import NodeSseChannelType
-from pycspr.client.events import NodeSseEventType
+from pycspr.types import NodeSseChannelType
+from pycspr.types import NodeSseEventType
 
 
 # CHANNELS / EVENTS

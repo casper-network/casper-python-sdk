@@ -31,3 +31,6 @@ from pycspr.types.deploy import ExecutableDeployItem_StoredContractByNameVersion
 from pycspr.types.deploy import ExecutableDeployItem_Transfer
 from pycspr.types.deploy import Signature
 from pycspr.types.deploy import Timestamp
+from pycspr.types.node import NodeConnectionInfo
+from pycspr.types.node import NodeSseChannelType
+from pycspr.types.node import NodeSseEventType

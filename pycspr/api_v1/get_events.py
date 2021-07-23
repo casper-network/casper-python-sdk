@@ -4,24 +4,10 @@ import typing
 import requests
 import sseclient
 
-from pycspr.client.connection_info import NodeConnectionInfo
-from pycspr.client.events import NodeSseChannelType
-from pycspr.client.events import NodeSseEventType
+from pycspr.types import NodeConnectionInfo
+from pycspr.types import NodeSseChannelType
+from pycspr.types import NodeSseEventType
 
-
-# CHANNELS / EVENTS
-# main
-# main:ApiVersion
-# main:BlockAdded
-# main:DeployProcessed
-# main:Fault
-# main:Step
-#
-# deploys
-# deploys:DeployAccepted
-#
-# sigs
-# sigs:FinalitySignature
 
 
 def execute(
