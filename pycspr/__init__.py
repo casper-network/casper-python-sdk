@@ -7,7 +7,7 @@
 #  88              d8'                              88                       
 
 __title__ = "pycspr"
-__version__ = "0.5.1"
+__version__ = "0.6.0"
 __author__ = "Mark A. Greenslade"
 __license__ = "Apache 2.0"
 
