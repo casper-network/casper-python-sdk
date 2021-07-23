@@ -96,7 +96,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.5.1"
+    assert LIB.__version__ == "0.6.2"
 
 
 def test_exports_of_library(LIB):

@@ -3,6 +3,7 @@ import re
 
 from setuptools import setup
 from setuptools import find_packages
+from setuptools import Extension
 from setuptools.dist import Distribution
 
 
@@ -50,15 +51,16 @@ _VERSION = _get_version()
 _PACKAGES = find_packages()
 
 # User readme.
-_README = _read('README.md')
-
+_README = _read('README.rst')
 
 
 setup(
     name='pycspr',
     version=_VERSION,
-    description='Python library for interacting with a CSPR node.',
+    description="Python library for interacting with a CSPR node",
+    description_content_type="text/plain",
     long_description=_README,
+    long_description_content_type="text/plain",
     author='Mark A. Greenslade',
     author_email='mark@casperlabs.io',
     url='https://github.com/pycspr',
@@ -72,7 +74,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
-        'License :: OSI Approved :: Apache 2.0',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
