@@ -59,16 +59,16 @@ class NodeSseEventType(enum.Enum):
     
     """
     # All sub-channels.
-    API_VERSION = enum.auto()
+    ApiVersion = enum.auto()
 
     # Main sub-channel.
-    MAIN_BlockAdded = enum.auto()
-    MAIN_DeployProcessed = enum.auto()
-    MAIN_Fault = enum.auto()
-    MAIN_Step = enum.auto()
+    BlockAdded = enum.auto()
+    DeployProcessed = enum.auto()
+    Fault = enum.auto()
+    Step = enum.auto()
 
     # Deploy sub-channel.
-    DEPLOYS_DeployAccepted = enum.auto()
+    DeployAccepted = enum.auto()
 
     # Sigs sub-channel.
-    SIGNATURES_FinalitySignature = enum.auto()
+    FinalitySignature = enum.auto()

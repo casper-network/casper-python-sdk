@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import pathlib
 import random
@@ -10,20 +11,6 @@ from pycspr.types import Deploy
 from pycspr.types import NodeSseChannelType
 from pycspr.types import NodeSseEventType
 
-
-# CHANNELS / EVENTS
-# main
-# main:ApiVersion
-# main:BlockAdded
-# main:DeployProcessed
-# main:Fault
-# main:Step
-#
-# deploys
-# deploys:DeployAccepted
-#
-# sigs
-# sigs:FinalitySignature
 
 
 # CLI argument parser.
@@ -50,21 +37,21 @@ _ARGS.add_argument(
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
     "--channel",
-    default="main",
+    default=NodeSseChannelType.main.name,
     dest="channel",
     help="Node event channel to which to bind - defaults to main.",
     type=str,
-    choices=("main", "deploys", "sigs"),
+    choices=[i.name for i in NodeSseChannelType],
     )
 
 # CLI argument: Type of event to which to listen to - defaults to all.
 _ARGS.add_argument(
     "--event",
-    default="*",
-    dest="event_type",
+    default="all",
+    dest="event",
     help="Type of event to which to listen to - defaults to all.",
     type=str,
-    choices=("*", "ApiVersion", "BlockAdded", "DeployProcessed", "Fault", "Step", "DeployAccepted", "FinalitySignature"),
+    choices=["all"] + [i.name for i in NodeSseEventType],
     )
 
 
@@ -74,13 +61,11 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
-    # Set client.
     client = _get_client(args)
-
     client.events.get_events(
         callback=_on_event,
         channel_type = NodeSseChannelType[args.channel],
-        event_type = None if args.event_type == "*" else NodeSseEventType[args.event_type],
+        event_type = None if args.event == "all" else NodeSseEventType[args.event],
         event_id = 0
     )
 
@@ -97,11 +82,15 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     return pycspr.NodeClient(connection)
 
 
-def _on_event(event_type, event_id: int, event_data: dict):
+def _on_event(channel_type: NodeSseChannelType, event_type: NodeSseEventType, event_id: int, event_data: dict):
     """Event callback handler.
 
     """
-    print(event_type, event_id, event_data)
+    print("--------------------------------------------------------------------------")
+    print(f"Event #{event_id} :: {channel_type.name} :: {event_type.name}")
+    print("--------------------------------------------------------------------------")
+    print(json.dumps(event_data, indent=4))
+    print("--------------------------------------------------------------------------")
 
 
 # Entry point.
