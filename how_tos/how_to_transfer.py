@@ -5,7 +5,7 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
 
@@ -125,11 +125,11 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     return pycspr.NodeClient(connection)
 
 
-def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[AccountInfo, PublicKey]:
+def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
     """Returns the 2 counter-parties participating in the transfer.
 
     """
-    cp1 = pycspr.parse_secret_key(
+    cp1 = pycspr.parse_private_key(
         args.path_to_cp1_secret_key,
         pycspr.KeyAlgorithm[args.type_of_cp1_secret_key],
         )
@@ -140,7 +140,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[AccountInfo, 
     return cp1, cp2
 
 
-def _get_deploy(args: argparse.Namespace, cp1: AccountInfo, cp2: PublicKey) -> Deploy:
+def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> Deploy:
     """Returns transfer deploy to be dispatched to a node.
 
     """

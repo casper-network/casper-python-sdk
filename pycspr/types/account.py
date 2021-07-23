@@ -5,8 +5,8 @@ from pycspr import crypto
 
 
 @dataclasses.dataclass
-class AccountInfo:
-    """Encapsulates information associated with an external account.
+class PrivateKey:
+    """Encapsulates information associated with an account's private key.
     
     """
     # Private key as bytes - sensitive material !

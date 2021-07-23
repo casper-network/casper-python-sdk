@@ -5,7 +5,7 @@ import typing
 from pycspr import api_v1
 from pycspr import factory
 from pycspr.types import NodeConnectionInfo
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import CLType
 from pycspr.types import CLTypeKey
 from pycspr.types import Deploy
@@ -97,7 +97,7 @@ class DeploysClient():
 
     def create_standard_parameters(
         self,
-        account: typing.Union[AccountInfo, PublicKey],
+        account: typing.Union[PrivateKey, PublicKey],
         chain_name: str,
         dependencies: typing.List[Digest] = [],
         gas_price: int = constants.DEFAULT_GAS_PRICE,

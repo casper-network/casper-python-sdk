@@ -10,7 +10,7 @@ from pycspr.factory.cl import create_cl_type_of_simple
 from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import Deploy
@@ -50,7 +50,7 @@ def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, sessi
     )
 
 
-def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: AccountInfo):
+def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: PrivateKey):
     """Returns a deploy approval to be associated with a deploy.
     
     :param deploy: Either a deploy to be approved, or the hash of a deploy to be approved.
@@ -100,7 +100,7 @@ def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHe
 
 
 def create_deploy_parameters(
-    account: typing.Union[AccountInfo, PublicKey],
+    account: typing.Union[PrivateKey, PublicKey],
     chain_name: str,
     dependencies: typing.List[Digest] = [],
     gas_price: int = constants.DEFAULT_GAS_PRICE,

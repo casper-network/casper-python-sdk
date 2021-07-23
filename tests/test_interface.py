@@ -69,7 +69,7 @@ _INTERFACE_OF_LIBRARY = {
         "create_standard_payment",
         "create_standard_transfer",
         "parse_public_key",
-        "parse_secret_key",
+        "parse_private_key",
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",

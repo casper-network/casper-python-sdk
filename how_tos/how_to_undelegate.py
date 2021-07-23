@@ -5,7 +5,7 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
 
@@ -132,11 +132,11 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     return pycspr.NodeClient(connection)
 
 
-def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[AccountInfo, PublicKey]:
+def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
     """Returns the 2 counter-parties participating in the delegation.
 
     """
-    delegator = pycspr.parse_secret_key(
+    delegator = pycspr.parse_private_key(
         args.path_to_delegator_secret_key,
         pycspr.KeyAlgorithm[args.type_of_delegator_secret_key],
         )
@@ -147,7 +147,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[AccountInfo, 
     return delegator, validator
 
 
-def _get_deploy(args: argparse.Namespace, delegator: AccountInfo, validator: PublicKey) -> Deploy:
+def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: PublicKey) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """

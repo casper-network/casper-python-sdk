@@ -33,7 +33,7 @@ from pycspr.factory       import create_standard_delegation_withdrawal
 from pycspr.factory       import create_standard_payment
 from pycspr.factory       import create_standard_transfer
 from pycspr.factory       import parse_public_key
-from pycspr.factory       import parse_secret_key
+from pycspr.factory       import parse_private_key
 
 from pycspr.types        import NodeConnectionInfo
 from pycspr.types        import NodeSseChannelType

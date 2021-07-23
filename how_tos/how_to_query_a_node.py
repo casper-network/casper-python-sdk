@@ -5,7 +5,7 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
 

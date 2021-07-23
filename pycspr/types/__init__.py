@@ -1,4 +1,4 @@
-from pycspr.types.account import AccountInfo
+from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import TYPES_NUMERIC

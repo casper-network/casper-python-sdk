@@ -1,12 +1,12 @@
 import pathlib
 
 from pycspr import crypto
-from pycspr.types import AccountInfo
+from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
 
 
 
-def create_account_info(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> AccountInfo:
+def create_account_info(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:
     """Returns on-chain account information.
     
     :param algo: ECC key algorithm identifier.
@@ -17,7 +17,7 @@ def create_account_info(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> Ac
     if isinstance(algo, str):
         algo = crypto.KeyAlgorithm[algo]
     
-    return AccountInfo(pvk, pbk, algo)   
+    return PrivateKey(pvk, pbk, algo)   
 
 
 def create_public_key(algo: crypto.KeyAlgorithm, pbk: bytes) -> PublicKey:
@@ -46,7 +46,7 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
         )
 
 
-def parse_secret_key(fpath: pathlib.Path, algo: crypto.KeyAlgorithm = crypto.KeyAlgorithm.ED25519) -> AccountInfo:
+def parse_private_key(fpath: pathlib.Path, algo: crypto.KeyAlgorithm = crypto.KeyAlgorithm.ED25519) -> PrivateKey:
     """Returns on-chain account information deserialised froma a secret key held on file system.
     
     :param fpath: Path to secret key pem file associated with the account.
