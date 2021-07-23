@@ -1,4 +1,5 @@
 from pycspr.crypto.ecc import get_signature
+from pycspr.crypto.ecc import verify_signature
 from pycspr.crypto.enums import HashAlgorithm
 from pycspr.crypto.enums import KeyAlgorithm
 from pycspr.crypto.hashifier import get_hash
@@ -69,3 +70,22 @@ def get_signature_for_deploy_approval(deploy_hash: bytes, private_key: bytes, ke
 
     """
     return bytes([key_algo.value]) + get_signature(deploy_hash, private_key, algo=key_algo)
+
+
+def verify_deploy_approval_signature(deploy_hash: bytes, sig: bytes, account_key: bytes) -> bool:
+    """Returns a flag indicating whether a deploy signature was signed by the private key associated with the passed account key.
+
+    :param deploy_hash: Hash of a deploy that has been signed.
+    :param sig: A digital signature.
+    :param account_key: An account key from which associated ECC algorithm identifier can be derived.
+    :returns: A flag indicating whether a deploy signature was signed by the private key associated with the passed account key.
+    
+    """
+    assert len(deploy_hash) == 32, \
+           "Invalid deploy hash.  Expected length = 32"
+    assert len(sig) == 65, \
+           "Invalid deploy approval signature.  Expected length = 65"
+
+    algo = get_account_key_algo(account_key)
+
+    return verify_signature(deploy_hash, sig[1:], account_key[1:], algo)

@@ -50,6 +50,23 @@ def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, sessi
     )
 
 
+def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: AccountInfo):
+    """Returns a deploy approval to be associated with a deploy.
+    
+    :param deploy: Either a deploy to be approved, or the hash of a deploy to be approved.
+    :param approver: Account key of entity approving a deploy.
+    :returns: A deploy approval to be associated with a deploy.
+
+    """
+    deploy_hash = deploy.hash if isinstance(deploy, Deploy) else deploy
+    assert len(deploy_hash) == 32, "Invalid deploy hash"
+
+    return DeployApproval(
+        approver.account_key,
+        crypto.get_signature_for_deploy_approval(deploy_hash, approver.private_key, approver.key_algo)
+    )
+
+
 def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> DeployBody:
     """Returns hash of a deploy's so-called body.
     

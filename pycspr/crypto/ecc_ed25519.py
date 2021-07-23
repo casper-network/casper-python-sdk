@@ -56,12 +56,14 @@ def get_pvk_from_pem_file(fpath: str) -> bytes:
     :returns : Private key as byte array.
     
     """
+    # Open pem file.
     with open(fpath, 'r') as fstream:
         as_pem = fstream.readlines()
 
+    # Decode bytes.
     pvk_b64 = [l for l in as_pem if l and not l.startswith("-----")][0].strip()
     pvk = base64.b64decode(pvk_b64)
-
+    
     return len(pvk) % _PVK_LENGTH == 0 and pvk[:_PVK_LENGTH] or pvk[-_PVK_LENGTH:]
 
 
@@ -97,3 +99,15 @@ def _get_key_pair(sk: ed25519.Ed25519PrivateKey) -> typing.Tuple[bytes, bytes]:
             encoding=serialization.Encoding.Raw,
             format=serialization.PublicFormat.Raw
         )
+
+
+def verify_signature(msg_hash: bytes, sig: bytes, vk: bytes) -> bool:
+    """Returns a flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+
+    :param msg_hash: Previously signed message hash.
+    :param sig: A digital signature.
+    :param vk: Verifying key.
+    :returns: A flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+    
+    """
+    raise NotImplementedError()

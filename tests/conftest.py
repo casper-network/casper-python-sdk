@@ -338,7 +338,7 @@ def a_deploy(FACTORY, deploy_params, cp1, cp2):
         correlation_id = 1,
         target = cp2.account_hash,
         )
-    deploy.set_approval(cp1)
-    
+    deploy.set_approval(FACTORY.create_deploy_approval(deploy, cp1))    
+
     return deploy
 

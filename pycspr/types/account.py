@@ -32,6 +32,12 @@ class AccountInfo:
 
 
     @property
+    def key_algo(self):
+        """Property synonym."""
+        return self.algo
+
+
+    @property
     def account_hash(self):
         """Returns on-chain account hash.
 

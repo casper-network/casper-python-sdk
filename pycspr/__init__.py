@@ -25,6 +25,7 @@ from pycspr.crypto        import KeyAlgorithm
 from pycspr.crypto        import HashAlgorithm
 
 from pycspr.factory       import create_deploy
+from pycspr.factory       import create_deploy_approval
 from pycspr.factory       import create_deploy_parameters
 from pycspr.factory       import create_execution_arg
 from pycspr.factory       import create_standard_delegation

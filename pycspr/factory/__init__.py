@@ -12,6 +12,7 @@ from pycspr.factory.cl import create_cl_type_of_tuple_2
 from pycspr.factory.cl import create_cl_type_of_tuple_3
 from pycspr.factory.cl import create_cl_value
 from pycspr.factory.deploys import create_deploy
+from pycspr.factory.deploys import create_deploy_approval
 from pycspr.factory.deploys import create_deploy_body
 from pycspr.factory.deploys import create_deploy_header
 from pycspr.factory.deploys import create_deploy_parameters

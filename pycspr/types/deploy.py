@@ -198,15 +198,18 @@ class Deploy():
     session: ExecutableDeployItem
 
 
-    def set_approval(self, account: AccountInfo):
+    def set_approval(self, approval: DeployApproval):
         """Appends an approval to associated set.
-        
+
+        :params approval: An approval to be associated with the deploy.
+
         """
-        # Set signature.
-        signature = crypto.get_signature_for_deploy_approval(self.hash, account.private_key, account.algo)
+        # Verify signature.
+        # TODO
+        # crypto.verify_deploy_approval_signature(self.hash, approval.signature, approval.signer)
 
         # Append new approval.
-        self.approvals.append(DeployApproval(account.account_key, signature))
+        self.approvals.append(approval)
     
         # Remove potential duplicates.
         uniques = set()

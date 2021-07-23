@@ -113,22 +113,40 @@ def get_pvk_pem_file_from_bytes(pvk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED
         return temp_file.name
 
 
-def get_signature(data: bytes, pvk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bytes:
+def get_signature(msg_hash: bytes, pvk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bytes:
     """Returns an ED25519 digital signature of data signed from a PEM file representation of a private key.
 
-    :param data: Data to be signed.
+    :param msg_hash: Message hash to be signed.
     :param pvk: Secret key.
     :param algo: Type of ECC algo used to generate secret key.
-    :returns: Digital signature of input data.
+    :returns: Digital signature of massage hash.
     
     """
-    return ALGOS[algo].get_signature(data, pvk)
+    return ALGOS[algo].get_signature(msg_hash, pvk)
 
 
-def get_signature_from_pem_file(data: bytes, fpath: str, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bytes:
-    """Returns an ED25519 digital signature of data signed from a PEM file representation of a private key.
+def get_signature_from_pem_file(msg_hash: bytes, fpath: str, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bytes:
+    """Returns an ED25519 digital signature of data signed from a PEM file representation of a signing key.
     
+    :param msg_hash: Message hash to be signed.
+    :param fpath: Path to a PEM file representation of a signing key.
+    :param algo: Type of ECC algo used to generate secret key.
+    :returns: Digital signature of massage hash.
+
     """
     pvk, _ = get_key_pair_from_pem_file(fpath, algo)
 
-    return get_signature(data, pvk, algo)
+    return get_signature(msg_hash, pvk, algo)
+
+
+def verify_signature(msg_hash: bytes, sig: bytes, vk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bool:
+    """Returns a flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+
+    :param msg_hash: Previously signed message hash.
+    :param sig: A digital signature.
+    :param vk: Verifying key.
+    :param algo: Type of ECC algo used to generate signing key associated with passed verifying key.
+    :returns: A flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+    
+    """
+    return ALGOS[algo].verify_signature(msg_hash, sig, vk)

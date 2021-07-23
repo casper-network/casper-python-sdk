@@ -70,9 +70,21 @@ def _get_key_pair(sk: ecdsa.SigningKey) -> typing.Tuple[bytes, bytes]:
            sk.verifying_key.to_string("compressed")
 
 
-def _get_signing_key_from_pem_file(fpath):
+def _get_signing_key_from_pem_file(fpath: str) -> ecdsa.SigningKey:
     """Returns a signing key mapped from a PEM file representation of a private key.
     
     """
     with open(fpath, "rb") as f:
         return ecdsa.SigningKey.from_pem(f.read())
+
+
+def verify_signature(msg_hash: bytes, sig: bytes, vk: bytes) -> bool:
+    """Returns a flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+
+    :param msg_hash: Previously signed message hash.
+    :param sig: A digital signature.
+    :param vk: Verifying key.
+    :returns: A flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
+    
+    """
+    raise NotImplementedError()
