@@ -124,6 +124,8 @@ def _main(args: argparse.Namespace):
 
     # Approve deploy.
     deploy.approve(validator)
+    
+    print(pycspr.serialisation.to_json(deploy))
 
     # Dispatch deploy.
     client.deploys.send(deploy)

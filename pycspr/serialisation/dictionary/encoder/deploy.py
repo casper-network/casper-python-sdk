@@ -1,11 +1,7 @@
-from pycspr import crypto
+import datetime
 
+from pycspr import crypto
 from pycspr.serialisation.dictionary.encoder.cl import encode_cl_value
-from pycspr.serialisation.dictionary.encoder.misc import encode_account_key
-from pycspr.serialisation.dictionary.encoder.misc import encode_digest
-from pycspr.serialisation.dictionary.encoder.misc import encode_public_key
-from pycspr.serialisation.dictionary.encoder.misc import encode_signature
-from pycspr.serialisation.dictionary.encoder.misc import encode_timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader
@@ -17,6 +13,8 @@ from pycspr.types import ExecutableDeployItem_StoredContractByHashVersioned
 from pycspr.types import ExecutableDeployItem_StoredContractByName
 from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
 from pycspr.types import ExecutableDeployItem_Transfer
+from pycspr.types import PublicKey
+from pycspr.types import Timestamp
 
 
 
@@ -26,7 +24,7 @@ def encode_deploy(entity: Deploy) -> dict:
     """
     return {
         "approvals": [encode_deploy_approval(i) for i in entity.approvals],
-        "hash": encode_digest(entity.hash),
+        "hash": entity.hash.hex(),
         "header": encode_deploy_header(entity.header),
         "payment": encode_execution_info(entity.payment),
         "session": encode_execution_info(entity.session)
@@ -38,8 +36,8 @@ def encode_deploy_approval(entity: DeployApproval) -> dict:
 
     """
     return {
-        "signature": encode_signature(entity.signature),
-        "signer": encode_account_key(entity.signer)
+        "signature": entity.signature.hex(),
+        "signer": entity.signer.hex()
     }
 
 
@@ -49,7 +47,7 @@ def encode_deploy_header(entity: DeployHeader) -> dict:
     """
     return {
         "account": encode_public_key(entity.accountPublicKey),
-        "body_hash": encode_digest(entity.body_hash),
+        "body_hash": entity.body_hash.hex(),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
@@ -109,3 +107,21 @@ def encode_execution_info(entity: ExecutableDeployItem) -> dict:
     }
 
     return _ENCODERS[type(entity)]()
+
+
+def encode_public_key(entity: PublicKey) -> str:
+    """Encodes a public key.
+
+    """
+    return entity.account_key.hex()
+
+
+def encode_timestamp(entity: Timestamp) -> str:
+    """Encodes a millisecond precise timestamp.
+
+    """
+    as_ts_3_decimal_places = round(entity, 3)
+    as_datetime = datetime.datetime.fromtimestamp(as_ts_3_decimal_places, tz=datetime.timezone.utc)
+    as_iso = as_datetime.isoformat()
+
+    return f"{as_iso[:-9]}Z"

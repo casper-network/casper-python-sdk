@@ -1,5 +1,4 @@
 import dataclasses
-import enum
 
 
 
@@ -43,32 +42,3 @@ class NodeConnectionInfo:
     def __str__(self):
         """Instance string representation."""
         return self.host
-
-
-class NodeSseChannelType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
-    
-    """
-    main = enum.auto()
-    deploys = enum.auto()
-    sigs = enum.auto()
-
-
-class NodeSseEventType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
-    
-    """
-    # All sub-channels.
-    ApiVersion = enum.auto()
-
-    # Main sub-channel.
-    BlockAdded = enum.auto()
-    DeployProcessed = enum.auto()
-    Fault = enum.auto()
-    Step = enum.auto()
-
-    # Deploy sub-channel.
-    DeployAccepted = enum.auto()
-
-    # Sigs sub-channel.
-    FinalitySignature = enum.auto()

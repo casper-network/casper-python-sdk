@@ -11,6 +11,7 @@ from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import PrivateKey
+from pycspr.types import CLAccessRights
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import Deploy
@@ -19,15 +20,16 @@ from pycspr.types import DeployBody
 from pycspr.types import DeployHeader
 from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
-from pycspr.types import Digest
 from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutableDeployItem
 from pycspr.types import ExecutableDeployItem_ModuleBytes
 from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import PublicKey
+from pycspr.types import UnforgeableReference
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
+
 
 
 def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
@@ -102,7 +104,7 @@ def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHe
 def create_deploy_parameters(
     account: typing.Union[PrivateKey, PublicKey],
     chain_name: str,
-    dependencies: typing.List[Digest] = [],
+    dependencies: typing.List[bytes] = [],
     gas_price: int = constants.DEFAULT_GAS_PRICE,
     timestamp: datetime.datetime = None,
     ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL
@@ -410,3 +412,15 @@ def create_standard_transfer_session(
                 ),
         ]
     )
+
+
+def create_uref_from_string(as_string: str):
+    """Returns an unforgeable reference from it's string representation.
+    
+    """
+    _, address_hex, access_rights = as_string.split("-")
+
+    return UnforgeableReference(
+        bytes.fromhex(address_hex),
+        CLAccessRights(int(access_rights))
+        )

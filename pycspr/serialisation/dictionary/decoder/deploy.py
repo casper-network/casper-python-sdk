@@ -1,9 +1,8 @@
+import datetime
+
+
 from pycspr import crypto
 from pycspr.serialisation.dictionary.decoder.cl import decode_cl_value
-from pycspr.serialisation.dictionary.decoder.misc import decode_digest
-from pycspr.serialisation.dictionary.decoder.misc import decode_public_key
-from pycspr.serialisation.dictionary.decoder.misc import decode_signature
-from pycspr.serialisation.dictionary.decoder.misc import decode_timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader
@@ -17,6 +16,7 @@ from pycspr.types import ExecutableDeployItem_StoredContractByName
 from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
 from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import PublicKey
+from pycspr.types import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
 
@@ -28,7 +28,7 @@ def decode_deploy(obj: dict) -> Deploy:
     """
     return Deploy(
         approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
-        hash=decode_digest(obj["hash"]),
+        hash=bytes.fromhex(obj["hash"]),
         header = decode_deploy_header(obj["header"]),
         payment = decode_executable_deploy_item(obj["payment"]),
         session = decode_executable_deploy_item(obj["session"])
@@ -41,7 +41,7 @@ def decode_deploy_approval(obj: dict) -> DeployApproval:
     """
     return DeployApproval(
         signer=decode_public_key(obj["signer"]),
-        signature=decode_signature(obj["signature"]),
+        signature=bytes.fromhex(obj["signature"]),
     )
 
 
@@ -51,7 +51,7 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
     """
     return DeployHeader(
         accountPublicKey=decode_public_key(obj["account"]),
-        body_hash=decode_digest(obj["body_hash"]),
+        body_hash=bytes.fromhex(obj["body_hash"]),
         chain_name=obj["chain_name"],
         dependencies=[],
         gas_price=obj["gas_price"],
@@ -125,3 +125,25 @@ def decode_execution_argument(obj) -> ExecutionArgument:
         name=obj[0], 
         value=decode_cl_value(obj[1])
         )
+
+
+def decode_public_key(obj: str) -> PublicKey:
+    """Decodes a public key.
+
+    """
+    return PublicKey(
+        crypto.KeyAlgorithm(int(obj[0:2])),
+        bytes.fromhex(obj[2:])
+    )
+
+
+def decode_timestamp(obj: str) -> Timestamp:
+    """Decodes a millisecond precise timestamp.
+
+    """
+    # Strip trailing TZ offset - TODO review.
+    if obj.endswith("Z"):
+        obj = obj[:-1]
+        obj = f"{obj}+00:00"
+
+    return datetime.datetime.fromisoformat(obj).timestamp()

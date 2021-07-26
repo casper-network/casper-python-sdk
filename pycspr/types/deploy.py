@@ -6,6 +6,7 @@ from pycspr import crypto
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
 from pycspr.types.cl import CLValue
+from pycspr.types.enums import CLAccessRights
 
 
 
@@ -15,17 +16,9 @@ ContractHash = typing.NewType("32 byte array emitted by a hashing algorithm repr
 # On chain contract version.
 ContractVersion = typing.NewType("U32 integer representing", int)
 
-# Output of a hashing function.
-Digest = typing.NewType("32 byte array emitted by a hashing algorithm", bytes)
-
-# Output of an ECC signing function.
-Signature = typing.NewType("64 byte array emitted by an ECC algorithm", bytes)
-
 # A timestamp encodeable as millisecond precise seconds since epoch.
 Timestamp = typing.NewType("POSIX timestamp", datetime.datetime)
 
-# A human recognizable temporal delta.
-HumamizedTimeDelta = typing.NewType("A temporal offset from now", str)
 
 
 @dataclasses.dataclass
@@ -120,7 +113,7 @@ class DeployApproval:
     signer: PublicKey
 
     # The digital signatutre signalling approval of deploy processing.
-    signature: Signature
+    signature: bytes
 
 
 @dataclasses.dataclass
@@ -135,7 +128,7 @@ class DeployBody():
     session: ExecutableDeployItem
 
     # Hash of payload.
-    hash: Digest
+    hash: bytes
 
 
 @dataclasses.dataclass
@@ -159,13 +152,13 @@ class DeployHeader():
     accountPublicKey: PublicKey
 
     # Hash of deploy payload.
-    body_hash: Digest
+    body_hash: bytes
 
     # Name of target chain to which deploy will be dispatched.
     chain_name: str
 
     # Set of deploys that must be executed prior to this one.
-    dependencies: typing.List[Digest]
+    dependencies: typing.List[bytes]
 
     # Multiplier in motes used to calculate final gas price.
     gas_price: int
@@ -186,7 +179,7 @@ class Deploy():
     approvals: typing.List[DeployApproval]
 
     # Unique identifier.
-    hash: Digest
+    hash: bytes
 
     # Header information encapsulating various information impacting deploy processing.
     header: DeployHeader
@@ -240,7 +233,7 @@ class DeployParameters():
     chain_name: str
 
     # Set of deploys that must be executed prior to this one.
-    dependencies: typing.List[Digest]
+    dependencies: typing.List[bytes]
 
     # Multiplier in motes used to calculate final gas price.
     gas_price: int
@@ -249,4 +242,16 @@ class DeployParameters():
     timestamp: Timestamp
 
     # Time interval in milliseconds after which the deploy will no longer be considered for processing by a node.
-    ttl: HumamizedTimeDelta
+    ttl: DeployTimeToLive
+
+
+@dataclasses.dataclass
+class UnforgeableReference():
+    """An unforgeable reference storage key.
+    
+    """
+    # Uref on-chain identifer.
+    address: bytes
+    
+    # Access rights granted by issuer. 
+    access_rights: CLAccessRights

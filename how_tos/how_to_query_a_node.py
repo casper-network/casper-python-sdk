@@ -5,9 +5,10 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import PrivateKey
 from pycspr.types import Deploy
+from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
+from pycspr.types import UnforgeableReference
 
 
 
@@ -110,7 +111,7 @@ def _main(args: argparse.Namespace):
 
     # Query 2.3: get_account_main_purse_uref.
     account_main_purse = client.queries.get_account_main_purse_uref(account_key.account_key, state_root_hash)
-    assert isinstance(account_main_purse, str)
+    assert isinstance(account_main_purse, UnforgeableReference)
 
     # Query 2.4: get_account_balance.
     account_balance = client.queries.get_account_balance(account_main_purse, state_root_hash)

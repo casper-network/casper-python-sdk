@@ -8,7 +8,7 @@ from pycspr.types import CLTypeKey
 NumericConstraints = collections.namedtuple("NumericConstraints", ["LENGTH", "MIN", "MAX"])
 
 # Map: numerical type <-> constraints.
-NUMERIC_CONSTRAINTS ={
+NUMERIC_CONSTRAINTS = {
     CLTypeKey.I32: NumericConstraints(4, -(2 ** 32), (2 ** 32) - 1),
     CLTypeKey.I64: NumericConstraints(8, -(2 ** 64), (2 ** 64) - 1),
     CLTypeKey.U8: NumericConstraints(1, 0, (2 ** 8) - 1),
@@ -18,6 +18,25 @@ NUMERIC_CONSTRAINTS ={
     CLTypeKey.U256: NumericConstraints(32, 0, (2 ** 256) - 1),
     CLTypeKey.U512: NumericConstraints(64, 0, (2 ** 512) - 1)
 }
+
+
+def is_outside_of_range(type_key: CLTypeKey, value: int) -> bool:
+    """Returns flag indicating whether a value is outside of numeric range associated with the CL type.
+    
+    """
+    constraints = NUMERIC_CONSTRAINTS[type_key]
+
+    return value < constraints.MIN or value > constraints.MAX
+
+
+def is_within_range(type_key: CLTypeKey, value: int) -> bool:
+    """Returns flag indicating whether a value is within a numeric range associated with the CL type.
+    
+    """
+    constraints = NUMERIC_CONSTRAINTS[type_key]
+
+    return value >= constraints.MIN and value <= constraints.MAX
+
 
 # Default number of motes to pay for standard payments.
 STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = 1e4

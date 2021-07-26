@@ -32,15 +32,6 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to validator's account key - defaults to NCTL node 1.
-_ARGS.add_argument(
-    "--validator-account-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "public_key_hex",
-    dest="path_to_validator_account_key",
-    help="Path to validator's public_key_hex file.",
-    type=str,
-    )
-
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/add_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
@@ -48,6 +39,24 @@ _ARGS.add_argument(
     dest="path_to_wasm",
     help="Path to add_bid.wasm file.",
     type=str,
+    )
+
+# CLI argument: amount to stake, i.e. bond, into the network.
+_ARGS.add_argument(
+    "--amount",
+    default=int(2.5e9),
+    dest="amount",
+    help="Amount to bond.",
+    type=int,
+    )
+
+# CLI argument: amount to charge delegators for service provision.
+_ARGS.add_argument(
+    "--delegation-rate",
+    default=2,
+    dest="delegation_rate",
+    help="Amount to charge delegators for servie provision.",
+    type=int,
     )
 
 # CLI argument: name of target chain - defaults to NCTL chain.
@@ -68,15 +77,6 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API REST port - defaults to 14101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-rest",
-    default=14101,
-    dest="node_port_rest",
-    help="Node API REST port.  Typically 8888 on most nodes.",
-    type=int,
-    )
-
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
@@ -85,22 +85,6 @@ _ARGS.add_argument(
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
     )
-
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-sse",
-    default=18101,
-    dest="node_port_sse",
-    help="Node API SSE port.  Typically 9999 on most nodes.",
-    type=int,
-    )
-
-
-# Default bid amount.
-_BID_AMOUNT = int(1e9)
-
-# Default delegation rate.
-_DELEGATION_RATE = 2
 
 
 def _main(args: argparse.Namespace):
@@ -135,9 +119,7 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     """
     connection = pycspr.NodeConnectionInfo(
         host=args.node_host,
-        port_rest=args.node_port_rest,
         port_rpc=args.node_port_rpc,
-        port_sse=args.node_port_sse
     )
 
     return pycspr.NodeClient(connection)
@@ -156,8 +138,8 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
     # Set deploy.
     deploy = pycspr.create_standard_bid(
         params=deploy_params,
-        amount=_BID_AMOUNT,
-        delegation_rate=_DELEGATION_RATE,
+        amount=args.amount,
+        delegation_rate=args.delegation_rate,
         public_key=validator.as_public_key(),
         path_to_contract=args.path_to_wasm
         )

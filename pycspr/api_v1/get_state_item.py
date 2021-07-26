@@ -15,7 +15,7 @@ def execute(
     key: str,
     path: typing.List[str] = [],
     state_root_hash: bytes = None,
-    ) -> object:
+    ) -> dict:
     """Returns reault of a chain query a certain state root hash.
 
     :param connection_info: Information required to connect to a node.

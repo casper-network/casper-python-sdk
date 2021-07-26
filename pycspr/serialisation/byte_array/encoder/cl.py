@@ -1,6 +1,5 @@
 import typing
 
-from pycspr.types import PublicKey
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray
 from pycspr.types import CLType_List
@@ -13,7 +12,11 @@ from pycspr.types import CLType_Tuple3
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType_Option
 from pycspr.types import CLValue
+from pycspr.types import PublicKey
+from pycspr.types import UnforgeableReference
 from pycspr.utils.constants import NUMERIC_CONSTRAINTS
+from pycspr.utils.constants import is_outside_of_range
+from pycspr.utils.constants import is_within_range
 from pycspr.utils.conversion import int_to_le_bytes
 from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
@@ -207,24 +210,24 @@ def encode_u128(value: int) -> bytes:
     """Encodes an unsigned 128 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
-        raise ValueError("Invalid U128: max size exceeded")
-    
-    if value >= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].MAX:
+    if is_within_range(CLTypeKey.U8, value):
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH
         type_key = CLTypeKey.U8
 
-    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].MAX:
+    elif is_within_range(CLTypeKey.U32, value):
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH
         type_key = CLTypeKey.U32
 
-    elif value >= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MIN and value <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].MAX:
+    elif is_within_range(CLTypeKey.U64, value):
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH
         type_key = CLTypeKey.U64
 
-    else:
+    elif is_within_range(CLTypeKey.U128, value):
         encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U128].LENGTH
         type_key = CLTypeKey.U128
+
+    else:
+        raise ValueError("Invalid U128: max size exceeded")
     
     return bytes([type_key.value]) + int_to_le_bytes_trimmed(value, encoded_length, False)
 
@@ -233,28 +236,26 @@ def encode_u256(value: int) -> bytes:
     """Encodes an unsigned 256 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
-        raise ValueError("Invalid U256: max size exceeded")
-
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U128].MIN and value > NUMERIC_CONSTRAINTS[CLTypeKey.U128].MAX:
+    if is_within_range(CLTypeKey.U128, value):
+        return encode_u128(value)
+    elif is_within_range(CLTypeKey.U256, value):
         return bytes([CLTypeKey.U256.value]) + \
                int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U256].LENGTH, False)
-
-    return encode_u128(value)
+    else:
+        raise ValueError("Invalid U256: max size exceeded")
 
 
 def encode_u512(value: int):
     """Encodes an unsigned 512 bit integer.
     
     """
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U512].MIN or value > NUMERIC_CONSTRAINTS[CLTypeKey.U512].MAX:
-        raise ValueError("Invalid U512: max size exceeded")
-
-    if value < NUMERIC_CONSTRAINTS[CLTypeKey.U256].MIN and value > NUMERIC_CONSTRAINTS[CLTypeKey.U256].MAX:
+    if is_within_range(CLTypeKey.U256, value):
+        return encode_u256(value)
+    elif is_within_range(CLTypeKey.U512, value):
         return bytes([CLTypeKey.U512.value]) + \
                int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U512].LENGTH, False)
-
-    return encode_u256(value)
+    else:
+        raise ValueError("Invalid U512: max size exceeded")
 
 
 def encode_unit(value: None):
@@ -264,12 +265,13 @@ def encode_unit(value: None):
     return bytes([])
 
 
-def encode_uref(value: str):
+def encode_uref(value: UnforgeableReference):
     """Encodes an unforgeable reference.
     
     """
-    # TODO: make URef first class object
-    return encode_byte_array((value or "").encode("utf-8"))
+    return encode_byte_array(
+        value.address + bytes([value.access_rights.value])
+        )
 
 
 def encode_vector_of_t(value: list):

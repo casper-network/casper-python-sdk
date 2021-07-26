@@ -11,7 +11,6 @@ from pycspr.types import CLTypeKey
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
-from pycspr.types import Digest
 from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutableDeployItem
 from pycspr.types import ExecutableDeployItem_ModuleBytes
@@ -99,7 +98,7 @@ class DeploysClient():
         self,
         account: typing.Union[PrivateKey, PublicKey],
         chain_name: str,
-        dependencies: typing.List[Digest] = [],
+        dependencies: typing.List[bytes] = [],
         gas_price: int = constants.DEFAULT_GAS_PRICE,
         timestamp: datetime.datetime = None,
         ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL

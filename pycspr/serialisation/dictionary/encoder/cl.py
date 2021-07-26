@@ -14,6 +14,7 @@ from pycspr.types import TYPES_NUMERIC
 
 
 
+
 # Map: simple internal enum to external type key.
 _TYPE_KEYS = {
     CLTypeKey.BOOL: "Bool",
@@ -103,6 +104,8 @@ def encode_cl_value_parsed(type_info: CLType, parsed: object) -> str:
         return parsed.hex()
     elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
         return parsed.account_key.hex()
+    elif type_info.typeof == CLTypeKey.UREF:
+        return f"uref-{parsed.address.hex()}-{parsed.access_rights.value:03}"
     elif type_info.typeof == CLTypeKey.OPTION:
         return encode_cl_value_parsed(type_info.inner_type, parsed)
     else:

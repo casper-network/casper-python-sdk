@@ -25,5 +25,6 @@ from pycspr.factory.deploys import create_standard_delegation_withdrawal
 from pycspr.factory.deploys import create_standard_transfer
 from pycspr.factory.deploys import create_standard_transfer_session
 from pycspr.factory.deploys import create_standard_payment
+from pycspr.factory.deploys import create_uref_from_string
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
