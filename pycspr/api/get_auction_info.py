@@ -2,7 +2,7 @@ import typing
 
 import jsonrpcclient as rpc_client
 
-from pycspr.api_v1.get_block import execute as get_block
+from pycspr.api.get_block import execute as get_block
 from pycspr.client import NodeConnectionInfo
 
 

@@ -1,7 +1,7 @@
 import enum
 import typing
 
-from pycspr import api_v1
+from pycspr import api
 from pycspr.client import NodeConnectionInfo
 
 
@@ -54,4 +54,4 @@ class EventsClient():
         :param event_id: Identifer of event from which to start stream listening.
 
         """
-        api_v1.get_events(self.connection_info, callback, channel_type, event_type, event_id)
+        api.get_events(self.connection_info, callback, channel_type, event_type, event_id)

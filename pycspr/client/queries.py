@@ -1,6 +1,6 @@
 import typing
 
-from pycspr import api_v1
+from pycspr import api
 from pycspr.client import NodeConnectionInfo
 
 
@@ -26,7 +26,7 @@ class QueriesClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
     
-        return api_v1.get_account_balance(self.connection_info, purse_uref, state_root_hash)
+        return api.get_account_balance(self.connection_info, purse_uref, state_root_hash)
 
 
     def get_account_info(self, account_hash: bytes, state_root_hash: typing.Union[bytes, None] = None) -> dict:
@@ -40,7 +40,7 @@ class QueriesClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
 
-        return api_v1.get_account_info(self.connection_info, account_hash, state_root_hash)
+        return api.get_account_info(self.connection_info, account_hash, state_root_hash)
 
 
     def get_account_main_purse_uref(self, account_key: bytes, state_root_hash: typing.Union[bytes, None] = None) -> str:
@@ -53,7 +53,7 @@ class QueriesClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
 
-        return api_v1.get_account_main_purse_uref(self.connection_info, account_key, state_root_hash)
+        return api.get_account_main_purse_uref(self.connection_info, account_key, state_root_hash)
 
 
     def get_auction_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
@@ -62,7 +62,7 @@ class QueriesClient():
         :returns: Current auction system contract information.
 
         """
-        return api_v1.get_auction_info(self.connection_info, block_id)
+        return api.get_auction_info(self.connection_info, block_id)
 
 
     def get_block(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
@@ -72,7 +72,7 @@ class QueriesClient():
         :returns: On-chain block information.
 
         """
-        return api_v1.get_block(self.connection_info, block_id)
+        return api.get_block(self.connection_info, block_id)
 
 
     def get_block_at_era_switch(self, polling_interval_seconds: float = 1.0, max_polling_time_seconds: float = 120.0) -> dict:
@@ -83,7 +83,7 @@ class QueriesClient():
         :returns: On-chain block information.
 
         """
-        return api_v1.get_block_at_era_switch(self.connection_info, polling_interval_seconds, max_polling_time_seconds)
+        return api.get_block_at_era_switch(self.connection_info, polling_interval_seconds, max_polling_time_seconds)
 
 
     def get_block_transfers(self, block_id: typing.Union[None, str, int] = None) -> typing.Tuple[str, list]:
@@ -93,7 +93,7 @@ class QueriesClient():
         :returns: On-chain block transfers information.
 
         """
-        return api_v1.get_block_transfers(self.connection_info, block_id)
+        return api.get_block_transfers(self.connection_info, block_id)
 
 
     def get_deploy(self, deploy_id: typing.Union[bytes, str]) -> dict:
@@ -103,7 +103,7 @@ class QueriesClient():
         :returns: On-chain deploy information.
 
         """
-        return api_v1.get_deploy(self.connection_info, deploy_id)
+        return api.get_deploy(self.connection_info, deploy_id)
 
 
     def get_era_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
@@ -113,7 +113,7 @@ class QueriesClient():
         :returns: Era information.
 
         """
-        return api_v1.get_era_info(self.connection_info, block_id)
+        return api.get_era_info(self.connection_info, block_id)
 
 
     def get_node_metrics(self) -> list:
@@ -122,7 +122,7 @@ class QueriesClient():
         :returns: Node metrics information.
 
         """
-        return api_v1.get_node_metrics(self.connection_info)
+        return api.get_node_metrics(self.connection_info)
 
 
     def get_node_metric(self, metric_id: str) -> list:
@@ -132,7 +132,7 @@ class QueriesClient():
         :returns: Node metrics information filtered by a particular metric.
 
         """
-        return api_v1.get_node_metrics(self.connection_info, metric_id)
+        return api.get_node_metrics(self.connection_info, metric_id)
 
 
     def get_node_peers(self) -> dict:
@@ -141,7 +141,7 @@ class QueriesClient():
         :returns: Node peers information.
 
         """
-        return api_v1.get_node_peers(self.connection_info)
+        return api.get_node_peers(self.connection_info)
 
 
     def get_node_status(self) -> dict:
@@ -150,7 +150,7 @@ class QueriesClient():
         :returns: Node status information.
 
         """
-        return api_v1.get_node_status(self.connection_info)
+        return api.get_node_status(self.connection_info)
 
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
@@ -160,7 +160,7 @@ class QueriesClient():
         :returns: A JSON-RPC schema endpoint fragment.
 
         """
-        return api_v1.get_rpc_endpoint(self.connection_info, endpoint)
+        return api.get_rpc_endpoint(self.connection_info, endpoint)
 
 
     def get_rpc_endpoints(self) -> typing.Union[dict, list]:
@@ -169,7 +169,7 @@ class QueriesClient():
         :returns: A list of all supported JSON-RPC endpoints.
 
         """
-        return api_v1.get_rpc_endpoints(self.connection_info)
+        return api.get_rpc_endpoints(self.connection_info)
 
 
     def get_rpc_schema(self) -> dict:
@@ -178,7 +178,7 @@ class QueriesClient():
         :returns: Node JSON-RPC API schema.
 
         """
-        return api_v1.get_rpc_schema(self.connection_info)
+        return api.get_rpc_schema(self.connection_info)
 
 
     def get_state_item(self, item_key: str, item_path: typing.List[str] = [], state_root_hash: typing.Union[bytes, None] = None) -> bytes:
@@ -190,7 +190,7 @@ class QueriesClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
         
-        return api_v1.get_state_item(self.connection_info, item_key, item_key, state_root_hash)
+        return api.get_state_item(self.connection_info, item_key, item_key, state_root_hash)
 
 
     def get_state_root_hash(self, block_id: typing.Union[None, str, int] = None) -> bytes:
@@ -201,6 +201,6 @@ class QueriesClient():
 
         """
         return bytes.fromhex(
-            api_v1.get_state_root_hash(self.connection_info, block_id)
+            api.get_state_root_hash(self.connection_info, block_id)
         )
 

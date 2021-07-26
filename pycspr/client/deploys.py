@@ -2,7 +2,7 @@ import datetime
 import pathlib
 import typing
 
-from pycspr import api_v1
+from pycspr import api
 from pycspr import factory
 from pycspr.client import NodeConnectionInfo
 from pycspr.types import PrivateKey
@@ -37,7 +37,7 @@ class DeploysClient():
         :param deploy: A deploy to be processed at a node.
 
         """
-        return api_v1.post_deploy(self.connection_info, deploy)
+        return api.post_deploy(self.connection_info, deploy)
 
 
     def read(self, fpath: typing.Union[pathlib.Path, str]) -> Deploy:
