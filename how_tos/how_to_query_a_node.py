@@ -112,7 +112,7 @@ def _main(args: argparse.Namespace):
     account_main_purse = client.queries.get_account_main_purse_uref(account_key.account_key, state_root_hash)
     assert isinstance(account_main_purse, str)
 
-    # Query 2.4: get_account_main_purse_uref.
+    # Query 2.4: get_account_balance.
     account_balance = client.queries.get_account_balance(account_main_purse, state_root_hash)
     assert isinstance(account_balance, int)
 
@@ -127,21 +127,19 @@ def _main(args: argparse.Namespace):
     # Query 3.3: get_block_transfers - by hash & by height.
     block_transfers = client.queries.get_block_transfers(block["hash"])
     assert isinstance(block_transfers, tuple)
-    assert isinstance(block_transfers[0], str)
-    assert isinstance(block_transfers[1], list)
+    assert isinstance(block_transfers[0], str)      # black hash
+    assert isinstance(block_transfers[1], list)     # set of transfers
     assert block_transfers == client.queries.get_block_transfers(block["header"]["height"])
 
-    # Query 4.1: get_auction_info - by switch block hash & height.
+    # Query 4.1: get_auction_info.
     auction_info = client.queries.get_auction_info()
     assert isinstance(auction_info, dict)
 
     # Query 4.2: get_era_info - by switch block hash & height.
     era_info = client.queries.get_era_info(block["hash"])
     assert isinstance(era_info, dict)
-    assert era_info == client.queries.get_era_info(block["header"]["height"])
 
-    # Query 4.2: get_era_info - by switch block hash & height.
-    era_info = client.queries.get_era_info(block["hash"])
+    # Query 4.3: get_era_info - by switch block hash & height.
     assert client.queries.get_era_info(block["hash"]) == \
            client.queries.get_era_info(block["header"]["height"])
 
