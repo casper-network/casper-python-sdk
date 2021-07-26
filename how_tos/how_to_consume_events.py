@@ -1,15 +1,10 @@
 import argparse
 import json
-import os
-import pathlib
-import random
-import typing
 
-import pycspr
-from pycspr.types import PrivateKey
-from pycspr.types import Deploy
-from pycspr.types import NodeSseChannelType
-from pycspr.types import NodeSseEventType
+from pycspr import NodeClient
+from pycspr import NodeConnectionInfo
+from pycspr import NodeSseChannelType
+from pycspr import NodeSseEventType
 
 
 
@@ -70,19 +65,22 @@ def _main(args: argparse.Namespace):
     )
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_sse=args.node_port_sse
-    )
-
-    return pycspr.NodeClient(connection)
+    ))
 
 
-def _on_event(channel_type: NodeSseChannelType, event_type: NodeSseEventType, event_id: int, event_data: dict):
+def _on_event(
+    channel_type: NodeSseChannelType,
+    event_type: NodeSseEventType,
+    event_id: int,
+    event_data: dict
+    ):
     """Event callback handler.
 
     """

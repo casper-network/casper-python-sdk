@@ -4,9 +4,9 @@ import typing
 import requests
 import sseclient
 
-from pycspr.types import NodeConnectionInfo
-from pycspr.types import NodeSseChannelType
-from pycspr.types import NodeSseEventType
+from pycspr.client.events import NodeConnectionInfo
+from pycspr.client.events import NodeSseChannelType
+from pycspr.client.events import NodeSseEventType
 
 
 
@@ -30,7 +30,6 @@ def execute(
         _validate_that_channel_support_event_type(channel_type, event_type)
 
     sse_client = _get_sse_client(connection_info, channel_type, event_id)
-
     for event_type, event_id, payload in _yield_events(sse_client):
         callback(channel_type, event_type, event_id, payload)
 

@@ -1,7 +1,7 @@
 import jsonrpcclient as rpc_client
 
 import pycspr
-from pycspr.types import NodeConnectionInfo
+from pycspr.client import NodeConnectionInfo
 
 
 

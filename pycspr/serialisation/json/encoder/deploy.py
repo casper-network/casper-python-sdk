@@ -1,7 +1,7 @@
 import datetime
 
 from pycspr import crypto
-from pycspr.serialisation.dictionary.encoder.cl import encode_cl_value
+from pycspr.serialisation.json.encoder.cl import encode_cl_value
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader

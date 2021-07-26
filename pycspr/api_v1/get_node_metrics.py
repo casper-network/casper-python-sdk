@@ -1,6 +1,6 @@
 import requests as rest_client
 
-from pycspr.types import NodeConnectionInfo
+from pycspr.client import NodeConnectionInfo
 
 
 

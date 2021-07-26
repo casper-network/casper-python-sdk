@@ -14,18 +14,6 @@ from pycspr.types import TYPES_NUMERIC
 
 
 
-
-# Map: simple internal enum to external type key.
-_TYPE_KEYS = {
-    CLTypeKey.BOOL: "Bool",
-    CLTypeKey.UNIT: "Unit",
-    CLTypeKey.STRING: "String",
-    CLTypeKey.KEY: "Key",
-    CLTypeKey.UREF: "URef",
-    CLTypeKey.PUBLIC_KEY: "PublicKey",
-}
-
-
 def encode_cl_type(entity: CLType) -> dict:
     """Encodes a CL type.
     
@@ -77,9 +65,19 @@ def encode_cl_type_key(entity: CLTypeKey) -> str:
     """Encodes a CL type key.
     
     """    
-    try:
-        return _TYPE_KEYS[entity]
-    except KeyError:
+    if entity == CLTypeKey.BOOL:
+        return "Bool"
+    elif entity == CLTypeKey.UNIT:
+        return "Unit"
+    elif entity == CLTypeKey.STRING:
+        return "String"
+    elif entity == CLTypeKey.KEY:
+        return "Key"
+    elif entity == CLTypeKey.UREF:
+        return "URef"
+    elif entity == CLTypeKey.PUBLIC_KEY:
+        return "PublicKey"
+    else:
         return entity.name
 
 
@@ -87,27 +85,22 @@ def encode_cl_value(entity: CLValue) -> dict:
     """Encodes a CL value.
 
     """
+    def _encode_parsed(type_info: CLType, parsed: object) -> str:
+        if type_info.typeof in TYPES_NUMERIC:
+            return str(int(parsed))
+        elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
+            return parsed.hex()
+        elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
+            return parsed.account_key.hex()
+        elif type_info.typeof == CLTypeKey.UREF:
+            return f"uref-{parsed.address.hex()}-{parsed.access_rights.value:03}"
+        elif type_info.typeof == CLTypeKey.OPTION:
+            return _encode_parsed(type_info.inner_type, parsed)
+        else:
+            return str(parsed)
+    
     return {
         "bytes": byte_array_encoder(entity).hex(),
         "cl_type": encode_cl_type(entity.cl_type),
-        "parsed": encode_cl_value_parsed(entity.cl_type, entity.parsed),
+        "parsed": _encode_parsed(entity.cl_type, entity.parsed),
     }
-
-
-def encode_cl_value_parsed(type_info: CLType, parsed: object) -> str:
-    """Encodes a parsed CL value.
-
-    """
-    if type_info.typeof in TYPES_NUMERIC:
-        return str(int(parsed))
-    elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
-        return parsed.hex()
-    elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
-        return parsed.account_key.hex()
-    elif type_info.typeof == CLTypeKey.UREF:
-        return f"uref-{parsed.address.hex()}-{parsed.access_rights.value:03}"
-    elif type_info.typeof == CLTypeKey.OPTION:
-        return encode_cl_value_parsed(type_info.inner_type, parsed)
-    else:
-        return str(parsed)
-    

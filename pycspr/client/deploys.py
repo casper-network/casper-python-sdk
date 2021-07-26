@@ -4,7 +4,7 @@ import typing
 
 from pycspr import api_v1
 from pycspr import factory
-from pycspr.types import NodeConnectionInfo
+from pycspr.client import NodeConnectionInfo
 from pycspr.types import PrivateKey
 from pycspr.types import CLType
 from pycspr.types import CLTypeKey

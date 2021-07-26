@@ -2,7 +2,7 @@ import datetime
 
 
 from pycspr import crypto
-from pycspr.serialisation.dictionary.decoder.cl import decode_cl_value
+from pycspr.serialisation.json.decoder.cl import decode_cl_value
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployHeader
@@ -23,7 +23,7 @@ from pycspr.utils import conversion
 
 
 def decode_deploy(obj: dict) -> Deploy:
-    """Maps a dictionary to a deploy.
+    """Maps a dict to a deploy.
     
     """
     return Deploy(
@@ -36,7 +36,7 @@ def decode_deploy(obj: dict) -> Deploy:
 
 
 def decode_deploy_approval(obj: dict) -> DeployApproval:    
-    """Maps a dictionary to a deploy approval.
+    """Maps a dict to a deploy approval.
     
     """
     return DeployApproval(
@@ -46,7 +46,7 @@ def decode_deploy_approval(obj: dict) -> DeployApproval:
 
 
 def decode_deploy_header(obj: dict) -> DeployHeader:
-    """Maps a dictionary to a deploy header.
+    """Maps a dict to a deploy header.
     
     """
     return DeployHeader(
@@ -61,7 +61,7 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
 
 
 def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
-    """Maps a dictionary to a deploy ttl wrapper object.
+    """Maps a dict to a deploy ttl wrapper object.
     
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(obj)
@@ -75,7 +75,7 @@ def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
 
 
 def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
-    """Maps a dictionary to execution information.
+    """Maps a dict to execution information.
     
     """
     def _decode_module_bytes():
@@ -118,7 +118,7 @@ def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
 
 
 def decode_execution_argument(obj) -> ExecutionArgument:
-    """Maps a dictionary to an execution argument.
+    """Maps a dict to an execution argument.
     
     """
     return ExecutionArgument(

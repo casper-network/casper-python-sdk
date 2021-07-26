@@ -5,8 +5,8 @@ import typing
 from pycspr import crypto
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
+from pycspr.types.cl import CLAccessRights
 from pycspr.types.cl import CLValue
-from pycspr.types.enums import CLAccessRights
 
 
 

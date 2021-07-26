@@ -2,10 +2,30 @@ import enum
 import typing
 
 from pycspr import api_v1
-from pycspr.types import NodeConnectionInfo
-from pycspr.types import NodeSseChannelType
-from pycspr.types import NodeSseEventType
+from pycspr.client import NodeConnectionInfo
 
+
+
+class NodeSseChannelType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    deploys = enum.auto()
+    main = enum.auto()
+    sigs = enum.auto()
+
+
+class NodeSseEventType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    ApiVersion = enum.auto()
+    BlockAdded = enum.auto()
+    DeployAccepted = enum.auto()
+    DeployProcessed = enum.auto()
+    Fault = enum.auto()
+    FinalitySignature = enum.auto()
+    Step = enum.auto()
 
 
 class EventsClient():
