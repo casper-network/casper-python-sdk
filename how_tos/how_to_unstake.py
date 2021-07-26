@@ -33,15 +33,6 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to validator's account key - defaults to NCTL node 1.
-_ARGS.add_argument(
-    "--validator-account-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "public_key_hex",
-    dest="path_to_validator_account_key",
-    help="Path to validator's public_key_hex file.",
-    type=str,
-    )
-
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/add_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
@@ -49,6 +40,15 @@ _ARGS.add_argument(
     dest="path_to_wasm",
     help="Path to add_bid.wasm file.",
     type=str,
+    )
+
+# CLI argument: amount to unstake, i.e. unbond, from the network.
+_ARGS.add_argument(
+    "--amount",
+    default=int(2.5e9),
+    dest="amount",
+    help="Amount to unbond.",
+    type=int,
     )
 
 # CLI argument: name of target chain - defaults to NCTL chain.
@@ -69,15 +69,6 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API REST port - defaults to 14101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-rest",
-    default=14101,
-    dest="node_port_rest",
-    help="Node API REST port.  Typically 8888 on most nodes.",
-    type=int,
-    )
-
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
@@ -86,20 +77,6 @@ _ARGS.add_argument(
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
     )
-
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-sse",
-    default=18101,
-    dest="node_port_sse",
-    help="Node API SSE port.  Typically 9999 on most nodes.",
-    type=int,
-    )
-
-
-# Default withdrawal amount.
-_WITHDRAWAL_AMOUNT = 1000000000000001
-
 
 
 def _main(args: argparse.Namespace):
@@ -117,8 +94,11 @@ def _main(args: argparse.Namespace):
         args.type_of_validator_secret_key,
         )
     
+    # Set validator unbond purse.
+    validator_purse = client.queries.get_account_main_purse_uref(validator.account_key)
+
     # Set deploy.
-    deploy = _get_deploy(args, validator)
+    deploy = _get_deploy(args, validator, validator_purse)
 
     # Approve deploy.
     deploy.approve(validator)
@@ -135,21 +115,20 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     """
     connection = pycspr.NodeConnectionInfo(
         host=args.node_host,
-        port_rest=args.node_port_rest,
         port_rpc=args.node_port_rpc,
-        port_sse=args.node_port_sse
     )
 
     return pycspr.NodeClient(connection)
 
 
-def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
+def _get_deploy(
+    args: argparse.Namespace,
+    validator: PrivateKey,
+    validator_purse: UnforgeableReference
+    ) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
-    # Set validator unbond purse.
-    unbond_purse = client.queries.get_account_main_purse_uref(validator.account_key)
-
     # Set standard deploy parameters.
     deploy_params = pycspr.create_deploy_parameters(
         account=validator,
@@ -159,10 +138,10 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
     # Set deploy.
     deploy = pycspr.create_standard_bid_withdrawal(
         params=deploy_params,
-        amount=_WITHDRAWAL_AMOUNT,
+        amount=args.amount,
         public_key=validator.as_public_key(),
         path_to_contract=args.path_to_wasm,
-        unbond_purse=unbond_purse,
+        unbond_purse=validator_purse,
         )
 
     return deploy
