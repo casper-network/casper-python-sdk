@@ -5,9 +5,10 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import PrivateKey
 from pycspr.types import Deploy
+from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
+from pycspr.types import UnforgeableReference
 
 
 
@@ -116,17 +117,12 @@ def _main(args: argparse.Namespace):
         args.type_of_validator_secret_key,
         )
     
-    # Set validator unbond purse.
-    unbond_purse = client.queries.get_account_main_purse_uref(validator.account_key)
-
     # Set deploy.
-    deploy = _get_deploy(args, validator, unbond_purse)
+    deploy = _get_deploy(args, validator)
 
     # Approve deploy.
     deploy.approve(validator)
     
-    print(pycspr.serialisation.to_json(deploy))
-
     # Dispatch deploy.
     client.deploys.send(deploy)
 
@@ -147,10 +143,13 @@ def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
     return pycspr.NodeClient(connection)
 
 
-def _get_deploy(args: argparse.Namespace, validator: PrivateKey, unbond_purse: str) -> Deploy:
+def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
+    # Set validator unbond purse.
+    unbond_purse = client.queries.get_account_main_purse_uref(validator.account_key)
+
     # Set standard deploy parameters.
     deploy_params = pycspr.create_deploy_parameters(
         account=validator,

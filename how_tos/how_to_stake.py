@@ -5,8 +5,8 @@ import random
 import typing
 
 import pycspr
-from pycspr.types import PrivateKey
 from pycspr.types import Deploy
+from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
 
 
@@ -93,6 +93,9 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    # Set node client.
+    client = _get_client(args)
+
     # Set validator key.
     validator = pycspr.parse_private_key(
         args.path_to_validator_secret_key,
@@ -107,7 +110,6 @@ def _main(args: argparse.Namespace):
     deploy.set_approval(pycspr.create_deploy_approval(deploy, validator))
 
     # Dispatch deploy to a node.
-    client = _get_client(args)
     client.deploys.send(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
