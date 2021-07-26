@@ -7,7 +7,6 @@ import typing
 import pycspr
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
 
 
 
@@ -107,7 +106,6 @@ def _main(args: argparse.Namespace):
 
     # Approve deploy.
     deploy.approve(validator)
-    deploy.set_approval(pycspr.create_deploy_approval(deploy, validator))
 
     # Dispatch deploy to a node.
     client.deploys.send(deploy)

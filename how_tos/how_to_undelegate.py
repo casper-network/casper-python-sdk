@@ -91,7 +91,7 @@ def _main(args: argparse.Namespace):
     deploy = _get_deploy(args, delegator, validator)
 
     # Approve deploy.
-    deploy.set_approval(pycspr.create_deploy_approval(deploy, delegator))    
+    deploy.approve(delegator)
 
     # Dispatch deploy to a node.
     client = _get_client(args)

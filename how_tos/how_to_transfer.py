@@ -82,9 +82,7 @@ def _main(args: argparse.Namespace):
     deploy: Deploy = _get_deploy(args, cp1, cp2)
 
     # Approve deploy.
-    deploy.set_approval(pycspr.create_deploy_approval(deploy, cp1))    
-
-    print(pycspr.serialisation.to_json(deploy))
+    deploy.approve(cp1)
 
     # Dispatch deploy to a node.
     client = _get_client(args)

@@ -86,19 +86,20 @@ def _main(args: argparse.Namespace):
 
     """
     # Set node client.
-    client = _get_client(args)
+    client: = _get_client(args)
 
     # Set validator key.
-    validator = pycspr.parse_private_key(
+    validator: PrivateKey = pycspr.parse_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
     
     # Set validator unbond purse.
-    validator_purse = client.queries.get_account_main_purse_uref(validator.account_key)
+    validator_purse: UnforgeableReference = \
+        client.queries.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
-    deploy = _get_deploy(args, validator, validator_purse)
+    deploy: Deploy = _get_deploy(args, validator, validator_purse)
 
     # Approve deploy.
     deploy.approve(validator)
