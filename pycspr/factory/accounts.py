@@ -1,4 +1,5 @@
 import pathlib
+import typing
 
 from pycspr import crypto
 from pycspr.types import PrivateKey
@@ -46,7 +47,10 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
         )
 
 
-def parse_private_key(fpath: pathlib.Path, algo: crypto.KeyAlgorithm = crypto.KeyAlgorithm.ED25519) -> PrivateKey:
+def parse_private_key(
+    fpath: pathlib.Path,
+    algo: typing.Union[str, crypto.KeyAlgorithm]
+    ) -> PrivateKey:
     """Returns on-chain account information deserialised froma a secret key held on file system.
     
     :param fpath: Path to secret key pem file associated with the account.
@@ -54,6 +58,7 @@ def parse_private_key(fpath: pathlib.Path, algo: crypto.KeyAlgorithm = crypto.Ke
     :returns: On-chain account information wrapper.
 
     """
+    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
     (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath)
 
     return create_account_info(algo, pvk, pbk)

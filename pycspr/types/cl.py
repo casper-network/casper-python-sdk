@@ -32,6 +32,20 @@ class CLTypeKey(enum.Enum):
     PUBLIC_KEY = 22
 
 
+class CLAccessRights(enum.Enum):
+    """Enumeration over set of CL storage item access rights.
+    
+    """
+    NONE = 0
+    READ = 1
+    WRITE = 2
+    ADD = 4
+    READ_WRITE = 3
+    READ_ADD = 5
+    ADD_WRITE = 6
+    READ_ADD_WRITE = 7
+
+
 # Set of types considered to be numeric.
 TYPES_NUMERIC = {
     CLTypeKey.I32,

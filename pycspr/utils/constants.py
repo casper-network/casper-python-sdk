@@ -28,6 +28,12 @@ STANDARD_PAYMENT_FOR_DELEGATION = 3e9
 # Default number of motes to pay for standard delegation withdrawal.
 STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL = 3e9
 
+# Default number of motes to pay for standard auction bid.
+STANDARD_PAYMENT_FOR_AUCTION_BID = 3e9
+
+# Default number of motes to pay for standard auction bid withdrawal.
+STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL = 3e9
+
 # Default deploy time to live.
 DEFAULT_DEPLOY_TTL = "30m"
 

@@ -268,6 +268,7 @@ def encode_uref(value: str):
     """Encodes an unforgeable reference.
     
     """
+    # TODO: make URef first class object
     return encode_byte_array((value or "").encode("utf-8"))
 
 
@@ -314,9 +315,10 @@ def encode(value: CLValue) -> bytes:
     
     """
     encoder = ENCODERS[value.cl_type.typeof]
-
     if value.cl_type.typeof in {CLTypeKey.LIST, CLTypeKey.OPTION}:
-        inner_type_encoder = ENCODERS[value.cl_type.inner_type.typeof]
-        return encoder(value.parsed, inner_type_encoder)
-
-    return encoder(value.parsed)
+        return encoder(
+            value.parsed,
+            ENCODERS[value.cl_type.inner_type.typeof]
+            )
+    else:
+        return encoder(value.parsed)

@@ -24,7 +24,7 @@ class QueriesClient():
         :returns: Account balance if on-chain account is found.
 
         """
-        state_root_hash = state_root_hash or get_state_root_hash()
+        state_root_hash = state_root_hash or self.get_state_root_hash()
     
         return api_v1.get_account_balance(self.connection_info, purse_uref, state_root_hash)
 
@@ -38,7 +38,7 @@ class QueriesClient():
         :returns: Account information in JSON format.
 
         """
-        state_root_hash = state_root_hash or get_state_root_hash()
+        state_root_hash = state_root_hash or self.get_state_root_hash()
 
         return api_v1.get_account_info(self.connection_info, account_hash, state_root_hash)
 
@@ -51,7 +51,7 @@ class QueriesClient():
         :returns: Account main purse unforgeable reference.
 
         """
-        state_root_hash = state_root_hash or get_state_root_hash()
+        state_root_hash = state_root_hash or self.get_state_root_hash()
 
         return api_v1.get_account_main_purse_uref(self.connection_info, account_key, state_root_hash)
 
@@ -188,7 +188,7 @@ class QueriesClient():
         :returns: State root hash at specified block.
 
         """
-        state_root_hash = state_root_hash or get_state_root_hash()
+        state_root_hash = state_root_hash or self.get_state_root_hash()
         
         return api_v1.get_state_item(self.connection_info, item_key, item_key, state_root_hash)
 

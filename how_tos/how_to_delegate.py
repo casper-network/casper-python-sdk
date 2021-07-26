@@ -138,7 +138,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
     """
     delegator = pycspr.parse_private_key(
         args.path_to_delegator_secret_key,
-        pycspr.KeyAlgorithm[args.type_of_delegator_secret_key],
+        args.type_of_delegator_secret_key,
         )
     validator = pycspr.parse_public_key(
         args.path_to_validator_account_key

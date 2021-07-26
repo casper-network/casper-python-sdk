@@ -169,6 +169,90 @@ def create_execution_arg(
     )
 
 
+def create_standard_bid(
+    params: DeployParameters,
+    amount: int,
+    delegation_rate: int,
+    public_key: PublicKey,
+    path_to_contract: str
+    ) -> Deploy:
+    """Returns an auction bid deploy.
+
+    :param params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be submitted as an auction bid.
+    :param delegation_rate: Percentage charged to a delegator for provided service.
+    :param public_key: Public key of validator.
+    :param path_to_contract: Path to compiled delegate.wasm.
+    :returns: A standard delegation deploy.
+
+    """
+    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
+    session = ExecutableDeployItem_ModuleBytes(
+        module_bytes=_io.read_contract(path_to_contract),
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "delegation_rate",
+                delegation_rate,
+                create_cl_type_of_simple(CLTypeKey.U8)
+                ),
+            create_execution_arg(
+                "public_key",
+                public_key,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+            ]
+        )
+    
+    return create_deploy(params, payment, session)
+
+
+def create_standard_bid_withdrawal(
+    params: DeployParameters,
+    amount: int,
+    public_key: PublicKey,    
+    path_to_contract: str,
+    unbond_purse: str,
+    ) -> Deploy:
+    """Returns an auction bid withdraw delegation deploy.
+
+    :param params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be withdrawn from auction.
+    :param public_key: Public key of validator.
+    :param path_to_contract: Path to compiled delegate.wasm.
+    :param unbond_purse: Validator's purse to which to withdraw funds.
+    :returns: A standard delegation deploy.
+
+    """
+    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
+    session = ExecutableDeployItem_ModuleBytes(
+        module_bytes=_io.read_contract(path_to_contract),
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "public_key",
+                public_key,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+            create_execution_arg(
+                "unbond_purse",
+                unbond_purse,
+                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.UREF))
+                ),
+            ]
+        )
+
+    return create_deploy(params, payment, session)
+
+
 def create_standard_delegation(
     params: DeployParameters,
     amount: int,
@@ -186,16 +270,29 @@ def create_standard_delegation(
     :returns: A standard delegation deploy.
 
     """
-    return create_deploy(
-        params,
-        create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION),
-        create_standard_delegation_session(
-            amount,
-            public_key_of_delegator,
-            public_key_of_validator,
-            path_to_contract
-            )
-        )
+    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
+    session = ExecutableDeployItem_ModuleBytes(
+        module_bytes=_io.read_contract(path_to_contract),
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "delegator",
+                public_key_of_delegator,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+            create_execution_arg(
+                "validator",
+                public_key_of_validator,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+        ]
+    )
+
+    return create_deploy(params, payment, session)
 
 
 def create_standard_delegation_withdrawal(
@@ -215,37 +312,9 @@ def create_standard_delegation_withdrawal(
     :returns: A standard delegation deploy.
 
     """
-    return create_deploy(
-        params,
-        create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL),
-        create_standard_delegation_session(
-            amount,
-            public_key_of_delegator,
-            public_key_of_validator,
-            path_to_contract
-            )
-        )
-
-
-def create_standard_delegation_session(
-    amount: int,
-    public_key_of_delegator: PublicKey,
-    public_key_of_validator: PublicKey,
-    path_to_contract: typing.Union[str, pathlib.Path]
-    ) -> ExecutableDeployItem_ModuleBytes:
-    """Returns session execution information for a standard delegation.
-
-    :param amount: Amount in motes to be delegated.
-    :param public_key_of_delegator: Public key of delegator.
-    :param public_key_of_validator: Public key of validator.
-    :param path_to_contract: Path to compiled delegate.wasm.
-    :returns: A standard delegation deploy.
-
-    """
-    path_to_contract = path_to_contract if isinstance(path_to_contract, pathlib.Path) else pathlib.Path(path_to_contract)
-    assert path_to_contract.exists(), "Invalid delegate.wasm path"
-
-    return ExecutableDeployItem_ModuleBytes(
+    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
+    session = ExecutableDeployItem_ModuleBytes(
+        module_bytes=_io.read_contract(path_to_contract),
         args=[
             create_execution_arg(
                 "amount",
@@ -262,9 +331,10 @@ def create_standard_delegation_session(
                 public_key_of_validator,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
                 ),
-        ],
-        module_bytes=_io.read_contract(path_to_contract)
-        )
+        ]
+    )
+
+    return create_deploy(params, payment, session)
 
 
 def create_standard_payment(

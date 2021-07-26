@@ -198,20 +198,32 @@ class Deploy():
     session: ExecutableDeployItem
 
 
+    def approve(self, approver: PrivateKey):
+        """Creates a deploy approval & appends it to associated set.
+
+        :params approver: Private key of entity approving the deploy.
+
+        """
+        sig = crypto.get_signature_for_deploy_approval(self.hash, approver.private_key, approver.key_algo)
+        self._append_approval(DeployApproval(approver.account_key, sig))
+
+
     def set_approval(self, approval: DeployApproval):
         """Appends an approval to associated set.
 
         :params approval: An approval to be associated with the deploy.
 
         """
-        # Verify signature.
         # TODO
         # crypto.verify_deploy_approval_signature(self.hash, approval.signature, approval.signer)
+        self._append_approval(approval)
 
-        # Append new approval.
-        self.approvals.append(approval)
     
-        # Remove potential duplicates.
+    def _append_approval(self, approval: DeployApproval):
+        """Appends an approval to managed set - implicitly deduplicating.
+        
+        """
+        self.approvals.append(approval)
         uniques = set()
         self.approvals = [uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques]
 

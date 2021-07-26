@@ -1,5 +1,6 @@
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
+from pycspr.types.cl import CLAccessRights
 from pycspr.types.cl import CLTypeKey
 from pycspr.types.cl import TYPES_NUMERIC
 from pycspr.types.cl import TYPES_SIMPLE

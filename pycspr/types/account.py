@@ -5,6 +5,34 @@ from pycspr import crypto
 
 
 @dataclasses.dataclass
+class PublicKey:
+    """Encapsulates information associated with an account's public key.
+    
+    """
+    # Algorithm used to generate ECC key pair.
+    algo: crypto.KeyAlgorithm
+
+    # Public key as raw bytes.
+    pbk: bytes
+
+
+    @property
+    def account_hash(self):
+        """Returns on-chain account hash.
+
+        """ 
+        return crypto.get_account_hash(self.account_key)
+
+
+    @property
+    def account_key(self):
+        """Returns on-chain account key.
+
+        """ 
+        return crypto.get_account_key(self.algo, self.pbk)
+
+
+@dataclasses.dataclass
 class PrivateKey:
     """Encapsulates information associated with an account's private key.
     
@@ -59,30 +87,9 @@ class PrivateKey:
         """
         return crypto.get_signature(data, self.pvk, self.algo)
 
-
-@dataclasses.dataclass
-class PublicKey:
-    """Encapsulates information associated with an account's public key.
     
-    """
-    # Algorithm used to generate ECC key pair.
-    algo: crypto.KeyAlgorithm
-
-    # Public key as raw bytes.
-    pbk: bytes
-
-
-    @property
-    def account_hash(self):
-        """Returns on-chain account hash.
-
-        """ 
-        return crypto.get_account_hash(self.account_key)
-
-
-    @property
-    def account_key(self):
-        """Returns on-chain account key.
-
-        """ 
-        return crypto.get_account_key(self.algo, self.pbk)
+    def as_public_key(self) -> PublicKey:
+        """Returns public key representation.
+        
+        """
+        return PublicKey(algo=self.algo, pbk=self.pbk)
