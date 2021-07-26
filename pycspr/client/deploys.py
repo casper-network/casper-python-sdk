@@ -116,7 +116,7 @@ class DeploysClient():
         return factory.create_standard_parameters(account, chain_name, dependencies, gas_price, timestamp, ttl)
 
 
-    def create_standard_transfer(
+    def create_native_transfer(
         params: DeployParameters,
         amount: int,
         target: bytes,
@@ -131,4 +131,4 @@ class DeploysClient():
         :returns: A non-approved native transfer deploy.
 
         """
-        return factory.create_standard_transfer(params, amount, target, correlation_id)
+        return factory.create_native_transfer(params, amount, target, correlation_id)

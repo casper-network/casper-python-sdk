@@ -6,7 +6,7 @@ def test_that_a_transfer_can_be_encoded_as_json(LIB, FACTORY, deploy_params_stat
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
             ),
-            FACTORY.create_standard_transfer_session(
+            FACTORY.create_native_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]

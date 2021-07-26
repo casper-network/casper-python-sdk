@@ -8,7 +8,7 @@ def test_that_a_standard_payment_can_be_encoded_as_bytes(LIB, FACTORY, vector_de
 
 def test_that_a_standard_transfer_session_can_be_encoded_as_bytes(LIB, FACTORY, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
-        entity = FACTORY.create_standard_transfer_session(
+        entity = FACTORY.create_native_transfer_session(
             vector["session"]["amount"],
             vector["session"]["target"],
             vector["session"]["transfer_id"]
@@ -22,7 +22,7 @@ def test_that_a_deploy_body_can_be_encoded_as_bytes(FACTORY, vector_deploy_1):
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
                 ),
-            FACTORY.create_standard_transfer_session(
+            FACTORY.create_native_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]
@@ -38,7 +38,7 @@ def test_that_a_deploy_can_be_encoded_as_bytes(LIB, FACTORY, deploy_params_stati
             FACTORY.create_standard_payment(
                 vector["payment"]["amount"]
             ),
-            FACTORY.create_standard_transfer_session(
+            FACTORY.create_native_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]

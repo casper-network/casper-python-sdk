@@ -138,7 +138,7 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
         )
 
     # Set deploy.
-    deploy = pycspr.create_standard_delegation(
+    deploy = pycspr.create_validator_delegation(
         params=deploy_params,
         amount=int(1e9),
         public_key_of_delegator=delegator,

@@ -50,7 +50,7 @@ def test_can_write_to_and_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
 
 
 def _create_deploy(FACTORY, deploy_params, cp2):
-    return FACTORY.create_standard_transfer(
+    return FACTORY.create_native_transfer(
         deploy_params,
         amount = 123456789,
         correlation_id = 1,

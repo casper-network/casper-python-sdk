@@ -67,7 +67,7 @@ _INTERFACE_OF_LIBRARY = {
         "create_deploy_parameters",
         "create_execution_arg",
         "create_standard_payment",
-        "create_standard_transfer",
+        "create_native_transfer",
         "parse_public_key",
         "parse_private_key",
         "get_account_hash",

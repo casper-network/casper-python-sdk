@@ -69,7 +69,10 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
         )
 
 
-def create_digest_of_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> bytes:
+def create_digest_of_deploy_body(
+    payment: ExecutableDeployItem,
+    session: ExecutableDeployItem
+    ) -> bytes:
     """Returns a deploy body's hash digest.
     
     :param payment: Deploy payment execution logic.

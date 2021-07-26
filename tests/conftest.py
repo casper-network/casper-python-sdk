@@ -332,7 +332,7 @@ def a_deploy(FACTORY, deploy_params, cp1, cp2):
     """Returns hash of most next switch. 
     
     """
-    deploy = FACTORY.create_standard_transfer(
+    deploy = FACTORY.create_native_transfer(
         deploy_params,
         amount = 2500000000,
         correlation_id = 1,

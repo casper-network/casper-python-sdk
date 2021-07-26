@@ -171,14 +171,101 @@ def create_execution_arg(
     )
 
 
-def create_standard_bid(
+def create_native_transfer(
+    params: DeployParameters,
+    amount: int,
+    target: bytes,
+    correlation_id: int,
+    ) -> Deploy:
+    """Returns a native transfer deploy.
+
+    :param params: Standard parameters used when creating a deploy.
+    :param amount: Amount in motes to be transferred.
+    :param target: Target account hash.
+    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
+    :returns: A native transfer deploy.
+
+    """
+    return create_deploy(
+        params,
+        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS),
+        create_native_transfer_session(amount, target, correlation_id)
+        )
+
+
+def create_native_transfer_session(
+    amount: int,
+    target: bytes,
+    correlation_id: int,
+    ) -> ExecutableDeployItem_Transfer:
+    """Returns session execution information for a native transfer.
+
+    :param amount: Amount in motes to be transferred.
+    :param target: Target account hash.
+    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
+    
+    """
+    return ExecutableDeployItem_Transfer(
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+            create_execution_arg(
+                "target",
+                target,
+                create_cl_type_of_byte_array(32)
+                ),
+            create_execution_arg(
+                "id",
+                correlation_id,
+                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
+                ),
+        ]
+    )
+
+
+def create_standard_payment(
+    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
+    ) -> ExecutableDeployItem_ModuleBytes:
+    """Returns standard payment execution information.
+    
+    :param amount: Maximum amount in motes to be used for standard payment.
+
+    """
+    return ExecutableDeployItem_ModuleBytes(
+        args=[
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
+                ),
+        ],
+        module_bytes=bytes([])
+        )
+
+
+def create_uref_from_string(as_string: str):
+    """Returns an unforgeable reference from it's string representation.
+    
+    """
+    _, address_hex, access_rights = as_string.split("-")
+
+    return UnforgeableReference(
+        bytes.fromhex(address_hex),
+        CLAccessRights(int(access_rights))
+        )
+
+
+def create_validator_auction_bid(
     params: DeployParameters,
     amount: int,
     delegation_rate: int,
     public_key: PublicKey,
     path_to_contract: str
     ) -> Deploy:
-    """Returns an auction bid deploy.
+    """Returns a validator auction bid deploy.
 
     :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be submitted as an auction bid.
@@ -213,7 +300,7 @@ def create_standard_bid(
     return create_deploy(params, payment, session)
 
 
-def create_standard_bid_withdrawal(
+def create_validator_auction_bid_withdrawal(
     params: DeployParameters,
     amount: int,
     public_key: PublicKey,    
@@ -255,7 +342,7 @@ def create_standard_bid_withdrawal(
     return create_deploy(params, payment, session)
 
 
-def create_standard_delegation(
+def create_validator_delegation(
     params: DeployParameters,
     amount: int,
     public_key_of_delegator: PublicKey,
@@ -297,7 +384,7 @@ def create_standard_delegation(
     return create_deploy(params, payment, session)
 
 
-def create_standard_delegation_withdrawal(
+def create_validator_delegation_withdrawal(
     params: DeployParameters,
     amount: int,
     public_key_of_delegator: PublicKey,
@@ -337,90 +424,3 @@ def create_standard_delegation_withdrawal(
     )
 
     return create_deploy(params, payment, session)
-
-
-def create_standard_payment(
-    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-    ) -> ExecutableDeployItem_ModuleBytes:
-    """Returns standard payment execution information.
-    
-    :param amount: Maximum amount in motes to be used for standard payment.
-
-    """
-    return ExecutableDeployItem_ModuleBytes(
-        args=[
-            create_execution_arg(
-                "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
-                ),
-        ],
-        module_bytes=bytes([])
-        )
-
-
-def create_standard_transfer(
-    params: DeployParameters,
-    amount: int,
-    target: bytes,
-    correlation_id: int,
-    ) -> Deploy:
-    """Returns a native transfer deploy.
-
-    :param params: Standard parameters used when creating a deploy.
-    :param amount: Amount in motes to be transferred.
-    :param target: Target account hash.
-    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
-    :returns: A native transfer deploy.
-
-    """
-    return create_deploy(
-        params,
-        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS),
-        create_standard_transfer_session(amount, target, correlation_id)
-        )
-
-
-def create_standard_transfer_session(
-    amount: int,
-    target: bytes,
-    correlation_id: int,
-    ) -> ExecutableDeployItem_Transfer:
-    """Returns session execution information for a native transfer.
-
-    :param amount: Amount in motes to be transferred.
-    :param target: Target account hash.
-    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
-    
-    """
-    return ExecutableDeployItem_Transfer(
-        args=[
-            create_execution_arg(
-                "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
-                ),
-            create_execution_arg(
-                "target",
-                target,
-                create_cl_type_of_byte_array(32)
-                ),
-            create_execution_arg(
-                "id",
-                correlation_id,
-                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
-                ),
-        ]
-    )
-
-
-def create_uref_from_string(as_string: str):
-    """Returns an unforgeable reference from it's string representation.
-    
-    """
-    _, address_hex, access_rights = as_string.split("-")
-
-    return UnforgeableReference(
-        bytes.fromhex(address_hex),
-        CLAccessRights(int(access_rights))
-        )

@@ -136,7 +136,7 @@ def _get_deploy(
         )
 
     # Set deploy.
-    deploy = pycspr.create_standard_bid_withdrawal(
+    deploy = pycspr.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=args.amount,
         public_key=validator.as_public_key(),

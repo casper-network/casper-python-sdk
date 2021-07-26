@@ -31,12 +31,12 @@ from pycspr.factory       import create_deploy
 from pycspr.factory       import create_deploy_approval
 from pycspr.factory       import create_deploy_parameters
 from pycspr.factory       import create_execution_arg
-from pycspr.factory       import create_standard_bid
-from pycspr.factory       import create_standard_bid_withdrawal
-from pycspr.factory       import create_standard_delegation
-from pycspr.factory       import create_standard_delegation_withdrawal
+from pycspr.factory       import create_validator_auction_bid
+from pycspr.factory       import create_validator_auction_bid_withdrawal
+from pycspr.factory       import create_validator_delegation
+from pycspr.factory       import create_validator_delegation_withdrawal
 from pycspr.factory       import create_standard_payment
-from pycspr.factory       import create_standard_transfer
+from pycspr.factory       import create_native_transfer
 from pycspr.factory       import parse_public_key
 from pycspr.factory       import parse_private_key
 

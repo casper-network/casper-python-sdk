@@ -138,7 +138,7 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
         )
 
     # Set deploy.
-    deploy = pycspr.create_standard_bid(
+    deploy = pycspr.create_validator_auction_bid(
         params=deploy_params,
         amount=args.amount,
         delegation_rate=args.delegation_rate,
