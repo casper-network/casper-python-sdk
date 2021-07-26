@@ -1,7 +1,7 @@
 import typing
 
-from pycspr.serialisation.byte_array.encoder.cl import encode as encode_cl_value
-from pycspr.serialisation.byte_array.encoder.deploy import encode as encode_deploy
+from pycspr.serialisation.byte_array.encoder.cl import encode as cl_encoder
+from pycspr.serialisation.byte_array.encoder.deploy import encode as deploy_encoder
 from pycspr.types import CLValue
 
 
@@ -11,6 +11,6 @@ def encode(entity: object) -> bytes:
     
     """
     if type(entity) == CLValue:       
-        return encode_cl_value(entity) 
+        return cl_encoder(entity) 
     else:
-        return encode_deploy(entity)
+        return deploy_encoder(entity)

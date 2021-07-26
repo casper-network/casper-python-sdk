@@ -1,7 +1,7 @@
 import typing
 
-import pycspr.serialisation.byte_array.decoder.cl as cl_decoder
-import pycspr.serialisation.byte_array.decoder.deploy as deploy_decoder
+from pycspr.serialisation.byte_array.decoder.cl import decode as cl_decoder
+from pycspr.serialisation.byte_array.decoder.deploy import decode as deploy_decoder
 from pycspr.types import CLType
 
 
@@ -18,6 +18,6 @@ def decode(typeof: typing.Union[CLType, object], as_bytes: bytes) -> object:
         as_bytes = [i for i in bytes.fromhex(as_bytes)]
 
     if isinstance(typeof, CLType):
-        return cl_decoder.decode(typeof, as_bytes) 
+        return cl_decoder(typeof, as_bytes) 
     else:
-        return deploy_decoder.decode(typeof, as_bytes)
+        return deploy_decoder(typeof, as_bytes)
