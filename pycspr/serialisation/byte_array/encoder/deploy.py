@@ -44,36 +44,45 @@ def encode_execution_info(entity: ExecutableDeployItem) -> bytes:
     """Encodes execution information for subsequent interpretation by VM.
     
     """
-    def _encode_args(args: typing.List[ExecutionArgument]):
+    def encode_args(args: typing.List[ExecutionArgument]):
         return encode_vector_of_t(list(map(encode_execution_argument, args)))
 
-    def _encode_module_bytes():
-        return encode_u8_array(list(entity.module_bytes)) + _encode_args(entity.args)
+    def encode_module_bytes():
+        return encode_u8_array(list(entity.module_bytes)) + \
+               encode_args(entity.args)
 
-    def _encode_stored_contract_by_hash():
-        return encode_byte_array(entity.hash) + encode_string(entity.entry_point) + _encode_args(entity.args)
+    def encode_stored_contract_by_hash():
+        return encode_byte_array(entity.hash) + \
+               encode_string(entity.entry_point) + \
+               encode_args(entity.args)
 
-    def _encode_stored_contract_by_hash_versioned():
+    def encode_stored_contract_by_hash_versioned():
         # TODO: encode optional U32 :: contract version
-        return encode_byte_array(entity.hash) + encode_string(entity.entry_point) + _encode_args(entity.args)
+        return encode_byte_array(entity.hash) + \
+               encode_string(entity.entry_point) + \
+               encode_args(entity.args)
 
-    def _encode_stored_contract_by_name():
-        return encode_string(entity.name) + encode_string(entity.entry_point) + _encode_args(entity.args)
+    def encode_stored_contract_by_name():
+        return encode_string(entity.name) + \
+               encode_string(entity.entry_point) + \
+               encode_args(entity.args)
 
-    def _encode_stored_contract_by_name_versioned():
+    def encode_stored_contract_by_name_versioned():
         # TODO: encode optional U32 :: contract version
-        return encode_string(entity.name) + encode_string(entity.entry_point) + _encode_args(entity.args)
+        return encode_string(entity.name) + \
+               encode_string(entity.entry_point) + \
+               encode_args(entity.args)
 
-    def _encode_transfer():
-        return _encode_args(entity.args)
+    def encode_transfer():
+        return encode_args(entity.args)
 
     _ENCODERS = {
-        ExecutableDeployItem_ModuleBytes: (0, _encode_module_bytes),
-        ExecutableDeployItem_StoredContractByHash: (1, _encode_stored_contract_by_hash),
-        ExecutableDeployItem_StoredContractByHashVersioned: (3, _encode_stored_contract_by_hash_versioned),
-        ExecutableDeployItem_StoredContractByName: (2, _encode_stored_contract_by_name),
-        ExecutableDeployItem_StoredContractByNameVersioned: (4, _encode_stored_contract_by_name_versioned),
-        ExecutableDeployItem_Transfer: (5, _encode_transfer),
+        ExecutableDeployItem_ModuleBytes: (0, encode_module_bytes),
+        ExecutableDeployItem_StoredContractByHash: (1, encode_stored_contract_by_hash),
+        ExecutableDeployItem_StoredContractByHashVersioned: (3, encode_stored_contract_by_hash_versioned),
+        ExecutableDeployItem_StoredContractByName: (2, encode_stored_contract_by_name),
+        ExecutableDeployItem_StoredContractByNameVersioned: (4, encode_stored_contract_by_name_versioned),
+        ExecutableDeployItem_Transfer: (5, encode_transfer),
     }
 
     try:

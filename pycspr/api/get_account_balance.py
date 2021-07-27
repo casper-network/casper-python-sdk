@@ -10,7 +10,11 @@ from pycspr.client import NodeConnectionInfo
 _API_ENDPOINT = "state_get_balance"
 
 
-def execute(connection_info: NodeConnectionInfo, purse_uref: str, state_root_hash: bytes = None) -> typing.Union[int, dict]:
+def execute(
+    connection_info: NodeConnectionInfo,
+    purse_uref: str,
+    state_root_hash: bytes = None
+    ) -> typing.Union[int, dict]:
     """Returns account balance at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.

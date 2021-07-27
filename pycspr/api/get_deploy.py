@@ -10,7 +10,10 @@ from pycspr.client import NodeConnectionInfo
 _API_ENDPOINT = "info_get_deploy"
 
 
-def execute(connection_info: NodeConnectionInfo, deploy_id: typing.Union[bytes, str]) -> dict:
+def execute(
+    connection_info: NodeConnectionInfo,
+    deploy_id: typing.Union[bytes, str]
+    ) -> dict:
     """Returns on-chain deploy information.
 
     :param connection_info: Information required to connect to a node.

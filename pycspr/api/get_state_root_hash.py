@@ -10,7 +10,10 @@ from pycspr.client import NodeConnectionInfo
 _API_ENDPOINT = "chain_get_state_root_hash"
 
 
-def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, bytes, str, int] = None) -> typing.Union[dict, str]:
+def execute(
+    connection_info: NodeConnectionInfo,
+    block_id: typing.Union[None, bytes, str, int] = None
+    ) -> str:
     """Returns an on-chain state root hash at specified block.
 
     :param connection_info: Information required to connect to a node.

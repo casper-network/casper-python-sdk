@@ -141,7 +141,7 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
         amount=args.amount,
         delegation_rate=args.delegation_rate,
         public_key=validator.as_public_key(),
-        path_to_contract=args.path_to_wasm
+        path_to_wasm=args.path_to_wasm
         )
 
     return deploy

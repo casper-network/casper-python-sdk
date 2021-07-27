@@ -5,6 +5,9 @@ import random
 import typing
 
 import pycspr
+from pycspr import KeyAlgorithm
+from pycspr import NodeClient
+from pycspr import NodeConnectionInfo
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
@@ -27,25 +30,25 @@ _ARGS.add_argument(
 # CLI argument: type of validator secret key - defaults to ED25519.
 _ARGS.add_argument(
     "--validator-secret-key-type",
-    default=pycspr.KeyAlgorithm.ED25519.name,
+    default=KeyAlgorithm.ED25519.name,
     dest="type_of_validator_secret_key",
     help="Type of validator's secret key.",
     type=str,
     )
 
-# CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/add_bid.wasm.
+# CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/withdraw_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "add_bid.wasm",
+    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "withdraw_bid.wasm",
     dest="path_to_wasm",
-    help="Path to add_bid.wasm file.",
+    help="Path to withdraw_bid.wasm file.",
     type=str,
     )
 
 # CLI argument: amount to unstake, i.e. unbond, from the network.
 _ARGS.add_argument(
     "--amount",
-    default=int(2.5e9),
+    default=1000000000000001,
     dest="amount",
     help="Amount to unbond.",
     type=int,
@@ -86,7 +89,7 @@ def _main(args: argparse.Namespace):
 
     """
     # Set node client.
-    client: = _get_client(args)
+    client = _get_client(args)
 
     # Set validator key.
     validator: PrivateKey = pycspr.parse_private_key(
@@ -103,6 +106,8 @@ def _main(args: argparse.Namespace):
 
     # Approve deploy.
     deploy.approve(validator)
+
+    print(pycspr.serialisation.to_json(deploy))
     
     # Dispatch deploy.
     client.deploys.send(deploy)
@@ -110,16 +115,16 @@ def _main(args: argparse.Namespace):
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    connection = NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     )
 
-    return pycspr.NodeClient(connection)
+    return NodeClient(connection)
 
 
 def _get_deploy(
@@ -141,7 +146,7 @@ def _get_deploy(
         params=deploy_params,
         amount=args.amount,
         public_key=validator.as_public_key(),
-        path_to_contract=args.path_to_wasm,
+        path_to_wasm=args.path_to_wasm,
         unbond_purse=validator_purse,
         )
 
@@ -151,3 +156,4 @@ def _get_deploy(
 # Entry point.
 if __name__ == '__main__':
     _main(_ARGS.parse_args())
+

@@ -54,39 +54,39 @@ def encode_cl_type(entity: CLType) -> bytes:
     """Encodes a CL type definition.
     
     """
-    def _encode_byte_array():
+    def encode_byte_array():
         return bytes([entity.typeof.value]) + encode_u32(entity.size)
 
-    def _encode_list():
+    def encode_list():
         raise NotImplementedError()
 
-    def _encode_map():
+    def encode_map():
         raise NotImplementedError()
 
-    def _encode_option():
+    def encode_option():
         return bytes([entity.typeof.value]) + encode_cl_type(entity.inner_type)
 
-    def _encode_simple():
+    def encode_simple():
         return bytes([entity.typeof.value])
 
-    def _encode_tuple_1():
+    def encode_tuple_1():
         raise NotImplementedError()
 
-    def _encode_tuple_2():
+    def encode_tuple_2():
         raise NotImplementedError()
 
-    def _encode_tuple_3():
+    def encode_tuple_3():
         raise NotImplementedError()
 
     _ENCODERS = {
-        CLType_ByteArray: _encode_byte_array,
-        CLType_List: _encode_list,
-        CLType_Map: _encode_map,
-        CLType_Option: _encode_option,
-        CLType_Simple: _encode_simple,
-        CLType_Tuple1: _encode_tuple_1,
-        CLType_Tuple2: _encode_tuple_2,
-        CLType_Tuple3: _encode_tuple_3,
+        CLType_ByteArray: encode_byte_array,
+        CLType_List: encode_list,
+        CLType_Map: encode_map,
+        CLType_Option: encode_option,
+        CLType_Simple: encode_simple,
+        CLType_Tuple1: encode_tuple_1,
+        CLType_Tuple2: encode_tuple_2,
+        CLType_Tuple3: encode_tuple_3,
     }
 
     return _ENCODERS[type(entity)]()
@@ -210,52 +210,45 @@ def encode_u128(value: int) -> bytes:
     """Encodes an unsigned 128 bit integer.
     
     """
-    if is_within_range(CLTypeKey.U8, value):
-        encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH
-        type_key = CLTypeKey.U8
-
-    elif is_within_range(CLTypeKey.U32, value):
-        encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH
-        type_key = CLTypeKey.U32
-
-    elif is_within_range(CLTypeKey.U64, value):
-        encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH
-        type_key = CLTypeKey.U64
-
-    elif is_within_range(CLTypeKey.U128, value):
-        encoded_length = NUMERIC_CONSTRAINTS[CLTypeKey.U128].LENGTH
-        type_key = CLTypeKey.U128
-
+    for type_key in (CLTypeKey.U8, CLTypeKey.U32, CLTypeKey.U64, CLTypeKey.U128):
+        if is_within_range(type_key, value):
+            break
     else:
         raise ValueError("Invalid U128: max size exceeded")
-    
-    return bytes([type_key.value]) + int_to_le_bytes_trimmed(value, encoded_length, False)
+
+    as_bytes = int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[type_key].LENGTH, False)
+
+    return bytes([len(as_bytes)]) + as_bytes
 
 
 def encode_u256(value: int) -> bytes:
     """Encodes an unsigned 256 bit integer.
     
     """
-    if is_within_range(CLTypeKey.U128, value):
-        return encode_u128(value)
-    elif is_within_range(CLTypeKey.U256, value):
-        return bytes([CLTypeKey.U256.value]) + \
-               int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U256].LENGTH, False)
+    for type_key in (CLTypeKey.U8, CLTypeKey.U32, CLTypeKey.U64, CLTypeKey.U128, CLTypeKey.U256):
+        if is_within_range(type_key, value):
+            break
     else:
         raise ValueError("Invalid U256: max size exceeded")
+    
+    as_bytes = int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[type_key].LENGTH, False)
+
+    return bytes([len(as_bytes)]) + as_bytes
 
 
 def encode_u512(value: int):
     """Encodes an unsigned 512 bit integer.
     
     """
-    if is_within_range(CLTypeKey.U256, value):
-        return encode_u256(value)
-    elif is_within_range(CLTypeKey.U512, value):
-        return bytes([CLTypeKey.U512.value]) + \
-               int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[CLTypeKey.U512].LENGTH, False)
+    for type_key in (CLTypeKey.U8, CLTypeKey.U32, CLTypeKey.U64, CLTypeKey.U128, CLTypeKey.U256, CLTypeKey.U512):
+        if is_within_range(type_key, value):
+            break
     else:
         raise ValueError("Invalid U512: max size exceeded")
+
+    as_bytes = int_to_le_bytes_trimmed(value, NUMERIC_CONSTRAINTS[type_key].LENGTH, False)
+
+    return bytes([len(as_bytes)]) + as_bytes
 
 
 def encode_unit(value: None):

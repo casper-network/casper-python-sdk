@@ -1,4 +1,4 @@
-from pycspr.serialisation.byte_array import encode as byte_array_encoder
+from pycspr import serialisation
 from pycspr.types import CLValue
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray
@@ -93,14 +93,14 @@ def encode_cl_value(entity: CLValue) -> dict:
         elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
             return parsed.account_key.hex()
         elif type_info.typeof == CLTypeKey.UREF:
-            return f"uref-{parsed.address.hex()}-{parsed.access_rights.value:03}"
+            return parsed.as_string()
         elif type_info.typeof == CLTypeKey.OPTION:
             return _encode_parsed(type_info.inner_type, parsed)
         else:
             return str(parsed)
     
     return {
-        "bytes": byte_array_encoder(entity).hex(),
+        "bytes": serialisation.to_bytes(entity).hex(),
         "cl_type": encode_cl_type(entity.cl_type),
         "parsed": _encode_parsed(entity.cl_type, entity.parsed),
     }

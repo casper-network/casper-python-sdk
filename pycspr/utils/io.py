@@ -17,7 +17,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
         return serialisation.from_json(fstream.read())
 
 
-def read_contract(fpath: typing.Union[pathlib.Path, str]) -> bytes:
+def read_binary(fpath: typing.Union[pathlib.Path, str]) -> bytes:
     """Read a smart contract from file system.
 
     :fpath: Path to target file.

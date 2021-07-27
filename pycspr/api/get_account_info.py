@@ -7,10 +7,16 @@ from pycspr.client import NodeConnectionInfo
 
 
 # RPC method to be invoked.
+# TODO: use new endpoint -> state_get_account_info
 _API_ENDPOINT = "state_get_item"
 
 
-def execute(connection_info: NodeConnectionInfo, account_hash: bytes, state_root_hash: typing.Union[bytes, None] = None) -> dict:
+
+def execute(
+    connection_info: NodeConnectionInfo,
+    account_hash: bytes,
+    state_root_hash: typing.Union[bytes, None] = None
+    ) -> dict:
     """Returns on-chain account information at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.

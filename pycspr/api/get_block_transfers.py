@@ -10,7 +10,10 @@ from pycspr.client import NodeConnectionInfo
 _API_ENDPOINT = "chain_get_block_transfers"
 
 
-def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, str, int] = None) -> typing.Tuple[str, list]:
+def execute(
+    connection_info: NodeConnectionInfo,
+    block_id: typing.Union[None, str, int] = None
+    ) -> typing.Tuple[str, list]:
     """Returns on-chain block transfers information.
 
     :param connection_info: Information required to connect to a node.

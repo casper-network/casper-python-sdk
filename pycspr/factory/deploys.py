@@ -263,7 +263,7 @@ def create_validator_auction_bid(
     amount: int,
     delegation_rate: int,
     public_key: PublicKey,
-    path_to_contract: str
+    path_to_wasm: str
     ) -> Deploy:
     """Returns a validator auction bid deploy.
 
@@ -271,13 +271,13 @@ def create_validator_auction_bid(
     :param amount: Amount in motes to be submitted as an auction bid.
     :param delegation_rate: Percentage charged to a delegator for provided service.
     :param public_key: Public key of validator.
-    :param path_to_contract: Path to compiled delegate.wasm.
+    :param path_to_wasm: Path to compiled delegate.wasm.
     :returns: A standard delegation deploy.
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_contract(path_to_contract),
+        module_bytes=_io.read_binary(path_to_wasm),
         args=[
             create_execution_arg(
                 "amount",
@@ -304,7 +304,7 @@ def create_validator_auction_bid_withdrawal(
     params: DeployParameters,
     amount: int,
     public_key: PublicKey,    
-    path_to_contract: str,
+    path_to_wasm: str,
     unbond_purse: str,
     ) -> Deploy:
     """Returns an auction bid withdraw delegation deploy.
@@ -312,24 +312,24 @@ def create_validator_auction_bid_withdrawal(
     :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be withdrawn from auction.
     :param public_key: Public key of validator.
-    :param path_to_contract: Path to compiled delegate.wasm.
+    :param path_to_wasm: Path to compiled delegate.wasm.
     :param unbond_purse: Validator's purse to which to withdraw funds.
     :returns: A standard delegation deploy.
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_contract(path_to_contract),
+        module_bytes=_io.read_binary(path_to_wasm),
         args=[
-            create_execution_arg(
-                "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
-                ),
             create_execution_arg(
                 "public_key",
                 public_key,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
+            create_execution_arg(
+                "amount",
+                amount,
+                create_cl_type_of_simple(CLTypeKey.U512)
                 ),
             create_execution_arg(
                 "unbond_purse",
@@ -347,7 +347,7 @@ def create_validator_delegation(
     amount: int,
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
-    path_to_contract: str
+    path_to_wasm: str
     ) -> Deploy:
     """Returns a standard delegation deploy.
 
@@ -355,13 +355,13 @@ def create_validator_delegation(
     :param amount: Amount in motes to be delegated.
     :param public_key_of_delegator: Public key of delegator.
     :param public_key_of_validator: Public key of validator.
-    :param path_to_contract: Path to compiled delegate.wasm.
+    :param path_to_wasm: Path to compiled delegate.wasm.
     :returns: A standard delegation deploy.
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_contract(path_to_contract),
+        module_bytes=_io.read_binary(path_to_wasm),
         args=[
             create_execution_arg(
                 "amount",
@@ -389,7 +389,7 @@ def create_validator_delegation_withdrawal(
     amount: int,
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
-    path_to_contract: str
+    path_to_wasm: str
     ) -> Deploy:
     """Returns a standard withdraw delegation deploy.
 
@@ -397,13 +397,13 @@ def create_validator_delegation_withdrawal(
     :param amount: Amount in motes to be delegated.
     :param public_key_of_delegator: Public key of delegator.
     :param public_key_of_validator: Public key of validator.
-    :param path_to_contract: Path to compiled delegate.wasm.
+    :param path_to_wasm: Path to compiled delegate.wasm.
     :returns: A standard delegation deploy.
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_contract(path_to_contract),
+        module_bytes=_io.read_binary(path_to_wasm),
         args=[
             create_execution_arg(
                 "amount",

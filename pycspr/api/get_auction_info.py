@@ -11,7 +11,10 @@ from pycspr.client import NodeConnectionInfo
 _API_ENDPOINT = "state_get_auction_info"
 
 
-def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+def execute(
+    connection_info: NodeConnectionInfo,
+    block_id: typing.Union[None, bytes, str, int] = None
+    ) -> dict:
     """Returns current auction system contract information.
 
     :param connection_info: Information required to connect to a node.
@@ -20,6 +23,7 @@ def execute(connection_info: NodeConnectionInfo, block_id: typing.Union[None, by
 
     """
     # Get latest.
+    # TODO: verify as a null block should return latest auction infor anyway.
     if isinstance(block_id, type(None)):
         block: dict = get_block(connection_info)
         block_id: str = block["hash"]
