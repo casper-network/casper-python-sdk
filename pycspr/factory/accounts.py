@@ -31,7 +31,7 @@ def create_public_key(algo: crypto.KeyAlgorithm, pbk: bytes) -> PublicKey:
     return PublicKey(algo, pbk)
 
 
-def parse_public_key(fpath: pathlib.Path) -> PublicKey:
+def create_public_key(fpath: pathlib.Path) -> PublicKey:
     """Returns an account holder's public key.
     
     :param fpath: Path to public key hex file associated with the account.
@@ -47,7 +47,7 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
         )
 
 
-def parse_private_key(
+def create_private_key(
     fpath: pathlib.Path,
     algo: typing.Union[str, crypto.KeyAlgorithm]
     ) -> PrivateKey:

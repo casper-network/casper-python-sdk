@@ -5,9 +5,9 @@ import random
 import typing
 
 import pycspr
-from pycspr import KeyAlgorithm
-from pycspr import NodeClient
-from pycspr import NodeConnectionInfo
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
+from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
@@ -92,7 +92,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set validator key.
-    validator: PrivateKey = pycspr.parse_private_key(
+    validator: PrivateKey = pycspr.factory.create_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
@@ -107,8 +107,6 @@ def _main(args: argparse.Namespace):
     # Approve deploy.
     deploy.approve(validator)
 
-    print(pycspr.serialisation.to_json(deploy))
-    
     # Dispatch deploy.
     client.deploys.send(deploy)
 
@@ -136,13 +134,13 @@ def _get_deploy(
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.create_deploy_parameters(
+    deploy_params = pycspr.factory.create_deploy_parameters(
         account=validator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.create_validator_auction_bid_withdrawal(
+    deploy = pycspr.factory.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=args.amount,
         public_key=validator.as_public_key(),

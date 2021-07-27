@@ -1,8 +1,8 @@
 import argparse
 import json
 
-from pycspr import NodeClient
-from pycspr import NodeConnectionInfo
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
 from pycspr import NodeSseChannelType
 from pycspr import NodeSseEventType
 
@@ -56,7 +56,10 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    # Set node client.
     client = _get_client(args)
+
+    # Bind to node events.
     client.events.get_events(
         callback=_on_event,
         channel_type = NodeSseChannelType[args.channel],

@@ -29,17 +29,17 @@ from pycspr.crypto        import HashAlgorithm
 
 from pycspr.factory       import create_deploy
 from pycspr.factory       import create_deploy_approval
+from pycspr.factory       import create_deploy_argument
 from pycspr.factory       import create_deploy_parameters
-from pycspr.factory       import create_execution_arg
+from pycspr.factory       import create_native_transfer
 from pycspr.factory       import create_validator_auction_bid
 from pycspr.factory       import create_validator_auction_bid_withdrawal
 from pycspr.factory       import create_validator_delegation
 from pycspr.factory       import create_validator_delegation_withdrawal
 from pycspr.factory       import create_standard_payment
-from pycspr.factory       import create_native_transfer
-from pycspr.factory       import parse_public_key
-from pycspr.factory       import parse_private_key
+from pycspr.factory       import create_public_key
+from pycspr.factory       import create_private_key
 
-from pycspr.utils.io      import read_binary
 from pycspr.utils.io      import read_deploy
+from pycspr.utils.io      import read_wasm
 from pycspr.utils.io      import write_deploy

@@ -192,7 +192,7 @@ def _get_account_of_nctl_faucet(LIB):
     """
     path = _PATH_TO_NCTL_ASSETS / "net-1" / "faucet" / "secret_key.pem"
 
-    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return LIB.create_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
 
 
 def _get_account_of_nctl_user(LIB, user_id: int):
@@ -201,7 +201,7 @@ def _get_account_of_nctl_user(LIB, user_id: int):
     """
     path = _PATH_TO_NCTL_ASSETS / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
 
-    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return LIB.create_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
 
 
 @pytest.fixture(scope="session")

@@ -5,6 +5,9 @@ import random
 import typing
 
 import pycspr
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
+from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
 
@@ -25,7 +28,7 @@ _ARGS.add_argument(
 # CLI argument: type of validator secret key - defaults to ED25519.
 _ARGS.add_argument(
     "--validator-secret-key-type",
-    default=pycspr.KeyAlgorithm.ED25519.name,
+    default=KeyAlgorithm.ED25519.name,
     dest="type_of_validator_secret_key",
     help="Type of validator's secret key.",
     type=str,
@@ -93,16 +96,16 @@ def _main(args: argparse.Namespace):
 
     """
     # Set node client.
-    client = _get_client(args)
+    client: NodeClient = _get_client(args)
 
     # Set validator key.
-    validator = pycspr.parse_private_key(
+    validator: PrivateKey = pycspr.factory.create_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
 
     # Set deploy.
-    deploy = _get_deploy(args, validator)
+    deploy: Deploy = _get_deploy(args, validator)
 
     # Approve deploy.
     deploy.approve(validator)
@@ -113,16 +116,16 @@ def _main(args: argparse.Namespace):
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    connection = NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     )
 
-    return pycspr.NodeClient(connection)
+    return NodeClient(connection)
 
 
 def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
@@ -130,13 +133,13 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.create_deploy_parameters(
+    deploy_params = pycspr.factory.create_deploy_parameters(
         account=validator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.create_validator_auction_bid(
+    deploy = pycspr.factory.create_validator_auction_bid(
         params=deploy_params,
         amount=args.amount,
         delegation_rate=args.delegation_rate,

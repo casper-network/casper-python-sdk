@@ -5,6 +5,8 @@ import random
 import typing
 
 import pycspr
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
@@ -71,7 +73,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set account key of test user.
-    account_key = pycspr.parse_public_key(args.path_to_account_key)      
+    user_public_key = pycspr.factory.create_public_key(args.path_to_account_key)      
 
     # Query 0.1: get_rpc_schema.
     rpc_schema: typing.List[dict] = client.queries.get_rpc_schema()
@@ -106,11 +108,11 @@ def _main(args: argparse.Namespace):
     assert isinstance(state_root_hash, bytes)
 
     # Query 2.2: get_account_info.
-    account_info = client.queries.get_account_info(account_key.account_hash, state_root_hash)
+    account_info = client.queries.get_account_info(user_public_key.account_hash, state_root_hash)
     assert isinstance(account_info, dict)
 
     # Query 2.3: get_account_main_purse_uref.
-    account_main_purse = client.queries.get_account_main_purse_uref(account_key.account_key, state_root_hash)
+    account_main_purse = client.queries.get_account_main_purse_uref(user_public_key.account_key, state_root_hash)
     assert isinstance(account_main_purse, UnforgeableReference)
 
     # Query 2.4: get_account_balance.
@@ -146,18 +148,18 @@ def _main(args: argparse.Namespace):
 
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    connection = NodeConnectionInfo(
         host=args.node_host,
         port_rest=args.node_port_rest,
         port_rpc=args.node_port_rpc,
         port_sse=args.node_port_sse
     )
 
-    return pycspr.NodeClient(connection)
+    return NodeClient(connection)
 
 
 def _get_counter_parties(args: argparse.Namespace) -> PublicKey:
@@ -165,7 +167,7 @@ def _get_counter_parties(args: argparse.Namespace) -> PublicKey:
 
     """
 
-    return pycspr.parse_public_key(
+    return pycspr.factory.create_public_key(
         args.path_to_cp2_account_key
         )    
 

@@ -5,6 +5,9 @@ import random
 import typing
 
 import pycspr
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
+from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
@@ -26,7 +29,7 @@ _ARGS.add_argument(
 # CLI argument: type of delegator secret key - defaults to ED25519.
 _ARGS.add_argument(
     "--delegator-secret-key-type",
-    default=pycspr.KeyAlgorithm.ED25519.name,
+    default=KeyAlgorithm.ED25519.name,
     dest="type_of_delegator_secret_key",
     help="Type of delegator's secret key.",
     type=str,
@@ -84,6 +87,9 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    # Set node client.
+    client = _get_client(args)
+
     # Set counter-parties.
     delegator, validator = _get_counter_parties(args)
 
@@ -94,33 +100,32 @@ def _main(args: argparse.Namespace):
     deploy.approve(delegator)
 
     # Dispatch deploy to a node.
-    client = _get_client(args)
     client.deploys.send(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    connection = NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     )
 
-    return pycspr.NodeClient(connection)
+    return NodeClient(connection)
 
 
 def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
     """Returns the 2 counter-parties participating in the delegation.
 
     """
-    delegator = pycspr.parse_private_key(
+    delegator = pycspr.factory.create_private_key(
         args.path_to_delegator_secret_key,
         args.type_of_delegator_secret_key,
         )
-    validator = pycspr.parse_public_key(
+    validator = pycspr.factory.create_public_key(
         args.path_to_validator_account_key
         )    
 
@@ -132,13 +137,13 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.create_deploy_parameters(
+    deploy_params = pycspr.factory.create_deploy_parameters(
         account=delegator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.create_validator_delegation_withdrawal(
+    deploy = pycspr.factory.create_validator_delegation_withdrawal(
         params=deploy_params,
         amount=int(1e9),
         public_key_of_delegator=delegator,

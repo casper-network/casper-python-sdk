@@ -69,6 +69,24 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     )
 
 
+def create_deploy_argument(
+    name: str,
+    parsed: object, 
+    cl_type: typing.Union[CLTypeKey, CLType]
+    ) -> ExecutionArgument:
+    """Returns an argument associated with deploy execution information (session|payment).
+    
+    :param name: Name of execution argument.
+    :param parsed: A parsed value to be dispatched for execution.
+    :param cl_type: Type information used to serialize parsed value.
+
+    """
+    return ExecutionArgument(
+        name=name,
+        value=create_cl_value(cl_type, parsed)
+    )
+
+
 def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> DeployBody:
     """Returns hash of a deploy's so-called body.
     
@@ -153,24 +171,6 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     )
 
 
-def create_execution_arg(
-    name: str,
-    parsed: object, 
-    cl_type: typing.Union[CLTypeKey, CLType]
-    ) -> ExecutionArgument:
-    """Returns an argument associated with deploy execution information (session|payment).
-    
-    :param name: Name of execution argument.
-    :param parsed: A parsed value to be dispatched for execution.
-    :param cl_type: Type information used to serialize parsed value.
-
-    """
-    return ExecutionArgument(
-        name=name,
-        value=create_cl_value(cl_type, parsed)
-    )
-
-
 def create_native_transfer(
     params: DeployParameters,
     amount: int,
@@ -207,17 +207,17 @@ def create_native_transfer_session(
     """
     return ExecutableDeployItem_Transfer(
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "target",
                 target,
                 create_cl_type_of_byte_array(32)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "id",
                 correlation_id,
                 create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
@@ -236,7 +236,7 @@ def create_standard_payment(
     """
     return ExecutableDeployItem_ModuleBytes(
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
@@ -277,19 +277,19 @@ def create_validator_auction_bid(
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_binary(path_to_wasm),
+        module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "delegation_rate",
                 delegation_rate,
                 create_cl_type_of_simple(CLTypeKey.U8)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "public_key",
                 public_key,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
@@ -319,19 +319,19 @@ def create_validator_auction_bid_withdrawal(
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_binary(path_to_wasm),
+        module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "public_key",
                 public_key,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "unbond_purse",
                 unbond_purse,
                 create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.UREF))
@@ -361,19 +361,19 @@ def create_validator_delegation(
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_binary(path_to_wasm),
+        module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "delegator",
                 public_key_of_delegator,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "validator",
                 public_key_of_validator,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
@@ -403,19 +403,19 @@ def create_validator_delegation_withdrawal(
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
     session = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_binary(path_to_wasm),
+        module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_execution_arg(
+            create_deploy_argument(
                 "amount",
                 amount,
                 create_cl_type_of_simple(CLTypeKey.U512)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "delegator",
                 public_key_of_delegator,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
                 ),
-            create_execution_arg(
+            create_deploy_argument(
                 "validator",
                 public_key_of_validator,
                 create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)

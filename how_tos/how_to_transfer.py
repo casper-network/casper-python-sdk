@@ -5,6 +5,9 @@ import random
 import typing
 
 import pycspr
+from pycspr.client import NodeClient
+from pycspr.client import NodeConnectionInfo
+from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import Deploy
 from pycspr.types import PublicKey
@@ -26,7 +29,7 @@ _ARGS.add_argument(
 # CLI argument: type of cp1 secret key - defaults to ED25519.
 _ARGS.add_argument(
     "--cp1-secret-key-type",
-    default=pycspr.KeyAlgorithm.ED25519.name,
+    default=KeyAlgorithm.ED25519.name,
     dest="type_of_cp1_secret_key",
     help="Type of counter party one's secret key.",
     type=str,
@@ -75,6 +78,9 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    # Set node client.
+    client = _get_client(args)
+
     # Set counter-parties.
     cp1, cp2 = _get_counter_parties(args)
 
@@ -85,33 +91,32 @@ def _main(args: argparse.Namespace):
     deploy.approve(cp1)
 
     # Dispatch deploy to a node.
-    client = _get_client(args)
     client.deploys.send(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
 
-def _get_client(args: argparse.Namespace) -> pycspr.NodeClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = pycspr.NodeConnectionInfo(
+    connection = NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     )
 
-    return pycspr.NodeClient(connection)
+    return NodeClient(connection)
 
 
 def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
     """Returns the 2 counter-parties participating in the transfer.
 
     """
-    cp1 = pycspr.parse_private_key(
+    cp1 = pycspr.factory.create_private_key(
         args.path_to_cp1_secret_key,
         args.type_of_cp1_secret_key,
         )
-    cp2 = pycspr.parse_public_key(
+    cp2 = pycspr.factory.create_public_key(
         args.path_to_cp2_account_key
         )    
 
@@ -123,13 +128,13 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.create_deploy_parameters(
+    deploy_params = pycspr.factory.create_deploy_parameters(
         account=cp1,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.create_native_transfer(
+    deploy = pycspr.factory.create_native_transfer(
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_hash,
