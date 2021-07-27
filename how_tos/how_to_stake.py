@@ -99,7 +99,7 @@ def _main(args: argparse.Namespace):
     client: NodeClient = _get_client(args)
 
     # Set validator key.
-    validator: PrivateKey = pycspr.factory.create_private_key(
+    validator: PrivateKey = pycspr.factory.parse_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )

@@ -1,16 +1,16 @@
-from pycspr.serialisation import byte_array as byte_array_codec
-from pycspr.serialisation import json as json_codec
+from pycspr.serialisation import byte_array as _byte_array
+from pycspr.serialisation import json as _json
 
 
 
-# Maps an entity to a byte array.
-to_bytes = byte_array_codec.encode
+# Maps a domain entity to a byte array.
+to_bytes = _byte_array.encode
 
-# Maps an entity to JSON.
-to_json = json_codec.encode
+# Maps a domain entity to JSON.
+to_json = _json.encode
 
 # Maps a byte array to a domain entity.
-from_bytes = byte_array_codec.decode
+from_bytes = _byte_array.decode
 
 # Maps JSON to a domain entity.
-from_json = json_codec.decode
+from_json = _json.decode

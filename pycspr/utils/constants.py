@@ -81,6 +81,7 @@ NODE_RPC_ENDPOINTS: set = {
     'state_get_account_info',
     'state_get_auction_info',
     'state_get_balance',
+    'state_get_dictionary_item',
     'state_get_item'
     }
 

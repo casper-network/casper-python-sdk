@@ -31,7 +31,7 @@ def test_that_deploy_approvals_are_deduplicated(FACTORY, deploy_params, cp1, cp2
     assert len(deploy.approvals) == 2
 
 
-def test_can_write_to_fs(LIB, FACTORY, deploy_params, cp1, cp2):
+def test_that_a_deploy_can_be_written_to_fs(LIB, FACTORY, deploy_params, cp1, cp2):
     deploy = _create_deploy(FACTORY, deploy_params, cp2)
     with tempfile.TemporaryFile() as fp:
         fpath = LIB.write_deploy(deploy, str(fp))    

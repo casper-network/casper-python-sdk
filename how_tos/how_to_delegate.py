@@ -121,7 +121,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
     """Returns the 2 counter-parties participating in the delegation.
 
     """
-    delegator = pycspr.factory.create_private_key(
+    delegator = pycspr.factory.parse_private_key(
         args.path_to_delegator_secret_key,
         args.type_of_delegator_secret_key,
         )

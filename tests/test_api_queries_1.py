@@ -48,7 +48,7 @@ def test_get_rpc_endpoints(CLIENT):
         print(response)
         assert response == sorted(CLIENT.NODE_RPC_ENDPOINTS)
 
-    _assert(CLIENT.queries.get_rpc_endpoint())
+    _assert(CLIENT.queries.get_rpc_endpoints())
 
 
 def test_get_rpc_endpoint(CLIENT):

@@ -58,22 +58,31 @@ _INTERFACE_OF_LIBRARY = {
         "NodeConnectionInfo",
     },
     _has_enum: {
+        "NodeSseChannelType",
         "NodeSseEventType",
+        "HashAlgorithm",
+        "KeyAlgorithm",
     },
     _has_constant: set(),
     _has_exception: set(),
     _has_function: {
         "create_deploy",
+        "create_deploy_approval",
         "create_deploy_parameters",
         "create_deploy_argument",
         "create_standard_payment",
         "create_native_transfer",
-        "create_public_key",
-        "create_private_key",
+        "create_validator_auction_bid",
+        "create_validator_auction_bid_withdrawal",
+        "create_validator_delegation",
+        "create_validator_delegation_withdrawal",
+        "parse_public_key",
+        "parse_private_key",
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
         "read_deploy",
+        "read_wasm",
         "write_deploy",
     },
     _has_member: {
@@ -96,7 +105,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.7.1"
+    assert LIB.__version__ == "0.7.2"
 
 
 def test_exports_of_library(LIB):

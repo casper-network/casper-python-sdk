@@ -13,6 +13,7 @@ from pycspr.types import CLTypeKey
 from pycspr.types import CLType_Option
 from pycspr.types import CLValue
 from pycspr.types import PublicKey
+from pycspr.utils.constants import NUMERIC_CONSTRAINTS
 from pycspr.utils.conversion import le_bytes_to_int
 
 
@@ -170,39 +171,57 @@ def decode_u128(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 128 bit integer.
     
     """
-    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
-    if type_tag == CLTypeKey.U8:
-        return decode_u8(rem_bytes)
-    elif type_tag == CLTypeKey.U32:
-        return decode_u32(rem_bytes)
-    elif type_tag == CLTypeKey.U64:
-        return decode_u64(rem_bytes)
-    elif type_tag == CLTypeKey.U128:
-        return le_bytes_to_int(rem_bytes, False)
+    size = as_bytes[0]
+    if size <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH:
+        return decode_u8(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH:
+        return decode_u32(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH:
+        return decode_u64(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U128].LENGTH:
+        return le_bytes_to_int(as_bytes[1:], False)
     else:
-        raise NotImplementedError()
+        raise ValueError("Cannot decode U128 as bytes are too large")
 
 
 def decode_u256(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 256 bit integer.
     
     """
-    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
-    if type_tag == CLTypeKey.U256:
-        return le_bytes_to_int(rem_bytes, False)
+    size = as_bytes[0]
+    if size <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH:
+        return decode_u8(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH:
+        return decode_u32(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH:
+        return decode_u64(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U128].LENGTH:
+        return decode_u128(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U256].LENGTH:
+        return le_bytes_to_int(as_bytes[1:], False)
     else:
-        return decode_u128(as_bytes)
+        raise ValueError("Cannot decode U256 as bytes are too large")
 
 
 def decode_u512(as_bytes: typing.List[int]) -> int:
     """Decodes an unsigned 512 bit integer.
     
     """
-    type_tag, rem_bytes = CLTypeKey(as_bytes[0]), as_bytes[1:]
-    if type_tag == CLTypeKey.U512:
-        return le_bytes_to_int(rem_bytes, False)
+    size = as_bytes[0]
+    if size <= NUMERIC_CONSTRAINTS[CLTypeKey.U8].LENGTH:
+        return decode_u8(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U32].LENGTH:
+        return decode_u32(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U64].LENGTH:
+        return decode_u64(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U128].LENGTH:
+        return decode_u128(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U256].LENGTH:
+        return decode_u256(as_bytes[1:])
+    elif size <= NUMERIC_CONSTRAINTS[CLTypeKey.U512].LENGTH:
+        return le_bytes_to_int(as_bytes[1:], False)
     else:
-        return decode_u256(as_bytes)
+        raise ValueError("Cannot decode U512 as bytes are too large")
 
 
 def decode_unit(as_bytes: typing.List[int]) -> None:

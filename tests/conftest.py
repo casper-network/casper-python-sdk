@@ -136,7 +136,7 @@ def a_test_account(FACTORY, vector_crypto_2):
     """
     algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vector_crypto_2[0])
     
-    return FACTORY.create_account_info(algo, pvk, pbk)
+    return FACTORY.create_private_key(algo, pvk, pbk)
 
 
 @pytest.fixture(scope="session")
@@ -192,7 +192,7 @@ def _get_account_of_nctl_faucet(LIB):
     """
     path = _PATH_TO_NCTL_ASSETS / "net-1" / "faucet" / "secret_key.pem"
 
-    return LIB.create_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
 
 
 def _get_account_of_nctl_user(LIB, user_id: int):
@@ -201,7 +201,7 @@ def _get_account_of_nctl_user(LIB, user_id: int):
     """
     path = _PATH_TO_NCTL_ASSETS / "net-1" / "users" / f"user-{user_id}" / "secret_key.pem"
 
-    return LIB.create_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
 
 
 @pytest.fixture(scope="session")

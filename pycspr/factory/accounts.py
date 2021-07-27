@@ -7,8 +7,8 @@ from pycspr.types import PublicKey
 
 
 
-def create_account_info(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:
-    """Returns on-chain account information.
+def create_private_key(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:
+    """Returns an account holder's private key.
     
     :param algo: ECC key algorithm identifier.
     :param pvk: ECC private key.
@@ -31,7 +31,21 @@ def create_public_key(algo: crypto.KeyAlgorithm, pbk: bytes) -> PublicKey:
     return PublicKey(algo, pbk)
 
 
-def create_public_key(fpath: pathlib.Path) -> PublicKey:
+def parse_private_key(fpath: pathlib.Path, algo: typing.Union[str, crypto.KeyAlgorithm]) -> PrivateKey:
+    """Returns on-chain account information deserialised froma a secret key held on file system.
+    
+    :param fpath: Path to secret key pem file associated with the account.
+    :param algo: ECC key algorithm identifier.
+    :returns: On-chain account information wrapper.
+
+    """
+    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
+    (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath)
+
+    return create_private_key(algo, pvk, pbk)
+
+
+def parse_public_key(fpath: pathlib.Path) -> PublicKey:
     """Returns an account holder's public key.
     
     :param fpath: Path to public key hex file associated with the account.
@@ -45,20 +59,3 @@ def create_public_key(fpath: pathlib.Path) -> PublicKey:
         crypto.KeyAlgorithm(account_key[0]),
         account_key[1:]
         )
-
-
-def create_private_key(
-    fpath: pathlib.Path,
-    algo: typing.Union[str, crypto.KeyAlgorithm]
-    ) -> PrivateKey:
-    """Returns on-chain account information deserialised froma a secret key held on file system.
-    
-    :param fpath: Path to secret key pem file associated with the account.
-    :param algo: ECC key algorithm identifier.
-    :returns: On-chain account information wrapper.
-
-    """
-    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
-    (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath)
-
-    return create_account_info(algo, pvk, pbk)

@@ -256,7 +256,6 @@ class UnforgeableReference():
     # Access rights granted by issuer. 
     access_rights: CLAccessRights
 
-
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
         

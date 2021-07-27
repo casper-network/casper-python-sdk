@@ -2,6 +2,7 @@ import typing
 
 import jsonrpcclient as rpc_client
 
+from pycspr import types
 from pycspr.client import NodeConnectionInfo
 
 
@@ -12,7 +13,7 @@ _API_ENDPOINT = "state_get_balance"
 
 def execute(
     connection_info: NodeConnectionInfo,
-    purse_uref: str,
+    purse_uref: types.UnforgeableReference,
     state_root_hash: bytes = None
     ) -> typing.Union[int, dict]:
     """Returns account balance at a certain state root hash.
@@ -28,7 +29,7 @@ def execute(
     response = rpc_client.request(
         connection_info.address_rpc,
         _API_ENDPOINT,
-        purse_uref=purse_uref,
+        purse_uref=purse_uref.as_string(),
         state_root_hash=state_root_hash,
         )
 

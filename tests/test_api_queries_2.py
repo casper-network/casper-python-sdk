@@ -28,23 +28,23 @@ def test_get_account_info(CLIENT, account_hash: bytes, state_root_hash: bytes):
     _assert(CLIENT.queries.get_account_info(account_hash, state_root_hash))
 
 
-def test_get_account_main_purse_uref(CLIENT, account_key: bytes, state_root_hash: str):
+def test_get_account_main_purse_uref(TYPES, CLIENT, account_key: bytes, state_root_hash: str):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
-        print(response)
-        assert isinstance(response, str)
-        parts = response.split("-")
-        assert len(parts) == 3
-        assert parts[0] == "uref"
-        assert len(parts[1]) == 64
-        assert len(parts[2]) == 3
+        assert isinstance(response, TYPES.UnforgeableReference)
+        assert len(response.address) == 32
+        assert response.access_rights == TYPES.CLAccessRights.READ_ADD_WRITE
 
     _assert(CLIENT.queries.get_account_main_purse_uref(account_key, state_root_hash))
 
 
-def test_get_account_balance(CLIENT, account_main_purse_uref: str, state_root_hash: bytes):
+def test_get_account_balance(TYPES, CLIENT, account_main_purse_uref: object, state_root_hash: bytes):
+    assert isinstance(account_main_purse_uref, TYPES.UnforgeableReference)
+
     def _assert(response):
         assert isinstance(response, int)
         assert response >= 0
+
+    print(account_main_purse_uref)
 
     _assert(CLIENT.queries.get_account_balance(account_main_purse_uref, state_root_hash))

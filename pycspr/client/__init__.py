@@ -1,12 +1,12 @@
 from pycspr.client.connection import NodeConnectionInfo
-from pycspr.client.deploys import DeploysClient as _DeploysClient
-from pycspr.client.events import EventsClient as _EventsClient
-from pycspr.client.events import NodeSseChannelType
-from pycspr.client.events import NodeSseEventType
-from pycspr.client.queries import QueriesClient as _QueriesClient
-from pycspr.utils.constants import NODE_REST_ENDPOINTS
-from pycspr.utils.constants import NODE_RPC_ENDPOINTS
-from pycspr.utils.constants import NODE_SSE_ENDPOINTS
+from pycspr.client.deploys    import DeploysClient as _DeploysClient
+from pycspr.client.events     import EventsClient as _EventsClient
+from pycspr.client.events     import NodeSseChannelType
+from pycspr.client.events     import NodeSseEventType
+from pycspr.client.queries    import QueriesClient as _QueriesClient
+from pycspr.utils.constants   import NODE_REST_ENDPOINTS
+from pycspr.utils.constants   import NODE_RPC_ENDPOINTS
+from pycspr.utils.constants   import NODE_SSE_ENDPOINTS
 
 
 
