@@ -63,7 +63,7 @@ setup(
     long_description_content_type="text/plain",
     author='Mark A. Greenslade',
     author_email='mark@casperlabs.io',
-    url='https://github.com/pycspr',
+    url='https://github.com/casper-network/casper-python-sdk',
     packages=_PACKAGES,
     include_package_data=True,
     install_requires=_REQUIRES,
