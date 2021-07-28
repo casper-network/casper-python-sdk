@@ -35,7 +35,7 @@ def test_get_block_transfers(CLIENT):
     assert len(block_hash) == 64
     assert isinstance(transfers, list)
     for deploy_hash in transfers:
-        assert isinstance(deploy_hash, str)
+        assert isinstance(deploy_hash, bytes)
         assert len(deploy_hash) == 64
 
 

@@ -1,9 +1,11 @@
 import random
 
+import pycspr
 
 
-def test_that_humanized_time_interval_can_be_converted_to_milliseconds(LIB):
-    convertor = LIB.utils.conversion.humanized_time_interval_to_milliseconds
+
+def test_that_humanized_time_interval_can_be_converted_to_milliseconds():
+    convertor = pycspr.utils.conversion.humanized_time_interval_to_milliseconds
     for (unit, ms, quantity) in (
         ("ms", 1, random.randint(1, 1e9)),
         ("s", 1000, random.randint(1, 60)),

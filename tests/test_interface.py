@@ -1,6 +1,8 @@
 import enum
 import inspect
 
+import pycspr
+
 
 
 def _has_class(mod, cls):
@@ -104,18 +106,18 @@ _INTERFACE_OF_FACTORY = {
 }
 
 
-def test_version_of_library(LIB):
-    assert LIB.__version__ == "0.7.3"
+def test_version_of_library():
+    assert pycspr.__version__ == "0.7.3"
 
 
-def test_exports_of_library(LIB):
+def test_exports_of_library():
     for assertor, members in _INTERFACE_OF_LIBRARY.items():
         for member in members:
-            assertor(LIB, member)
+            assertor(pycspr, member)
 
 
-def test_exports_of_factory(LIB):
-    _test_exports(LIB.factory, _INTERFACE_OF_FACTORY)
+def test_exports_of_factory():
+    _test_exports(pycspr.factory, _INTERFACE_OF_FACTORY)
 
 
 def _test_exports(module, interface):

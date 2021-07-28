@@ -2,6 +2,8 @@ import os
 import random
 import tempfile
 
+import pycspr
+
 
 
 def test_that_deploy_is_unapproved_when_instantiated(FACTORY, deploy_params, cp2):
@@ -31,21 +33,21 @@ def test_that_deploy_approvals_are_deduplicated(FACTORY, deploy_params, cp1, cp2
     assert len(deploy.approvals) == 2
 
 
-def test_that_a_deploy_can_be_written_to_fs(LIB, FACTORY, deploy_params, cp1, cp2):
+def test_that_a_deploy_can_be_written_to_fs(FACTORY, deploy_params, cp1, cp2):
     deploy = _create_deploy(FACTORY, deploy_params, cp2)
     with tempfile.TemporaryFile() as fp:
-        fpath = LIB.write_deploy(deploy, str(fp))    
+        fpath = pycspr.write_deploy(deploy, str(fp))    
         assert os.path.exists(fpath)
         os.remove(fpath)
 
 
-def test_can_write_to_and_read_from_fs(LIB, FACTORY, deploy_params, cp1, cp2):
+def test_can_write_to_and_read_from_fs(FACTORY, deploy_params, cp1, cp2):
     deploy_1 = _create_deploy(FACTORY, deploy_params, cp2)
     with tempfile.TemporaryFile() as fp:
-        fpath = LIB.write_deploy(deploy_1, str(fp))
-        deploy_2 = LIB.read_deploy(fp)
+        fpath = pycspr.write_deploy(deploy_1, str(fp))
+        deploy_2 = pycspr.read_deploy(fp)
         assert isinstance(deploy_2, type(deploy_1))
-        assert LIB.serialisation.to_json(deploy_1) == LIB.serialisation.to_json(deploy_2)
+        assert pycspr.serialisation.to_json(deploy_1) == pycspr.serialisation.to_json(deploy_2)
         os.remove(fpath)
 
 

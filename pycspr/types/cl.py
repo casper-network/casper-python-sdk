@@ -4,7 +4,7 @@ import enum
 
 
 class CLTypeKey(enum.Enum):
-    """Enumeration over set of CL types.
+    """Enumeration over set of CL type keys.
     
     """
     BOOL = 0
@@ -46,7 +46,7 @@ class CLAccessRights(enum.Enum):
     READ_ADD_WRITE = 7
 
 
-# Set of types considered to be numeric.
+# Set of CL types considered to be numeric.
 TYPES_NUMERIC = {
     CLTypeKey.I32,
     CLTypeKey.I64,
@@ -59,23 +59,15 @@ TYPES_NUMERIC = {
 }
 
 
-# Set of types considered to be simple.
-TYPES_SIMPLE = {
+# Set of CL types considered to be simple.
+TYPES_SIMPLE = TYPES_NUMERIC.union({
     CLTypeKey.BOOL,
-    CLTypeKey.I32,
-    CLTypeKey.I64,
     CLTypeKey.KEY,
     CLTypeKey.PUBLIC_KEY,
     CLTypeKey.STRING,
-    CLTypeKey.U8,
-    CLTypeKey.U32,
-    CLTypeKey.U64,
-    CLTypeKey.U128,
-    CLTypeKey.U256,
-    CLTypeKey.U512,
     CLTypeKey.UNIT,
     CLTypeKey.UREF,
-}
+})
 
 
 @dataclasses.dataclass

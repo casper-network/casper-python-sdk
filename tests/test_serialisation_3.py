@@ -1,4 +1,8 @@
-def test_cl_types_simple(LIB, FACTORY, TYPES, vector_cl_types):
+import pycspr
+
+
+
+def test_cl_types_simple(FACTORY, TYPES, vector_cl_types):
     for type_key in TYPES.TYPES_SIMPLE:
         vector = vector_cl_types.get_vector(type_key)
         if not vector["hex"]:
@@ -9,6 +13,6 @@ def test_cl_types_simple(LIB, FACTORY, TYPES, vector_cl_types):
 
         cl_type = FACTORY.create_cl_type_of_simple(type_key)
         cl_value = FACTORY.create_cl_value(cl_type, vector["value"])
-        assert LIB.serialisation.to_bytes(cl_value).hex() == vector["hex"]
+        assert pycspr.serialisation.to_bytes(cl_value).hex() == vector["hex"]
 
     raise NotImplementedError("TODO: finish implmenting test around cl values")

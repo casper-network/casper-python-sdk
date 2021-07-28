@@ -29,62 +29,62 @@ def a_test_account(FACTORY, vector_crypto_2):
 
 
 @pytest.fixture(scope="session")
-def test_account_1(LIB):
+def test_account_1():
     """Returns test user account information. 
     
     """
     path = pathlib.Path(_PATH_TO_ACCOUNTS) / "account-1"  / "secret_key.pem"
-    (pvk, pbk) = LIB.crypto.get_key_pair_from_pem_file(path)
+    (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
 
-    return LIB.types.PrivateKey(
+    return pycspr.types.PrivateKey(
         pbk=pbk,
         pvk=pvk,
-        algo=LIB.crypto.KeyAlgorithm.ED25519
+        algo=pycspr.crypto.KeyAlgorithm.ED25519
     )
 
 
-def _get_account_of_nctl_faucet(LIB):
+def _get_account_of_nctl_faucet():
     """Returns account information related to NCTL faucet. 
     
     """
     path = _PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem"
 
-    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
 
 
-def _get_account_of_nctl_user(LIB, user_id: int):
+def _get_account_of_nctl_user(user_id: int):
     """Returns account information related to NCTL user 1. 
     
     """
     path = _PATH_TO_NCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
 
-    return LIB.parse_private_key(path, LIB.crypto.KeyAlgorithm.ED25519)
+    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
 
 
 @pytest.fixture(scope="session")
-def cp1(LIB):
+def cp1():
     """Returns counter-party 1 test account key. 
     
     """
-    return _get_account_of_nctl_faucet(LIB)
+    return _get_account_of_nctl_faucet()
 
 
 @pytest.fixture(scope="session")
-def cp2(LIB):
+def cp2():
     """Returns counter-party 2 test account key. 
     
     """
-    return _get_account_of_nctl_user(LIB, 1)
+    return _get_account_of_nctl_user(1)
 
 
 @pytest.fixture(scope="session")
-def key_pair_specs(LIB) -> typing.Tuple[pycspr.crypto.KeyAlgorithm, str, str]:
+def key_pair_specs() -> typing.Tuple[pycspr.crypto.KeyAlgorithm, str, str]:
     """Returns sets of specifications for key pair generation. 
     
     """
     return (
-        (LIB.crypto.KeyAlgorithm.ED25519, 32, 32),
-        (LIB.crypto.KeyAlgorithm.SECP256K1, 32, 33),
+        (pycspr.crypto.KeyAlgorithm.ED25519, 32, 32),
+        (pycspr.crypto.KeyAlgorithm.SECP256K1, 32, 33),
     )
 
 
@@ -100,10 +100,8 @@ def account_key() -> bytes:
 
 
 @pytest.fixture(scope="session")
-def account_hash(LIB, account_key: bytes) -> bytes:
+def account_hash(account_key: bytes) -> bytes:
     """Returns a test NCTL account key. 
     
     """
-    return LIB.get_account_hash(account_key)
-
-
+    return pycspr.get_account_hash(account_key)
