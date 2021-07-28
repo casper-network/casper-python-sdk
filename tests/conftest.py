@@ -26,11 +26,11 @@ def _get_vector(fname: str, parser: typing.Callable = json.load):
 
 
 @pytest.fixture(scope="session")
-def vector_cl_data_1() -> list:
+def vector_cl_types() -> list:
     class _Accessor():
         def __init__(self):
-            self.fixture = _get_vector("cl_types.json")
-        
+            self.fixture = _get_vector("cl_types_simple.json") + _get_vector("cl_types_complex.json")
+            print(self.fixture)
         def get_vectors(self, typeof: str) -> list:
             typeof = typeof if isinstance(typeof, str) else typeof.name
             return [i for i in self.fixture if i["typeof"] == typeof.upper()]

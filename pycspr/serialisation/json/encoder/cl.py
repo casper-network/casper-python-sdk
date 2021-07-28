@@ -85,22 +85,22 @@ def encode_cl_value(entity: CLValue) -> dict:
     """Encodes a CL value.
 
     """
-    def _encode_parsed(type_info: CLType, parsed: object) -> str:
+    def _encode_parsed(type_info: CLType) -> str:
         if type_info.typeof in TYPES_NUMERIC:
-            return str(int(parsed))
+            return str(int(entity.parsed))
         elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
-            return parsed.hex()
+            return entity.parsed.hex()
         elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
-            return parsed.account_key.hex()
+            return entity.parsed.account_key.hex()
         elif type_info.typeof == CLTypeKey.UREF:
-            return parsed.as_string()
+            return entity.parsed.as_string()
         elif type_info.typeof == CLTypeKey.OPTION:
-            return _encode_parsed(type_info.inner_type, parsed)
+            return _encode_parsed(type_info.inner_type)
         else:
-            return str(parsed)
-    
+            return str(entity.parsed)
+
     return {
         "bytes": serialisation.to_bytes(entity).hex(),
         "cl_type": encode_cl_type(entity.cl_type),
-        "parsed": _encode_parsed(entity.cl_type, entity.parsed),
+        "parsed": _encode_parsed(entity.cl_type),
     }

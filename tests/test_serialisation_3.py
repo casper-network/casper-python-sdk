@@ -1,6 +1,6 @@
-def test_cl_types_simple(LIB, FACTORY, TYPES, vector_cl_data_1):
+def test_cl_types_simple(LIB, FACTORY, TYPES, vector_cl_types):
     for type_key in TYPES.TYPES_SIMPLE:
-        vector = vector_cl_data_1.get_vector(type_key)
+        vector = vector_cl_types.get_vector(type_key)
         if not vector["hex"]:
             continue
         
