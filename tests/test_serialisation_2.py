@@ -2,14 +2,14 @@
 import pycspr
 
 
-def test_that_a_transfer_can_be_encoded_as_json(FACTORY, deploy_params_static, vector_deploy_1):
+def test_that_a_transfer_can_be_encoded_as_json(deploy_params_static, vector_deploy_1):
     for vector in [v for v in vector_deploy_1 if v["typeof"] == "transfer"]:
-        entity = FACTORY.create_deploy(
+        entity = pycspr.factory.create_deploy(
             deploy_params_static,
-            FACTORY.create_standard_payment(
+            pycspr.factory.create_standard_payment(
                 vector["payment"]["amount"]
             ),
-            FACTORY.create_native_transfer_session(
+            pycspr.factory.create_native_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
                 vector["session"]["transfer_id"]

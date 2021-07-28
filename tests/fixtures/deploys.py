@@ -36,12 +36,12 @@ def a_test_ttl_humanized() -> str:
 
 
 @pytest.fixture(scope="function")
-def deploy_params(FACTORY, a_test_chain_id, a_test_ttl_humanized, cp1):
+def deploy_params(a_test_chain_id, a_test_ttl_humanized, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
-    return FACTORY.create_deploy_parameters(
-            account=FACTORY.create_public_key(
+    return pycspr.factory.create_deploy_parameters(
+            account=pycspr.factory.create_public_key(
                 cp1.algo,
                 cp1.pbk
             ),
@@ -54,12 +54,12 @@ def deploy_params(FACTORY, a_test_chain_id, a_test_ttl_humanized, cp1):
 
 
 @pytest.fixture(scope="function")
-def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
+def deploy_params_static(a_test_chain_id, test_account_1):
     """Returns standard deploy parameters with known timestamp. 
     
     """
-    return FACTORY.create_deploy_parameters(
-            account=FACTORY.create_public_key(
+    return pycspr.factory.create_deploy_parameters(
+            account=pycspr.factory.create_public_key(
                 test_account_1.algo,
                 test_account_1.pbk
             ),
@@ -67,22 +67,22 @@ def deploy_params_static(FACTORY, a_test_chain_id, test_account_1):
             dependencies=[],
             gas_price=10,
             timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
-            ttl=FACTORY.create_deploy_ttl(_A_KNOWN_DEPLOY_HUMANIZED_TTL),
+            ttl=pycspr.factory.create_deploy_ttl(_A_KNOWN_DEPLOY_HUMANIZED_TTL),
         )
 
 
 @pytest.fixture(scope="function")
-def a_deploy(FACTORY, deploy_params, cp1, cp2):
+def a_deploy(deploy_params, cp1, cp2):
     """Returns hash of most next switch. 
     
     """
-    deploy = FACTORY.create_native_transfer(
+    deploy = pycspr.factory.create_native_transfer(
         deploy_params,
         amount = 2500000000,
         correlation_id = 1,
         target = cp2.account_hash,
         )
-    deploy.set_approval(FACTORY.create_deploy_approval(deploy, cp1))    
+    deploy.set_approval(pycspr.factory.create_deploy_approval(deploy, cp1))    
 
     return deploy
 
