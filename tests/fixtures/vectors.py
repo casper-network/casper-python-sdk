@@ -25,9 +25,6 @@ def cl_types() -> list:
 
         def get_value(self, typeof: str) -> object:
             return self.get_vector(typeof)["value"]
-
-        def get_value_as_bytes(self, typeof: str) -> bytes:
-            return bytes.fromhex(self.get_value(typeof))
     
     return _Accessor()
 
@@ -58,8 +55,8 @@ def crypto_2() -> list:
 def crypto_3() -> list:
     data = _read_vector("crypto_signatures.json")
     for i in data:
-        i["signingKey"]["pbk"] = bytes.fromhex(i["signingKey"]["pbk"])
-        i["signingKey"]["pvk"] = bytes.fromhex(i["signingKey"]["pvk"])
+        i["key"]["pbk"] = bytes.fromhex(i["key"]["pbk"])
+        i["key"]["pvk"] = bytes.fromhex(i["key"]["pvk"])
         i["sig"] = bytes.fromhex(i["sig"])
 
     return data

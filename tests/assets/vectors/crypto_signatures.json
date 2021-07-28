@@ -1,20 +1,19 @@
 [
     {
         "data": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
-        "signingKey": {
+        "key": {
             "algo": "ED25519",
-            "pvk": "822f86c1ea9546d37c6c3a451877c8c168fdcab51b65ccec142ba27a7a6b548c",
-            "pbk": "cd62f1c5cca51fa3c25f4c76a46dd5f6b0988c95da6ea835ec4441d68dcea393"
+            "pbk": "cd62f1c5cca51fa3c25f4c76a46dd5f6b0988c95da6ea835ec4441d68dcea393",
+            "pvk": "822f86c1ea9546d37c6c3a451877c8c168fdcab51b65ccec142ba27a7a6b548c"
         },        
         "sig": "c507aa390d6779d949d38258d6e1c8509664c16e645bdda9e70365ae06b23944b041aee323ea3783c923d90c73efa9c59d7b1ed87a5a1332a245874bd944fb07"
     },
     {
         "data": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
-        "ddd": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e",
-        "signingKey": {
+        "key": {
             "algo": "SECP256K1",
-            "pvk": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
-            "pbk": "0272dcc1d384a6ddad06fde1ceb2f1fe524f84ddf5ee3bdb3682eb7b927de0e682"
+            "pbk": "0272dcc1d384a6ddad06fde1ceb2f1fe524f84ddf5ee3bdb3682eb7b927de0e682",
+            "pvk": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
         },        
         "sig": "3b9af56dc9823ded12c649653cf45beaa6f9ea495774e41b6ae4e10a9f3f45f0dfdbb662f55421169984cd2c41f1614499784cc644601f2a2aadbd3979a12110"
     }
