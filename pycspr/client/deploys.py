@@ -25,7 +25,7 @@ class DeploysClient():
         :param deploy: A deploy to be processed at a node.
 
         """
-        return api.post_deploy(self.connection_info, deploy)
+        return api.put_deploy(self.connection_info, deploy)
 
 
     def read(self, fpath: typing.Union[pathlib.Path, str]) -> Deploy:

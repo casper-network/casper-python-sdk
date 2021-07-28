@@ -16,4 +16,4 @@ from pycspr.api.get_rpc_endpoints                import execute as get_rpc_endpo
 from pycspr.api.get_rpc_schema                   import execute as get_rpc_schema
 from pycspr.api.get_state_item                   import execute as get_state_item
 from pycspr.api.get_state_root_hash              import execute as get_state_root_hash
-from pycspr.api.post_deploy                      import execute as post_deploy
+from pycspr.api.put_deploy                       import execute as put_deploy
