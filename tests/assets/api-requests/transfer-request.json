@@ -1,0 +1,67 @@
+{
+    "approvals": [
+        {
+            "signature": "[130 hex chars]",
+            "signer": "0103fa1f67d685188c8e9ec9c5bc645bdcd0b2236f2553a9899a05623690db02c4"
+        }
+    ],
+    "hash": "35c841fef86222a9713799c38f56ec5f9094fb46c41c7fad7be732e2d641f3d9",
+    "header": {
+        "account": "0103fa1f67d685188c8e9ec9c5bc645bdcd0b2236f2553a9899a05623690db02c4",
+        "body_hash": "5c786a108fe72a23bfa2c45fda19c17782f065608bdfc35e262ef4e9dcea23fc",
+        "chain_name": "casper-net-1",
+        "dependencies": [],
+        "gas_price": 10,
+        "timestamp": "2021-06-28T15:55:25.335Z",
+        "ttl": "1day"
+    },
+    "payment": {
+        "ModuleBytes": {
+            "args": [
+                [
+                    "amount",
+                    {
+                        "bytes": "0500e40b5402",
+                        "cl_type": "U512",
+                        "parsed": "10000000000"
+                    }
+                ]
+            ],
+            "module_bytes": ""
+        }
+    },
+    "session": {
+        "Transfer": {
+            "args": [
+                [
+                    "amount",
+                    {
+                        "bytes": "0400f90295",
+                        "cl_type": "U512",
+                        "parsed": "2500000000"
+                    }
+                ],
+                [
+                    "target",
+                    {
+                        "bytes": "7abf0ddbc5665b574665daa4a52b7b75cb25794aa060239487dcd954bc20cc52",
+                        "cl_type": {
+                            "ByteArray": 32
+                        },
+                        "parsed": "7abf0ddbc5665b574665daa4a52b7b75cb25794aa060239487dcd954bc20cc52"
+                    }
+                ],
+                [
+                    "id",
+                    {
+                        "bytes": "010100000000000000",
+                        "cl_type": {
+                            "Option": "U64"
+                        },
+                        "parsed": 1
+                    }
+                ]
+            ]
+        }
+    }
+}
