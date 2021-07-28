@@ -107,7 +107,7 @@ _INTERFACE_OF_FACTORY = {
 
 
 def test_version_of_library():
-    assert pycspr.__version__ == "0.7.3"
+    assert pycspr.__version__ == "0.7.4"
 
 
 def test_exports_of_library():
