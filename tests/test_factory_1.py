@@ -4,26 +4,26 @@ import pycspr
 
 def test_create_deploy_argument_simple(vector_cl_types):
     for type_key in pycspr.types.TYPES_SIMPLE:
-        vector = vector_cl_types.get_vector(type_key)
-        cl_type = pycspr.factory.create_cl_type_of_simple(type_key)
-        _assert_arg(vector["value"], cl_type)
+        for vector in vector_cl_types.get_vectors(type_key):
+            cl_type = pycspr.factory.create_cl_type_of_simple(type_key)
+            _assert_arg(vector["value"], cl_type)
 
 
 def test_create_deploy_argument_byte_array(vector_cl_types):
-    vector = vector_cl_types.get_vector(pycspr.types.CLTypeKey.BYTE_ARRAY)
-    value = bytes.fromhex(vector["value"])
-    size = len(value)
-    cl_type = pycspr.factory.create_cl_type_of_byte_array(size)
-    _assert_arg(value, cl_type)
+    for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.BYTE_ARRAY):
+        value = bytes.fromhex(vector["value"])
+        size = len(value)
+        cl_type = pycspr.factory.create_cl_type_of_byte_array(size)
+        _assert_arg(value, cl_type)
 
 
 def test_create_deploy_argument_list(vector_cl_types):
-    vector = vector_cl_types.get_vector(pycspr.types.CLTypeKey.LIST)
-    type_key_item = pycspr.types.CLTypeKey[vector["typeof_item"]]
-    if type_key_item in pycspr.types.TYPES_SIMPLE:
-        cl_type_item = pycspr.factory.create_cl_type_of_simple(type_key_item)
-        cl_type = pycspr.factory.create_cl_type_of_list(cl_type_item)
-        _assert_arg(vector["value"], cl_type)
+    for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.LIST):
+        type_key_item = pycspr.types.CLTypeKey[vector["typeof_item"]]
+        if type_key_item in pycspr.types.TYPES_SIMPLE:
+            cl_type_item = pycspr.factory.create_cl_type_of_simple(type_key_item)
+            cl_type = pycspr.factory.create_cl_type_of_list(cl_type_item)
+            _assert_arg(vector["value"], cl_type)
 
 
 def test_create_deploy_argument_map(vector_cl_types):

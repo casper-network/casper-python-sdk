@@ -16,23 +16,20 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 @pytest.fixture(scope="session")
 def cl_types() -> list:
     class _Accessor():
-        def __init__(self):
-            self.fixture = _read_vector("cl_types_simple.json") + _read_vector("cl_types_complex.json")
-            for obj in self.fixture:
+        def __init__(self):            
+            self._fixtures = _read_vector("cl_types_simple.json") + _read_vector("cl_types_complex.json")
+            self._parse_fixtures()
+
+        def get_vectors(self, typeof: str) -> list:
+            typeof = typeof if isinstance(typeof, str) else typeof.name
+            return [i for i in self._fixtures if i["typeof"] == typeof.upper()]
+
+        def _parse_fixtures(self):
+            for obj in self._fixtures:
                 if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
                     obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
                 elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
                     obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
-
-        def get_vectors(self, typeof: str) -> list:
-            typeof = typeof if isinstance(typeof, str) else typeof.name
-            return [i for i in self.fixture if i["typeof"] == typeof.upper()]
-
-        def get_vector(self, typeof: str) -> dict:
-            return self.get_vectors(typeof)[0]
-
-        def get_value(self, typeof: str) -> object:
-            return self.get_vector(typeof)["value"]
     
     return _Accessor()
 
