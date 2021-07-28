@@ -1,15 +1,5 @@
 [
     {
-        "typeof": "BOOL",
-        "value": true,
-        "hex": "01"
-    },
-    {
-        "typeof": "BOOL",
-        "value": false,
-        "hex": "00"
-    },
-    {
         "typeof": "I32",
         "value": 1896687901,
         "hex": "1d290d71"
@@ -18,11 +8,6 @@
         "typeof": "I64",
         "value": 192249568872182655,
         "hex": "7f33d9dcf601ab02"
-    },
-    {
-        "typeof": "STRING",
-        "value": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
-        "hex": "49000000d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
     },
     {
         "typeof": "U8",

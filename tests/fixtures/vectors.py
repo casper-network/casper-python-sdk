@@ -17,7 +17,9 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 def cl_types() -> list:
     class _Accessor():
         def __init__(self):            
-            self._fixtures = _read_vector("cl_types_simple.json") + _read_vector("cl_types_complex.json")
+            self._fixtures = _read_vector("cl_types_complex.json") + \
+                             _read_vector("cl_types_simple_numeric.json") + \
+                             _read_vector("cl_types_simple_other.json")
             self._parse_fixtures()
 
         def get_vectors(self, typeof: str) -> list:
