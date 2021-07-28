@@ -5,6 +5,9 @@ import typing
 
 import pytest
 
+import pycspr
+
+
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
 _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
@@ -15,6 +18,11 @@ def cl_types() -> list:
     class _Accessor():
         def __init__(self):
             self.fixture = _read_vector("cl_types_simple.json") + _read_vector("cl_types_complex.json")
+            for obj in self.fixture:
+                if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
+                    obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
+                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
+                    obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
 
         def get_vectors(self, typeof: str) -> list:
             typeof = typeof if isinstance(typeof, str) else typeof.name

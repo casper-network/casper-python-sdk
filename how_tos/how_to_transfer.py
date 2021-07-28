@@ -116,7 +116,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
         args.path_to_cp1_secret_key,
         args.type_of_cp1_secret_key,
         )
-    cp2 = pycspr.factory.create_public_key(
+    cp2 = pycspr.factory.parse_public_key(
         args.path_to_cp2_account_key
         )    
 

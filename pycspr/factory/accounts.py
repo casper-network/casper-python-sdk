@@ -31,6 +31,16 @@ def create_public_key(algo: crypto.KeyAlgorithm, pbk: bytes) -> PublicKey:
     return PublicKey(algo, pbk)
 
 
+def create_public_key_from_account_key(account_key: bytes) -> PublicKey:
+    """Returns an account holder's public key.
+    
+    :param account_key: Account key asociated with account;s public key.
+    :returns: A public key.
+
+    """
+    return create_public_key(crypto.KeyAlgorithm(account_key[0]), account_key[1:])
+
+
 def parse_private_key(fpath: pathlib.Path, algo: typing.Union[str, crypto.KeyAlgorithm]) -> PrivateKey:
     """Returns on-chain account information deserialised froma a secret key held on file system.
     
@@ -55,7 +65,4 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
     with open(fpath) as fstream:
         account_key = bytes.fromhex(fstream.read())
 
-    return create_public_key(
-        crypto.KeyAlgorithm(account_key[0]),
-        account_key[1:]
-        )
+    return create_public_key_from_account_key(account_key)

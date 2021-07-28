@@ -73,7 +73,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set account key of test user.
-    user_public_key = pycspr.factory.create_public_key(args.path_to_account_key)      
+    user_public_key = pycspr.factory.parse_public_key(args.path_to_account_key)      
 
     # Query 0.1: get_rpc_schema.
     rpc_schema: typing.List[dict] = client.queries.get_rpc_schema()
@@ -167,7 +167,7 @@ def _get_counter_parties(args: argparse.Namespace) -> PublicKey:
 
     """
 
-    return pycspr.factory.create_public_key(
+    return pycspr.factory.parse_public_key(
         args.path_to_cp2_account_key
         )    
 

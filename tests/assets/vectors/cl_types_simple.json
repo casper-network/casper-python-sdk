@@ -22,17 +22,17 @@
     {
         "typeof": "STRING",
         "value": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
-        "hex": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
+        "hex": "49000000d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
     },
     {
         "typeof": "U8",
         "value": 38,
-        "hex": ""
+        "hex": "26"
     },
     {
         "typeof": "U32",
         "value": 3316244803,
-        "hex": ""
+        "hex": "43e1a9c5"
     },
     {
         "typeof": "U64",
@@ -47,7 +47,7 @@
     {
         "typeof": "U128",
         "value": 217021024364351886430112374790508812932,
-        "hex": ""
+        "hex": "10849ab4149c73ef130c237eb69bba44a3"
     },
     {
         "typeof": "U256",
