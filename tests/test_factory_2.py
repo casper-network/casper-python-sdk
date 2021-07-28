@@ -6,7 +6,7 @@ import pycspr
 
 
 
-def test_create_deploy_parameters(TYPES, a_test_account, a_test_chain_id):
+def test_create_deploy_parameters(a_test_account, a_test_chain_id):
     assert isinstance(
         pycspr.factory.create_deploy_parameters(
             account=pycspr.factory.create_public_key(
@@ -19,7 +19,7 @@ def test_create_deploy_parameters(TYPES, a_test_account, a_test_chain_id):
             timestamp=datetime.datetime.now(tz=datetime.timezone.utc).timestamp(),
             ttl="1day",
         ),
-        TYPES.DeployParameters
+        pycspr.types.DeployParameters
         )
 
 
@@ -28,7 +28,7 @@ def test_create_standard_payment(TYPES):
         pycspr.factory.create_standard_payment(
             amount = random.randint(0, 1e5),
         ),
-        TYPES.ExecutableDeployItem_ModuleBytes
+        pycspr.types.ExecutableDeployItem_ModuleBytes
         )
 
 
@@ -39,11 +39,11 @@ def test_create_standard_payment(TYPES):
                 correlation_id = random.randint(0, 1e9),
                 target = bytes([]),
                 ),
-            TYPES.ExecutableDeployItem_Transfer
+            pycspr.types.ExecutableDeployItem_Transfer
             )
 
 
-def test_create_native_transfer_body(TYPES, deploy_params):
+def test_create_native_transfer_body(deploy_params):
     payment = pycspr.factory.create_standard_payment(
         amount = random.randint(0, 1e5),
         )
@@ -53,12 +53,12 @@ def test_create_native_transfer_body(TYPES, deploy_params):
         target = bytes([]),
         )
     body = pycspr.factory.create_deploy_body(payment, session)
-    assert isinstance(body, TYPES.DeployBody)
+    assert isinstance(body, pycspr.types.DeployBody)
     assert isinstance(body.hash, bytes)
     assert len(body.hash) == 32
 
 
-def test_create_native_transfer_header(TYPES, deploy_params):
+def test_create_native_transfer_header(deploy_params):
     payment = pycspr.factory.create_standard_payment(
         amount = random.randint(0, 1e5),
         )
@@ -69,12 +69,12 @@ def test_create_native_transfer_header(TYPES, deploy_params):
         )
     body = pycspr.factory.create_deploy_body(payment, session)
     header = pycspr.factory.create_deploy_header(body, deploy_params)
-    assert isinstance(header, TYPES.DeployHeader)
+    assert isinstance(header, pycspr.types.DeployHeader)
     assert isinstance(header.body_hash, bytes)
     assert len(header.body_hash) == 32
 
 
-def test_create_native_transfer_deploy(TYPES, deploy_params, cp2):
+def test_create_native_transfer_deploy(deploy_params, cp2):
     session = pycspr.factory.create_native_transfer_session(
         amount = random.randint(0, 1e9),
         correlation_id = random.randint(0, 1e9),
@@ -84,6 +84,6 @@ def test_create_native_transfer_deploy(TYPES, deploy_params, cp2):
         amount = random.randint(0, 1e5),
         )
     deploy = pycspr.factory.create_deploy(deploy_params, payment, session)
-    assert isinstance(deploy, TYPES.Deploy)
+    assert isinstance(deploy, pycspr.types.Deploy)
     assert isinstance(deploy.hash, bytes)
     assert len(deploy.hash) == 32

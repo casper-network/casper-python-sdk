@@ -1,8 +1,8 @@
 import pycspr
 
 
-def test_cl_types_simple(TYPES, vector_cl_types):
-    for type_key in TYPES.TYPES_SIMPLE:
+def test_cl_types_simple(vector_cl_types):
+    for type_key in pycspr.types.TYPES_SIMPLE:
         vector = vector_cl_types.get_vector(type_key)
         if not vector["hex"]:
             continue
