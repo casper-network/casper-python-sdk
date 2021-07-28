@@ -12,8 +12,6 @@ from tests.fixtures.chain import state_root_hash
 from tests.fixtures.chain import switch_block
 from tests.fixtures.chain import switch_block_hash
 
-from tests.fixtures.core import TYPES
-
 from tests.fixtures.crypto import key_pair_specs
 
 from tests.fixtures.deploys import a_test_chain_id

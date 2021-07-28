@@ -23,7 +23,7 @@ def test_create_deploy_parameters(a_test_account, a_test_chain_id):
         )
 
 
-def test_create_standard_payment(TYPES):
+def test_create_standard_payment():
     assert isinstance(
         pycspr.factory.create_standard_payment(
             amount = random.randint(0, 1e5),
@@ -32,15 +32,15 @@ def test_create_standard_payment(TYPES):
         )
 
 
-    def test_create_native_transfer_session(TYPES):
-        assert isinstance(
-            pycspr.factory.create_native_transfer_session(
-                amount = random.randint(0, 1e9),
-                correlation_id = random.randint(0, 1e9),
-                target = bytes([]),
-                ),
-            pycspr.types.ExecutableDeployItem_Transfer
-            )
+def test_create_native_transfer_session():
+    assert isinstance(
+        pycspr.factory.create_native_transfer_session(
+            amount = random.randint(0, 1e9),
+            correlation_id = random.randint(0, 1e9),
+            target = bytes([]),
+            ),
+        pycspr.types.ExecutableDeployItem_Transfer
+        )
 
 
 def test_create_native_transfer_body(deploy_params):
