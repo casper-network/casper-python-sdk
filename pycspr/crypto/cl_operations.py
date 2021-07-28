@@ -1,5 +1,5 @@
 from pycspr.crypto.ecc import get_signature
-from pycspr.crypto.ecc import verify_signature
+from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.enums import HashAlgorithm
 from pycspr.crypto.enums import KeyAlgorithm
 from pycspr.crypto.hashifier import get_hash
@@ -88,4 +88,4 @@ def verify_deploy_approval_signature(deploy_hash: bytes, sig: bytes, account_key
 
     algo = get_account_key_algo(account_key)
 
-    return verify_signature(deploy_hash, sig[1:], account_key[1:], algo)
+    return is_signature_valid(deploy_hash, sig[1:], account_key[1:], algo)

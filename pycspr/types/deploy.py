@@ -207,8 +207,9 @@ class Deploy():
         :params approval: An approval to be associated with the deploy.
 
         """
-        # TODO
-        # crypto.verify_deploy_approval_signature(self.hash, approval.signature, approval.signer)
+        if not crypto.verify_deploy_approval_signature(self.hash, approval.signature, approval.signer):
+            raise ValueError("Invalid signature.  This is a security risk event - please review your processes.")
+
         self._append_approval(approval)
 
     

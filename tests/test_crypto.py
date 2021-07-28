@@ -85,9 +85,19 @@ def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_hex
         assert fixture["pbk"] == pbk
 
 
-def test_get_signature(vector_crypto_3):
+def test_that_a_signature_can_be_generated(vector_crypto_3):
     for fixture in vector_crypto_3:
-        data = fixture["data"].encode("utf-8")
         algo = pycspr.crypto.KeyAlgorithm[fixture["signingKey"]["algo"]]
+        data = fixture["data"].encode("utf-8")
         pvk = fixture["signingKey"]["pvk"]
-        assert fixture["sig"] == pycspr.crypto.get_signature(data, pvk, algo)
+        assert fixture["sig"] == pycspr.crypto.get_signature(data, pvk, algo), pycspr.crypto.get_signature(data, pvk, algo).hex()
+
+
+def test_that_a_signature_can_be_verified(vector_crypto_3):
+    for fixture in vector_crypto_3:
+        algo = pycspr.crypto.KeyAlgorithm[fixture["signingKey"]["algo"]]
+        data = fixture["data"].encode("utf-8")
+        sig = fixture["sig"]
+        pbk = fixture["signingKey"]["pbk"]
+
+        assert pycspr.crypto.is_signature_valid(data, sig, pbk, algo) == True

@@ -46,8 +46,8 @@ def crypto_1() -> list:
 def crypto_2() -> list:
     data = _read_vector("crypto_key_pairs.json")
     for i in data:
-        i["pvk"] = bytes.fromhex(i["pvk"])
         i["pbk"] = bytes.fromhex(i["pbk"])
+        i["pvk"] = bytes.fromhex(i["pvk"])
         i["accountKey"] = bytes.fromhex(i["accountKey"])
         i["accountHash"] = bytes.fromhex(i["accountHash"])
 
@@ -58,6 +58,7 @@ def crypto_2() -> list:
 def crypto_3() -> list:
     data = _read_vector("crypto_signatures.json")
     for i in data:
+        i["signingKey"]["pbk"] = bytes.fromhex(i["signingKey"]["pbk"])
         i["signingKey"]["pvk"] = bytes.fromhex(i["signingKey"]["pvk"])
         i["sig"] = bytes.fromhex(i["sig"])
 

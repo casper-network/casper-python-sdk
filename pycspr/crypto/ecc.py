@@ -139,7 +139,7 @@ def get_signature_from_pem_file(msg_hash: bytes, fpath: str, algo: KeyAlgorithm 
     return get_signature(msg_hash, pvk, algo)
 
 
-def verify_signature(msg_hash: bytes, sig: bytes, vk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bool:
+def is_signature_valid(msg_hash: bytes, sig: bytes, vk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> bool:
     """Returns a flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
 
     :param msg_hash: Previously signed message hash.
@@ -149,4 +149,4 @@ def verify_signature(msg_hash: bytes, sig: bytes, vk: bytes, algo: KeyAlgorithm 
     :returns: A flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
     
     """
-    return ALGOS[algo].verify_signature(msg_hash, sig, vk)
+    return ALGOS[algo].is_signature_valid(msg_hash, sig, vk)
