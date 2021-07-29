@@ -30,7 +30,7 @@ def get_key_pair(algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> typing.Tuple[byte
 def get_key_pair_from_bytes(pvk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> typing.Tuple[bytes, bytes]:
     """Returns a key pair mapped from a byte array representation of a private key.
 
-    :param pvk_b64: Base64 encoded private key.
+    :param pvk: A private key.
     :param algo: Type of ECC algo used to generate private key.
     :returns : 2 member tuple: (private key, public key)
     

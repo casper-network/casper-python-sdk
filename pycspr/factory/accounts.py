@@ -42,7 +42,7 @@ def create_public_key_from_account_key(account_key: bytes) -> PublicKey:
 
 
 def parse_private_key(fpath: pathlib.Path, algo: typing.Union[str, crypto.KeyAlgorithm]) -> PrivateKey:
-    """Returns on-chain account information deserialised froma a secret key held on file system.
+    """Returns on-chain account information deserialised from a secret key held on file system.
     
     :param fpath: Path to secret key pem file associated with the account.
     :param algo: ECC key algorithm identifier.
@@ -51,6 +51,20 @@ def parse_private_key(fpath: pathlib.Path, algo: typing.Union[str, crypto.KeyAlg
     """
     algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
     (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath)
+
+    return create_private_key(algo, pvk, pbk)
+
+
+def parse_private_key_bytes(pvk: bytes, algo: typing.Union[str, crypto.KeyAlgorithm]) -> PrivateKey:
+    """Returns a user's private key deserialised from a secret key.
+    
+    :param pvk: A private key.
+    :param algo: ECC key algorithm identifier.
+    :returns: Private key wrapper.
+
+    """
+    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
+    (pvk, pbk) = crypto.get_key_pair_from_bytes(pvk, algo)
 
     return create_private_key(algo, pvk, pbk)
 
@@ -66,3 +80,16 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
         account_key = bytes.fromhex(fstream.read())
 
     return create_public_key_from_account_key(account_key)
+
+
+def parse_public_key_bytes(pbk: bytes, algo: typing.Union[str, crypto.KeyAlgorithm]) -> PublicKey:
+    """Returns an account holder's public key.
+    
+    :param pbk: A public key.
+    :param algo: ECC key algorithm identifier.
+    :returns: A public key.
+
+    """
+    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
+
+    return create_public_key(algo, pbk)

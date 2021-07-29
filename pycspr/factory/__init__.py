@@ -2,7 +2,9 @@ from pycspr.factory.accounts import create_private_key
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.accounts import create_public_key_from_account_key
 from pycspr.factory.accounts import parse_private_key
+from pycspr.factory.accounts import parse_private_key_bytes
 from pycspr.factory.accounts import parse_public_key
+from pycspr.factory.accounts import parse_public_key_bytes
 from pycspr.factory.cl       import create_cl_type_of_byte_array
 from pycspr.factory.cl       import create_cl_type_of_list
 from pycspr.factory.cl       import create_cl_type_of_map

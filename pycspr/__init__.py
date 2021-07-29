@@ -7,7 +7,7 @@
 #  88              d8'                              88                       
 
 __title__ = "pycspr"
-__version__ = "0.7.4"
+__version__ = "0.7.5"
 __author__ = "Mark A. Greenslade"
 __license__ = "Apache 2.0"
 
@@ -38,7 +38,9 @@ from pycspr.factory       import create_validator_auction_bid_withdrawal
 from pycspr.factory       import create_validator_delegation
 from pycspr.factory       import create_validator_delegation_withdrawal
 from pycspr.factory       import parse_private_key
+from pycspr.factory       import parse_private_key_bytes
 from pycspr.factory       import parse_public_key
+from pycspr.factory       import parse_public_key_bytes
 
 from pycspr.utils.io      import read_deploy
 from pycspr.utils.io      import read_wasm
