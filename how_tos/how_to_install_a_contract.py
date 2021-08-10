@@ -22,10 +22,10 @@ from pycspr.utils import io as _io
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")
 
-# CLI argument: path to contract operator secret key - defaults to NCTL user 1.
+# CLI argument: path to contract operator secret key - defaults to NCTL faucet.
 _ARGS.add_argument(
     "--operator-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-1" / "secret_key.pem",
+    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "faucet" / "secret_key.pem",
     dest="path_to_operator_secret_key",
     help="Path to operator's secret_key.pem file.",
     type=str,
@@ -160,7 +160,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
 
 
 def _get_operator_key(args: argparse.Namespace) -> PrivateKey:
-    """Returns the smart contract operatos private key.
+    """Returns the smart contract operator's private key.
 
     """
     return pycspr.factory.parse_private_key(
