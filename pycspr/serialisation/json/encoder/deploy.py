@@ -79,7 +79,13 @@ def encode_execution_info(entity: ExecutableDeployItem) -> dict:
         }
 
     def _encode_stored_contract_by_hash() -> dict:
-        raise NotImplementedError()
+        return {
+            "StoredContractByHash": {
+                "args": [encode_execution_argument(i) for i in entity.args],
+                "hash": entity.hash.hex(),
+                "entry_point": entity.entry_point
+            }
+        }
 
     def _encode_stored_contract_by_hash_versioned() -> dict:
         raise NotImplementedError()

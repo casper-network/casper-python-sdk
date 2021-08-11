@@ -157,7 +157,13 @@ def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: P
     """Returns on-chain contract identifier.
 
     """
-    pass
+    # We query operator account for a named key == ERC20, we then return the parsed named key value.  
+    account_info = client.queries.get_account_info(operator.account_hash)
+    for named_key in account_info["named_keys"]:
+        if named_key["name"] == "ERC20":
+            return bytes.fromhex(named_key["key"][5:])
+    
+    raise ValueError("ERC-20 has not been installed ... see how_tos/how_to_install_a_contract.py")
 
 
 def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user:PublicKey) -> Deploy:
@@ -184,6 +190,11 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
                 "amount",
                 args.amount,
                 create_cl_type_of_simple(CLTypeKey.U256)
+                ),
+            pycspr.create_deploy_argument(
+                "recipient",
+                user,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
                 ),
         ]
     )
