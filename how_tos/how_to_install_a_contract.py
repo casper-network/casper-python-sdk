@@ -144,7 +144,9 @@ def _main(args: argparse.Namespace):
     # Dispatch deploy to a node.
     client.deploys.send(deploy)
 
+    print("-------------------------------------------------------------------------------------------------------")
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
+    print("-------------------------------------------------------------------------------------------------------")
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:

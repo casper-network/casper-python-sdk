@@ -8,7 +8,6 @@ import pycspr
 from pycspr.client import NodeClient
 from pycspr.client import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.factory.cl import create_cl_type_of_byte_array
 from pycspr.factory.cl import create_cl_type_of_simple
 from pycspr.factory.cl import create_cl_value
 from pycspr.types import CLTypeKey
@@ -22,36 +21,15 @@ from pycspr.utils import io as _io
 
 
 
-# Path to NCTL network assets.
-_PATH_TO_NCTL = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
-
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to qeury an ERC-20 smart contract.")
 
-# CLI argument: path to contract operator secret key - defaults to NCTL faucet.
+# CLI argument: path to contract operator public key - defaults to NCTL faucet.
 _ARGS.add_argument(
-    "--operator-secret-key-path",
-    default=_PATH_TO_NCTL / "faucet" / "secret_key.pem",
-    dest="path_to_operator_secret_key",
-    help="Path to operator's secret_key.pem file.",
-    type=str,
-    )
-
-# CLI argument: type of contract operator secret key - defaults to ED25519.
-_ARGS.add_argument(
-    "--operator-secret-key-type",
-    default=KeyAlgorithm.ED25519.name,
-    dest="type_of_operator_secret_key",
-    help="Type of operator's secret key.",
-    type=str,
-    )
-
-# CLI argument: path to user to whom tokens will be transferred - defaults to NCTL user 1.
-_ARGS.add_argument(
-    "--user-public-key-path",
-    default=_PATH_TO_NCTL / "users" / "user-1" / "public_key_hex",
-    dest="path_to_user_public_key",
-    help="Path to user's public_key_hex file.",
+    "--operator-public-key-path",
+    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "faucet" / "public_key_hex",
+    dest="path_to_operator_public_key",
+    help="Path to operator's public_key_hex file.",
     type=str,
     )
 
@@ -62,15 +40,6 @@ _ARGS.add_argument(
     dest="chain_name",
     help="Name of target chain.",
     type=str,
-    )
-
-# CLI argument: amount in motes to be offered as payment.
-_ARGS.add_argument(
-    "--payment",
-    default=int(1e9),
-    dest="deploy_payment",
-    help="Amount in motes to be offered as payment.",
-    type=int,
     )
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
@@ -91,17 +60,6 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: amount of ERC-20 tokens to be transferred to user..
-_ARGS.add_argument(
-    "--amount",
-    default=int(2e9),
-    dest="amount",
-    help="Amount of ERC-20 tokens to be transferred to user.",
-    type=int,
-    )
-
-
-
 def _main(args: argparse.Namespace):
     """Main entry point.
 
@@ -111,23 +69,23 @@ def _main(args: argparse.Namespace):
     # Set node client.
     client: NodeClient = _get_client(args)
 
-    # Set contract operator / user.
-    operator, user = _get_operator_and_user_keys(args)
+    # Set contract operator key.
+    operator = _get_operator_key(args)
 
     # Set contract hash.
     contract_hash: bytes = _get_contract_hash(args, client, operator)
 
-    # Set deploy.
-    deploy: Deploy = _get_deploy(args, contract_hash, operator, user)
-
-    # Approve deploy.
-    deploy.approve(operator)
-
-    # Dispatch deploy to a node.
-    client.deploys.send(deploy)
+    # Issue queries.
+    token_decimals = _get_contract_data(client, contract_hash, "decimals")
+    token_name = _get_contract_data(client, contract_hash, "name")
+    token_symbol = _get_contract_data(client, contract_hash, "symbol")
+    token_supply = _get_contract_data(client, contract_hash, "total_supply")
 
     print("-------------------------------------------------------------------------------------------------------")
-    print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
+    print(f"Token Decimals: {token_decimals}")
+    print(f"Token Name: {token_name}")
+    print(f"Token Symbol: {token_symbol}")
+    print(f"Token Supply: {token_supply}")
     print("-------------------------------------------------------------------------------------------------------")
 
 
@@ -143,19 +101,22 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     return NodeClient(connection)
 
 
-def _get_operator_and_user_keys(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
-    """Returns the smart contract operator's private key.
+def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> bytes:
+    """Queries chain for data associated with a contract.
 
     """
-    operator = pycspr.factory.parse_private_key(
-        args.path_to_operator_secret_key,
-        args.type_of_operator_secret_key,
-        )
-    user = pycspr.factory.parse_public_key(
-        args.path_to_user_public_key,
-        )
+    cl_value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
 
-    return operator, user
+    return cl_value["parsed"]
+
+
+def _get_operator_key(args: argparse.Namespace) -> PublicKey:
+    """Returns the smart contract operator's public key.
+
+    """
+    return pycspr.factory.parse_public_key(
+        args.path_to_operator_public_key,
+        )
 
 
 def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: PrivateKey) -> bytes:
@@ -171,7 +132,7 @@ def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: P
     raise ValueError("ERC-20 has not been installed ... see how_tos/how_to_install_a_contract.py")
 
 
-def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user: PublicKey) -> Deploy:
+def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user:PublicKey) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
@@ -198,9 +159,9 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
                 ),
             pycspr.create_deploy_argument(
                 "recipient",
-                user.account_hash,
-                create_cl_type_of_byte_array(32)
-                ),                
+                user,
+                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                ),
         ]
     )
 

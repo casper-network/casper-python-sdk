@@ -181,16 +181,17 @@ class QueriesClient():
         return api.get_rpc_schema(self.connection_info)
 
 
-    def get_state_item(self, item_key: str, item_path: typing.List[str] = [], state_root_hash: typing.Union[bytes, None] = None) -> bytes:
+    def get_state_item(self, item_key: str, item_path: typing.Union[str, typing.List[str]] = [], state_root_hash: typing.Union[bytes, None] = None) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
         :param block_id: Identifier of a finialised block.
         :returns: State root hash at specified block.
 
         """
+        item_path = item_path if isinstance(item_path, list) else [item_path]
         state_root_hash = state_root_hash or self.get_state_root_hash()
         
-        return api.get_state_item(self.connection_info, item_key, item_key, state_root_hash)
+        return api.get_state_item(self.connection_info, item_key, item_path, state_root_hash)
 
 
     def get_state_root_hash(self, block_id: typing.Union[None, str, int] = None) -> bytes:
