@@ -1,12 +1,8 @@
 import jsonrpcclient as rpc_client
 
-from pycspr.api import endpoints
+from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 
-
-
-# Method upon client to be invoked.
-_API_ENDPOINT = "info_get_status"
 
 
 def execute(connection_info: NodeConnectionInfo) -> dict:

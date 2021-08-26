@@ -1,12 +1,8 @@
 import requests as rest_client
 
-from pycspr.api import endpoints
+from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 
-
-
-# API endpoint to be invoked.
-_API_ENDPOINT = "metrics"
 
 
 def execute(connection_info: NodeConnectionInfo, metric_id: str = None) -> list:

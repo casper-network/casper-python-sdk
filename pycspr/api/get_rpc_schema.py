@@ -1,13 +1,9 @@
 import jsonrpcclient as rpc_client
 
 import pycspr
-from pycspr.api import endpoints
+from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 
-
-
-# RPC method to be invoked.
-_API_ENDPOINT = "rpc.discover"
 
 
 def execute(connection_info: NodeConnectionInfo) -> dict:
