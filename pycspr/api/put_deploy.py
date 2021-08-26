@@ -20,7 +20,7 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> str:
     """
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_ACCOUNT_PUT_DEPLOY,
+        constants.RPC_ACCOUNT_PUT_DEPLOY,
         deploy=encode_deploy(deploy)
         )
 

@@ -22,14 +22,14 @@ def execute(
     if isinstance(block_id, type(None)):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_CHAIN_GET_BLOCK
+            constants.RPC_CHAIN_GET_BLOCK
             )
 
     # Get by hash - bytes | hex.
     elif isinstance(block_id, (bytes, str)):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_CHAIN_GET_BLOCK, 
+            constants.RPC_CHAIN_GET_BLOCK, 
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }
@@ -39,7 +39,7 @@ def execute(
     elif isinstance(block_id, int):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_CHAIN_GET_BLOCK, 
+            constants.RPC_CHAIN_GET_BLOCK, 
             block_identifier={
                 "Height": block_id
             }

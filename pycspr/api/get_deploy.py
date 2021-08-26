@@ -22,7 +22,7 @@ def execute(
     deploy_id = deploy_id.hex() if isinstance(deploy_id, bytes) else deploy_id
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_INFO_GET_DEPLOY, 
+        constants.RPC_INFO_GET_DEPLOY, 
         deploy_hash=deploy_id
     )
 

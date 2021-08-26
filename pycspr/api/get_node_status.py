@@ -14,7 +14,7 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     """
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_INFO_GET_STATUS
+        constants.RPC_INFO_GET_STATUS
         )
 
     return response.data.result

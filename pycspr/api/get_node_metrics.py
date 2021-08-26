@@ -14,7 +14,7 @@ def execute(connection_info: NodeConnectionInfo, metric_id: str = None) -> list:
     :returns: Node metrics information.
 
     """
-    endpoint = f"{connection_info.address_rest}/{endpoints.REST_GET_METRICS}"
+    endpoint = f"{connection_info.address_rest}/{constants.REST_GET_METRICS}"
     response = rest_client.get(endpoint)
     data = response.content.decode("utf-8")
     data = sorted([i.strip() for i in data.split("\n") if not i.startswith("#")])

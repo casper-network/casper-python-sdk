@@ -61,34 +61,3 @@ DEFAULT_GAS_PRICE = 1
 
 # Maximum deploy time to live = 1 day.
 DEPLOY_TTL_MS_MAX = 1000 * 60 * 60 * 24
-
-# Set of node REST endpoints.
-NODE_REST_ENDPOINTS: set = {
-    "metrics",
-    "status",
-}
-
-# Set of node RPC endpoints.
-NODE_RPC_ENDPOINTS: set = {
-    "account_put_deploy",
-    "chain_get_block",
-    "chain_get_block_transfers",
-    "chain_get_era_info_by_switch_block",
-    "chain_get_state_root_hash",
-    "info_get_deploy",
-    "info_get_peers",
-    "info_get_status",
-    "query_global_state",
-    "state_get_account_info",
-    "state_get_auction_info",
-    "state_get_balance",
-    "state_get_dictionary_item",
-    "state_get_item",
-    }
-
-# Set of node SSE endpoints.
-NODE_SSE_ENDPOINTS: set = {
-    "main",
-    "deploys",
-    "sigs",
-}

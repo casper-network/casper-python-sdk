@@ -26,7 +26,7 @@ def execute(
     state_root_hash = state_root_hash.hex() if state_root_hash else None
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_STATE_GET_ITEM,
+        constants.RPC_STATE_GET_ITEM,
         key=item_key,
         path=item_path,
         state_root_hash=state_root_hash,

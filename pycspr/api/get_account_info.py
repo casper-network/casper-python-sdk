@@ -24,7 +24,7 @@ def execute(
     if isinstance(block_id, type(None)):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_STATE_GET_ACCOUNT_INFO,
+            constants.RPC_STATE_GET_ACCOUNT_INFO,
             public_key=account_key.hex(),
             )
 
@@ -32,7 +32,7 @@ def execute(
     elif isinstance(block_id, (bytes, str)):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_STATE_GET_ACCOUNT_INFO, 
+            constants.RPC_STATE_GET_ACCOUNT_INFO, 
             public_key=account_key.hex(),
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
@@ -43,7 +43,7 @@ def execute(
     elif isinstance(block_id, int):
         response = rpc_client.request(
             connection_info.address_rpc,
-            endpoints.RPC_STATE_GET_ACCOUNT_INFO, 
+            constants.RPC_STATE_GET_ACCOUNT_INFO, 
             public_key=account_key.hex(),
             block_identifier={
                 "Height": block_id

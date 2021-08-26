@@ -4,9 +4,9 @@ from pycspr.client.events     import EventsClient as _EventsClient
 from pycspr.client.events     import NodeSseChannelType
 from pycspr.client.events     import NodeSseEventType
 from pycspr.client.queries    import QueriesClient as _QueriesClient
-from pycspr.utils.constants   import NODE_REST_ENDPOINTS
-from pycspr.utils.constants   import NODE_RPC_ENDPOINTS
-from pycspr.utils.constants   import NODE_SSE_ENDPOINTS
+from pycspr.api.constants     import REST_ENDPOINTS as NODE_REST_ENDPOINTS
+from pycspr.api.constants     import RPC_ENDPOINTS as NODE_RPC_ENDPOINTS
+from pycspr.api.constants     import SSE_ENDPOINTS as NODE_SSE_ENDPOINTS
 
 
 

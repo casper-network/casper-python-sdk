@@ -15,7 +15,7 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     """
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_DISCOVER
+        constants.RPC_DISCOVER
         )
 
     return response.data.result["schema"]

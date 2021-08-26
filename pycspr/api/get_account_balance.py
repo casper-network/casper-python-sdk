@@ -25,7 +25,7 @@ def execute(
 
     response = rpc_client.request(
         connection_info.address_rpc,
-        endpoints.RPC_STATE_GET_BALANCE,
+        constants.RPC_STATE_GET_BALANCE,
         purse_uref=purse_uref.as_string(),
         state_root_hash=state_root_hash,
         )
