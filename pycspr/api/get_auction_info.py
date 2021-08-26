@@ -2,13 +2,10 @@ import typing
 
 import jsonrpcclient as rpc_client
 
+from pycspr.api import endpoints
 from pycspr.api.get_block import execute as get_block
 from pycspr.client import NodeConnectionInfo
 
-
-
-# Method upon client to be invoked.
-_API_ENDPOINT = "state_get_auction_info"
 
 
 def execute(
@@ -18,7 +15,7 @@ def execute(
     """Returns current auction system contract information.
 
     :param connection_info: Information required to connect to a node.
-    :param block_id: Identifier of a finialised block.
+    :param block_id: Identifier of a finalised block.
     :returns: Current auction system contract information.
 
     """
@@ -30,7 +27,9 @@ def execute(
 
     # Get by hash - bytes | hex.
     if isinstance(block_id, (bytes, str)):
-        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+        response = rpc_client.request(
+            connection_info.address_rpc,
+            endpoints.RPC_STATE_GET_AUCTION_INFO, 
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }
@@ -38,7 +37,9 @@ def execute(
 
     # Get by height.
     elif isinstance(block_id, int):
-        response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+        response = rpc_client.request(
+            connection_info.address_rpc,
+            endpoints.RPC_STATE_GET_AUCTION_INFO, 
             block_identifier={
                 "Height": block_id
             }

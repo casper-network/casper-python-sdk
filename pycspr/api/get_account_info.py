@@ -2,39 +2,52 @@ import typing
 
 import jsonrpcclient as rpc_client
 
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
-
-
-
-# RPC method to be invoked.
-# TODO: use new endpoint -> state_get_account_info
-_API_ENDPOINT = "state_get_item"
 
 
 
 def execute(
     connection_info: NodeConnectionInfo,
-    account_hash: bytes,
-    state_root_hash: typing.Union[bytes, None] = None
+    account_key: bytes,
+    block_id: typing.Union[None, bytes, str, int] = None
     ) -> dict:
     """Returns on-chain account information at a certain state root hash.
 
     :param connection_info: Information required to connect to a node.
-    :param account_hash: An on-chain account identifier derived from it's associated public key.
-    :param state_root_hash: A node's root state hash at some point in chain time.
+    :param account_key: An account holder's public key prefixed with a key type identifier.
+    :param block_id: Identifier of a finalised block.
     :returns: Account information in JSON format.
 
     """    
-    key=f"account-hash-{account_hash.hex()}"
-    path = []
-    state_root_hash = state_root_hash.hex() if state_root_hash else None
+    # Get latest.
+    if isinstance(block_id, type(None)):
+        response = rpc_client.request(
+            connection_info.address_rpc,
+            endpoints.RPC_STATE_GET_ACCOUNT_INFO,
+            public_key=account_key.hex(),
+            )
 
-    response = rpc_client.request(
-        connection_info.address_rpc,
-        _API_ENDPOINT,
-        key=key,
-        path=path,
-        state_root_hash=state_root_hash
+    # Get by hash - bytes | hex.
+    elif isinstance(block_id, (bytes, str)):
+        response = rpc_client.request(
+            connection_info.address_rpc,
+            endpoints.RPC_STATE_GET_ACCOUNT_INFO, 
+            public_key=account_key.hex(),
+            block_identifier={
+                "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
+            }
         )
 
-    return response.data.result["stored_value"]["Account"]
+    # Get by height.
+    elif isinstance(block_id, int):
+        response = rpc_client.request(
+            connection_info.address_rpc,
+            endpoints.RPC_STATE_GET_ACCOUNT_INFO, 
+            public_key=account_key.hex(),
+            block_identifier={
+                "Height": block_id
+            }
+        )
+    
+    return response.data.result["account"]

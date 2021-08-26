@@ -10,7 +10,7 @@ def execute(
     polling_interval_seconds: float = 1.0,
     max_polling_time_seconds: float = 120.0
     ) -> dict:
-    """Returns last finialised block in current era.
+    """Returns last finalised block in current era.
 
     :param connection_info: Information required to connect to a node.
     :param polling_interval_seconds: Time interval time (in seconds) before polling for next switch block.

@@ -1,5 +1,6 @@
 import requests as rest_client
 
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 
 
@@ -17,9 +18,10 @@ def execute(connection_info: NodeConnectionInfo, metric_id: str = None) -> list:
     :returns: Node metrics information.
 
     """
-    endpoint = f"{connection_info.address_rest}/{_API_ENDPOINT}"
-    response = rest_client.get(endpoint).content.decode("utf-8")
-    response = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
+    endpoint = f"{connection_info.address_rest}/{endpoints.REST_GET_METRICS}"
+    response = rest_client.get(endpoint)
+    data = response.content.decode("utf-8")
+    data = sorted([i.strip() for i in data.split("\n") if not i.startswith("#")])
 
-    return response if metric_id is None else \
-           [i for i in response if i.lower().startswith(metric_id.lower())]
+    return data if metric_id is None else \
+           [i for i in data if i.lower().startswith(metric_id.lower())]

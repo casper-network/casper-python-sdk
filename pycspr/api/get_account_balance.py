@@ -3,12 +3,9 @@ import typing
 import jsonrpcclient as rpc_client
 
 from pycspr import types
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 
-
-
-# RPC method to be invoked.
-_API_ENDPOINT = "state_get_balance"
 
 
 def execute(
@@ -28,7 +25,7 @@ def execute(
 
     response = rpc_client.request(
         connection_info.address_rpc,
-        _API_ENDPOINT,
+        endpoints.RPC_STATE_GET_BALANCE,
         purse_uref=purse_uref.as_string(),
         state_root_hash=state_root_hash,
         )

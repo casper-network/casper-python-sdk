@@ -3,11 +3,11 @@ import pytest
 
 
 @pytest.fixture(scope="session")
-def account_main_purse_uref(CLIENT, account_key: bytes, state_root_hash) -> str:
+def account_main_purse_uref(CLIENT, account_key: bytes) -> str:
     """Returns an on-chain account's main purse unforgeable reference. 
     
     """
-    return CLIENT.queries.get_account_main_purse_uref(account_key, state_root_hash)
+    return CLIENT.queries.get_account_main_purse_uref(account_key)
 
 
 @pytest.fixture(scope="session")

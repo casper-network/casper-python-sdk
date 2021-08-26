@@ -3,6 +3,7 @@ import typing
 
 import jsonrpcclient as rpc_client
 
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 from pycspr.serialisation.json.encoder.deploy import encode_deploy
 from pycspr.types import Deploy
@@ -21,6 +22,10 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> str:
     :returns: Hash of dispatched deploy.
 
     """
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, deploy=encode_deploy(deploy))
+    response = rpc_client.request(
+        connection_info.address_rpc,
+        endpoints.RPC_ACCOUNT_PUT_DEPLOY,
+        deploy=encode_deploy(deploy)
+        )
 
     return response.data.result["deploy_hash"]

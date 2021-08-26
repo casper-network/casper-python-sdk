@@ -1,6 +1,7 @@
 import jsonrpcclient as rpc_client
 
 import pycspr
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 
 
@@ -16,6 +17,9 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     :returns: Node RPC API schema.
 
     """
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
+    response = rpc_client.request(
+        connection_info.address_rpc,
+        endpoints.RPC_DISCOVER
+        )
 
     return response.data.result["schema"]

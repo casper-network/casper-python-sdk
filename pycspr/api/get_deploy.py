@@ -2,12 +2,9 @@ import typing
 
 import jsonrpcclient as rpc_client
 
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 
-
-
-# RPC method to be invoked.
-_API_ENDPOINT = "info_get_deploy"
 
 
 def execute(
@@ -23,7 +20,9 @@ def execute(
 
     """
     deploy_id = deploy_id.hex() if isinstance(deploy_id, bytes) else deploy_id
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT, 
+    response = rpc_client.request(
+        connection_info.address_rpc,
+        endpoints.RPC_INFO_GET_DEPLOY, 
         deploy_hash=deploy_id
     )
 

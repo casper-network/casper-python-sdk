@@ -29,31 +29,26 @@ class QueriesClient():
         return api.get_account_balance(self.connection_info, purse_uref, state_root_hash)
 
 
-    def get_account_info(self, account_hash: bytes, state_root_hash: typing.Union[bytes, None] = None) -> dict:
+    def get_account_info(self, account_key: bytes, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns account information at a certain global state root hash.
 
-        :param account_hash: An on-chain account identifier derived from it's associated public key.
-        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
-
+        :param account_key: An account holder's public key prefixed with a key type identifier.
+        :param block_id: Identifier of a finalised block.
         :returns: Account information in JSON format.
 
         """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-
-        return api.get_account_info(self.connection_info, account_hash, state_root_hash)
+        return api.get_account_info(self.connection_info, account_key, block_id)
 
 
-    def get_account_main_purse_uref(self, account_key: bytes, state_root_hash: typing.Union[bytes, None] = None) -> str:
+    def get_account_main_purse_uref(self, account_key: bytes, block_id: typing.Union[None, bytes, str, int] = None) -> str:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_key: Key of an on-chain account.
-        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
+        :param block_id: Identifier of a finalised block.
         :returns: Account main purse unforgeable reference.
 
         """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-
-        return api.get_account_main_purse_uref(self.connection_info, account_key, state_root_hash)
+        return api.get_account_main_purse_uref(self.connection_info, account_key, block_id)
 
 
     def get_auction_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
@@ -68,7 +63,7 @@ class QueriesClient():
     def get_block(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns on-chain block information.
 
-        :param block_id: Identifier of a finialised block.
+        :param block_id: Identifier of a finalised block.
         :returns: On-chain block information.
 
         """
@@ -76,7 +71,7 @@ class QueriesClient():
 
 
     def get_block_at_era_switch(self, polling_interval_seconds: float = 1.0, max_polling_time_seconds: float = 120.0) -> dict:
-        """Returns last finialised block in current era.
+        """Returns last finalised block in current era.
 
         :param polling_interval_seconds: Time interval time (in seconds) before polling for next switch block.
         :param max_polling_time_seconds: Maximum time in seconds to poll.
@@ -89,7 +84,7 @@ class QueriesClient():
     def get_block_transfers(self, block_id: typing.Union[None, str, int] = None) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
-        :param block_id: Identifier of a finialised block.
+        :param block_id: Identifier of a finalised block.
         :returns: On-chain block transfers information.
 
         """
@@ -99,7 +94,7 @@ class QueriesClient():
     def get_deploy(self, deploy_id: typing.Union[bytes, str]) -> dict:
         """Returns on-chain deploy information.
 
-        :param deploy_id: Identifier of a finialised block.
+        :param deploy_id: Identifier of a finalised block.
         :returns: On-chain deploy information.
 
         """
@@ -109,7 +104,7 @@ class QueriesClient():
     def get_era_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
         """Returns current era information.
 
-        :param block_id: Identifier of a finialised block.
+        :param block_id: Identifier of a finalised block.
         :returns: Era information.
 
         """
@@ -184,7 +179,7 @@ class QueriesClient():
     def get_state_item(self, item_key: str, item_path: typing.Union[str, typing.List[str]] = [], state_root_hash: typing.Union[bytes, None] = None) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
-        :param block_id: Identifier of a finialised block.
+        :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
 
         """
@@ -197,7 +192,7 @@ class QueriesClient():
     def get_state_root_hash(self, block_id: typing.Union[None, str, int] = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
-        :param block_id: Identifier of a finialised block.
+        :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
 
         """

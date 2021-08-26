@@ -1,5 +1,6 @@
 import jsonrpcclient as rpc_client
 
+from pycspr.api import endpoints
 from pycspr.client import NodeConnectionInfo
 
 
@@ -15,6 +16,9 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     :returns: Node status information.
 
     """
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
+    response = rpc_client.request(
+        connection_info.address_rpc,
+        endpoints.RPC_INFO_GET_STATUS
+        )
 
     return response.data.result
