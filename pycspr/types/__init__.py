@@ -1,5 +1,7 @@
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
+from pycspr.types.chain   import BlockIdentifer
+from pycspr.types.chain   import OptionalBlockIdentifer
 from pycspr.types.cl      import CLAccessRights
 from pycspr.types.cl      import CLTypeKey
 from pycspr.types.cl      import CLType

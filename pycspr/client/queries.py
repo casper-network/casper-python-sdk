@@ -1,6 +1,7 @@
 import typing
 
 from pycspr import api
+from pycspr import types
 from pycspr.client import NodeConnectionInfo
 
 
@@ -29,7 +30,7 @@ class QueriesClient():
         return api.get_account_balance(self.connection_info, purse_uref, state_root_hash)
 
 
-    def get_account_info(self, account_key: bytes, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+    def get_account_info(self, account_key: bytes, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.
@@ -40,7 +41,11 @@ class QueriesClient():
         return api.get_account_info(self.connection_info, account_key, block_id)
 
 
-    def get_account_main_purse_uref(self, account_key: bytes, block_id: typing.Union[None, bytes, str, int] = None) -> str:
+    def get_account_main_purse_uref(
+        self,
+        account_key: bytes,
+        block_id: types.OptionalBlockIdentifer = None
+        ) -> types.UnforgeableReference:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_key: Key of an on-chain account.
@@ -51,7 +56,7 @@ class QueriesClient():
         return api.get_account_main_purse_uref(self.connection_info, account_key, block_id)
 
 
-    def get_auction_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+    def get_auction_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -60,7 +65,7 @@ class QueriesClient():
         return api.get_auction_info(self.connection_info, block_id)
 
 
-    def get_block(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+    def get_block(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -81,7 +86,7 @@ class QueriesClient():
         return api.get_block_at_era_switch(self.connection_info, polling_interval_seconds, max_polling_time_seconds)
 
 
-    def get_block_transfers(self, block_id: typing.Union[None, str, int] = None) -> typing.Tuple[str, list]:
+    def get_block_transfers(self, block_id: types.OptionalBlockIdentifer = None) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -101,7 +106,26 @@ class QueriesClient():
         return api.get_deploy(self.connection_info, deploy_id)
 
 
-    def get_era_info(self, block_id: typing.Union[None, bytes, str, int] = None) -> dict:
+    def get_dictionary_item_by_uref(
+        self,
+        item_key: str,
+        seed_uref: types.UnforgeableReference,
+        state_root_hash: typing.Union[bytes, None] = None
+        ) -> dict:
+        """Returns on-chain data associated with a dictionary item.
+
+        :param item_key: Identifier of an item within target dictionary.
+        :param seed_uref: Unforgeable reference under which dictionary data is stored on-chain.
+        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
+        :returns: On-chain data associated with dictionary item.
+
+        """
+        state_root_hash = state_root_hash or self.get_state_root_hash()
+
+        return api.get_dictionary_item_by_uref(self.connection_info, item_key, seed_uref, state_root_hash)
+
+
+    def get_era_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns current era information.
 
         :param block_id: Identifier of a finalised block.
@@ -176,11 +200,18 @@ class QueriesClient():
         return api.get_rpc_schema(self.connection_info)
 
 
-    def get_state_item(self, item_key: str, item_path: typing.Union[str, typing.List[str]] = [], state_root_hash: typing.Union[bytes, None] = None) -> bytes:
+    def get_state_item(
+        self,
+        item_key: str,
+        item_path: typing.Union[str, typing.List[str]] = [],
+        state_root_hash: typing.Union[bytes, None] = None
+        ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
-        :param block_id: Identifier of a finalised block.
-        :returns: State root hash at specified block.
+        :param item_key: Storage item key.
+        :param item_path: Storage item path.
+        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
+        :returns: Item stored under passed key/path.
 
         """
         item_path = item_path if isinstance(item_path, list) else [item_path]
@@ -189,7 +220,7 @@ class QueriesClient():
         return api.get_state_item(self.connection_info, item_key, item_path, state_root_hash)
 
 
-    def get_state_root_hash(self, block_id: typing.Union[None, str, int] = None) -> bytes:
+    def get_state_root_hash(self, block_id: types.OptionalBlockIdentifer = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
@@ -199,4 +230,3 @@ class QueriesClient():
         return bytes.fromhex(
             api.get_state_root_hash(self.connection_info, block_id)
         )
-
