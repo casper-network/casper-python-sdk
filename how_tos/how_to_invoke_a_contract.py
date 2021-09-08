@@ -163,7 +163,7 @@ def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: P
 
     """
     # We query operator account for a named key == ERC20, we then return the parsed named key value.  
-    account_info = client.queries.get_account_info(operator.account_hash)
+    account_info = client.queries.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])

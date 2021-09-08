@@ -116,12 +116,12 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 2.1: get_state_root_hash")
 
     # Query 2.2: get_account_info.
-    account_info = client.queries.get_account_info(user_public_key.account_hash, state_root_hash)
+    account_info = client.queries.get_account_info(user_public_key.account_key)
     assert isinstance(account_info, dict)
     print("SUCCESS :: Query 2.2: get_account_info")
 
     # Query 2.3: get_account_main_purse_uref.
-    account_main_purse = client.queries.get_account_main_purse_uref(user_public_key.account_key, state_root_hash)
+    account_main_purse = client.queries.get_account_main_purse_uref(user_public_key.account_key)
     assert isinstance(account_main_purse, UnforgeableReference)
     print("SUCCESS :: Query 2.3: get_account_main_purse_uref")
 
@@ -154,15 +154,15 @@ def _main(args: argparse.Namespace):
     assert isinstance(auction_info, dict)
     print("SUCCESS :: Query 4.1: get_auction_info")
 
-    # Query 4.2: get_era_info - by switch block hash & height.
+    # Query 4.2: get_era_info - by switch block hash.
     era_info = client.queries.get_era_info(block["hash"])
     assert isinstance(era_info, dict)
-    print("SUCCESS :: Query 4.2: get_era_info - by switch block hash & height")
+    print("SUCCESS :: Query 4.2: get_era_info - by switch block hash")
 
-    # Query 4.3: get_era_info - by switch block hash & height.
+    # Query 4.3: get_era_info - by switch block height.
     assert client.queries.get_era_info(block["hash"]) == \
            client.queries.get_era_info(block["header"]["height"])
-    print("SUCCESS :: Query 4.3: get_era_info - by switch block hash & height")
+    print("SUCCESS :: Query 4.3: get_era_info - by switch block height")
 
 
 

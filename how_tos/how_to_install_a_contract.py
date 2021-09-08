@@ -61,7 +61,7 @@ _ARGS.add_argument(
 # CLI argument: amount in motes to be offered as payment.
 _ARGS.add_argument(
     "--payment",
-    default=int(45e9),
+    default=int(50e9),
     dest="deploy_payment",
     help="Amount in motes to be offered as payment.",
     type=int,
