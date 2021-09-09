@@ -32,4 +32,9 @@ from pycspr.types.deploy  import ExecutableDeployItem_StoredContractByName
 from pycspr.types.deploy  import ExecutableDeployItem_StoredContractByNameVersioned
 from pycspr.types.deploy  import ExecutableDeployItem_Transfer
 from pycspr.types.deploy  import Timestamp
-from pycspr.types.deploy  import UnforgeableReference
+from pycspr.types.state   import DictionaryIdentifier
+from pycspr.types.state   import DictionaryIdentifier_AccountNamedKey
+from pycspr.types.state   import DictionaryIdentifier_ContractNamedKey
+from pycspr.types.state   import DictionaryIdentifier_SeedURef
+from pycspr.types.state   import DictionaryIdentifier_UniqueKey
+from pycspr.types.state   import UnforgeableReference

@@ -244,21 +244,3 @@ class DeployParameters():
 
     # Time interval in milliseconds after which the deploy will no longer be considered for processing by a node.
     ttl: DeployTimeToLive
-
-
-@dataclasses.dataclass
-class UnforgeableReference():
-    """An unforgeable reference storage key.
-    
-    """
-    # Uref on-chain identifer.
-    address: bytes
-    
-    # Access rights granted by issuer. 
-    access_rights: CLAccessRights
-
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
-        
-        """
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
