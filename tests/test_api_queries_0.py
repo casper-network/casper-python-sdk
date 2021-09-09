@@ -11,7 +11,6 @@ def test_get_rpc_endpoints(CLIENT):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_discover.json
         assert isinstance(response, list)
-        print(response)
         assert response == sorted(CLIENT.NODE_RPC_ENDPOINTS)
 
     _assert(CLIENT.queries.get_rpc_endpoints())
