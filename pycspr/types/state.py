@@ -29,7 +29,6 @@ class DictionaryIdentifier():
     pass
 
 
-
 class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
     
