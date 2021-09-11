@@ -97,7 +97,7 @@ def _main(args: argparse.Namespace):
 
     # Query 1.2: get_node_metric.
     node_metric: typing.List[str] = client.queries.get_node_metric("mem_deploy_gossiper")
-    assert isinstance(node_metrics, list)
+    assert isinstance(node_metric, list)
     print("SUCCESS :: Query 1.2: get_node_metric")
 
     # Query 1.3: get_node_peers.
