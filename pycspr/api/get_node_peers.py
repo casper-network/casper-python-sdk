@@ -1,7 +1,7 @@
 import jsonrpcclient as rpc_client
+import requests
 
 from pycspr.client import NodeConnectionInfo
-
 
 
 # Method upon client to be invoked.
@@ -15,6 +15,10 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     :returns: Node peers information.
 
     """
-    response = rpc_client.request(connection_info.address_rpc, _API_ENDPOINT)
+    response = requests.post(
+        connection_info.address_rpc,
+        json=request(_API_ENDPOINT))
 
-    return response.data.result["peers"]
+    parsed = parse(response.json())
+
+    return parsed.result["peers"]
