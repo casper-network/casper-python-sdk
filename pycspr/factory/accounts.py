@@ -50,7 +50,7 @@ def parse_private_key(fpath: pathlib.Path, algo: typing.Union[str, crypto.KeyAlg
 
     """
     algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
-    (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath)
+    (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath, algo)
 
     return create_private_key(algo, pvk, pbk)
 

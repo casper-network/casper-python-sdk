@@ -149,7 +149,7 @@ class DeployHeader():
     
     """
     # Public key of account dispatching deploy to a node.
-    accountPublicKey: PublicKey
+    account_public_key: PublicKey
 
     # Hash of deploy payload.
     body_hash: bytes
@@ -228,7 +228,7 @@ class DeployParameters():
     
     """
     # Public key of account dispatching deploy to a node.
-    accountPublicKey: PublicKey
+    account_public_key: PublicKey
 
     # Name of target chain to which deploy will be dispatched.
     chain_name: str

@@ -46,7 +46,7 @@ def encode_deploy_header(entity: DeployHeader) -> dict:
 
     """
     return {
-        "account": encode_public_key(entity.accountPublicKey),
+        "account": encode_public_key(entity.account_public_key),
         "body_hash": entity.body_hash.hex(),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
@@ -82,19 +82,39 @@ def encode_execution_info(entity: ExecutableDeployItem) -> dict:
         return {
             "StoredContractByHash": {
                 "args": [encode_execution_argument(i) for i in entity.args],
-                "hash": entity.hash.hex(),
-                "entry_point": entity.entry_point
+                "entry_point": entity.entry_point,
+                "hash": entity.hash.hex()
             }
         }
 
     def _encode_stored_contract_by_hash_versioned() -> dict:
-        raise NotImplementedError()
+        return {
+            "StoredContractByHashVersioned": {
+                "args": [encode_execution_argument(i) for i in entity.args],
+                "entry_point": entity.entry_point,
+                "hash": entity.hash.hex(),
+                "version": entity.version
+            }
+        }
 
     def _encode_stored_contract_by_name() -> dict:
-        raise NotImplementedError()
+        return {
+            "StoredContractByName": {
+                "args": [encode_execution_argument(i) for i in entity.args],
+                "entry_point": entity.entry_point,
+                "name": entity.name
+            }
+        }
 
     def _encode_stored_contract_by_name_versioned() -> dict:
-        raise NotImplementedError()
+        return {
+            "StoredContractByNameVersioned": {
+                "args": [encode_execution_argument(i) for i in entity.args],
+                "entry_point": entity.entry_point,
+                "name": entity.name,
+                "version": entity.version
+            }
+        }
 
     def _encode_session_for_transfer() -> dict:
         return {

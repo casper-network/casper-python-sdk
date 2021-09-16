@@ -109,7 +109,7 @@ def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHe
 
     """
     return DeployHeader(
-        accountPublicKey=params.accountPublicKey,
+        account_public_key=params.account_public_key,
         body_hash=body.hash,
         chain_name=params.chain_name,
         dependencies=params.dependencies,
@@ -145,7 +145,7 @@ def create_deploy_parameters(
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
     return DeployParameters(
-        accountPublicKey=public_key,
+        account_public_key=public_key,
         chain_name=chain_name,
         dependencies=dependencies,
         gas_price=gas_price,

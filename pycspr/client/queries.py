@@ -106,23 +106,14 @@ class QueriesClient():
         return api.get_deploy(self.connection_info, deploy_id)
 
 
-    def get_dictionary_item_by_uref(
-        self,
-        item_key: str,
-        seed_uref: types.UnforgeableReference,
-        state_root_hash: typing.Union[bytes, None] = None
-        ) -> dict:
-        """Returns on-chain data associated with a dictionary item.
+    def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
+        """Returns on-chain data stored under a dictionary item.
 
-        :param item_key: Identifier of an item within target dictionary.
-        :param seed_uref: Unforgeable reference under which dictionary data is stored on-chain.
-        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
-        :returns: On-chain data associated with dictionary item.
+        :param identifier: Identifier required to query a dictionary item.
+        :returns: On-chain data stored under a dictionary item.
 
         """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-
-        return api.get_dictionary_item_by_uref(self.connection_info, item_key, seed_uref, state_root_hash)
+        return api.get_dictionary_item(self.connection_info, identifier)
 
 
     def get_era_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:

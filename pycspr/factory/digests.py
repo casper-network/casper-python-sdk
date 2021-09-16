@@ -19,7 +19,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     # Element 1: account. 
     cl_account = factory.create_cl_value(
         factory.create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY),
-        header.accountPublicKey
+        header.account_public_key
     )
 
     # Element 2: timestamp. 

@@ -9,7 +9,7 @@ from pycspr.api.get_block                        import execute as get_block
 from pycspr.api.get_block_transfers              import execute as get_block_transfers
 from pycspr.api.get_block_at_era_switch          import execute as get_block_at_era_switch
 from pycspr.api.get_deploy                       import execute as get_deploy
-from pycspr.api.get_dictionary_item_by_uref      import execute as get_dictionary_item_by_uref
+from pycspr.api.get_dictionary_item              import execute as get_dictionary_item
 from pycspr.api.get_era_info                     import execute as get_era_info
 from pycspr.api.get_events                       import execute as get_events
 from pycspr.api.get_node_metrics                 import execute as get_node_metrics

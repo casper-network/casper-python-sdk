@@ -50,7 +50,7 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
     
     """
     return DeployHeader(
-        accountPublicKey=decode_public_key(obj["account"]),
+        account_public_key=decode_public_key(obj["account"]),
         body_hash=bytes.fromhex(obj["body_hash"]),
         chain_name=obj["chain_name"],
         dependencies=[],

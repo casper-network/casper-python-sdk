@@ -63,5 +63,6 @@ How To: Run unit tests against an NCTL network ?
 
 ```
 cd YOUR_WORKING_DIRECTORY
+pipenv shell
 pytest ./tests
 ````

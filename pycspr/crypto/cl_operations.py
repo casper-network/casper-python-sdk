@@ -42,7 +42,8 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
     :returns: An on-chain account key.
 
     """
-    assert len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo], f"Invalid {key_algo.name} public key length."
+    assert len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo], \
+           f"Invalid {key_algo.name} public key length."
 
     return bytes([key_algo.value]) + public_key
 
