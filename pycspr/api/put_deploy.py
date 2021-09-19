@@ -21,8 +21,8 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> str:
     """
     response = requests.post(
         connection_info.address_rpc,
-        json=request(constants.RPC_ACCOUNT_PUT_DEPLOY),
-        deploy=encode_deploy(deploy)
+        json=request(constants.RPC_ACCOUNT_PUT_DEPLOY,
+            {"deploy":encode_deploy(deploy)})
         )
 
     return parse(response.json()).result["deploy_hash"]

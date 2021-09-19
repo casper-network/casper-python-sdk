@@ -27,10 +27,10 @@ def execute(
     state_root_hash = state_root_hash.hex() if state_root_hash else None
     response = requests.post(
         connection_info.address_rpc,
-        json=request(constants.RPC_STATE_GET_ITEM),
-        key=item_key,
-        path=item_path,
-        state_root_hash=state_root_hash,
+        json=request(constants.RPC_STATE_GET_ITEM,
+        {"key":item_key,
+            "path":item_path,
+            "state_root_hash":state_root_hash})
         )
 
     return parse(response.json()).result["stored_value"]

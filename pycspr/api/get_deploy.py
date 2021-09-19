@@ -23,8 +23,8 @@ def execute(
     deploy_id = deploy_id.hex() if isinstance(deploy_id, bytes) else deploy_id
     response = requests.post(
         connection_info.address_rpc,
-        json=request(constants.RPC_INFO_GET_DEPLOY),
-        deploy_hash=deploy_id
+        json=request(constants.RPC_INFO_GET_DEPLOY,
+        {"deploy_hash":deploy_id})
     )
 
     return parse(response.json()).result["deploy"]

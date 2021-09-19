@@ -26,9 +26,9 @@ def execute(
 
     response = requests.post(
         connection_info.address_rpc,
-        json=request(constants.RPC_STATE_GET_BALANCE),
-        purse_uref=purse_uref.as_string(),
-        state_root_hash=state_root_hash,
+        json=request(constants.RPC_STATE_GET_BALANCE,
+        {"purse_uref":purse_uref.as_string(),
+        "state_root_hash":state_root_hash}),
         )
 
     return int(parse(response.json()).result["balance_value"])

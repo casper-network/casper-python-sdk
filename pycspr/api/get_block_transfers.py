@@ -30,20 +30,20 @@ def execute(
     elif isinstance(block_id, (bytes, str)):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS),
+            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
-            }
+            })
         )
 
     # Get by height.
     elif isinstance(block_id, int):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS),
+            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
             block_identifier={
                 "Height": block_id
-            }
+            })
         )
    
     parsed = parse(response.json())

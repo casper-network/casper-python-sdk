@@ -21,40 +21,40 @@ def execute(
     if isinstance(identifer, type.DictionaryIdentifier_AccountNamedKey):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
-            AccountNamedKey={
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
+            {"AccountNamedKey":{
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": identifier.key
-            }
+            }})
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_ContractNamedKey):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
-            ContractNamedKey={
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
+            {"ContractNamedKey":{
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": identifier.key
-            }
+            }})
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_SeedURef):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
-            URef={
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
+            {"URef":{
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "seed_uref": identifier.dictionary_name
-            }
+            }})
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_UniqueKey):
         response = requests.post(
             connection_info.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
-            Dictionary=identifier.seed_uref.as_string()
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
+            {"Dictionary":identifier.seed_uref.as_string()})
         )
 
     else:
