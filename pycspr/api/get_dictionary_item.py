@@ -1,4 +1,5 @@
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr import types
 from pycspr.api import constants
@@ -18,9 +19,9 @@ def execute(
 
     """
     if isinstance(identifer, type.DictionaryIdentifier_AccountNamedKey):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_DICTIONARY_ITEM, 
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
             AccountNamedKey={
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
@@ -29,9 +30,9 @@ def execute(
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_ContractNamedKey):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_DICTIONARY_ITEM, 
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
             ContractNamedKey={
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
@@ -40,9 +41,9 @@ def execute(
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_SeedURef):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_DICTIONARY_ITEM, 
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
             URef={
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "seed_uref": identifier.dictionary_name
@@ -50,9 +51,9 @@ def execute(
         )
 
     elif isinstance(identifer, type.DictionaryIdentifier_UniqueKey):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_DICTIONARY_ITEM, 
+            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM),
             Dictionary=identifier.seed_uref.as_string()
         )
 

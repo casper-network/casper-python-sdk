@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -20,10 +21,10 @@ def execute(
 
     """
     deploy_id = deploy_id.hex() if isinstance(deploy_id, bytes) else deploy_id
-    response = rpc_client.request(
+    response = requests.post(
         connection_info.address_rpc,
-        constants.RPC_INFO_GET_DEPLOY, 
+        json=request(constants.RPC_INFO_GET_DEPLOY),
         deploy_hash=deploy_id
     )
 
-    return response.data.result["deploy"]
+    return parse(response.json()).result["deploy"]

@@ -1,4 +1,5 @@
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -12,9 +13,9 @@ def execute(connection_info: NodeConnectionInfo) -> dict:
     :returns: Node status information.
 
     """
-    response = rpc_client.request(
+    response = requests.post(
         connection_info.address_rpc,
-        constants.RPC_INFO_GET_STATUS
+        json=request(constants.RPC_INFO_GET_STATUS)
         )
 
-    return response.data.result
+    return parse(response.json()).result

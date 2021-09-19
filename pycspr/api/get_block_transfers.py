@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -20,16 +21,16 @@ def execute(
     """
     # Get latest.
     if isinstance(block_id, type(None)):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_CHAIN_GET_BLOCK_TRANSFERS
+            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS)
             )
 
     # Get by hash - bytes | hex.
     elif isinstance(block_id, (bytes, str)):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, 
+            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS),
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }
@@ -37,15 +38,16 @@ def execute(
 
     # Get by height.
     elif isinstance(block_id, int):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, 
+            json=request(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS),
             block_identifier={
                 "Height": block_id
             }
         )
-    
+   
+    parsed = parse(response.json())
     return (
-        response.data.result["block_hash"],
-        response.data.result["transfers"],
+        parsed.result["block_hash"],
+        parsed.result["transfers"],
     )

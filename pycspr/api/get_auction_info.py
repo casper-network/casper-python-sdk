@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.api.get_block import execute as get_block
@@ -27,9 +28,9 @@ def execute(
 
     # Get by hash - bytes | hex.
     if isinstance(block_id, (bytes, str)):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_AUCTION_INFO, 
+            json=request(constants.RPC_STATE_GET_AUCTION_INFO),
             block_identifier={
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }
@@ -37,12 +38,12 @@ def execute(
 
     # Get by height.
     elif isinstance(block_id, int):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_AUCTION_INFO, 
+            json=request(constants.RPC_STATE_GET_AUCTION_INFO),
             block_identifier={
                 "Height": block_id
             }
         )
 
-    return response.data.result
+    return parse(response.json()).result
