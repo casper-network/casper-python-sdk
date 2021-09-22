@@ -1,10 +1,6 @@
 import typing
 
-from jsonrpcclient import parse, request
-import requests
-
 from pycspr.api import constants
-from pycspr.api.get_block import execute as get_block
 from pycspr.client import NodeConnectionInfo
 
 
@@ -33,15 +29,15 @@ def get_params(block_id: typing.Union[None, str, int] = None) -> dict:
 
     """
     if isinstance(block_id, type(None)):
-        return {
-            "Hash": get_block(node)["hash"].hex()
-        }
+        return None
+
     elif isinstance(block_id, (bytes, str)):
         return {
             "block_identifier":{
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }            
         }
+
     elif isinstance(block_id, int):
         return {
             "block_identifier":{
