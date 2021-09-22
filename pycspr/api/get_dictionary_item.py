@@ -8,19 +8,19 @@ from pycspr.client import NodeConnectionInfo
 
 
 def execute(
-    connection_info: NodeConnectionInfo,
+    node: NodeConnectionInfo,
     identifier: types.DictionaryIdentifier
     ) -> dict:
     """Returns on-chain data stored under a dictionary item.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param identifier: Identifier required to query a dictionary item.
     :returns: On-chain data stored under a dictionary item.
 
     """
     if isinstance(identifer, type.DictionaryIdentifier_AccountNamedKey):
         response = requests.post(
-            connection_info.address_rpc,
+            node.address_rpc,
             json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
             {"AccountNamedKey":{
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -31,7 +31,7 @@ def execute(
 
     elif isinstance(identifer, type.DictionaryIdentifier_ContractNamedKey):
         response = requests.post(
-            connection_info.address_rpc,
+            node.address_rpc,
             json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
             {"ContractNamedKey":{
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -42,7 +42,7 @@ def execute(
 
     elif isinstance(identifer, type.DictionaryIdentifier_SeedURef):
         response = requests.post(
-            connection_info.address_rpc,
+            node.address_rpc,
             json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
             {"URef":{
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -52,7 +52,7 @@ def execute(
 
     elif isinstance(identifer, type.DictionaryIdentifier_UniqueKey):
         response = requests.post(
-            connection_info.address_rpc,
+            node.address_rpc,
             json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
             {"Dictionary":identifier.seed_uref.as_string()})
         )

@@ -6,15 +6,15 @@ from pycspr.client import NodeConnectionInfo
 
 
 
-def execute(connection_info: NodeConnectionInfo) -> dict:
+def execute(node: NodeConnectionInfo) -> dict:
     """Returns node peers information.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :returns: Node peers information.
 
     """
     response = requests.post(
-        connection_info.address_rpc,
+        node.address_rpc,
         json=request(constants.RPC_INFO_GET_PEERS)
         )
 

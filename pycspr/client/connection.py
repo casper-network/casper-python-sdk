@@ -1,5 +1,7 @@
 import dataclasses
 
+from pycspr.utils.io import get_api_response
+
 
 
 @dataclasses.dataclass
@@ -42,3 +44,14 @@ class NodeConnectionInfo:
     def __str__(self):
         """Instance string representation."""
         return self.host
+
+
+    def get_response(self, endpoint: str, params: dict = None) -> dict:
+        """Invokes remote JSON-RPC API and returns parsed response.
+
+        :endpoint: Target endpoint to invoke.
+        :params: Endpoints parameters.
+        :returns: Parsed JSON-RPC response.
+        
+        """
+        return get_api_response(self, endpoint, params)

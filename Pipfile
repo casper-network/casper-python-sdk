@@ -9,11 +9,11 @@ tox = "*"
 [packages]
 cryptography = "*"
 ecdsa = "*"
-jsonrpcclient = "*"
 requests = "*"
 sseclient-py = "*"
 pytest = "*"
 pycspr = {editable = true, path = "."}
+jsonrpcclient = "*"
 
 [requires]
 python_version = "3.9"

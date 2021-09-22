@@ -1,6 +1,9 @@
 import pathlib
 import typing
 
+import requests
+import jsonrpcclient
+
 from pycspr import serialisation
 from pycspr.types.deploy import Deploy
 
@@ -48,3 +51,20 @@ def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: 
         fstream.writelines(serialisation.to_json(deploy))
 
     return str(fpath)
+
+
+def get_api_response(connection_info, endpoint: str, params: dict) -> dict:
+    """Invokes remote JSON-RPC API and returns parsed response.
+
+    :connection_info: Node connection wrapper.
+    :endpoint: Target endpoint to invoke.
+    :params: Endpoints parameters.
+    :returns: Parsed JSON-RPC response.
+    
+    """
+    response = requests.post(
+        connection_info.address_rpc,
+        json=jsonrpcclient.request(endpoint, params),
+        )
+    
+    return jsonrpcclient.parse(response.json()).result

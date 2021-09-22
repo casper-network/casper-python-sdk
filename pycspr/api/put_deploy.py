@@ -11,16 +11,16 @@ from pycspr.types import Deploy
 
 
 
-def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> str:
+def execute(node: NodeConnectionInfo, deploy: Deploy) -> str:
     """Dispatches a deploy to a node for processing.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param deploy: A deploy to be dispatched to a node.
     :returns: Hash of dispatched deploy.
 
     """
     response = requests.post(
-        connection_info.address_rpc,
+        node.address_rpc,
         json=request(constants.RPC_ACCOUNT_PUT_DEPLOY,
             {"deploy":encode_deploy(deploy)})
         )

@@ -5,16 +5,16 @@ from pycspr.client import NodeConnectionInfo
 
 
 
-def execute(connection_info: NodeConnectionInfo, metric_id: str = None) -> list:
+def execute(node: NodeConnectionInfo, metric_id: str = None) -> list:
     """Returns node peers information.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param metric_id: Identifier of node metric.
 
     :returns: Node metrics information.
 
     """
-    endpoint = f"{connection_info.address_rest}/{constants.REST_GET_METRICS}"
+    endpoint = f"{node.address_rest}/{constants.REST_GET_METRICS}"
     response = rest_client.get(endpoint)
     data = response.content.decode("utf-8")
     data = sorted([i.strip() for i in data.split("\n") if not i.startswith("#")])

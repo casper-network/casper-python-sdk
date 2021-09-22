@@ -9,18 +9,18 @@ from pycspr.api.get_account_info import execute as get_account_info
 
 
 def execute(
-    connection_info: NodeConnectionInfo,
+    node: NodeConnectionInfo,
     account_key: bytes,
     block_id: typing.Union[None, bytes, str, int] = None
     ) -> types.UnforgeableReference:
     """Returns an on-chain account's main purse unforgeable reference.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param account_key: Key of an on-chain account.
     :param block_id: Identifier of a finalised block.
     :returns: Account main purse unforgeable reference.
 
     """
-    account_info = get_account_info(connection_info, account_key, block_id)
+    account_info = get_account_info(node, account_key, block_id)
 
     return factory.create_uref_from_string(account_info["main_purse"])

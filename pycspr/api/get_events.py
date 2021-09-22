@@ -11,7 +11,7 @@ from pycspr.client.events import NodeSseEventType
 
 
 def execute(
-    connection_info: NodeConnectionInfo,
+    node: NodeConnectionInfo,
     callback: typing.Callable,
     channel_type: NodeSseChannelType,
     event_type: NodeSseEventType = None,
@@ -19,7 +19,7 @@ def execute(
     ):
     """Binds to a node's event stream - events are passed to callback for processing.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param callback: Callback to invoke whenever an event of relevant type is received.
     :param channel_type: Type of event channel to which to bind.
     :param event_type: Type of event type to listen for (all if unspecified).
@@ -29,16 +29,16 @@ def execute(
     if event_type is not None:
         _validate_that_channel_support_event_type(channel_type, event_type)
 
-    sse_client = _get_sse_client(connection_info, channel_type, event_id)
+    sse_client = _get_sse_client(node, channel_type, event_id)
     for event_type, event_id, payload in _yield_events(sse_client):
         callback(channel_type, event_type, event_id, payload)
 
 
-def _get_sse_client(connection_info: NodeConnectionInfo, channel_type: NodeSseChannelType, event_id: int):
+def _get_sse_client(node: NodeConnectionInfo, channel_type: NodeSseChannelType, event_id: int):
     """Returns SSE client.
 
     """
-    url = f"{connection_info.address_sse}/{channel_type.name.lower()}"
+    url = f"{node.address_sse}/{channel_type.name.lower()}"
     if event_id:
         url = f"{url}?start_from={event_id}"
     stream = requests.get(url, stream=True)

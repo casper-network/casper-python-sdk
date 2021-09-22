@@ -5,15 +5,15 @@ from pycspr.client import NodeConnectionInfo
 
 
 
-def execute(connection_info: NodeConnectionInfo, endpoint: str) -> typing.Union[dict, list]:
+def execute(node: NodeConnectionInfo, endpoint: str) -> typing.Union[dict, list]:
     """Returns RPC schema for a single endpoint.
 
-    :param connection_info: Information required to connect to a node.
+    :param node: Information required to connect to a node.
     :param endpoint: A specific endpoint of interest.
     :returns: JSON-RPC schema endpoint fragment.
 
     """
-    schema = get_rpc_schema(connection_info)
+    schema = get_rpc_schema(node)
     for obj in schema["methods"]:
         if obj["name"].lower() == endpoint.lower():
             return obj
