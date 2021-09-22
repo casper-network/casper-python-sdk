@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -22,32 +23,32 @@ def execute(
     """    
     # Get latest.
     if isinstance(block_id, type(None)):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_ACCOUNT_INFO,
-            public_key=account_key.hex(),
+            json=request(constants.RPC_STATE_GET_ACCOUNT_INFO,
+            {"public_key":account_key.hex()})
             )
 
     # Get by hash - bytes | hex.
     elif isinstance(block_id, (bytes, str)):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_ACCOUNT_INFO, 
-            public_key=account_key.hex(),
-            block_identifier={
+            json=request(constants.RPC_STATE_GET_ACCOUNT_INFO,
+            {"public_key":account_key.hex(),
+            "block_identifier":{
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
-            }
+            }})
         )
 
     # Get by height.
     elif isinstance(block_id, int):
-        response = rpc_client.request(
+        response = requests.post(
             connection_info.address_rpc,
-            constants.RPC_STATE_GET_ACCOUNT_INFO, 
-            public_key=account_key.hex(),
-            block_identifier={
+            json=request(constants.RPC_STATE_GET_ACCOUNT_INFO,
+            {"public_key":account_key.hex(),
+            "block_identifier":{
                 "Height": block_id
-            }
+            }})
         )
     
-    return response.data.result["account"]
+    return parse(response.json()).result["account"]

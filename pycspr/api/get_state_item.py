@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -24,12 +25,12 @@ def execute(
     """
     item_path = item_path if isinstance(item_path, list) else [item_path]
     state_root_hash = state_root_hash.hex() if state_root_hash else None
-    response = rpc_client.request(
+    response = requests.post(
         connection_info.address_rpc,
-        constants.RPC_STATE_GET_ITEM,
-        key=item_key,
-        path=item_path,
-        state_root_hash=state_root_hash,
+        json=request(constants.RPC_STATE_GET_ITEM,
+        {"key":item_key,
+            "path":item_path,
+            "state_root_hash":state_root_hash})
         )
 
-    return response.data.result["stored_value"]
+    return parse(response.json()).result["stored_value"]

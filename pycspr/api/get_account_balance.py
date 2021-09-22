@@ -1,6 +1,7 @@
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr import types
 from pycspr.api import constants
@@ -23,11 +24,11 @@ def execute(
     """
     state_root_hash = state_root_hash.hex() if state_root_hash else None
 
-    response = rpc_client.request(
+    response = requests.post(
         connection_info.address_rpc,
-        constants.RPC_STATE_GET_BALANCE,
-        purse_uref=purse_uref.as_string(),
-        state_root_hash=state_root_hash,
+        json=request(constants.RPC_STATE_GET_BALANCE,
+        {"purse_uref":purse_uref.as_string(),
+        "state_root_hash":state_root_hash}),
         )
 
-    return int(response.data.result["balance_value"])
+    return int(parse(response.json()).result["balance_value"])

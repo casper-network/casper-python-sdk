@@ -1,7 +1,8 @@
 import json
 import typing
 
-import jsonrpcclient as rpc_client
+from jsonrpcclient import parse, request
+import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -18,10 +19,10 @@ def execute(connection_info: NodeConnectionInfo, deploy: Deploy) -> str:
     :returns: Hash of dispatched deploy.
 
     """
-    response = rpc_client.request(
+    response = requests.post(
         connection_info.address_rpc,
-        constants.RPC_ACCOUNT_PUT_DEPLOY,
-        deploy=encode_deploy(deploy)
+        json=request(constants.RPC_ACCOUNT_PUT_DEPLOY,
+            {"deploy":encode_deploy(deploy)})
         )
 
-    return response.data.result["deploy_hash"]
+    return parse(response.json()).result["deploy_hash"]
