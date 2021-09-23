@@ -99,5 +99,4 @@ def test_that_a_signature_can_be_verified(vector_crypto_3):
         data = fixture["data"].encode("utf-8")
         sig = fixture["sig"]
         pbk = fixture["key"]["pbk"]
-
         assert pycspr.crypto.is_signature_valid(data, sig, pbk, algo) == True

@@ -6,6 +6,7 @@ import jsonrpcclient
 
 from pycspr import serialisation
 from pycspr.types.deploy import Deploy
+from pycspr.utils.exceptions import NodeAPIError
 
 
 
@@ -66,5 +67,9 @@ def get_api_response(connection_info, endpoint: str, params: dict) -> dict:
         connection_info.address_rpc,
         json=jsonrpcclient.request(endpoint, params),
         )
-    
-    return jsonrpcclient.parse(response.json()).result
+    response = jsonrpcclient.parse(response.json())
+
+    if isinstance(response, jsonrpcclient.responses.Error):
+        raise NodeAPIError(response)
+    else:
+        return response.result

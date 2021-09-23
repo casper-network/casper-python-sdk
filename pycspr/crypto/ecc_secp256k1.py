@@ -1,10 +1,14 @@
 import base64
+import hashlib
 import typing
 
-from ecdsa import SigningKey
-from ecdsa import SECP256k1 as _CURVE
-from ecdsa import VerifyingKey
+import ecdsa
 
+
+
+# Default ECC + associated Casper specific hashing function.
+_CURVE = ecdsa.SECP256k1
+_HASH_FN = hashlib.sha256
 
 
 def get_key_pair(seed: bytes = None) -> typing.Tuple[bytes, bytes]:
@@ -14,8 +18,8 @@ def get_key_pair(seed: bytes = None) -> typing.Tuple[bytes, bytes]:
     :returns : 2 member tuple: (private key, public key)
     
     """    
-    sk = SigningKey.generate(curve=_CURVE) if seed is None else \
-         SigningKey.from_string(seed, curve=_CURVE)
+    sk = ecdsa.SigningKey.generate(curve=_CURVE) if seed is None else \
+         ecdsa.SigningKey.from_string(seed, curve=_CURVE)
 
     return _get_key_pair(sk)
 
@@ -39,7 +43,7 @@ def get_pvk_pem_from_bytes(pvk: bytes) -> bytes:
     :returns: PEM represenation of signing key.
 
     """
-    sk = SigningKey.from_string(pvk, curve=_CURVE)
+    sk = ecdsa.SigningKey.from_string(pvk, curve=_CURVE)
 
     return sk.to_pem()
 
@@ -52,9 +56,10 @@ def get_signature(msg: bytes, pvk: bytes) -> bytes:
     :returns: A digital signature.
 
     """
-    sk = SigningKey.from_string(pvk, curve=_CURVE)
 
-    return sk.sign_deterministic(msg)
+    sk = ecdsa.SigningKey.from_string(pvk, curve=_CURVE)
+
+    return sk.sign_deterministic(msg, hashfunc=_HASH_FN)
 
 
 def get_signature_from_pem_file(msg: bytes, fpath: str) -> bytes:
@@ -67,7 +72,7 @@ def get_signature_from_pem_file(msg: bytes, fpath: str) -> bytes:
     """
     sk = _get_signing_key_from_pem_file(fpath)
 
-    return sk.sign_deterministic(msg)
+    return sk.sign_deterministic(msg, hashfunc=_HASH_FN)
 
 
 def is_signature_valid(msg: bytes, sig: bytes, pbk: bytes) -> bool:
@@ -79,12 +84,12 @@ def is_signature_valid(msg: bytes, sig: bytes, pbk: bytes) -> bool:
     :returns: A flag indicating whether a signature was signed by a signing key that is associated with the passed verification key.
     
     """
-    vk = VerifyingKey.from_string(pbk, curve=_CURVE)
+    vk = ecdsa.VerifyingKey.from_string(pbk, curve=_CURVE)
 
-    return vk.verify(sig, msg)
+    return vk.verify(sig, msg, hashfunc=_HASH_FN)
 
 
-def _get_key_pair(sk: SigningKey) -> typing.Tuple[bytes, bytes]:
+def _get_key_pair(sk: ecdsa.SigningKey) -> typing.Tuple[bytes, bytes]:
     """Returns key pair from a signing key.
     
     """
@@ -92,9 +97,9 @@ def _get_key_pair(sk: SigningKey) -> typing.Tuple[bytes, bytes]:
            sk.verifying_key.to_string("compressed")
 
 
-def _get_signing_key_from_pem_file(fpath: str) -> SigningKey:
+def _get_signing_key_from_pem_file(fpath: str) -> ecdsa.SigningKey:
     """Returns a signing key mapped from a PEM file representation of a private key.
     
     """
     with open(fpath, "rb") as f:
-        return SigningKey.from_pem(f.read())
+        return ecdsa.SigningKey.from_pem(f.read())

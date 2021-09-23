@@ -43,6 +43,21 @@ def test_account_1():
     )
 
 
+@pytest.fixture(scope="session")
+def test_account_2():
+    """Returns test user account information. 
+    
+    """
+    path = pathlib.Path(_PATH_TO_ACCOUNTS) / "account-2"  / "secret_key.pem"
+    (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
+
+    return pycspr.types.PrivateKey(
+        pbk=pbk,
+        pvk=pvk,
+        algo=pycspr.crypto.KeyAlgorithm.SECP256K1
+    )
+
+
 def _get_account_of_nctl_faucet():
     """Returns account information related to NCTL faucet. 
     
