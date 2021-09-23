@@ -1,8 +1,5 @@
 import typing
 
-from jsonrpcclient import parse, request
-import requests
-
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 
@@ -19,31 +16,32 @@ def execute(
     :returns: Era information.
 
     """
-    # Get latest.
+    params = get_params(block_id)
+    response = node.get_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+
+    return response["era_summary"]
+
+
+def get_params(block_id: typing.Union[None, str, int] = None) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param block_id: Identifier of a finalised block.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
     if isinstance(block_id, type(None)):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK)
-            )
+        return None
 
-    # Get by hash - bytes | hex.
     elif isinstance(block_id, (bytes, str)):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-            {"block_identifier":{
+        return {
+            "block_identifier":{
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
-            }})
-        )
+            }            
+        }
 
-    # Get by height.
     elif isinstance(block_id, int):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-            {"block_identifier":{
+        return {
+            "block_identifier":{
                 "Height": block_id
-            }})
-        )    
-
-    return parse(response.json()).result["era_summary"]
+            }            
+        }

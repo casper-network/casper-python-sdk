@@ -1,8 +1,4 @@
-import json
 import typing
-
-from jsonrpcclient import parse, request
-import requests
 
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -19,10 +15,19 @@ def execute(node: NodeConnectionInfo, deploy: Deploy) -> str:
     :returns: Hash of dispatched deploy.
 
     """
-    response = requests.post(
-        node.address_rpc,
-        json=request(constants.RPC_ACCOUNT_PUT_DEPLOY,
-            {"deploy":encode_deploy(deploy)})
-        )
+    params = get_params(deploy)
+    response = node.get_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params)
 
-    return parse(response.json()).result["deploy_hash"]
+    return response["deploy_hash"]
+
+
+def get_params(deploy: Deploy) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param deploy: A deploy to be dispatched to a node.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    return {
+        "deploy": encode_deploy(deploy)
+    }

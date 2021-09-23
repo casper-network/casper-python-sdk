@@ -1,6 +1,3 @@
-from jsonrpcclient import parse, request
-import requests
-
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 
@@ -13,9 +10,6 @@ def execute(node: NodeConnectionInfo) -> dict:
     :returns: Node peers information.
 
     """
-    response = requests.post(
-        node.address_rpc,
-        json=request(constants.RPC_INFO_GET_PEERS)
-        )
+    response = node.get_response(constants.RPC_INFO_GET_STATUS)
 
-    return parse(response.json()).result["peers"]
+    return response["peers"]

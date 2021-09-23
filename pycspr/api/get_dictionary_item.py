@@ -1,6 +1,3 @@
-from jsonrpcclient import parse, request
-import requests
-
 from pycspr import types
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
@@ -18,44 +15,49 @@ def execute(
     :returns: On-chain data stored under a dictionary item.
 
     """
-    if isinstance(identifer, type.DictionaryIdentifier_AccountNamedKey):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            {"AccountNamedKey":{
+    params = get_parms(identifier)
+
+    return node.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
+
+
+def get_params(identifier: types.DictionaryIdentifier) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param deploy_id: Identifier of a queued/processed deploy.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    if isinstance(identifier, type.DictionaryIdentifier_AccountNamedKey):
+        return {
+            "AccountNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": identifier.key
-            }})
-        )
+            }
+        }
 
-    elif isinstance(identifer, type.DictionaryIdentifier_ContractNamedKey):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            {"ContractNamedKey":{
+    elif isinstance(identifier, type.DictionaryIdentifier_ContractNamedKey):
+        return {
+            "ContractNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": identifier.key
-            }})
-        )
+            }
+        }
 
-    elif isinstance(identifer, type.DictionaryIdentifier_SeedURef):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            {"URef":{
+    elif isinstance(identifier, type.DictionaryIdentifier_SeedURef):
+        return {
+            "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "seed_uref": identifier.dictionary_name
-            }})
-        )
+            }
+        }
 
-    elif isinstance(identifer, type.DictionaryIdentifier_UniqueKey):
-        response = requests.post(
-            node.address_rpc,
-            json=request(constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            {"Dictionary":identifier.seed_uref.as_string()})
-        )
+    elif isinstance(identifier, type.DictionaryIdentifier_UniqueKey):
+        return {
+            "Dictionary": identifier.seed_uref.as_string()
+        }
 
     else:
         raise ValueError("Unrecognized dictionary item type.")
+
