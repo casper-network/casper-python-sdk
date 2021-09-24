@@ -38,3 +38,11 @@ from pycspr.types.state   import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.state   import DictionaryIdentifier_SeedURef
 from pycspr.types.state   import DictionaryIdentifier_UniqueKey
 from pycspr.types.state   import UnforgeableReference
+
+# Synonyms for terseness purposes.
+ModuleBytes = ExecutableDeployItem_ModuleBytes
+StoredContractByHash = ExecutableDeployItem_StoredContractByHash
+StoredContractByHashVersioned = ExecutableDeployItem_StoredContractByHashVersioned
+StoredContractByName = ExecutableDeployItem_StoredContractByName
+StoredContractByNameVersioned = ExecutableDeployItem_StoredContractByNameVersioned
+Transfer = ExecutableDeployItem_Transfer

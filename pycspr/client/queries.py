@@ -56,6 +56,21 @@ class QueriesClient():
         return api.get_account_main_purse_uref(self.connection_info, account_key, block_id)
 
 
+    def get_account_named_key(self, account_key: bytes, key_name: str, block_id: types.OptionalBlockIdentifer = None) -> str:
+        """Returns a named key stored under an account.
+
+        :param account_key: An account holder's public key prefixed with a key type identifier.
+        :param key_name: Name of key under which account data is stored.
+        :param block_id: Identifier of a finalised block.
+        :returns: Account information in JSON format.
+
+        """
+        account_info = api.get_account_info(self.connection_info, account_key, block_id)
+        named_keys = [i for i in account_info["named_keys"] if i["name"] == key_name]
+
+        return None if len(named_keys) == 0 else named_keys[0]["key"]
+
+
     def get_auction_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns current auction system contract information.
 

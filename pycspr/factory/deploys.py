@@ -160,7 +160,6 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     :param humanized_ttl: A humanized ttl, e.g. 1 day.
 
     """
-    humanized_ttl="1day"
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
         raise ValueError(f"Invalid deploy ttl {humanized_ttl} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
