@@ -1,8 +1,10 @@
 import typing
 
+from pycspr.serialisation.byte_array.constants import TypeTag_ExecutableDeployItem
 from pycspr.serialisation.byte_array.encoder.cl import encode_cl_value
 from pycspr.serialisation.byte_array.encoder.cl import encode_string
 from pycspr.serialisation.byte_array.encoder.cl import encode_byte_array
+from pycspr.serialisation.byte_array.encoder.cl import encode_u32
 from pycspr.serialisation.byte_array.encoder.cl import encode_u8_array
 from pycspr.serialisation.byte_array.encoder.cl import encode_vector_of_t
 from pycspr.types import Deploy
@@ -40,57 +42,66 @@ def encode_execution_argument(entity: ExecutionArgument) -> bytes:
     return encode_string(entity.name) + encode_cl_value(entity.value)
 
 
-def encode_execution_info(entity: ExecutableDeployItem) -> bytes:
+def encode_executable_deploy_item(entity: ExecutableDeployItem) -> bytes:
     """Encodes execution information for subsequent interpretation by VM.
     
     """
-    def encode_args(args: typing.List[ExecutionArgument]):
+    def _encode_type_tag(tag: TypeTag_ExecutableDeployItem):
+        return bytes(tag.value)
+
+    def _encode_args(args: typing.List[ExecutionArgument]):        
         return encode_vector_of_t(list(map(encode_execution_argument, args)))
 
-    def encode_module_bytes():
-        return encode_u8_array(list(entity.module_bytes)) + \
-               encode_args(entity.args)
+    def _encode_module_bytes():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.ModuleBytes) + \
+               encode_u8_array(list(entity.module_bytes)) + \
+               _encode_args(entity.args)
 
-    def encode_stored_contract_by_hash():
-        return encode_byte_array(entity.hash) + \
+    def _encode_stored_contract_by_hash():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHash) + \
+               encode_byte_array(entity.hash) + \
                encode_string(entity.entry_point) + \
-               encode_args(entity.args)
+               _encode_args(entity.args)
 
-    def encode_stored_contract_by_hash_versioned():
-        # TODO: encode optional U32 :: contract version
-        return encode_byte_array(entity.hash) + \
+    def _encode_stored_contract_by_hash_versioned():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHashVersioned) + \
+               encode_byte_array(entity.hash) + \
+               encode_u32(entity.version) + \
                encode_string(entity.entry_point) + \
-               encode_args(entity.args)
+               _encode_args(entity.args)
 
-    def encode_stored_contract_by_name():
-        return encode_string(entity.name) + \
+    def _encode_stored_contract_by_name():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByName) + \
+               encode_string(entity.name) + \
                encode_string(entity.entry_point) + \
-               encode_args(entity.args)
+               _encode_args(entity.args)
 
-    def encode_stored_contract_by_name_versioned():
-        # TODO: encode optional U32 :: contract version
-        return encode_string(entity.name) + \
+    def _encode_stored_contract_by_name_versioned():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByNameVersioned) + \
+               encode_string(entity.name) + \
+               encode_u32(entity.version) + \
                encode_string(entity.entry_point) + \
-               encode_args(entity.args)
+               _encode_args(entity.args)
 
-    def encode_transfer():
-        return encode_args(entity.args)
+    def _encode_transfer():
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.Transfer) + \
+               _encode_args(entity.args)
 
     _ENCODERS = {
-        ExecutableDeployItem_ModuleBytes: (0, encode_module_bytes),
-        ExecutableDeployItem_StoredContractByHash: (1, encode_stored_contract_by_hash),
-        ExecutableDeployItem_StoredContractByHashVersioned: (3, encode_stored_contract_by_hash_versioned),
-        ExecutableDeployItem_StoredContractByName: (2, encode_stored_contract_by_name),
-        ExecutableDeployItem_StoredContractByNameVersioned: (4, encode_stored_contract_by_name_versioned),
-        ExecutableDeployItem_Transfer: (5, encode_transfer),
+        ExecutableDeployItem_ModuleBytes: _encode_module_bytes,
+        ExecutableDeployItem_StoredContractByHash: _encode_stored_contract_by_hash,
+        ExecutableDeployItem_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
+        ExecutableDeployItem_StoredContractByName: _encode_stored_contract_by_name,
+        ExecutableDeployItem_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
+        ExecutableDeployItem_Transfer: _encode_transfer,
     }
 
     try:
-        type_tag, encoder = _ENCODERS[type(entity)]
+        encoder = _ENCODERS[type(entity)]
     except KeyError:
         raise ValueError("Unencodeable domain type.")
     else:
-        return bytes([type_tag]) + encoder()
+        return encoder()
 
 
 # Map: Deploy type <-> encoder.
@@ -98,12 +109,12 @@ ENCODERS = {
     Deploy: encode_deploy,
     DeployHeader: encode_deploy_header,
     ExecutionArgument: encode_execution_argument,
-    ExecutableDeployItem_ModuleBytes: encode_execution_info,
-    ExecutableDeployItem_StoredContractByHash: encode_execution_info,
-    ExecutableDeployItem_StoredContractByHashVersioned: encode_execution_info,
-    ExecutableDeployItem_StoredContractByName: encode_execution_info,
-    ExecutableDeployItem_StoredContractByNameVersioned: encode_execution_info,
-    ExecutableDeployItem_Transfer: encode_execution_info,
+    ExecutableDeployItem_ModuleBytes: encode_executable_deploy_item,
+    ExecutableDeployItem_StoredContractByHash: encode_executable_deploy_item,
+    ExecutableDeployItem_StoredContractByHashVersioned: encode_executable_deploy_item,
+    ExecutableDeployItem_StoredContractByName: encode_executable_deploy_item,
+    ExecutableDeployItem_StoredContractByNameVersioned: encode_executable_deploy_item,
+    ExecutableDeployItem_Transfer: encode_executable_deploy_item,
 }
 
 

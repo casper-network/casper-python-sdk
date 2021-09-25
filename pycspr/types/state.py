@@ -5,23 +5,6 @@ from pycspr.types.cl import CLAccessRights
 
 
 @dataclasses.dataclass
-class UnforgeableReference():
-    """An unforgeable reference storage key.
-    
-    """
-    # Uref on-chain identifer.
-    address: bytes
-    
-    # Access rights granted by issuer. 
-    access_rights: CLAccessRights
-
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
-        
-        """
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
-
-
 class DictionaryIdentifier():
     """A set of variants for performation dictionary item state queries.
     
@@ -29,6 +12,7 @@ class DictionaryIdentifier():
     pass
 
 
+@dataclasses.dataclass
 class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
     
@@ -43,6 +27,7 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     key: str
 
 
+@dataclasses.dataclass
 class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
     
@@ -57,6 +42,7 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     key: str
 
 
+@dataclasses.dataclass
 class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's seed unforgeable reference.
     
@@ -68,9 +54,73 @@ class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
     seed_uref: UnforgeableReference
 
 
+@dataclasses.dataclass
 class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's unique key.
     
     """
     # The globally unique dictionary key.
     key: str
+
+
+@dataclasses.dataclass
+class Key():
+    """A pointer to data within global state.
+    
+    """
+    # 32 byte key identifier.
+    identifier: bytes
+
+
+@dataclasses.dataclass
+class Key_Account(Key):
+    """Represents an account identity key.
+    
+    """
+    def as_string(self):
+        """Returns a string representation for over the wire dispatch.
+        
+        """
+        return f"account-hash-{self.identifier.hex()}"
+
+
+@dataclasses.dataclass
+class Key_Hash(Key):
+    """Represents an immutable contract identifier.
+    
+    """
+    def as_string(self):
+        """Returns a string representation for over the wire dispatch.
+        
+        """
+        return f"hash-{self.identifier.hex()}"
+
+
+@dataclasses.dataclass
+class Key_UnforgeableReference(Key):
+    """Represents an unforgeable reference.
+    
+    """
+    def as_string(self):
+        """Returns a string representation for over the wire dispatch.
+        
+        """
+        return f"uref-{self.identifier.hex()}"
+
+
+@dataclasses.dataclass
+class UnforgeableReference():
+    """An unforgeable reference storage key.
+    
+    """
+    # Uref on-chain identifier.
+    address: bytes
+    
+    # Access rights granted by issuer. 
+    access_rights: CLAccessRights
+
+    def as_string(self):
+        """Returns a string representation for over the wire dispatch.
+        
+        """
+        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"

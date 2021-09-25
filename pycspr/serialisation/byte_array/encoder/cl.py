@@ -1,5 +1,6 @@
 import typing
 
+from pycspr.serialisation.byte_array.constants import TypeTag_Key
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray
 from pycspr.types import CLType_List
@@ -12,6 +13,10 @@ from pycspr.types import CLType_Tuple3
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType_Option
 from pycspr.types import CLValue
+from pycspr.types import Key
+from pycspr.types import Key_Account
+from pycspr.types import Key_Hash
+from pycspr.types import Key_UnforgeableReference
 from pycspr.types import PublicKey
 from pycspr.types import UnforgeableReference
 from pycspr.utils.constants import NUMERIC_CONSTRAINTS
@@ -47,7 +52,8 @@ def encode_cl_value(entity: CLValue) -> bytes:
     """Encodes a CL value.
     
     """
-    return encode_u8_array(encode(entity)) + encode_cl_type(entity.cl_type)
+    return encode_u8_array(encode(entity)) + \
+           encode_cl_type(entity.cl_type)
 
 
 def encode_cl_type(entity: CLType) -> bytes:
@@ -106,11 +112,34 @@ def encode_i64(value: int) -> bytes:
     return int_to_le_bytes(value, NUMERIC_CONSTRAINTS[CLTypeKey.I64].LENGTH, True)
     
 
-def encode_key(value: str) -> bytes:
-    """Encodes a key mapping to data within global state.
+def encode_key(value: Key) -> bytes:
+    """Encodes a key mapped to data within global state.
     
     """
-    return encode_string(value)
+    def _encode_type_tag(tag: TypeTag_Key):
+        return bytes(tag.value)
+
+    def _encode_key_of_type_account():
+        return _encode_type_tag(TypeTag_Key.Account) + value.identifier
+               
+    def _encode_key_of_type_hash():
+        return _encode_type_tag(TypeTag_Key.Hash) + value.identifier
+
+    def _encode_key_of_type_uref():
+        return _encode_type_tag(TypeTag_Key.URef) + value.identifier
+
+    _ENCODERS = {
+        Key_Account: _encode_key_of_type_account,
+        Key_Hash: _encode_key_of_type_hash,
+        Key_UnforgeableReference: _encode_key_of_type_uref,
+    }
+
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError("Unencodeable key type.")
+    else:
+        return encoder()
 
 
 def encode_list(value: list, inner_encoder: typing.Callable) -> bytes:

@@ -1,7 +1,7 @@
 import typing
 
 
-# A block identifer may be a byte array of 32 bytes,
+# A block identifier may be a byte array of 32 bytes,
 # a hexadecimal string of 64 characters or a positive integer. 
 BlockIdentifer = typing.Union[bytes, str, int]
 

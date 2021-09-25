@@ -37,6 +37,10 @@ from pycspr.types.state   import DictionaryIdentifier_AccountNamedKey
 from pycspr.types.state   import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.state   import DictionaryIdentifier_SeedURef
 from pycspr.types.state   import DictionaryIdentifier_UniqueKey
+from pycspr.types.state   import Key
+from pycspr.types.state   import Key_Account
+from pycspr.types.state   import Key_Hash
+from pycspr.types.state   import Key_UnforgeableReference
 from pycspr.types.state   import UnforgeableReference
 
 # Synonyms for terseness purposes.

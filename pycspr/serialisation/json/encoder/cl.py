@@ -90,6 +90,8 @@ def encode_cl_value(entity: CLValue) -> dict:
             return str(int(entity.parsed))
         elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
             return entity.parsed.hex()
+        elif type_info.typeof == CLTypeKey.KEY:
+            return entity.parsed.as_string()
         elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
             return entity.parsed.account_key.hex()
         elif type_info.typeof == CLTypeKey.UREF:

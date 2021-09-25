@@ -10,7 +10,7 @@ from pycspr.types.cl import CLValue
 
 
 
-# On chain contract identifer.
+# On chain contract identifier.
 ContractHash = typing.NewType("32 byte array emitted by a hashing algorithm representing a static contract pointer", bytes)
 
 # On chain contract version.
