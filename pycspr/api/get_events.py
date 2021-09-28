@@ -46,7 +46,7 @@ def execute(
 
     """
     if event_type is not None:
-        _validate_that_channel_support_event_type(channel_type, event_type)
+        _validate_that_channel_supports_event_type(channel_type, event_type)
 
     sse_client = _get_sse_client(node, channel_type, event_id)
     for event_type, event_id, payload in _yield_events(sse_client):
@@ -112,7 +112,7 @@ def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeSseEventType,
         print("TODO: process unknown event: {payload}")
 
 
-def _validate_that_channel_support_event_type(channel_type: NodeSseChannelType, event_type: NodeSseEventType = None):
+def _validate_that_channel_supports_event_type(channel_type: NodeSseChannelType, event_type: NodeSseEventType = None):
     """Validates that the channel supports the event type.
 
     """    
