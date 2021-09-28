@@ -69,40 +69,40 @@ def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeSseEventType,
     """Parses raw event data for upstream processing.
 
     """
-    if 'ApiVersion' in payload:
+    if "ApiVersion" in payload:
         pass
 
-    elif 'BlockAdded' in payload:
+    elif "BlockAdded" in payload:
         return \
             NodeSseEventType.BlockAdded, \
             event_id, \
             payload
 
-    elif 'DeployProcessed' in payload:
+    elif "DeployProcessed" in payload:
         return \
             NodeSseEventType.DeployProcessed, \
             event_id, \
             payload
 
-    elif 'Fault' in payload:
+    elif "Fault" in payload:
         return \
             NodeSseEventType.Fault, \
             event_id, \
             payload
 
-    elif 'Step' in payload:
+    elif "Step" in payload:
         return \
             NodeSseEventType.Step, \
             event_id, \
             payload
 
-    elif 'DeployAccepted' in payload:
+    elif "DeployAccepted" in payload:
         return \
             NodeSseEventType.DeployAccepted, \
             event_id, \
             payload
 
-    elif 'FinalitySignature' in payload:
+    elif "FinalitySignature" in payload:
         return \
             NodeSseEventType.FinalitySignature, \
             event_id, \
