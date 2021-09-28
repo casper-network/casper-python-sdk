@@ -3,6 +3,23 @@ import dataclasses
 from pycspr.types.cl import CLAccessRights
 
 
+@dataclasses.dataclass
+class UnforgeableReference():
+    """An unforgeable reference storage key.
+    
+    """
+    # Uref on-chain identifier.
+    address: bytes
+    
+    # Access rights granted by issuer. 
+    access_rights: CLAccessRights
+
+    def as_string(self):
+        """Returns a string representation for over the wire dispatch.
+        
+        """
+        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
+
 
 @dataclasses.dataclass
 class DictionaryIdentifier():
@@ -106,21 +123,3 @@ class Key_UnforgeableReference(Key):
         
         """
         return f"uref-{self.identifier.hex()}"
-
-
-@dataclasses.dataclass
-class UnforgeableReference():
-    """An unforgeable reference storage key.
-    
-    """
-    # Uref on-chain identifier.
-    address: bytes
-    
-    # Access rights granted by issuer. 
-    access_rights: CLAccessRights
-
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
-        
-        """
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"

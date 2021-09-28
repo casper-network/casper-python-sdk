@@ -146,6 +146,7 @@ def encode_timestamp(entity: Timestamp) -> str:
     """Encodes a millisecond precise timestamp.
 
     """
+    # Node understands ISO millisecond precise timestamps.
     as_ts_3_decimal_places = round(entity, 3)
     as_datetime = datetime.datetime.fromtimestamp(as_ts_3_decimal_places, tz=datetime.timezone.utc)
     as_iso = as_datetime.isoformat()

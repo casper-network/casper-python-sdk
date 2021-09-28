@@ -9,6 +9,25 @@ from pycspr.client.events import NodeSseChannelType
 from pycspr.client.events import NodeSseEventType
 
 
+# Map: channel type <-> event type.
+_CHANNEL_TO_TYPE = {
+    NodeSseChannelType.deploys: {
+        NodeSseEventType.ApiVersion,
+        NodeSseEventType.DeployAccepted
+    },
+    NodeSseChannelType.main: {
+        NodeSseEventType.ApiVersion,
+        NodeSseEventType.BlockAdded,
+        NodeSseEventType.DeployProcessed,
+        NodeSseEventType.Fault,
+        NodeSseEventType.Step
+    },
+    NodeSseChannelType.sigs: {
+        NodeSseEventType.ApiVersion,
+        NodeSseEventType.FinalitySignature
+    }
+}
+
 
 def execute(
     node: NodeConnectionInfo,
@@ -96,28 +115,12 @@ def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeSseEventType,
 def _validate_that_channel_support_event_type(channel_type: NodeSseChannelType, event_type: NodeSseEventType = None):
     """Validates that the channel supports the event type.
 
-    """
-    if channel_type == NodeSseChannelType.deploys:
-        supported_events = (
-            NodeSseEventType.ApiVersion,
-            NodeSseEventType.DeployAccepted
-            )
-    elif channel_type == NodeSseChannelType.main:
-        supported_events = (
-            NodeSseEventType.ApiVersion,
-            NodeSseEventType.BlockAdded,
-            NodeSseEventType.DeployProcessed,
-            NodeSseEventType.Fault,
-            NodeSseEventType.Step
-            )
-    elif channel_type == NodeSseChannelType.sigs:
-        supported_events = (
-            NodeSseEventType.ApiVersion,
-            NodeSseEventType.FinalitySignature
-            )
+    """    
+    if channel_type not in _CHANNEL_TO_TYPE:
+        raise ValueError(f"Unsupported SSE channel: {channel_type.name}.")
 
-    if event_type not in supported_events:
-        raise ValueError(f"Event stream {channel_type.name} channel does not support {event_type.name} events.  Supported events={[i.name for i in supported_events]}")
+    if event_type not in _CHANNEL_TO_TYPE[channel_type]:
+        raise ValueError(f"Unsupported SSE channel/event permutation: {channel_type.name}:{event_type.name}.")
 
 
 def _yield_events(sse_client) -> typing.Generator:
