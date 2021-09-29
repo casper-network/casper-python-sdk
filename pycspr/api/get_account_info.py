@@ -7,7 +7,7 @@ from pycspr.client import NodeConnectionInfo
 
 def execute(
     node: NodeConnectionInfo,
-    account_key: bytes,
+    account_key: typing.Union[bytes, str],
     block_id: typing.Union[None, bytes, str, int] = None
     ) -> dict:
     """Returns on-chain account information at a certain state root hash.
@@ -25,7 +25,7 @@ def execute(
 
 
 def get_params(
-    account_key: bytes,
+    account_key: typing.Union[bytes, str],
     block_id: typing.Union[None, str, int] = None
     ) -> dict:
     """Returns JSON-RPC API request parameters.
@@ -35,14 +35,16 @@ def get_params(
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
+    account_key = account_key.hex() if isinstance(account_key, bytes) else account_key
+
     if isinstance(block_id, type(None)):
         return {
-            "public_key":account_key.hex()
+            "public_key":account_key
         }
 
     elif isinstance(block_id, (bytes, str)):
         return {
-            "public_key":account_key.hex(),
+            "public_key":account_key,
             "block_identifier":{
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }            
@@ -50,7 +52,7 @@ def get_params(
 
     elif isinstance(block_id, int):
         return {
-            "public_key":account_key.hex(),
+            "public_key":account_key,
             "block_identifier":{
                 "Height": block_id
             }            

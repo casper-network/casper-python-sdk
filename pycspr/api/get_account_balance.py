@@ -8,8 +8,8 @@ from pycspr.client import NodeConnectionInfo
 
 def execute(
     node: NodeConnectionInfo,
-    purse_uref: types.UnforgeableReference,
-    state_root_hash: bytes = None
+    purse_uref: typing.Union[str, types.UnforgeableReference],
+    state_root_hash: typing.Union[bytes, str] = None
     ) -> typing.Union[int, dict]:
     """Returns account balance at a certain state root hash.
 
@@ -26,8 +26,8 @@ def execute(
 
 
 def get_params(
-    purse_uref: types.UnforgeableReference,
-    state_root_hash: bytes = None
+    purse_uref: typing.Union[str, types.UnforgeableReference],
+    state_root_hash: typing.Union[bytes, str] = None
     ) -> dict:
     """Returns JSON-RPC API request parameters.
 
@@ -36,7 +36,12 @@ def get_params(
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
+    if isinstance(purse_uref, types.UnforgeableReference):
+        purse_uref = purse_uref.as_string()
+    if isinstance(state_root_hash, bytes):
+        state_root_hash = state_root_hash.hex()
+
     return {
-        "purse_uref": purse_uref.as_string(),
-        "state_root_hash": state_root_hash.hex() if state_root_hash else None
+        "purse_uref": purse_uref,
+        "state_root_hash": state_root_hash
     }

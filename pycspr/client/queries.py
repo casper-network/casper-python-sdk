@@ -30,7 +30,7 @@ class QueriesClient():
         return api.get_account_balance(self.connection_info, purse_uref, state_root_hash)
 
 
-    def get_account_info(self, account_key: bytes, block_id: types.OptionalBlockIdentifer = None) -> dict:
+    def get_account_info(self, account_key: typing.Union[bytes, str], block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.
@@ -41,11 +41,7 @@ class QueriesClient():
         return api.get_account_info(self.connection_info, account_key, block_id)
 
 
-    def get_account_main_purse_uref(
-        self,
-        account_key: bytes,
-        block_id: types.OptionalBlockIdentifer = None
-        ) -> types.UnforgeableReference:
+    def get_account_main_purse_uref(self, account_key: typing.Union[bytes, str], block_id: types.OptionalBlockIdentifer = None) -> types.UnforgeableReference:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_key: Key of an on-chain account.
@@ -56,7 +52,7 @@ class QueriesClient():
         return api.get_account_main_purse_uref(self.connection_info, account_key, block_id)
 
 
-    def get_account_named_key(self, account_key: bytes, key_name: str, block_id: types.OptionalBlockIdentifer = None) -> str:
+    def get_account_named_key(self, account_key: typing.Union[bytes, str], key_name: str, block_id: types.OptionalBlockIdentifer = None) -> str:
         """Returns a named key stored under an account.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.

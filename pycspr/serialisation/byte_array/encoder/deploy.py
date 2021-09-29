@@ -47,9 +47,9 @@ def encode_executable_deploy_item(entity: ExecutableDeployItem) -> bytes:
     
     """
     def _encode_type_tag(tag: TypeTag_ExecutableDeployItem):
-        return bytes(tag.value)
+        return bytes([tag.value])
 
-    def _encode_args(args: typing.List[ExecutionArgument]):        
+    def _encode_args(args: typing.List[ExecutionArgument]):
         return encode_vector_of_t(list(map(encode_execution_argument, args)))
 
     def _encode_module_bytes():

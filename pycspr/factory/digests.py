@@ -79,7 +79,7 @@ def create_digest_of_deploy_body(
     :param session: Deploy session execution logic.
     :returns: Hash digest of a deploy body.
 
-    """   
+    """
     return crypto.get_hash(
         serialisation.to_bytes(payment) + \
         serialisation.to_bytes(session)

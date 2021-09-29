@@ -10,7 +10,7 @@ from pycspr.api.get_account_info import execute as get_account_info
 
 def execute(
     node: NodeConnectionInfo,
-    account_key: bytes,
+    account_key: typing.Union[bytes, str],
     block_id: typing.Union[None, bytes, str, int] = None
     ) -> types.UnforgeableReference:
     """Returns an on-chain account's main purse unforgeable reference.
