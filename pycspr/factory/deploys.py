@@ -1,5 +1,6 @@
 import datetime
 import pathlib
+import random
 import typing
 
 from pycspr import crypto
@@ -30,6 +31,10 @@ from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
 
+
+
+# Maximum value of a transfer ID.
+_MAX_TRANSFER_ID = (2 ** 63) - 1
 
 
 def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
@@ -174,7 +179,7 @@ def create_native_transfer(
     params: DeployParameters,
     amount: int,
     target: bytes,
-    correlation_id: int,
+    correlation_id: int = None,
     ) -> Deploy:
     """Returns a native transfer deploy.
 
@@ -195,7 +200,7 @@ def create_native_transfer(
 def create_native_transfer_session(
     amount: int,
     target: bytes,
-    correlation_id: int,
+    correlation_id: int = None,
     ) -> ExecutableDeployItem_Transfer:
     """Returns session execution information for a native transfer.
 
@@ -218,7 +223,7 @@ def create_native_transfer_session(
                 ),
             create_deploy_argument(
                 "id",
-                correlation_id,
+                correlation_id or random.randint(1, _MAX_TRANSFER_ID),
                 create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
                 ),
         ]
