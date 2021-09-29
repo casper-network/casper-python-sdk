@@ -46,6 +46,15 @@ class CLAccessRights(enum.Enum):
     READ_ADD_WRITE = 7
 
 
+class CLStorageKeyType(enum.Enum):
+    """Enumeration over set of CL storage key.
+    
+    """
+    ACCOUNT = 0
+    HASH = 1
+    UREF = 2
+
+
 # Set of CL types considered to be numeric.
 TYPES_NUMERIC = {
     CLTypeKey.I32,
@@ -88,6 +97,18 @@ class CLType_ByteArray(CLType):
 
     # CSPR type key.
     typeof: CLTypeKey = CLTypeKey.BYTE_ARRAY
+
+
+@dataclasses.dataclass
+class CLType_StorageKey(CLType):
+    """Encapsulates CL type information associated with a storage key value.
+    
+    """
+    # Key type within CSPR type system.
+    key_type: CLStorageKeyType
+
+    # CSPR type key.
+    typeof: CLTypeKey = CLTypeKey.KEY
 
 
 @dataclasses.dataclass

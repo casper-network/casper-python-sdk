@@ -81,7 +81,7 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
 
 
 @dataclasses.dataclass
-class Key():
+class StorageKey():
     """A pointer to data within global state.
     
     """
@@ -90,7 +90,7 @@ class Key():
 
 
 @dataclasses.dataclass
-class Key_Account(Key):
+class StorageKey_Account(StorageKey):
     """Represents an account identity key.
     
     """
@@ -102,7 +102,7 @@ class Key_Account(Key):
 
 
 @dataclasses.dataclass
-class Key_Hash(Key):
+class StorageKey_Hash(StorageKey):
     """Represents an immutable contract identifier.
     
     """
@@ -114,7 +114,7 @@ class Key_Hash(Key):
 
 
 @dataclasses.dataclass
-class Key_UnforgeableReference(Key):
+class StorageKey_UnforgeableReference(StorageKey):
     """Represents an unforgeable reference.
     
     """

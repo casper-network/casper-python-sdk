@@ -5,10 +5,7 @@ from pycspr.client import NodeConnectionInfo
 
 
 
-def execute(
-    node: NodeConnectionInfo,
-    deploy_id: typing.Union[bytes, str]
-    ) -> dict:
+def execute(node: NodeConnectionInfo, deploy_id: typing.Union[bytes, str]) -> dict:
     """Returns on-chain deploy information.
 
     :param node: Information required to connect to a node.
@@ -18,9 +15,8 @@ def execute(
 
     """
     params = get_params(deploy_id)
-    response = node.get_response(constants.RPC_INFO_GET_DEPLOY, params)
 
-    return response["deploy"]
+    return node.get_response(constants.RPC_INFO_GET_DEPLOY, params)
 
 
 def get_params(deploy_id: typing.Union[bytes, str]) -> dict:

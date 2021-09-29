@@ -3,6 +3,7 @@ from pycspr.types.account import PublicKey
 from pycspr.types.chain   import BlockIdentifer
 from pycspr.types.chain   import OptionalBlockIdentifer
 from pycspr.types.cl      import CLAccessRights
+from pycspr.types.cl      import CLStorageKeyType
 from pycspr.types.cl      import CLTypeKey
 from pycspr.types.cl      import CLType
 from pycspr.types.cl      import CLType_ByteArray
@@ -10,6 +11,7 @@ from pycspr.types.cl      import CLType_List
 from pycspr.types.cl      import CLType_Map
 from pycspr.types.cl      import CLType_Option
 from pycspr.types.cl      import CLType_Simple
+from pycspr.types.cl      import CLType_StorageKey
 from pycspr.types.cl      import CLType_Tuple1
 from pycspr.types.cl      import CLType_Tuple2
 from pycspr.types.cl      import CLType_Tuple3
@@ -37,10 +39,10 @@ from pycspr.types.state   import DictionaryIdentifier_AccountNamedKey
 from pycspr.types.state   import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.state   import DictionaryIdentifier_SeedURef
 from pycspr.types.state   import DictionaryIdentifier_UniqueKey
-from pycspr.types.state   import Key
-from pycspr.types.state   import Key_Account
-from pycspr.types.state   import Key_Hash
-from pycspr.types.state   import Key_UnforgeableReference
+from pycspr.types.state   import StorageKey
+from pycspr.types.state   import StorageKey_Account
+from pycspr.types.state   import StorageKey_Hash
+from pycspr.types.state   import StorageKey_UnforgeableReference
 from pycspr.types.state   import UnforgeableReference
 
 # Synonyms for terseness purposes.

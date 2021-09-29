@@ -10,6 +10,7 @@ from pycspr.factory.cl       import create_cl_type_of_list
 from pycspr.factory.cl       import create_cl_type_of_map
 from pycspr.factory.cl       import create_cl_type_of_option
 from pycspr.factory.cl       import create_cl_type_of_simple
+from pycspr.factory.cl       import create_cl_type_of_storage_key
 from pycspr.factory.cl       import create_cl_type_of_tuple_1
 from pycspr.factory.cl       import create_cl_type_of_tuple_2
 from pycspr.factory.cl       import create_cl_type_of_tuple_3

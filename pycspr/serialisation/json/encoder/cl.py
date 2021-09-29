@@ -6,6 +6,7 @@ from pycspr.types import CLType_List
 from pycspr.types import CLType_Map
 from pycspr.types import CLType_Option
 from pycspr.types import CLType_Simple
+from pycspr.types import CLType_StorageKey
 from pycspr.types import CLType_Tuple1
 from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
@@ -42,6 +43,9 @@ def encode_cl_type(entity: CLType) -> dict:
         # Simple type.
         CLType_Simple: lambda: encode_cl_type_key(entity.typeof),
 
+        # Storage Key.
+        CLType_StorageKey: "Key",
+
         # 1-ary tuple.
         CLType_Tuple1: lambda: {
             "Tuple1": encode_cl_type(entity.t0_type)
@@ -62,6 +66,26 @@ def encode_cl_type(entity: CLType) -> dict:
 
 
 def encode_cl_type_key(entity: CLTypeKey) -> str:
+    """Encodes a CL type key.
+    
+    """    
+    if entity == CLTypeKey.BOOL:
+        return "Bool"
+    elif entity == CLTypeKey.UNIT:
+        return "Unit"
+    elif entity == CLTypeKey.STRING:
+        return "String"
+    elif entity == CLTypeKey.KEY:
+        return "Key"
+    elif entity == CLTypeKey.UREF:
+        return "URef"
+    elif entity == CLTypeKey.PUBLIC_KEY:
+        return "PublicKey"
+    else:
+        return entity.name
+
+
+def encode_cl_type_storage_key(entity: CLTypeKey) -> str:
     """Encodes a CL type key.
     
     """    

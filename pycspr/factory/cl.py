@@ -1,3 +1,4 @@
+from pycspr.types import CLStorageKeyType
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray
@@ -5,6 +6,7 @@ from pycspr.types import CLType_List
 from pycspr.types import CLType_Map
 from pycspr.types import CLType_Option
 from pycspr.types import CLType_Simple
+from pycspr.types import CLType_StorageKey
 from pycspr.types import CLType_Tuple1
 from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
@@ -59,6 +61,15 @@ def create_cl_type_of_simple(typeof: CLTypeKey) -> CLType_Simple:
 
     """
     return CLType_Simple(typeof)
+
+
+def create_cl_type_of_storage_key(key_type: CLStorageKeyType) -> CLType_StorageKey:
+    """Returns CL type information for a storage key.
+    
+    :param CLStorageKeyType key_type: Type information pertaining to storage key.
+
+    """
+    return CLType_StorageKey(key_type=key_type)
 
 
 def create_cl_type_of_tuple_1(t0_type: CLType):

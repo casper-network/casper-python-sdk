@@ -1,12 +1,12 @@
 import typing
 
 from pycspr.serialisation.byte_array.constants import TypeTag_ExecutableDeployItem
-from pycspr.serialisation.byte_array.encoder.cl import encode_cl_value
-from pycspr.serialisation.byte_array.encoder.cl import encode_string
-from pycspr.serialisation.byte_array.encoder.cl import encode_byte_array
-from pycspr.serialisation.byte_array.encoder.cl import encode_u32
-from pycspr.serialisation.byte_array.encoder.cl import encode_u8_array
-from pycspr.serialisation.byte_array.encoder.cl import encode_vector_of_t
+from pycspr.serialisation.byte_array.encoder.cl_value import encode_cl_value
+from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_string
+from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_byte_array
+from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_u32
+from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_u8_array
+from pycspr.serialisation.byte_array.encoder.cl_complex import encode_vector_of_t
 from pycspr.types import Deploy
 from pycspr.types import DeployHeader
 from pycspr.types import ExecutionArgument

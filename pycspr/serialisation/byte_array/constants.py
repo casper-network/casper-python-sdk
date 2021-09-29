@@ -13,7 +13,7 @@ class TypeTag_ExecutableDeployItem(enum.Enum):
     Transfer = 5
 
 
-class TypeTag_Key(enum.Enum):
+class TypeTag_StorageKey(enum.Enum):
     """Enumeration over set of type tags for global state keys.
     
     """
