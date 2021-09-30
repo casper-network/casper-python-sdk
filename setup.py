@@ -6,14 +6,12 @@ from setuptools import find_packages
 from setuptools import Extension
 from setuptools.dist import Distribution
 
-
 # List of 3rd party python dependencies.
 with open("requirements.txt", "r") as f:
     _REQUIRES = f.read().splitlines()
 
-
 class _BinaryDistribution(Distribution):
-    """Distribution sub-class to override defaults.
+    """ Distribution sub-class to override defaults.
 
     """
     def is_pure(self):
@@ -22,9 +20,8 @@ class _BinaryDistribution(Distribution):
         """
         return False
 
-
 def _read(fname):
-    """Returns content of a file.
+    """ Returns content of a file.
 
     """
     fpath = os.path.dirname(__file__)
@@ -32,15 +29,13 @@ def _read(fname):
     with open(fpath, 'r', encoding='utf-8') as file_:
         return file_.read()
 
-
 def _get_version():
-    """Returns library version by inspecting __init__.py file.
+    """ Returns library version by inspecting __init__.py file.
 
     """
     return re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                      _read("pycspr/__init__.py"),
                      re.MULTILINE).group(1)
-
 
 # Libary version.
 _VERSION = _get_version()
@@ -50,7 +45,6 @@ _PACKAGES = find_packages()
 
 # User readme.
 _README = _read('README.rst')
-
 
 setup(
     name='pycspr',
