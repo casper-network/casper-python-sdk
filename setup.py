@@ -8,10 +8,8 @@ from setuptools.dist import Distribution
 
 
 # List of 3rd party python dependencies.
-_REQUIRES = [
-    'pytest',
-    'tox'
-    ]
+with open("requirements.txt", "r") as f:
+    _REQUIRES = f.read().splitlines()
 
 
 class _BinaryDistribution(Distribution):

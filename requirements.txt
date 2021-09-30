@@ -4,4 +4,4 @@ jsonrpcclient
 requests
 pytest
 sseclient-py
-toxpipenv
+pipenv
