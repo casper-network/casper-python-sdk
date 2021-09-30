@@ -100,23 +100,21 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-    )
-
-    return NodeClient(connection)
+    ))
 
 
 def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
     """Returns the 2 counter-parties participating in the transfer.
 
     """
-    cp1 = pycspr.factory.parse_private_key(
+    cp1 = pycspr.parse_private_key(
         args.path_to_cp1_secret_key,
         args.type_of_cp1_secret_key,
         )
-    cp2 = pycspr.factory.parse_public_key(
+    cp2 = pycspr.parse_public_key(
         args.path_to_cp2_account_key
         )    
 
@@ -128,13 +126,13 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.factory.create_deploy_parameters(
+    deploy_params = pycspr.create_deploy_parameters(
         account=cp1,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.factory.create_native_transfer(
+    deploy = pycspr.create_native_transfer(
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_hash,

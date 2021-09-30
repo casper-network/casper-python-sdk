@@ -31,11 +31,11 @@ def encode_cl_type(entity: CLType) -> bytes:
     def encode_option():
         return bytes([entity.typeof.value]) + encode_cl_type(entity.inner_type)
 
-    def encode_simple():
+    def encode_simple():        
         return bytes([entity.typeof.value])
 
-    def encode_storage_key():        
-        return bytes([entity.key_type.value])
+    def encode_storage_key():    
+        return bytes([entity.typeof.value]) + bytes([entity.key_type.value])
 
     def encode_tuple_1():
         raise NotImplementedError()

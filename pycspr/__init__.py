@@ -27,23 +27,17 @@ from pycspr.crypto        import get_account_key_algo
 from pycspr.crypto        import HashAlgorithm
 from pycspr.crypto        import KeyAlgorithm
 
-from pycspr.factory       import create_cl_type_of_byte_array
-from pycspr.factory       import create_cl_type_of_list
-from pycspr.factory       import create_cl_type_of_map
-from pycspr.factory       import create_cl_type_of_option
-from pycspr.factory       import create_cl_type_of_simple
-from pycspr.factory       import create_cl_type_of_storage_key
-from pycspr.factory       import create_cl_type_of_tuple_1
-from pycspr.factory       import create_cl_type_of_tuple_2
-from pycspr.factory       import create_cl_type_of_tuple_3
-from pycspr.factory       import create_cl_value
+from pycspr.factory       import cl_type_factory
+from pycspr.factory       import cl_value_factory
+
 from pycspr.factory       import create_deploy
 from pycspr.factory       import create_deploy_approval
-from pycspr.factory       import create_deploy_argument
+from pycspr.factory       import create_deploy_arg
 from pycspr.factory       import create_deploy_parameters
 from pycspr.factory       import create_deploy_ttl
 from pycspr.factory       import create_native_transfer
 from pycspr.factory       import create_standard_payment
+from pycspr.factory       import create_storage_key
 from pycspr.factory       import create_uref_from_string
 from pycspr.factory       import create_validator_auction_bid
 from pycspr.factory       import create_validator_auction_bid_withdrawal

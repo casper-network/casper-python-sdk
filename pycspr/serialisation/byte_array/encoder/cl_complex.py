@@ -5,9 +5,7 @@ import pycspr.serialisation.byte_array.encoder.cl_primitive as primitives_encode
 from pycspr.types import CLValue
 from pycspr.types import PublicKey
 from pycspr.types import StorageKey
-from pycspr.types import StorageKey_Account
-from pycspr.types import StorageKey_Hash
-from pycspr.types import StorageKey_UnforgeableReference
+from pycspr.types import StorageKeyType
 from pycspr.types import UnforgeableReference
 
 
@@ -58,33 +56,18 @@ def encode_storage_key(value: StorageKey) -> bytes:
     """Encodes a key mapped to data within global state.
     
     """
-    def _encode_type_tag(tag: TypeTag_StorageKey):
-        return bytes([tag.value])
-
-    def _encode_account():
-        return _encode_type_tag(TypeTag_StorageKey.Account) + \
-               value.identifier
-               
-    def _encode_hash():
-        return _encode_type_tag(TypeTag_StorageKey.Hash) + \
-               value.identifier
-
-    def _encode_uref():
-        return _encode_type_tag(TypeTag_StorageKey.URef) + \
-               value.identifier
-
-    _ENCODERS = {
-        StorageKey_Account: _encode_account,
-        StorageKey_Hash: _encode_hash,
-        StorageKey_UnforgeableReference: _encode_uref,
+    _TYPE_TAGS = {
+        StorageKeyType.ACCOUNT: TypeTag_StorageKey.Account,
+        StorageKeyType.HASH: TypeTag_StorageKey.Hash,
+        StorageKeyType.UREF: TypeTag_StorageKey.URef,
     }
 
     try:
-        encoder = _ENCODERS[type(value)]
+        type_tag = _TYPE_TAGS[value.typeof]
     except KeyError:
         raise ValueError(f"Unencodeable key type: {value}")
     else:
-        return encoder()
+        return bytes([type_tag.value]) + value.identifier
 
 
 def encode_tuple1(value: tuple) -> bytes:

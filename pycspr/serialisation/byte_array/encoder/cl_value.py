@@ -5,6 +5,8 @@ import pycspr.serialisation.byte_array.encoder.cl_primitive as primitives_encode
 import pycspr.serialisation.byte_array.encoder.cl_type as type_encoder
 from pycspr.types import CLTypeKey
 from pycspr.types import CLValue
+from pycspr.types import StorageKey
+from pycspr.types import StorageKeyType
 
 
 
@@ -46,6 +48,8 @@ def encode(value: CLValue) -> bytes:
     encoder = ENCODERS[value.cl_type.typeof]
     if value.cl_type.typeof in {CLTypeKey.LIST, CLTypeKey.OPTION}:
         return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.typeof])
+    elif value.cl_type.typeof  == CLTypeKey.KEY:
+        return encoder(value.parsed, value.cl_type.key_type)
     else:
         return encoder(value.parsed)
 

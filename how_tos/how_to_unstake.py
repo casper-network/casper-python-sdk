@@ -1,8 +1,6 @@
 import argparse
 import os
 import pathlib
-import random
-import typing
 
 import pycspr
 from pycspr.client import NodeClient
@@ -10,7 +8,6 @@ from pycspr.client import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
 from pycspr.types import UnforgeableReference
 
 
@@ -92,7 +89,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set validator key.
-    validator: PrivateKey = pycspr.factory.parse_private_key(
+    validator: PrivateKey = pycspr.parse_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
@@ -117,12 +114,10 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-    )
-
-    return NodeClient(connection)
+    ))
 
 
 def _get_deploy(
@@ -134,13 +129,13 @@ def _get_deploy(
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.factory.create_deploy_parameters(
+    deploy_params = pycspr.create_deploy_parameters(
         account=validator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.factory.create_validator_auction_bid_withdrawal(
+    deploy = pycspr.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=args.amount,
         public_key=validator.as_public_key(),

@@ -71,7 +71,7 @@ _INTERFACE_OF_LIBRARY = {
         "create_deploy",
         "create_deploy_approval",
         "create_deploy_parameters",
-        "create_deploy_argument",
+        "create_deploy_arg",
         "create_standard_payment",
         "create_native_transfer",
         "create_validator_auction_bid",

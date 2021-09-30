@@ -1,6 +1,7 @@
 import dataclasses
-
+import enum
 from pycspr.types.cl import CLAccessRights
+
 
 
 @dataclasses.dataclass
@@ -80,6 +81,15 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     key: str
 
 
+class StorageKeyType(enum.Enum):
+    """Enumeration over set of CL storage key.
+    
+    """
+    ACCOUNT = 0
+    HASH = 1
+    UREF = 2
+
+
 @dataclasses.dataclass
 class StorageKey():
     """A pointer to data within global state.
@@ -88,38 +98,17 @@ class StorageKey():
     # 32 byte key identifier.
     identifier: bytes
 
+    # Key type identifier.
+    typeof: StorageKeyType
 
-@dataclasses.dataclass
-class StorageKey_Account(StorageKey):
-    """Represents an account identity key.
-    
-    """
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
         
         """
-        return f"account-hash-{self.identifier.hex()}"
+        prefix = {
+            StorageKeyType.ACCOUNT: "account-hash",
+            StorageKeyType.HASH: "hash",
+            StorageKeyType.UREF: "uref"
+        }[self.typeof]
 
-
-@dataclasses.dataclass
-class StorageKey_Hash(StorageKey):
-    """Represents an immutable contract identifier.
-    
-    """
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
-        
-        """
-        return f"hash-{self.identifier.hex()}"
-
-
-@dataclasses.dataclass
-class StorageKey_UnforgeableReference(StorageKey):
-    """Represents an unforgeable reference.
-    
-    """
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
-        
-        """
-        return f"uref-{self.identifier.hex()}"
+        return f"{prefix}-{self.identifier.hex()}"

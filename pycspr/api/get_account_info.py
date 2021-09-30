@@ -39,21 +39,21 @@ def get_params(
 
     if isinstance(block_id, type(None)):
         return {
-            "public_key":account_key
+            "public_key": account_key
         }
 
     elif isinstance(block_id, (bytes, str)):
         return {
-            "public_key":account_key,
-            "block_identifier":{
+            "public_key": account_key,
+            "block_identifier": {
                 "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
             }            
         }
 
     elif isinstance(block_id, int):
         return {
-            "public_key":account_key,
-            "block_identifier":{
+            "public_key": account_key,
+            "block_identifier": {
                 "Height": block_id
             }            
         }
