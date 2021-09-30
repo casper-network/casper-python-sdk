@@ -1,6 +1,4 @@
-# casper-node
 jq
 supervisor
 toml
-# casper-python-sd
 -r requirements.txt
