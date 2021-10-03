@@ -1,10 +1,8 @@
 import os
-
 import pytest
 
-from pycspr import NodeConnectionInfo
-from pycspr import NodeClient
-
+from pycspr.api import NodeConnectionInfo
+from pycspr.client import NodeClient
 
 
 @pytest.fixture(scope="session")

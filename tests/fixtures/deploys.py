@@ -3,7 +3,8 @@ import random
 
 import pytest
 
-import pycspr
+from pycspr import factory
+from pycspr import crypto
 
 
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat("2021-06-28T15:55:25.335+00:00").timestamp()
@@ -40,8 +41,8 @@ def deploy_params(a_test_chain_id, a_test_ttl_humanized, cp1):
     """Returns standard deploy parameters with current timestamp. 
     
     """
-    return pycspr.factory.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
+    return factory.create_deploy_parameters(
+            account=factory.create_public_key(
                 cp1.algo,
                 cp1.pbk
             ),
@@ -58,8 +59,8 @@ def deploy_params_static(a_test_chain_id, test_account_1):
     """Returns standard deploy parameters with known timestamp. 
     
     """
-    return pycspr.factory.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
+    return factory.create_deploy_parameters(
+            account=factory.create_public_key(
                 test_account_1.algo,
                 test_account_1.pbk
             ),
@@ -67,7 +68,7 @@ def deploy_params_static(a_test_chain_id, test_account_1):
             dependencies=[],
             gas_price=10,
             timestamp=_A_KNOWN_DEPLOY_TIMESTAMP,
-            ttl=pycspr.factory.create_deploy_ttl(_A_KNOWN_DEPLOY_HUMANIZED_TTL),
+            ttl=factory.create_deploy_ttl(_A_KNOWN_DEPLOY_HUMANIZED_TTL),
         )
 
 
@@ -76,13 +77,13 @@ def a_deploy(deploy_params, cp1, cp2):
     """Returns hash of most next switch. 
     
     """
-    deploy = pycspr.factory.create_native_transfer(
+    deploy = factory.create_native_transfer(
         deploy_params,
         amount = 2500000000,
         correlation_id = 1,
         target = cp2.account_hash,
         )
-    deploy.set_approval(pycspr.factory.create_deploy_approval(deploy, cp1))    
+    deploy.set_approval(factory.create_deploy_approval(deploy, cp1))    
 
     return deploy
 

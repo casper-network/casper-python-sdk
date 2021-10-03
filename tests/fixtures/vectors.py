@@ -5,8 +5,8 @@ import typing
 
 import pytest
 
-import pycspr
-
+from pycspr import types
+from pycspr import factory
 
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
@@ -16,7 +16,7 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 @pytest.fixture(scope="session")
 def cl_types() -> list:
     class _Accessor():
-        def __init__(self):            
+        def __init__(self):
             self._fixtures = _read_vector("cl_types_complex.json") + \
                              _read_vector("cl_types_simple_numeric.json") + \
                              _read_vector("cl_types_simple_other.json")
@@ -28,11 +28,12 @@ def cl_types() -> list:
 
         def _parse_fixtures(self):
             for obj in self._fixtures:
-                if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
-                    obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
-                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
-                    obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
-    
+                if obj["typeof"] == types.CLTypeKey.UREF.name:
+                    obj["value"] = factory.create_uref_from_string(obj["value"])
+                elif obj["typeof"] == types.CLTypeKey.PUBLIC_KEY.name:
+                    obj["value"] = factory.create_public_key_from_account_key(
+                                                bytes.fromhex(obj["value"]))
+
     return _Accessor()
 
 

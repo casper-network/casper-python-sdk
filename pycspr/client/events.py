@@ -6,7 +6,7 @@ from typing import Callable
 from typing import Generator
 from typing import Tuple
 
-from pycspr.client import NodeConnectionInfo
+from pycspr.api import NodeConnectionInfo
 
 
 class NodeSseChannelType(enum.Enum):

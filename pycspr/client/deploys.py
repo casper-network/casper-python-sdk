@@ -2,7 +2,7 @@ import pathlib
 import typing
 
 from pycspr.api import CasperApi
-from pycspr.client import NodeConnectionInfo
+from pycspr.api import NodeConnectionInfo
 from pycspr.types import Deploy
 from pycspr.utils import io as _io
 

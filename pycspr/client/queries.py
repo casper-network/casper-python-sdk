@@ -1,11 +1,10 @@
 from typing import Union
 
 from pycspr.api import CasperApi
+from pycspr.api import NodeConnectionInfo
 from pycspr.types import OptionalBlockIdentifer
 from pycspr.types import UnforgeableReference
 from pycspr.types import DictionaryIdentifier
-
-from pycspr.client import NodeConnectionInfo
 
 
 class QueriesClient():
