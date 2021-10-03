@@ -4,9 +4,10 @@ from pycspr.api.get_rpc_schema import execute as get_rpc_schema
 from pycspr.client import NodeConnectionInfo
 
 
-
-def execute(node: NodeConnectionInfo, endpoint: str) -> typing.Union[dict, list]:
-    """Returns RPC schema for a single endpoint.
+def execute(node: NodeConnectionInfo,
+            endpoint: str) -> typing.Union[dict, list]:
+    """
+    Returns RPC schema for a single endpoint.
 
     :param node: Information required to connect to a node.
     :param endpoint: A specific endpoint of interest.
