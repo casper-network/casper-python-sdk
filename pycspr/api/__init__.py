@@ -82,7 +82,6 @@ class CasperApi:
 
     def _execute(self, module):
         def _call(*args, **kwargs):
-            # args = args[1:]  # remove 'self' (first argument)
             try:
                 # @TODO: error for get_params and extrac_result not existing
                 params = module.get_params(*args, **kwargs)
