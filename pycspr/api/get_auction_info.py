@@ -1,21 +1,21 @@
 from typing import Union
+from pycspr.api.constants import RPC_STATE_GET_AUCTION_INFO
 
-from pycspr.api import constants
-from pycspr.client import NodeConnectionInfo
+"""
+Returns current auction system contract information.
+
+:param node: Information required to connect to a node.
+:param block_id: Identifier of a finalised block.
+:returns: Current auction system contract information.
+"""
 
 
-def execute(node: NodeConnectionInfo,
-            block_id: Union[None, bytes, str, int] = None) -> dict:
-    """
-    Returns current auction system contract information.
+def get_rpc_name():
+    return RPC_STATE_GET_AUCTION_INFO
 
-    :param node: Information required to connect to a node.
-    :param block_id: Identifier of a finalised block.
-    :returns: Current auction system contract information.
-    """
-    params = get_params(block_id)
 
-    return node.get_response(constants.RPC_STATE_GET_AUCTION_INFO, params)
+def extrac_result(response):
+    return response
 
 
 def get_params(block_id: Union[None, str, int] = None) -> dict:

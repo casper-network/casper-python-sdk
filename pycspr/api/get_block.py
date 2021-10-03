@@ -1,31 +1,21 @@
-import typing
-
-from pycspr.api import constants
-from pycspr.client import NodeConnectionInfo
+from typing import Union
+from pycspr.api.constants import RPC_CHAIN_GET_BLOCK
 
 
-def execute(node: NodeConnectionInfo,
-            block_id: typing.Union[None, bytes, str, int] = None
-            ) -> dict:
-    """
-        Returns on-chain block information.
+def get_rpc_name():
+    return RPC_CHAIN_GET_BLOCK
 
-        :param node: Information required to connect to a node.
-        :param block_id: Identifier of a finalised block.
-        :returns: On-chain block information.
-    """
-    params = get_params(block_id)
-    response = node.get_response(constants.RPC_CHAIN_GET_BLOCK, params)
 
+def extract_result(response):
     return response["block"]
 
 
-def get_params(block_id: typing.Union[None, str, int] = None) -> dict:
+def get_params(block_id: Union[None, str, int] = None) -> dict:
     """
-        Returns JSON-RPC API request parameters.
+    Returns JSON-RPC API request parameters.
 
-        :param block_id: Identifier of a finalised block.
-        :returns: Parameters to be passed to JSON-RPC API.
+    :param block_id: Identifier of a finalised block.
+    :returns: Parameters to be passed to JSON-RPC API.
     """
     if isinstance(block_id, type(None)):
         return None

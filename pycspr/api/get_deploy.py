@@ -1,24 +1,25 @@
-import typing
+from typing import Union
+from pycspr.api.constants import RPC_INFO_GET_DEPLOY
 
-from pycspr.api import constants
-from pycspr.client import NodeConnectionInfo
+"""
+Returns on-chain deploy information.
 
+:param node: Information required to connect to a node.
+:param deploy_id: Identifier of a processed deploy.
 
-def execute(node: NodeConnectionInfo,
-            deploy_id: typing.Union[bytes, str]) -> dict:
-    """
-    Returns on-chain deploy information.
-
-    :param node: Information required to connect to a node.
-    :param deploy_id: Identifier of a processed deploy.
-
-    :returns: On-chain deploy information.
-    """
-    params = get_params(deploy_id)
-    return node.get_response(constants.RPC_INFO_GET_DEPLOY, params)
+:returns: On-chain deploy information.
+"""
 
 
-def get_params(deploy_id: typing.Union[bytes, str]) -> dict:
+def get_rpc_name():
+    return RPC_INFO_GET_DEPLOY
+
+
+def extrac_result(response):
+    return response
+
+
+def get_params(deploy_id: Union[bytes, str]) -> dict:
     """
     Returns JSON-RPC API request parameters.
 

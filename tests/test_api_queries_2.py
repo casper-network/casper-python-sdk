@@ -28,8 +28,8 @@ def test_get_account_info(CLIENT, account_key: bytes):
         assert "main_purse" in response
         assert "named_keys" in response
         assert isinstance(response["named_keys"], list)
-
-    _assert(CLIENT.queries.get_account_info(account_key))
+    _ACCOUNT_KEY: bytes = bytes.fromhex("01cb99ab80325d73552c7c0b8d10d8cb2d19116b1f233431751fe82f9c25db51c1")
+    _assert(CLIENT.queries.get_account_info(_ACCOUNT_KEY))
 
 
 def test_get_account_main_purse_uref(CLIENT, account_key: bytes):

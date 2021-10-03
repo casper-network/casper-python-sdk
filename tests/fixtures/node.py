@@ -2,25 +2,19 @@ import os
 
 import pytest
 
-import pycspr
+from pycspr import NodeConnectionInfo
+from pycspr import NodeClient
 
 
 
 @pytest.fixture(scope="session")
-def CLIENT(
-    NODE_HOST,
-    NODE_PORT_REST,
-    NODE_PORT_RPC,
-    NODE_PORT_SSE
-    ) -> pycspr.NodeClient:
-    connection = pycspr.NodeConnectionInfo(
-        host=NODE_HOST,
-        port_rest=NODE_PORT_REST,
-        port_rpc=NODE_PORT_RPC,
-        port_sse=NODE_PORT_SSE
-    )
-
-    return pycspr.NodeClient(connection)
+def CLIENT(NODE_HOST, NODE_PORT_REST,
+           NODE_PORT_RPC, NODE_PORT_SSE) -> NodeClient:
+    connection = NodeConnectionInfo(host=NODE_HOST,
+                                    port_rest=NODE_PORT_REST,
+                                    port_rpc=NODE_PORT_RPC,
+                                    port_sse=NODE_PORT_SSE)
+    return NodeClient(connection)
 
 
 @pytest.fixture(scope="session")

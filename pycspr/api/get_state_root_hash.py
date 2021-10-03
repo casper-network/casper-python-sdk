@@ -1,24 +1,24 @@
-import typing
-
+from typing import Union
 from pycspr.api.constants import RPC_CHAIN_GET_STATE_ROOT_HASH
-from pycspr.client import NodeConnectionInfo
+
+"""
+Returns an on-chain state root hash at specified block.
+
+:param node: Information required to connect to a node.
+:param block_id: Identifier of a finalised block.
+:returns: State root hash at specified block.
+"""
 
 
-def execute(node: NodeConnectionInfo,
-            block_id: typing.Union[None, bytes, str, int] = None) -> str:
-    """
-    Returns an on-chain state root hash at specified block.
+def get_rpc_name():
+    return RPC_CHAIN_GET_STATE_ROOT_HASH
 
-    :param node: Information required to connect to a node.
-    :param block_id: Identifier of a finalised block.
-    :returns: State root hash at specified block.
-    """
-    params = get_params(block_id)
-    response = node.get_response(RPC_CHAIN_GET_STATE_ROOT_HASH, params)
+
+def extract_result(response):
     return response["state_root_hash"]
 
 
-def get_params(block_id: typing.Union[None, str, int] = None) -> dict:
+def get_params(block_id: Union[None, str, int] = None) -> dict:
     """
     Returns JSON-RPC API request parameters.
 

@@ -1,25 +1,22 @@
-import typing
+from typing import Union
 from pycspr.api.constants import RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK
-from pycspr.client import NodeConnectionInfo
+
+# Current Era Information (RPC)
+# -----------------------------
+# Parameter: 
+#   - block_id: Union[None, str, int]
 
 
-def execute(node: NodeConnectionInfo,
-            block_id: typing.Union[None, bytes, str, int] = None
-            ) -> dict:
-    """
-    Returns current era information.
+def get_rpc_name():
+    return RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK
 
-    :param node: Information required to connect to a node.
-    :param block_id: Identifier of a finalised block.
-    :returns: Era information.
-    """
-    params = get_params(block_id)
-    response = node.get_response(RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-                                 params)
+
+def extrac_result(response):
+    """ Returns era information. """
     return response["era_summary"]
 
 
-def get_params(block_id: typing.Union[None, str, int] = None) -> dict:
+def get_params(block_id: Union[None, str, int] = None) -> dict:
     """
     Returns JSON-RPC API request parameters.
 

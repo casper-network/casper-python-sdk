@@ -1,20 +1,21 @@
 from typing import Union
 
 from pycspr.api.constants import RPC_CHAIN_GET_BLOCK_TRANSFERS
-from pycspr.client import NodeConnectionInfo
+
+"""
+Returns on-chain block transfers information.
+
+:param node: Information required to connect to a node.
+:param block_id: Identifier of a finalised block.
+:returns: 2 member tuple of block hash + transfers.
+"""
 
 
-def execute(node: NodeConnectionInfo,
-            block_id: Union[None, str, int] = None) -> tuple[str, list]:
-    """
-    Returns on-chain block transfers information.
+def get_rpc_name():
+    return RPC_CHAIN_GET_BLOCK_TRANSFERS
 
-    :param node: Information required to connect to a node.
-    :param block_id: Identifier of a finalised block.
-    :returns: 2 member tuple of block hash + transfers.
-    """
-    params = get_params(block_id)
-    response = node.get_response(RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+
+def extract_result(response):
     return (response["block_hash"], response["transfers"])
 
 

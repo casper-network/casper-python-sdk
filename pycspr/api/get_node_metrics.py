@@ -1,23 +1,17 @@
-import requests as rest_client
-from pycspr.api import constants
-from pycspr.client import NodeConnectionInfo
+from pycspr.api.constants import REST_GET_METRICS
 
 
-def execute(node: NodeConnectionInfo, metric_id: str = None) -> list:
-    """
-        Returns node peers information.
+def get_rest_name():
+    return REST_GET_METRICS
 
-        :param node: Information required to connect to a node.
-        :param metric_id: Identifier of node metric.
 
-        :returns: Node metrics information.
-    """
-    endpoint = f"{node.address_rest}/{constants.REST_GET_METRICS}"
-    response = rest_client.get(endpoint)
+def extract_result(response):
     data = response.content.decode("utf-8")
     data = sorted([i.strip()
                   for i in data.split("\n") if not i.startswith("#")])
-    if metric_id:
-        return [i for i in data if i.lower().startswith(metric_id.lower())]
-    else:
-        return data
+    return data
+
+
+def get_params(metric_id: int = None):
+    # @TODO: use metric_id
+    return {}

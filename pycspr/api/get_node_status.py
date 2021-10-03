@@ -1,11 +1,19 @@
 from pycspr.api.constants import RPC_INFO_GET_STATUS
-from pycspr.client import NodeConnectionInfo
+
+"""Returns node status information.
+
+:param node: Information required to connect to a node.
+:returns: Node status information.
+"""
 
 
-def execute(node: NodeConnectionInfo) -> dict:
-    """Returns node status information.
+def get_rpc_name():
+    return RPC_INFO_GET_STATUS
 
-    :param node: Information required to connect to a node.
-    :returns: Node status information.
-    """
-    return node.get_response(RPC_INFO_GET_STATUS)
+
+def extract_result(response):
+    return response
+
+
+def get_params():
+    return {}

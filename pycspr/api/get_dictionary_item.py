@@ -1,20 +1,21 @@
 from pycspr.types import DictionaryIdentifier
 from pycspr.api.constants import RPC_STATE_GET_DICTIONARY_ITEM
-from pycspr.client import NodeConnectionInfo
+
+"""
+Returns on-chain data stored under a dictionary item.
+
+:param node: Information required to connect to a node.
+:param identifier: Identifier required to query a dictionary item.
+:returns: On-chain data stored under a dictionary item.
+"""
 
 
-def execute(node: NodeConnectionInfo, identifier: DictionaryIdentifier
-            ) -> dict:
-    """
-    Returns on-chain data stored under a dictionary item.
+def get_rpc_name():
+    return RPC_STATE_GET_DICTIONARY_ITEM
 
-    :param node: Information required to connect to a node.
-    :param identifier: Identifier required to query a dictionary item.
-    :returns: On-chain data stored under a dictionary item.
 
-    """
-    params = get_params(identifier)
-    return node.get_response(RPC_STATE_GET_DICTIONARY_ITEM, params)
+def extrac_result(response):
+    return response
 
 
 def get_params(identifier: DictionaryIdentifier) -> dict:
