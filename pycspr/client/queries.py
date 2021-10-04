@@ -1,5 +1,7 @@
+import time
 from typing import Union
 
+from pycspr import factory
 from pycspr.api import CasperApi
 from pycspr.api import NodeConnectionInfo
 from pycspr.types import OptionalBlockIdentifer
@@ -15,7 +17,7 @@ class QueriesClient():
         """Instance constructor.
 
         """
-        self.api = CasperApi(connection_info)
+        self._api = CasperApi(connection_info)
 
     def get_account_balance(self, purse_uref: str,
                             state_root_hash: Union[bytes, None] = None) -> int:
@@ -28,7 +30,7 @@ class QueriesClient():
         :returns: Account balance if on-chain account is found.
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        return self.api.get_account_balance(purse_uref, state_root_hash)
+        return self._api.get_account_balance(purse_uref, state_root_hash)
 
     def get_account_info(self, account_key: Union[bytes, str],
                          block_id: OptionalBlockIdentifer = None) -> dict:
@@ -40,7 +42,7 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: Account information in JSON format.
         """
-        return self.api.get_account_info(account_key, block_id)
+        return self._api.get_account_info(account_key, block_id)
 
     def get_account_main_purse_uref(self, account_key: Union[bytes, str],
                                     block_id: OptionalBlockIdentifer = None
@@ -52,7 +54,8 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: Account main purse unforgeable reference.
         """
-        return self.api.get_account_main_purse_uref(account_key, block_id)
+        account_info = self._api.get_account_info(account_key, block_id)
+        return factory.create_uref_from_string(account_info["main_purse"])
 
     def get_account_named_key(self, account_key: Union[bytes, str],
                               key_name: str,
@@ -66,7 +69,7 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: Account information in JSON format.
         """
-        account_info = self.api.get_account_info(account_key, block_id)
+        account_info = self._api.get_account_info(account_key, block_id)
         named_keys = [i for i in account_info["named_keys"]
                       if i["name"] == key_name]
         return None if len(named_keys) == 0 else named_keys[0]["key"]
@@ -78,7 +81,7 @@ class QueriesClient():
 
         :returns: Current auction system contract information.
         """
-        return self.api.get_auction_info(block_id)
+        return self._api.get_auction_info(block_id)
 
     def get_block(self, block_id: OptionalBlockIdentifer = None) -> dict:
         """Returns on-chain block information.
@@ -86,7 +89,7 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: On-chain block information.
         """
-        return self.api.get_block(block_id)
+        return self._api.get_block(block_id)
 
     def get_block_at_era_switch(self, polling_interval_seconds: float = 1.0,
                                 max_polling_time_seconds: float = 120.0
@@ -99,8 +102,15 @@ class QueriesClient():
         :param max_polling_time_seconds: Maximum time in seconds to poll.
         :returns: On-chain block information.
         """
-        return self.api.get_block_at_era_switch(polling_interval_seconds,
-                                                max_polling_time_seconds)
+        elapsed = 0.0
+        while True:
+            block = self._api.get_block()
+            if block["header"]["era_end"] is not None:
+                return block
+            elapsed += polling_interval_seconds
+            if elapsed > max_polling_time_seconds:
+                break
+            time.sleep(polling_interval_seconds)
 
     def get_block_transfers(self, block_id: OptionalBlockIdentifer = None
                             ) -> tuple[str, list]:
@@ -110,7 +120,7 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: On-chain block transfers information.
         """
-        return self.api.get_block_transfers(block_id)
+        return self._api.get_block_transfers(block_id)
 
     def get_deploy(self, deploy_id: Union[bytes, str]) -> dict:
         """Returns on-chain deploy information.
@@ -118,7 +128,7 @@ class QueriesClient():
         :param deploy_id: Identifier of a finalised block.
         :returns: On-chain deploy information.
         """
-        return self.api.get_deploy(deploy_id)
+        return self._api.get_deploy(deploy_id)
 
     def get_dictionary_item(self, identifier: DictionaryIdentifier) -> dict:
         """Returns on-chain data stored under a dictionary item.
@@ -126,7 +136,7 @@ class QueriesClient():
         :param identifier: Identifier required to query a dictionary item.
         :returns: On-chain data stored under a dictionary item.
         """
-        return self.api.get_dictionary_item(identifier)
+        return self._api.get_dictionary_item(identifier)
 
     def get_era_info(self, block_id: OptionalBlockIdentifer = None) -> dict:
         """Returns current era information.
@@ -134,14 +144,14 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: Era information.
         """
-        return self.api.get_era_info(block_id)
+        return self._api.get_era_info(block_id)
 
     def get_node_metrics(self, metric_id: str = None) -> list:
         """Returns set of node metrics.
 
         :returns: Node metrics information.
         """
-        data = self.api.get_node_metrics(metric_id)
+        data = self._api.get_node_metrics(metric_id)
         if metric_id:
             return [i for i in data if i.lower().startswith(metric_id.lower())]
         else:
@@ -153,21 +163,21 @@ class QueriesClient():
         :param metric_id: Identifier of node metric.
         :returns: Node metrics information filtered by a particular metric.
         """
-        return self.api.get_node_metrics(metric_id)
+        return self._api.get_node_metrics(metric_id)
 
     def get_node_peers(self) -> dict:
         """Returns node peers information.
 
         :returns: Node peers information.
         """
-        return self.api.get_node_peers()
+        return self._api.get_node_peers()
 
     def get_node_status(self) -> dict:
         """Returns node status information.
 
         :returns: Node status information.
         """
-        return self.api.get_node_status()
+        return self._api.get_node_status()
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
@@ -175,21 +185,25 @@ class QueriesClient():
         :param endpoint: A specific endpoint of interest.
         :returns: A JSON-RPC schema endpoint fragment.
         """
-        return self.api.get_rpc_endpoint(endpoint)
+        schema = self._api.get_rpc_schema()
+        for obj in schema["methods"]:
+            if obj["name"].lower() == endpoint.lower():
+                return obj
 
     def get_rpc_endpoints(self) -> Union[dict, list]:
         """Returns RPC schema.
 
         :returns: A list of all supported JSON-RPC endpoints.
         """
-        return self.api.get_rpc_endpoints()
+        schema = self._api.get_rpc_schema()
+        return sorted([i["name"] for i in schema["methods"]])
 
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
 
         :returns: Node JSON-RPC API schema.
         """
-        return self.api.get_rpc_schema()
+        return self._api.get_rpc_schema()
 
     def get_state_item(self, item_key: str,
                        item_path: Union[str, list[str]] = [],
@@ -205,7 +219,7 @@ class QueriesClient():
         """
         item_path = item_path if isinstance(item_path, list) else [item_path]
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        return self.api.get_state_item(item_key, item_path, state_root_hash)
+        return self._api.get_state_item(item_key, item_path, state_root_hash)
 
     def get_state_root_hash(self, block_id: OptionalBlockIdentifer = None
                             ) -> bytes:
@@ -214,4 +228,4 @@ class QueriesClient():
         :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
         """
-        return bytes.fromhex(self.api.get_state_root_hash(block_id))
+        return bytes.fromhex(self._api.get_state_root_hash(block_id))
