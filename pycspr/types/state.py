@@ -1,9 +1,10 @@
-import dataclasses
+from dataclasses import dataclass
+from dataclasses import asdict
 
 from pycspr.types.cl import CLAccessRights
 
 
-@dataclasses.dataclass
+@dataclass
 class UnforgeableReference():
     """An unforgeable reference storage key.
     
@@ -21,18 +22,23 @@ class UnforgeableReference():
         return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
 
 
-@dataclasses.dataclass
+@dataclass
 class DictionaryIdentifier():
     """A set of variants for performation dictionary item state queries.
-    
     """
-    pass
+    def as_api_param(instance):
+        properties = asdict(instance)
+        # remove _name from output since this is not part of the specification.
+        properties.pop("_name")
+        data_dict = {
+                f"{instance._name}": properties
+        }
+        return data_dict
 
 
-@dataclasses.dataclass
+@dataclass
 class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
-    
     """
     # The dictionary item key.
     dictionary_item_key: str
@@ -42,12 +48,13 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
 
     # The account key as a formatted string whose named keys contains dictionary_name.
     key: str
+    _name: str = "AccountNamedKey"
 
 
-@dataclasses.dataclass
+@dataclass
 class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
-    
+
     """
     # The dictionary item key.
     dictionary_item_key: str
@@ -57,30 +64,32 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
 
     # The contract key as a formatted string whose named keys contains dictionary_name.
     key: str
+    _name: str = "ContractNamedKey"
 
 
-@dataclasses.dataclass
+@dataclass
 class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's seed unforgeable reference.
-    
+
     """
     # The dictionary item key.
     dictionary_item_key: str
 
     # The dictionary's seed URef.
     seed_uref: UnforgeableReference
+    _name: str = "URef"
 
 
-@dataclasses.dataclass
+@dataclass
 class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's unique key.
-    
+
     """
     # The globally unique dictionary key.
     key: str
 
 
-@dataclasses.dataclass
+@dataclass
 class StorageKey():
     """A pointer to data within global state.
     
@@ -89,7 +98,7 @@ class StorageKey():
     identifier: bytes
 
 
-@dataclasses.dataclass
+@dataclass
 class StorageKey_Account(StorageKey):
     """Represents an account identity key.
     
@@ -101,7 +110,7 @@ class StorageKey_Account(StorageKey):
         return f"account-hash-{self.identifier.hex()}"
 
 
-@dataclasses.dataclass
+@dataclass
 class StorageKey_Hash(StorageKey):
     """Represents an immutable contract identifier.
     
@@ -113,7 +122,7 @@ class StorageKey_Hash(StorageKey):
         return f"hash-{self.identifier.hex()}"
 
 
-@dataclasses.dataclass
+@dataclass
 class StorageKey_UnforgeableReference(StorageKey):
     """Represents an unforgeable reference.
     

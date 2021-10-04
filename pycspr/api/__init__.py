@@ -1,14 +1,26 @@
 import dataclasses
-import importlib
-import time
-from typing import Union
+from typing import Union, List
 
 import requests
 import jsonrpcclient
 
-
-from pycspr import factory
-from pycspr import types
+# @TODO: remove Deploy
+from pycspr.types import Deploy  # pycspr.types only use in client and above
+from pycspr.api.constants import RPC_STATE_GET_BALANCE
+from pycspr.api.constants import RPC_STATE_GET_ACCOUNT_INFO
+from pycspr.api.constants import RPC_STATE_GET_AUCTION_INFO
+from pycspr.api.constants import RPC_CHAIN_GET_BLOCK
+from pycspr.api.constants import RPC_CHAIN_GET_BLOCK_TRANSFERS
+from pycspr.api.constants import RPC_INFO_GET_DEPLOY
+from pycspr.api.constants import RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK
+from pycspr.api.constants import REST_GET_METRICS
+from pycspr.api.constants import RPC_INFO_GET_STATUS
+from pycspr.api.constants import RPC_DISCOVER
+from pycspr.api.constants import RPC_STATE_GET_ITEM
+from pycspr.api.constants import RPC_CHAIN_GET_STATE_ROOT_HASH
+from pycspr.api.constants import RPC_STATE_GET_DICTIONARY_ITEM
+from pycspr.api.constants import RPC_ACCOUNT_PUT_DEPLOY
+from pycspr.serialisation.json.encoder.deploy import encode_deploy
 
 
 __all__ = ["CasperApi", "NodeConnectionInfo", "NodeAPIError"]
@@ -24,16 +36,11 @@ class NodeConnectionInfo:
     """Encapsulates information required to connect to a node.
 
     """
-    # Host address.
+    # Node Adress
     host: str = "localhost"
-
-    # Number of exposed REST port.
+    # ports for rpcs, rest and sse
     port_rest: int = 8888
-
-    # Number of exposed RPC port.
     port_rpc: int = 7777
-
-    # Number of exposed SSE port.
     port_sse: int = 9999
 
     @property
@@ -82,28 +89,184 @@ class CasperApi:
     def __init__(self, node: NodeConnectionInfo):
         self._node = node
 
+    def get_account_balance(self, purse_uref: str, state_root_hash: str
+                            ) -> dict:
+        """
+        Returns account balance at a certain state root hash.
 
-    def _execute(self, module):
-        def _call(*args, **kwargs):
-            try:
-                # @TODO: error for get_params and extrac_result not existing
-                params = module.get_params(*args, **kwargs)
-                if 'get_rpc_name' in module.__dict__:
-                    response = self._node.get_response(module.get_rpc_name(),
-                                                       params)
-                elif 'get_rest_name' in module.__dict__:
-                    endpoint = (f"{self._node.address_rest}/"
-                                f"{module.get_rest_name()}")
-                    response = requests.get(endpoint, params)
-                else:
-                    raise NameError("You have define get_rest_name() or "
-                                    "get_rpc_name(), depending on which call "
-                                    "(rest or rpc) you want to make.")
-                return module.extract_result(response)
-            except Exception as e:
-                raise e.__class__(f"in {module.__file__}:\n{e}")
-        return _call
+        :param node: Encapsulates interaction with a remote node.
+        :param purse_uref: URef of a purse associated with an on-chain account.
+        :param state_root_hash: A node's root state hash at some point in
+                                chain time.
+        :returns: Account balance if on-chain account is found.
+        """
+        params = {
+            "purse_uref": purse_uref,
+            "state_root_hash": state_root_hash
+        }
+        return self._make_rpc_call(RPC_STATE_GET_BALANCE, params)
 
-    def __getattr__(self, attr):
-        module = importlib.import_module(f"pycspr.api.{attr}")
-        return self._execute(module)
+    def get_account_info(self, account_key: str,
+                         block_id: Union[str, int] = None) -> dict:
+        """
+        Returns on-chain account information at a certain state root hash.
+
+        :param node: Information required to connect to a node.
+        :param account_key: An account holder's public key prefixed with a key
+                            type identifier.
+        :param block_id: Identifier of a finalised block.
+        :returns: Account information in JSON format.
+        """
+        params = {"public_key": account_key}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+
+        return self._make_rpc_call(RPC_STATE_GET_ACCOUNT_INFO, params)
+
+    def get_auction_info(self, block_id: Union[str, int] = None) -> dict:
+        """
+        Returns current auction system contract information.
+
+        :param node: Information required to connect to a node.
+        :param block_id: Identifier of a finalised block.
+        :returns: Current auction system contract information.
+        """
+        params = {}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+        return self._make_rpc_call(RPC_STATE_GET_AUCTION_INFO, params)
+
+    def get_block(self, block_id: Union[str, int] = None) -> dict:
+
+        params = {}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+        return self._make_rpc_call(RPC_CHAIN_GET_BLOCK, params)
+
+    def get_block_transfers(self, block_id: Union[str, int] = None) -> dict:
+        """
+        Returns on-chain block transfers information.
+
+        :param node: Information required to connect to a node.
+        :param block_id: Identifier of a finalised block.
+        :returns: 2 member tuple of block hash + transfers.
+        """
+        params = {}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+        return self._make_rpc_call(RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+
+    def get_deploy(self, deploy_id: str) -> dict:
+        """
+        Returns on-chain deploy information.
+
+        :param node: Information required to connect to a node.
+        :param deploy_id: Identifier of a processed deploy.
+
+        :returns: On-chain deploy information.
+        """
+        params = {"deploy_hash": deploy_id}
+        return self._make_rpc_call(RPC_INFO_GET_DEPLOY, params)
+
+    def get_dictionary_item(self, dict_identifier: dict) -> dict:
+        """
+        Returns on-chain data stored under a dictionary item.
+
+        :param node: Information required to connect to a node.
+        :param identifier: Identifier required to query a dictionary item.
+        :returns: On-chain data stored under a dictionary item.
+        """
+        params = dict_identifier
+        return self._make_rpc_call(RPC_STATE_GET_DICTIONARY_ITEM, params)
+
+    def get_era_info(self, block_id: Union[str, int] = None) -> dict:
+        params = {}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+        return self._make_rpc_call(RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
+                                   params)
+
+    def get_node_metrics(self):
+        return self._make_rest_call(REST_GET_METRICS, {})
+
+    def get_node_status(self):
+        """Returns node status information.
+
+        :param node: Information required to connect to a node.
+        :returns: Node status information.
+        """
+        return self._make_rpc_call(RPC_INFO_GET_STATUS, {})
+
+    def get_rpc_schema(self):
+        """ Returns RPC schema. """
+        return self._make_rpc_call(RPC_DISCOVER, {})
+
+    def get_state_item(self, item_key: str,
+                       item_path: Union[str, List[str]] = [],
+                       state_root_hash: str = None) -> dict:
+        """
+        Returns result of a chain query a certain state root hash.
+
+        :param node: Information required to connect to a node.
+        :param item_key: A global state storage item key.
+        :param item_path: Path(s) to a data held beneath the key.
+        :param state_root_hash: A node's root state hash at some point in
+                                chain time.
+        :returns: Query result in JSON format.
+        """
+        params = {
+                "key": item_key,
+                "path": item_path
+                if isinstance(item_path, list) else [item_path],
+                "state_root_hash": state_root_hash
+        }
+        return self._make_rpc_call(RPC_STATE_GET_ITEM, params)
+
+    def get_state_root_hash(self, block_id: Union[str, int]):
+        """
+        Returns an on-chain state root hash at specified block.
+
+        :param node: Information required to connect to a node.
+        :param block_id: Identifier of a finalised block.
+        :returns: State root hash at specified block.
+        """
+        params = {}
+        if isinstance(block_id, str):
+            params.update({"block_identifier": {"Hash": block_id}})
+        elif isinstance(block_id, int):
+            params.update({"block_identifier": {"Height": block_id}})
+        return self._make_rpc_call(RPC_CHAIN_GET_STATE_ROOT_HASH, params)
+
+    def put_deploy(self, deploy: Deploy):
+        """Dispatches a deploy to a node for processing.
+
+        :param node: Information required to connect to a node.
+        :param deploy: A deploy to be dispatched to a node.
+        :returns: Hash of dispatched deploy.
+        """
+        # @TODO: replace Deploy with a native type,
+        #        !!! only use native types in this layer/module
+        #        (decoupling...)
+        params = {"deploy": encode_deploy(deploy)}
+        return self._make_rpc_call(RPC_ACCOUNT_PUT_DEPLOY, params)
+
+    def _make_rpc_call(self, endpoint_name, params):
+        response = self._node.get_response(endpoint_name, params)
+        return response
+
+    def _make_rest_call(self, endpoint_name, params):
+        full_endpoint = (f"{self._node.address_rest}/"
+                         f"{endpoint_name}")
+        response = requests.get(full_endpoint, params)
+        return response
+
