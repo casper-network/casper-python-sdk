@@ -119,11 +119,7 @@ class CasperApi:
         :returns: Account information in JSON format.
         """
         params = {"public_key": account_key}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
-
+        params.update(self._get_block_id_param(block_id))
         return self._make_rpc_call(RPC_STATE_GET_ACCOUNT_INFO, params)
 
     def get_auction_info(self, block_id: Union[str, int] = None) -> dict:
@@ -134,20 +130,12 @@ class CasperApi:
         :param block_id: Identifier of a finalised block.
         :returns: Current auction system contract information.
         """
-        params = {}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
+        params = self._get_block_id_param(block_id)
         return self._make_rpc_call(RPC_STATE_GET_AUCTION_INFO, params)
 
     def get_block(self, block_id: Union[str, int] = None) -> dict:
 
-        params = {}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
+        params = self._get_block_id_param(block_id)
         return self._make_rpc_call(RPC_CHAIN_GET_BLOCK, params)
 
     def get_block_transfers(self, block_id: Union[str, int] = None) -> dict:
@@ -158,11 +146,7 @@ class CasperApi:
         :param block_id: Identifier of a finalised block.
         :returns: 2 member tuple of block hash + transfers.
         """
-        params = {}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
+        params = self._get_block_id_param(block_id)
         return self._make_rpc_call(RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
     def get_deploy(self, deploy_id: str) -> dict:
@@ -189,11 +173,7 @@ class CasperApi:
         return self._make_rpc_call(RPC_STATE_GET_DICTIONARY_ITEM, params)
 
     def get_era_info(self, block_id: Union[str, int] = None) -> dict:
-        params = {}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
+        params = self._get_block_id_param(block_id)
         return self._make_rpc_call(RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
                                    params)
 
@@ -241,11 +221,7 @@ class CasperApi:
         :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
         """
-        params = {}
-        if isinstance(block_id, str):
-            params.update({"block_identifier": {"Hash": block_id}})
-        elif isinstance(block_id, int):
-            params.update({"block_identifier": {"Height": block_id}})
+        params = self._get_block_id_param(block_id)
         return self._make_rpc_call(RPC_CHAIN_GET_STATE_ROOT_HASH, params)
 
     def put_deploy(self, deploy: Deploy):
@@ -260,6 +236,18 @@ class CasperApi:
         #        (decoupling...)
         params = {"deploy": encode_deploy(deploy)}
         return self._make_rpc_call(RPC_ACCOUNT_PUT_DEPLOY, params)
+
+    def _get_block_id_param(self, block_id: Union[str, int] = None) -> dict:
+        """ converts block_id to rpc param. """
+        if block_id is None:
+            return {}
+        elif isinstance(block_id, str):
+            return {"block_identifier": {"Hash": block_id}}
+        elif isinstance(block_id, int):
+            return {"block_identifier": {"Height": block_id}}
+        else:
+            raise TypeError(f"block_id should be str or int not "
+                            f"{type(block_id)}! (block_id: {block_id})")
 
     def _make_rpc_call(self, endpoint_name, params):
         response = self._node.get_response(endpoint_name, params)
