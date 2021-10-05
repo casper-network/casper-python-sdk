@@ -16,11 +16,8 @@ class QueriesClient():
     """Exposes a set of functions for interacting  with a node.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo):
-        """Instance constructor.
-
-        """
-        self._api = CasperApi(connection_info)
+    def __init__(self, api: CasperApi):
+        self._api = api
 
     def get_account_balance(self, purse_uref: UnforgeableReference,
                             state_root_hash: bytes = None) -> int:

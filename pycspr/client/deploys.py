@@ -1,26 +1,25 @@
 import pathlib
 import typing
 
-from pycspr.api import CasperApi
-from pycspr.api import NodeConnectionInfo
+from pycspr.client.queries import QueriesClient
 from pycspr.types import Deploy
 from pycspr.utils import io as _io
 
 
-class DeploysClient():
+class DeploysClient:
     """
         Exposes a set of functions for processing deploys.
     """
-    def __init__(self, connection_info: NodeConnectionInfo):
+    def __init__(self, client: QueriesClient):
         """ Instance constructor. """
-        self._api = CasperApi(connection_info)
+        self._client = client
 
     def send(self, deploy: Deploy):
         """ Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
         """
-        return self._api.put_deploy(deploy)
+        return self._client.put_deploy(deploy)
 
     def read(self, fpath: typing.Union[pathlib.Path, str]) -> Deploy:
         """ Returns a deploy deserialized from file system.
