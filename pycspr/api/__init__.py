@@ -5,7 +5,8 @@ import requests
 import jsonrpcclient
 
 # @TODO: remove Deploy
-from pycspr.types import Deploy  # pycspr.types only use in client and above
+# pycspr.types should be used only in client and above
+from pycspr.types import Deploy
 from pycspr.api.constants import RPC_STATE_GET_BALANCE
 from pycspr.api.constants import RPC_STATE_GET_ACCOUNT_INFO
 from pycspr.api.constants import RPC_STATE_GET_AUCTION_INFO

@@ -21,6 +21,8 @@ class NodeClient():
         :param connection_info: Information required to connect to a node.
 
         """
+        # @TODO: !!! DeploysClient needs QueriesClient
+        # layers: Api -> Client -> Deploys (special client)
         self.deploys = DeploysClient(connection_info)
         self.events = EventsClient(connection_info)
         self.queries = QueriesClient(connection_info)
