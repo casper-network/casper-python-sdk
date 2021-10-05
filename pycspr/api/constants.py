@@ -30,7 +30,7 @@ RPC_ENDPOINTS: set = {
     RPC_STATE_GET_DICTIONARY_ITEM,
     RPC_STATE_GET_ITEM,
     # RPC_STATE_QUERY_GLOBAL_STATE, # not in rpc-schema
-    }
+}
 
 # Node REST endpoints.
 REST_GET_METRICS = "metrics"
@@ -39,7 +39,7 @@ REST_GET_STATUS = "status"
 REST_ENDPOINTS: set = {
     REST_GET_METRICS,
     REST_GET_STATUS,
-    }
+}
 
 # Node SSE endpoints/channels.
 SSE_DEPLOYS = "deploys"

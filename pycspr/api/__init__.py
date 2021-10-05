@@ -206,10 +206,10 @@ class CasperApi:
         :returns: Query result in JSON format.
         """
         params = {
-                "key": item_key,
-                "path": item_path
-                if isinstance(item_path, list) else [item_path],
-                "state_root_hash": state_root_hash
+            "key": item_key,
+            "path": item_path
+            if isinstance(item_path, list) else [item_path],
+            "state_root_hash": state_root_hash
         }
         return self._make_rpc_call(RPC_STATE_GET_ITEM, params)
 
@@ -258,4 +258,3 @@ class CasperApi:
                          f"{endpoint_name}")
         response = requests.get(full_endpoint, params)
         return response
-

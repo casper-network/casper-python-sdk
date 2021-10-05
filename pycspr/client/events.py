@@ -106,13 +106,13 @@ class EventsClient:
                      ) -> Tuple[NodeSseEventType, int, dict]:
         """ Parses raw event data for upstream processing.  """
         events = {
-                "ApiVersion": NodeSseEventType.ApiVersion,
-                "BlockAdded": NodeSseEventType.BlockAdded,
-                "DeployProcessed": NodeSseEventType.DeployProcessed,
-                "Fault": NodeSseEventType.Fault,
-                "Step": NodeSseEventType.Step,
-                "DeployAccepted": NodeSseEventType.DeployAccepted,
-                "FinalitySignature": NodeSseEventType.FinalitySignature
+            "ApiVersion": NodeSseEventType.ApiVersion,
+            "BlockAdded": NodeSseEventType.BlockAdded,
+            "DeployProcessed": NodeSseEventType.DeployProcessed,
+            "Fault": NodeSseEventType.Fault,
+            "Step": NodeSseEventType.Step,
+            "DeployAccepted": NodeSseEventType.DeployAccepted,
+            "FinalitySignature": NodeSseEventType.FinalitySignature
         }
         for event_name in events:
             if event_name in payload:

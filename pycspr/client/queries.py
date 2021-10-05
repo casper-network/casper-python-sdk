@@ -3,7 +3,6 @@ from typing import Union
 
 from pycspr import factory
 from pycspr.api import CasperApi
-from pycspr.api import NodeConnectionInfo
 
 # @TODO: rename BlockIndentifer to BlackIdentifier
 from pycspr.types import Deploy
