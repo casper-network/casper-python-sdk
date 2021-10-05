@@ -33,22 +33,23 @@ pip install pycspr
 ### Design
 
 ```
-_____________  _______________
-|           |  |             |
-| Deploys   |  |             |
-|           |  |             |
--------------  ---------------
-      |
-     call
-      |
-      V
+_____________           _______________            _____________
+|           |           |             |            |           |
+| Deploys   |<---------X|  NodeClient |<----------X| YourApp   |
+|           |      ----X|             |            |           |
+-------------      |    ---------------            -------------
+      X            |
+===== | ========== | ===========================================================
+      |            |
+      V            V 
 _______________________________________
 |                    |                |   Manipulating in and output. 
 |        Client      |  pycspr.types  |   More complex but common tasks using the CasperApi calls.
-|    (pycspr.client) |                |   Converts raw responses into pycspr.types.
+|(client.QueryClient)|                |   Converts raw responses into pycspr.types.
 ---------------------------------------
+            X
             |
-           call
+=========== | ==================================================================
             |
             V
 ___________________________
@@ -56,8 +57,9 @@ ___________________________
 |      CasperApi          |   "Low Level" communication, REST and RPC Api calls. 
 |     (pycspr.api)        |   No manipulation of in and output. All endpoints are 
 ---------------------------   defined here. They are returning the raw rpc/rest response.
+            X
             |
-           call
+=========== | ==================================================================
             |
             V
 ___________________________
