@@ -15,7 +15,9 @@ How To: Install ?
 
 ```
 pip install pycspr
+pip install -r requirements.txt
 ```
+If take part in develeopment, you need to install `requirements-dev.txt`.
 
 ## Usage
 
