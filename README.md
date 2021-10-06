@@ -128,9 +128,9 @@ Always asure that the tests are running and that you follow the PEP.
 ##### Run Unit Tests
 ```bash
 $ cd casper-python-sdk/
-$ pipenv shell # or source .venv/bin/activate
-$ export NCTL=/path/to/your/casper-node/utils/nctl
-$ pytest ./tests
+$ source .venv/bin/activate  # or pipenv shell
+(.venv) $ export NCTL=/path/to/your/casper-node/utils/nctl
+(.venv) $ pytest ./tests
 ````
 TODO: Git pre-commit-hook needed.
 
@@ -144,5 +144,5 @@ TODO: Git pre-commit-hook needed.
 
 ## Additional Resources
 * Json RPC Schema in [resources/rpc_schema.json](resources/rpc_schema.json)
-* Capser Documentation: [https://docs.casperlabs.io/](https://docs.casperlabs.io/)
+* Casper Documentation: [https://docs.casperlabs.io/](https://docs.casperlabs.io/)
 * Python Enhancement Proposals(PEP): [https://www.python.org/dev/peps/](https://www.python.org/dev/peps/)
