@@ -112,6 +112,27 @@ $ virtualenv .venv
 $ source ./.venv/bin/activate
 (.venv) $ pip install -r requirements-dev.txt
 ```
+### Pre Commit/PullRequest Actions
+Always asure that the tests are running and the you follow the PEP.
+
+#### Testing 
+##### Important Environment Variables
+* NTCL *default* **not set** (ie: ~/casper-node/utils/nctl).
+* PYCSPR_TEST_NODE_HOST" *default set to* "localhost")
+* PYCSPR_TEST_NODE_PORT_REST *default set to* 14101)
+* PYCSPR_TEST_NODE_PORT_RPC *default set to* 11101)
+* PYCSPR_TEST_NODE_PORT_SSE *default set to* 18101)
+
+##### Run Unit Tests
+```bash
+$ cd casper-python-sdk/
+$ pipenv shell # or source .venv/bin/activate
+$ export NCTL=/path/to/your/casper-node/utils/nctl
+$ pytest ./tests
+````
+TODO: Git pre-commit-hook needed.
+
+#### Codestyle Guidelines
 run flake8 (Style Guide Enforcement):
 ```bash
 (.venv) $ cd casper-python-sdk/
@@ -119,23 +140,7 @@ run flake8 (Style Guide Enforcement):
 ```
 TODO: Git pre-commit-hook needed.
 
-### Testing (against an NCTL network)
-
-```bash
-$ cd casper-python-sdk/
-$ pipenv shell # or source .venv/bin/activate
-$ export NCTL=/path/to/your/casper-node/utils/nctl
-$ pytest ./tests
-````
-
-#### Important Environment Variables
-* NTCL *default* **not set** (ie: ~/casper-node/utils/nctl).
-* PYCSPR_TEST_NODE_HOST" *default set to* "localhost")
-* PYCSPR_TEST_NODE_PORT_REST *default set to* 14101)
-* PYCSPR_TEST_NODE_PORT_RPC *default set to* 11101)
-* PYCSPR_TEST_NODE_PORT_SSE *default set to* 18101)
-
-## Additional resources
+## Additional Resources
 * Json RPC Schema in [resources/rpc_schema.json](resources/rpc_schema.json)
 * Capser Documentation: [https://docs.casperlabs.io/](https://docs.casperlabs.io/)
 * Python Enhancement Proposals(PEP): [https://www.python.org/dev/peps/](https://www.python.org/dev/peps/)
