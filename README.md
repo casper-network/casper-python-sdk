@@ -109,3 +109,8 @@ You can stop the server and delete created assets with `nctl-assets-teardown`.
 * PYCSPR_TEST_NODE_PORT_REST *default set to* 14101)
 * PYCSPR_TEST_NODE_PORT_RPC *default set to* 11101)
 * PYCSPR_TEST_NODE_PORT_SSE *default set to* 18101)
+
+## Additional resources
+* Json RPC Schema in [resources/rpc_schema.json](resources/rpc_schema.json)
+* Capser Documentation: [https://docs.casperlabs.io/](https://docs.casperlabs.io/)
+* Python Enhancement Proposals(PEP): [https://www.python.org/dev/peps/](https://www.python.org/dev/peps/)
