@@ -12,12 +12,15 @@ The python client is published as pycspr: **PY**thon **C**a**SP**e**R**.  It's g
 
 How To: Install ?
 ------------------------------------------------------
-
+It's recommend to create a virtual environment for your application:
+```bash
+$ cd path/to/your/project
+$ virtualenv .venv  # if you just starting and need a venv anyway
+$ source ./.venv/bin/activate  # launch your environment
+$ pip install pycspr
 ```
-pip install pycspr
-pip install -r requirements.txt
-```
-If take part in develeopment, you need to install `requirements-dev.txt`.
+If you want to take part in develeopment, follow the [intallation instructions
+for development](#installing-the-sdk-for-development).
 
 ## Usage
 
@@ -30,7 +33,13 @@ If take part in develeopment, you need to install `requirements-dev.txt`.
 * **Install a smart contract** See [here](how_tos/how_to_install_a_contract.py).
 * **Invoke a smart contract** See [here](how_tos/how_to_invoke_a_contract.py).
 
+### NodeClient
+#### Queries
+#### Deploys
+#### Events
+
 ## Development
+
 
 ### Design
 
@@ -94,17 +103,33 @@ $ nctl-assets-setup && nctl-start
 
 You can stop the server and delete created assets with `nctl-assets-teardown`.
 
+### Installing the SDK for Development 
+
+after cloning:
+```bash
+$ cd casper-python-sdk/
+$ virtualenv .venv
+$ source ./.venv/bin/activate
+(.venv) $ pip install -r requirements-dev.txt
+```
+run flake8 (Style Guide Enforcement):
+```bash
+(.venv) $ cd casper-python-sdk/
+(.venv) $ flake8 .
+```
+TODO: Git pre-commit-hook needed.
+
 ### Testing (against an NCTL network)
 
 ```bash
-> cd YOUR_WORKING_DIRECTORY
-> pipenv shell # or source .venv/bin/activate
-> export NCTL=/path/to/your/casper-node/utils/nctl
-> pytest ./tests
+$ cd casper-python-sdk/
+$ pipenv shell # or source .venv/bin/activate
+$ export NCTL=/path/to/your/casper-node/utils/nctl
+$ pytest ./tests
 ````
 
 #### Important Environment Variables
-* NTCL *default* **not set** (ie: ~/casper-node/utils/nctl). It will be set automatically if you use `setup-test-env.sh`
+* NTCL *default* **not set** (ie: ~/casper-node/utils/nctl).
 * PYCSPR_TEST_NODE_HOST" *default set to* "localhost")
 * PYCSPR_TEST_NODE_PORT_REST *default set to* 14101)
 * PYCSPR_TEST_NODE_PORT_RPC *default set to* 11101)
