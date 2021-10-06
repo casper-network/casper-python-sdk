@@ -1,16 +1,18 @@
 import argparse
 import os
 import pathlib
-import random
 import typing
 
-import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
-from pycspr.crypto import KeyAlgorithm
-from pycspr.types import PrivateKey
-from pycspr.types import Deploy
-from pycspr.types import PublicKey
+from pycspr.client  import NodeClient
+from pycspr.client  import NodeConnectionInfo
+from pycspr.crypto  import KeyAlgorithm
+from pycspr.factory import create_deploy_parameters
+from pycspr.factory import create_validator_delegation_withdrawal
+from pycspr.factory import parse_private_key
+from pycspr.factory import parse_public_key
+from pycspr.types   import Deploy
+from pycspr.types   import PrivateKey
+from pycspr.types   import PublicKey
 
 
 
@@ -121,11 +123,11 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
     """Returns the 2 counter-parties participating in the delegation.
 
     """
-    delegator = pycspr.factory.parse_private_key(
+    delegator = parse_private_key(
         args.path_to_delegator_secret_key,
         args.type_of_delegator_secret_key,
         )
-    validator = pycspr.factory.parse_public_key(
+    validator = parse_public_key(
         args.path_to_validator_account_key
         )    
 
@@ -137,13 +139,13 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.factory.create_deploy_parameters(
+    deploy_params = create_deploy_parameters(
         account=delegator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.factory.create_validator_delegation_withdrawal(
+    deploy = create_validator_delegation_withdrawal(
         params=deploy_params,
         amount=int(1e9),
         public_key_of_delegator=delegator,

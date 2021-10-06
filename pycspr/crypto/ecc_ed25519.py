@@ -1,6 +1,7 @@
-import base64
+from base64 import b64decode
 import typing
 
+from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ed25519
 
@@ -62,7 +63,7 @@ def get_pvk_from_pem_file(fpath: str) -> bytes:
 
     # Decode bytes.
     pvk_b64 = [l for l in as_pem if l and not l.startswith("-----")][0].strip()
-    pvk = base64.b64decode(pvk_b64)
+    pvk = b64decode(pvk_b64)
     
     return len(pvk) % _PVK_LENGTH == 0 and pvk[:_PVK_LENGTH] or pvk[-_PVK_LENGTH:]
 
@@ -103,7 +104,7 @@ def is_signature_valid(msg_hash: bytes, sig: bytes, pbk: bytes) -> bool:
     vk = ed25519.Ed25519PublicKey.from_public_bytes(pbk)
     try:
         vk.verify(sig, msg_hash)
-    except cryptography.exceptions.InvalidSignature:
+    except InvalidSignature:
         return False
     else:
         return True

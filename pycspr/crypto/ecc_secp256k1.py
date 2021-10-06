@@ -1,5 +1,4 @@
-import base64
-import hashlib
+from hashlib import sha256
 import typing
 
 import ecdsa
@@ -8,7 +7,7 @@ import ecdsa
 
 # Default ECC + associated Casper specific hashing function.
 _CURVE = ecdsa.SECP256k1
-_HASH_FN = hashlib.sha256
+_HASH_FN = sha256
 
 
 def get_key_pair(seed: bytes = None) -> typing.Tuple[bytes, bytes]:

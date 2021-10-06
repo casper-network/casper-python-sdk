@@ -4,13 +4,16 @@ import pathlib
 import random
 import typing
 
-import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
-from pycspr.crypto import KeyAlgorithm
-from pycspr.types import PrivateKey
-from pycspr.types import Deploy
-from pycspr.types import PublicKey
+from pycspr.client  import NodeClient
+from pycspr.client  import NodeConnectionInfo
+from pycspr.crypto  import KeyAlgorithm
+from pycspr.factory import create_deploy_parameters
+from pycspr.factory import create_native_transfer
+from pycspr.factory import parse_private_key
+from pycspr.factory import parse_public_key
+from pycspr.types   import Deploy
+from pycspr.types   import PrivateKey
+from pycspr.types   import PublicKey
 
 
 
@@ -112,11 +115,11 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
     """Returns the 2 counter-parties participating in the transfer.
 
     """
-    cp1 = pycspr.factory.parse_private_key(
+    cp1 = parse_private_key(
         args.path_to_cp1_secret_key,
         args.type_of_cp1_secret_key,
         )
-    cp2 = pycspr.factory.parse_public_key(
+    cp2 = parse_public_key(
         args.path_to_cp2_account_key
         )    
 
@@ -128,13 +131,13 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.factory.create_deploy_parameters(
+    deploy_params = create_deploy_parameters(
         account=cp1,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.factory.create_native_transfer(
+    deploy = create_native_transfer(
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_hash,

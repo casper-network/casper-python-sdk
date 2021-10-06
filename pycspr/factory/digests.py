@@ -1,5 +1,3 @@
-import typing
-
 from pycspr import crypto
 from pycspr import factory
 from pycspr import serialisation

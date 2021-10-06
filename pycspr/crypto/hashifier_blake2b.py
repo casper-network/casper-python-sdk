@@ -1,4 +1,4 @@
-import hashlib
+from hashlib import blake2b
 
 
 
@@ -11,7 +11,7 @@ def get_hash(data: bytes, size: int) -> bytes:
     :returns: Blake2b hash of input data.
 
     """ 
-    h = hashlib.blake2b(digest_size=size)
+    h = blake2b(digest_size=size)
     h.update(data)
 
     return h.digest()

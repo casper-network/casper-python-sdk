@@ -1,24 +1,26 @@
 import argparse
 import os
 import pathlib
-import random
 import typing
 
-import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
-from pycspr.crypto import KeyAlgorithm
+from pycspr            import create_deploy
+from pycspr            import create_deploy_argument
+from pycspr.client     import NodeClient
+from pycspr.client     import NodeConnectionInfo
+from pycspr.crypto     import KeyAlgorithm
+from pycspr.factory    import create_deploy_parameters
+from pycspr.factory    import create_standard_payment
+from pycspr.factory    import parse_private_key
+from pycspr.factory    import parse_public_key
 from pycspr.factory.cl import create_cl_type_of_byte_array
 from pycspr.factory.cl import create_cl_type_of_simple
-from pycspr.factory.cl import create_cl_value
-from pycspr.types import CLTypeKey
-from pycspr.types import Deploy
-from pycspr.types import DeployParameters
-from pycspr.types import ExecutableDeployItem_ModuleBytes
-from pycspr.types import ExecutableDeployItem_StoredContractByHash
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
-from pycspr.utils import io as _io
+from pycspr.types      import CLTypeKey
+from pycspr.types      import Deploy
+from pycspr.types      import DeployParameters
+from pycspr.types      import ExecutableDeployItem_ModuleBytes
+from pycspr.types      import ExecutableDeployItem_StoredContractByHash
+from pycspr.types      import PrivateKey
+from pycspr.types      import PublicKey
 
 
 
@@ -147,18 +149,18 @@ def _get_operator_and_user_keys(args: argparse.Namespace) -> typing.Tuple[Privat
     """Returns the smart contract operator's private key.
 
     """
-    operator = pycspr.factory.parse_private_key(
+    operator = parse_private_key(
         args.path_to_operator_secret_key,
         args.type_of_operator_secret_key,
         )
-    user = pycspr.factory.parse_public_key(
+    user = parse_public_key(
         args.path_to_user_public_key,
         )
 
     return operator, user
 
 
-def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: PrivateKey) -> bytes:
+def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> bytes:
     """Returns on-chain contract identifier.
 
     """
@@ -177,26 +179,26 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
     """
     # Set standard deploy parameters.
     params: DeployParameters = \
-        pycspr.factory.create_deploy_parameters(
+        create_deploy_parameters(
             account=operator,
             chain_name=args.chain_name
             )
 
     # Set payment logic.
     payment: ExecutableDeployItem_ModuleBytes = \
-        pycspr.factory.create_standard_payment(args.deploy_payment)
+        create_standard_payment(args.deploy_payment)
 
     # Set session logic.
     session: ExecutableDeployItem_StoredContractByHash = ExecutableDeployItem_StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
         args = [
-            pycspr.create_deploy_argument(
+            create_deploy_argument(
                 "amount",
                 args.amount,
                 create_cl_type_of_simple(CLTypeKey.U256)
                 ),
-            pycspr.create_deploy_argument(
+            create_deploy_argument(
                 "recipient",
                 user.account_hash,
                 create_cl_type_of_byte_array(32)
@@ -204,7 +206,7 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
         ]
     )
 
-    return pycspr.create_deploy(params, payment, session)
+    return create_deploy(params, payment, session)
 
 
 # Entry point.

@@ -1,16 +1,12 @@
 import argparse
 import os
 import pathlib
-import random
 import typing
 
-import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
-from pycspr.types import Deploy
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
-from pycspr.types import UnforgeableReference
+from pycspr.client  import NodeClient
+from pycspr.client  import NodeConnectionInfo
+from pycspr.factory import parse_public_key
+from pycspr.types   import UnforgeableReference
 
 
 
@@ -73,7 +69,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set account key of test user.
-    user_public_key = pycspr.factory.parse_public_key(args.path_to_account_key)      
+    user_public_key = parse_public_key(args.path_to_account_key)      
 
     # Query 0.1: get_rpc_schema.
     rpc_schema: typing.List[dict] = client.queries.get_rpc_schema()
@@ -178,18 +174,6 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     )
 
     return NodeClient(connection)
-
-
-def _get_counter_parties(args: argparse.Namespace) -> PublicKey:
-    """Returns the 2 counter-parties participating in the transfer.
-
-    """
-
-    return pycspr.factory.parse_public_key(
-        args.path_to_cp2_account_key
-        )    
-
-    return cp1, cp2
 
 
 # Entry point.

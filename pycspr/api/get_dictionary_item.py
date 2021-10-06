@@ -15,7 +15,7 @@ def execute(
     :returns: On-chain data stored under a dictionary item.
 
     """
-    params = get_parms(identifier)
+    params = get_params(identifier)
 
     return node.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 

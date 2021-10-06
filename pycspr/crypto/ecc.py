@@ -1,10 +1,10 @@
-import base64
-import tempfile
+from base64 import b64decode
+from tempfile import NamedTemporaryFile
 import typing
 
-from pycspr.crypto import ecc_ed25519 as ed25519
-from pycspr.crypto import ecc_secp256k1 as secp256k1
-from pycspr.crypto.enums import KeyAlgorithm
+from pycspr.crypto          import ecc_ed25519 as ed25519
+from pycspr.crypto          import ecc_secp256k1 as secp256k1
+from pycspr.crypto.enums    import KeyAlgorithm
 
 
 
@@ -48,7 +48,7 @@ def get_key_pair_from_base64(pvk_b64: str, algo: KeyAlgorithm = KeyAlgorithm.ED2
     :returns : 2 member tuple: (private key, public key)
     
     """
-    return get_key_pair_from_bytes(base64.b64decode(pvk_b64), algo)
+    return get_key_pair_from_bytes(b64decode(pvk_b64), algo)
 
 
 def get_key_pair_from_hex_string(pvk_hex: str, algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> typing.Tuple[bytes, bytes]:
@@ -106,7 +106,7 @@ def get_pvk_pem_file_from_bytes(pvk: bytes, algo: KeyAlgorithm = KeyAlgorithm.ED
     :returns : Private key in PEM format.
     
     """
-    with tempfile.NamedTemporaryFile("wb", delete=False) as temp_file:
+    with NamedTemporaryFile("wb", delete=False) as temp_file:
         with open(temp_file.name, "wb") as fstream:
             fstream.write(get_pvk_pem_from_bytes(pvk, algo))
 

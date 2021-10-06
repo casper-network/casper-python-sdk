@@ -1,5 +1,3 @@
-import typing
-
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 from pycspr.serialisation.json.encoder.deploy import encode_deploy
