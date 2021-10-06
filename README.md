@@ -50,36 +50,33 @@ for development](#installing-the-sdk-for-development).
                      ______________ Your APP needs to call the NodeClient to
                      | Your App   | make API calls. In addition you may need
                      |____________| some tools which can be found in factory,
-                            |       crypto and utils.
-============================|=================================================
-_____________        _______X_______      ______________ More complex
+                            X       crypto and utils.
+                            |
+=========================== | ================================================
+                            V 
+_____________        _______________      ______________ More complex
 |           |        |             |      |            | operations and
 | Deploys   |<------X|  NodeClient |X---->|EventsClient| simplification of
 |           |   ----X|             |      |            | composed API/Client
 -------------   |    ---------------      -------------- calls.
       X         |
 ===== | ======= | ============================================================
-      |         |                    
-      V         V                       Supposes all API calls and additional 
-_______________________________________ methods, composed of basic API calls. 
-|                    |                | Converts API response into pycspr.types.
-|        Client      |  pycspr.types  | Extracts result from API response.
-|(client.QueryClient)|                | Checking and converting input params. 
----------------------------------------
+      V         V                       
+_______________________________________ Supposes all API calls and additional   
+|                    |                | methods, composed of basic API calls.
+|        Client      |  pycspr.types  | Converts API response into pycspr.types.
+|(client.QueryClient)|                | Extracts result from API response.
+--------------------------------------- Checking and converting input params. 
             X
-            |
 =========== | ==================================================================
-            |               "Low Level" communication, REST and RPC Api calls.
-            V               Does all REST and RPC calls. All endpoints defined
-___________________________ here. No converting or manipulation of output or
-|                         | input params at all. All in all its a simple 
-|      CasperApi          | interface to the REST/RPC API.     
-|     (pycspr.api)        |   
----------------------------   
+            V               
+___________________________ "Low Level" communication, REST and RPC Api calls.
+|                         | Does all REST and RPC calls. All endpoints defined
+|      CasperApi          | here. No converting or manipulation of output or
+|     (pycspr.api)        | input params at all. All in all its a simple        
+--------------------------- interface to the REST/RPC API.                      
             X                 
-            |
 =========== | ==================================================================
-            |
             V
 ___________________________
 |                         |    
