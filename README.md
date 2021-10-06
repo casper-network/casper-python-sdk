@@ -35,11 +35,15 @@ for development](#installing-the-sdk-for-development).
 #### Queries
 #### Deploys
 #### Events
+### Important modules
+#### crypto
+#### factory
+#### serialisation 
+#### types
+#### utils
 
 ## Development
-
-
-### Design
+### Architecture
 
 ```
                      ______________ Your APP needs to call the NodeClient to
