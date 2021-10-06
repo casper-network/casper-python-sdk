@@ -93,7 +93,7 @@ Follow the Casper Documentation: [Getting
 Started](https://docs.casperlabs.io/en/latest/dapp-dev-guide/setup-of-rust-contract-sdk.html)
 
 #### Installing a local test NCTL network
-See the Casper Documentation for manual installation:
+See the Casper Documentation for installation:
 [Local Network Testing](https://docs.casperlabs.io/en/latest/dapp-dev-guide/setup-nctl.html)
 
 #### Running the local test network
