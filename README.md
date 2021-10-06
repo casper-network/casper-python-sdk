@@ -1,17 +1,15 @@
-casper-client-py
-======================================================
+# Casper Python SDK
 
 Python 3.9+ library for interacting with a CSPR node.
 
 
-What is casper-client-py ?
-------------------------------------------------------
+## What is Casper Python SDK `pycspr`
 
-The python client is published as pycspr: **PY**thon **C**a**SP**e**R**.  It's goal is to streamline client side experience of interacting with a casper node.
+The python client is published as `pycspr`: **PY**thon **C**a**SP**e**R**.  It's goal is to streamline client side experience of interacting with a casper node.
 
 
-How To: Install ?
-------------------------------------------------------
+## How To: Install ?
+
 It's recommend to create a virtual environment for your application:
 ```bash
 $ cd path/to/your/project
@@ -113,7 +111,7 @@ $ source ./.venv/bin/activate
 (.venv) $ pip install -r requirements-dev.txt
 ```
 ### Pre Commit/PullRequest Actions
-Always asure that the tests are running and the you follow the PEP.
+Always asure that the tests are running and that you follow the PEP.
 
 #### Testing 
 ##### Important Environment Variables
