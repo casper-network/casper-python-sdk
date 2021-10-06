@@ -1,3 +1,4 @@
+![PEP conform](https://github.com/MrKrautee/casper-python-sdk/actions/workflows/cl.yml/badge.svg)
 # Casper Python SDK
 
 Python 3.9+ library for interacting with a CSPR node.
