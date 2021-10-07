@@ -4,10 +4,9 @@ import random
 import typing
 
 from pycspr import crypto
-from pycspr.factory import cl_value as cl_value_factory
+from pycspr.factory import cl_value as cl_value
 
 from pycspr.factory.accounts import create_public_key
-from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import PrivateKey
@@ -203,15 +202,15 @@ def create_native_transfer_session(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
             create_deploy_arg(
                 "target",
-                cl_value_factory.byte_array(target)
+                cl_value.byte_array(target)
                 ),
             create_deploy_arg(
                 "id",
-                cl_value_factory.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID))
+                cl_value.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID))
                 ),
         ]
     )
@@ -229,7 +228,7 @@ def create_standard_payment(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
         ],
         module_bytes=bytes([])
@@ -271,15 +270,15 @@ def create_validator_auction_bid(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
             create_deploy_arg(
                 "delegation_rate",
-                cl_value_factory.u8(delegation_rate)
+                cl_value.u8(delegation_rate)
                 ),
             create_deploy_arg(
                 "public_key",
-                cl_value_factory.public_key(public_key)
+                cl_value.public_key(public_key)
                 ),
             ]
         )
@@ -310,15 +309,15 @@ def create_validator_auction_bid_withdrawal(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
             create_deploy_arg(
                 "public_key",
-                cl_value_factory.public_key(public_key)
+                cl_value.public_key(public_key)
                 ),
             create_deploy_arg(
                 "unbond_purse",
-                cl_value_factory.uref(unbond_purse)
+                cl_value.uref(unbond_purse)
                 ),
             ]
         )
@@ -349,15 +348,15 @@ def create_validator_delegation(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
             create_deploy_arg(
                 "delegator",
-                cl_value_factory.public_key(public_key_of_delegator)
+                cl_value.public_key(public_key_of_delegator)
                 ),
             create_deploy_arg(
                 "validator",
-                cl_value_factory.public_key(public_key_of_validator)
+                cl_value.public_key(public_key_of_validator)
                 ),
         ]
     )
@@ -388,15 +387,15 @@ def create_validator_delegation_withdrawal(
         args=[
             create_deploy_arg(
                 "amount",
-                cl_value_factory.u512(amount)
+                cl_value.u512(amount)
                 ),
             create_deploy_arg(
                 "delegator",
-                cl_value_factory.public_key(public_key_of_delegator)
+                cl_value.public_key(public_key_of_delegator)
                 ),
             create_deploy_arg(
                 "validator",
-                cl_value_factory.public_key(public_key_of_validator)
+                cl_value.public_key(public_key_of_validator)
                 ),
         ]
     )

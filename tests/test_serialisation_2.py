@@ -12,7 +12,7 @@ def test_that_a_transfer_can_be_encoded_as_json(deploy_params_static, vector_dep
             pycspr.factory.create_native_transfer_session(
                 vector["session"]["amount"],
                 vector["session"]["target"],
-                vector["session"]["transfer_id"]
+                vector["session"]["correlation_id"]
             )
         )
         as_json = pycspr.serialisation.to_json(entity)

@@ -185,11 +185,11 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
         args = [
             pycspr.create_deploy_arg(
                 "amount",
-                pycspr.cl_value_factory.u256(args.amount)
+                pycspr.cl_value.u256(args.amount)
                 ),
             pycspr.create_deploy_arg(
                 "recipient",
-                pycspr.cl_value_factory.byte_array(user.account_hash)
+                pycspr.cl_value.byte_array(user.account_hash)
                 ),
         ]
     )

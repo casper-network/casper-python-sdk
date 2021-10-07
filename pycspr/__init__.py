@@ -7,7 +7,7 @@
 #  88              d8'                              88                       
 
 __title__ = "pycspr"
-__version__ = "0.8.7"
+__version__ = "0.9.0"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
@@ -28,7 +28,7 @@ from pycspr.crypto        import HashAlgorithm
 from pycspr.crypto        import KeyAlgorithm
 
 from pycspr.factory       import cl_type_factory
-from pycspr.factory       import cl_value_factory
+from pycspr.factory       import cl_value
 
 from pycspr.factory       import create_deploy
 from pycspr.factory       import create_deploy_approval

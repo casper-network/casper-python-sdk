@@ -98,9 +98,9 @@ def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> by
     """Queries chain for data associated with a contract.
 
     """
-    cl_value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
+    value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
     
-    return cl_value["CLValue"]["parsed"]
+    return value["CLValue"]["parsed"]
 
 
 def _get_operator_key(args: argparse.Namespace) -> PublicKey:
@@ -147,11 +147,11 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
         args = [
             pycspr.create_deploy_arg(
                 "amount",
-                pycspr.cl_value_factory.u256(args.amount)
+                pycspr.cl_value.u256(args.amount)
                 ),
             pycspr.create_deploy_arg(
                 "recipient",
-                pycspr.cl_value_factory.public_key(user)
+                pycspr.cl_value.public_key(user)
                 ),
         ]
     )

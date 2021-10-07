@@ -7,7 +7,7 @@ from pycspr.factory.accounts import parse_public_key
 from pycspr.factory.accounts import parse_public_key_bytes
 
 import pycspr.factory.cl_type as cl_type_factory
-import pycspr.factory.cl_value as cl_value_factory
+import pycspr.factory.cl_value as cl_value
 
 from pycspr.factory.deploys  import create_deploy
 from pycspr.factory.deploys  import create_deploy_approval
