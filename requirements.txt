@@ -3,4 +3,3 @@ ecdsa
 jsonrpcclient
 requests
 sseclient-py
-tox
