@@ -1,6 +1,3 @@
-import typing
-
-
 
 def le_bytes_to_int(as_bytes: bytes, signed: bool) -> int:
     """Converts a little endian byte array to an integer.

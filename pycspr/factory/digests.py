@@ -1,5 +1,3 @@
-import typing
-
 from pycspr import crypto
 from pycspr import serialisation
 from pycspr.factory import cl_type as cl_type_factory 
