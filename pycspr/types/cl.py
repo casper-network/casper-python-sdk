@@ -1,12 +1,9 @@
-import dataclasses
+from dataclasses import dataclass
 import enum
 
 
-
 class CLTypeKey(enum.Enum):
-    """Enumeration over set of CL type keys.
-    
-    """
+    """Enumeration over set of CL type keys. """
     BOOL = 0
     I32 = 1
     I64 = 2
@@ -33,9 +30,7 @@ class CLTypeKey(enum.Enum):
 
 
 class CLAccessRights(enum.Enum):
-    """Enumeration over set of CL storage item access rights.
-    
-    """
+    """Enumeration over set of CL storage item access rights. """
     NONE = 0
     READ = 1
     WRITE = 2
@@ -47,9 +42,7 @@ class CLAccessRights(enum.Enum):
 
 
 class CLStorageKeyType(enum.Enum):
-    """Enumeration over set of CL storage key.
-    
-    """
+    """Enumeration over set of CL storage key."""
     ACCOUNT = 0
     HASH = 1
     UREF = 2
@@ -79,18 +72,17 @@ TYPES_SIMPLE = TYPES_NUMERIC.union({
 })
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType():
-    """Base class encapsulating CL type information associated with a value.
-    
+    """
+    Base class encapsulating CL type information associated with a value.
     """
     pass
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_ByteArray(CLType):
     """Encapsulates CL type information associated with a byte array value.
-    
     """
     # Size of associated byte array value.
     size: int
@@ -99,10 +91,9 @@ class CLType_ByteArray(CLType):
     typeof: CLTypeKey = CLTypeKey.BYTE_ARRAY
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_StorageKey(CLType):
     """Encapsulates CL type information associated with a storage key value.
-    
     """
     # Key type within CSPR type system.
     key_type: CLStorageKeyType
@@ -111,10 +102,10 @@ class CLType_StorageKey(CLType):
     typeof: CLTypeKey = CLTypeKey.KEY
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_List(CLType):
-    """Encapsulates CL type information associated with a list value.
-    
+    """
+    Encapsulates CL type information associated with a list value.
     """
     # Inner type within CSPR type system.
     inner_type: CLType
@@ -123,10 +114,10 @@ class CLType_List(CLType):
     typeof: CLTypeKey = CLTypeKey.LIST
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Map(CLType):
-    """Encapsulates CL type information associated with a byte array value.
-    
+    """
+    Encapsulates CL type information associated with a byte array value.
     """
     # Type info of map's key.
     key_type: CLType
@@ -138,10 +129,10 @@ class CLType_Map(CLType):
     typeof: CLTypeKey = CLTypeKey.MAP
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Option(CLType):
-    """Encapsulates CL type information associated with an optional value.
-    
+    """
+    Encapsulates CL type information associated with an optional value.
     """
     # Inner type within CSPR type system.
     inner_type: CLType
@@ -150,19 +141,19 @@ class CLType_Option(CLType):
     typeof: CLTypeKey = CLTypeKey.OPTION
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Simple(CLType):
-    """Encapsulates CL type information associated with a simple value.
-    
+    """
+    Encapsulates CL type information associated with a simple value.
     """
     # CSPR type key.
     typeof: CLTypeKey
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Tuple1(CLType):
-    """Encapsulates CL type information associated with a 1-ary tuple value value.
-    
+    """
+    Encapsulates CL type information associated with a 1-ary tuple value value.
     """
     # Type of first value within 1-ary tuple value.
     t0_type: CLType
@@ -171,10 +162,10 @@ class CLType_Tuple1(CLType):
     typeof: CLTypeKey = CLTypeKey.TUPLE_1
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Tuple2(CLType):
-    """Encapsulates CL type information associated with a 2-ary tuple value value.
-    
+    """
+    Encapsulates CL type information associated with a 2-ary tuple value value.
     """
     # Type of first value within 1-ary tuple value.
     t0_type: CLType
@@ -186,10 +177,10 @@ class CLType_Tuple2(CLType):
     typeof: CLTypeKey = CLTypeKey.TUPLE_2
 
 
-@dataclasses.dataclass
+@dataclass
 class CLType_Tuple3(CLType):
-    """Encapsulates CL type information associated with a 3-ary tuple value value.
-    
+    """
+    Encapsulates CL type information associated with a 3-ary tuple value value.
     """
     # Type of first value within 1-ary tuple value.
     t0_type: CLType
@@ -204,16 +195,18 @@ class CLType_Tuple3(CLType):
     typeof: CLTypeKey = CLTypeKey.TUPLE_3
 
 
-@dataclasses.dataclass
+@dataclass
 class CLValue():
-    """A CL value mapped from python type system.
-    
+    """
+    A CL value mapped from python type system.
     """
     # Type information used by a deserializer.
     cl_type: CLType
 
-    # Parsed pythonic representation of underlying data (for human convenience only).
+    # Parsed pythonic representation of underlying data
+    #   (for human convenience only).
     parsed: object
 
     # Byte array representation of underlying data.
+    # @TODO: what array??? bytes ...bad name also.
     bytes: bytes = None
