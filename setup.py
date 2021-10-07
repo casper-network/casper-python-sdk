@@ -6,9 +6,9 @@ from setuptools import find_packages
 from setuptools.dist import Distribution
 
 
-
 with open("requirements.txt", "r") as f:
     _REQUIRES = f.read().splitlines()
+
 
 class _BinaryDistribution(Distribution):
     """Distribution sub-class to override defaults.
