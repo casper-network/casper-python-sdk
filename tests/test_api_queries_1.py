@@ -30,3 +30,11 @@ def test_get_node_status(CLIENT):
         assert isinstance(response, dict)
 
     _assert(CLIENT.queries.get_node_status())
+
+
+def test_get_validator_changes(CLIENT):
+    def _assert(response):
+        # e.g. docs/api_reponses/rpc_info_get_status.json
+        assert isinstance(response, list)
+
+    _assert(CLIENT.queries.get_validator_changes())

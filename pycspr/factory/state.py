@@ -1,10 +1,11 @@
 from pycspr.types import CLAccessRights
 from pycspr.types import UnforgeableReference
-
 from pycspr.types   import DictionaryIdentifier_AccountNamedKey
 from pycspr.types   import DictionaryIdentifier_ContractNamedKey
 from pycspr.types   import DictionaryIdentifier_SeedURef
 from pycspr.types   import DictionaryIdentifier_UniqueKey
+from pycspr.types   import StorageKey
+from pycspr.types   import StorageKeyType
 
 
 
@@ -54,3 +55,7 @@ def create_dictionary_identifier_for_a_unique_key(key: str) -> DictionaryIdentif
     
     """
     return DictionaryIdentifier_UniqueKey(key=key)
+
+
+def create_storage_key(identifier: bytes, typeof: StorageKeyType) -> StorageKey:
+    return StorageKey(identifier, typeof)

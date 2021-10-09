@@ -1,21 +1,15 @@
 import argparse
 import os
 import pathlib
-import random
-import typing
 
 import pycspr
 from pycspr.client import NodeClient
 from pycspr.client import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.factory.cl import create_cl_type_of_simple
-from pycspr.factory.cl import create_cl_value
-from pycspr.types import CLTypeKey
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
 from pycspr.types import ExecutableDeployItem_ModuleBytes
 from pycspr.types import PrivateKey
-from pycspr.utils import io as _io
 
 
 
@@ -153,19 +147,17 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-    )
-
-    return NodeClient(connection)
+    ))
 
 
 def _get_operator_key(args: argparse.Namespace) -> PrivateKey:
     """Returns the smart contract operator's private key.
 
     """
-    return pycspr.factory.parse_private_key(
+    return pycspr.parse_private_key(
         args.path_to_operator_secret_key,
         args.type_of_operator_secret_key,
         )
@@ -177,38 +169,34 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
     """
     # Set standard deploy parameters.
     params: DeployParameters = \
-        pycspr.factory.create_deploy_parameters(
+        pycspr.create_deploy_parameters(
             account=operator,
             chain_name=args.chain_name
             )
 
     # Set payment logic.
     payment: ExecutableDeployItem_ModuleBytes = \
-        pycspr.factory.create_standard_payment(args.deploy_payment)
+        pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
     session: ExecutableDeployItem_ModuleBytes = ExecutableDeployItem_ModuleBytes(
-        module_bytes=_io.read_wasm(args.path_to_wasm),
+        module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args = [
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "token_decimals",
-                args.token_decimals,
-                create_cl_type_of_simple(CLTypeKey.U8)
+                pycspr.cl_value.u8(args.token_decimals)
                 ),
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "token_name",
-                args.token_name,
-                create_cl_type_of_simple(CLTypeKey.STRING)
+                pycspr.cl_value.string(args.token_name)
                 ),
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "token_symbol",
-                args.token_symbol,
-                create_cl_type_of_simple(CLTypeKey.STRING)
+                pycspr.cl_value.string(args.token_symbol)
                 ),
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "token_total_supply",
-                args.token_total_supply,
-                create_cl_type_of_simple(CLTypeKey.U256)
+                pycspr.cl_value.u256(args.token_total_supply)
                 ),
         ]
     )

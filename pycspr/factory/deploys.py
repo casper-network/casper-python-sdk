@@ -1,20 +1,18 @@
 import datetime
-import pathlib
 import random
 import typing
 
 from pycspr import crypto
+from pycspr.factory import cl_value as cl_value
+
 from pycspr.factory.accounts import create_public_key
-from pycspr.factory.cl import create_cl_type_of_byte_array
-from pycspr.factory.cl import create_cl_type_of_option
-from pycspr.factory.cl import create_cl_type_of_simple
-from pycspr.factory.cl import create_cl_value
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import PrivateKey
 from pycspr.types import CLAccessRights
 from pycspr.types import CLTypeKey
 from pycspr.types import CLType
+from pycspr.types import CLValue
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployBody
@@ -74,22 +72,15 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     )
 
 
-def create_deploy_argument(
-    name: str,
-    parsed: object, 
-    cl_type: typing.Union[CLTypeKey, CLType]
-    ) -> ExecutionArgument:
+def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
     """Returns an argument associated with deploy execution information (session|payment).
     
-    :param name: Name of execution argument.
-    :param parsed: A parsed value to be dispatched for execution.
-    :param cl_type: Type information used to serialize parsed value.
+    :param name: Deploy argument name.
+    :param value: Deploy argument CL value.
+    :returns: A deploy argument.
 
     """
-    return ExecutionArgument(
-        name=name,
-        value=create_cl_value(cl_type, parsed)
-    )
+    return ExecutionArgument(name=name, value=value)
 
 
 def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> DeployBody:
@@ -142,10 +133,8 @@ def create_deploy_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
-    public_key = account if isinstance(account, PublicKey) else \
-                 create_public_key(account.algo, account.pbk)
-    if timestamp is None:
-        timestamp = datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
+    public_key = account if isinstance(account, PublicKey) else create_public_key(account.algo, account.pbk)
+    timestamp = timestamp or datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
     timestamp = round(timestamp, 3)
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
@@ -190,11 +179,10 @@ def create_native_transfer(
     :returns: A native transfer deploy.
 
     """
-    return create_deploy(
-        params,
-        create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS),
-        create_native_transfer_session(amount, target, correlation_id)
-        )
+    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS)
+    session = create_native_transfer_session(amount, target, correlation_id)
+
+    return create_deploy(params, payment, session)
 
 
 def create_native_transfer_session(
@@ -211,20 +199,17 @@ def create_native_transfer_session(
     """
     return ExecutableDeployItem_Transfer(
         args=[
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "target",
-                target,
-                create_cl_type_of_byte_array(32)
+                cl_value.byte_array(target)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "id",
-                correlation_id or random.randint(1, _MAX_TRANSFER_ID),
-                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.U64))
+                cl_value.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID))
                 ),
         ]
     )
@@ -240,10 +225,9 @@ def create_standard_payment(
     """
     return ExecutableDeployItem_ModuleBytes(
         args=[
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
         ],
         module_bytes=bytes([])
@@ -283,20 +267,17 @@ def create_validator_auction_bid(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "delegation_rate",
-                delegation_rate,
-                create_cl_type_of_simple(CLTypeKey.U8)
+                cl_value.u8(delegation_rate)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "public_key",
-                public_key,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                cl_value.public_key(public_key)
                 ),
             ]
         )
@@ -325,20 +306,17 @@ def create_validator_auction_bid_withdrawal(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_argument(
-                "public_key",
-                public_key,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
-                ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
+                "public_key",
+                cl_value.public_key(public_key)
+                ),
+            create_deploy_arg(
                 "unbond_purse",
-                unbond_purse,
-                create_cl_type_of_option(create_cl_type_of_simple(CLTypeKey.UREF))
+                cl_value.uref(unbond_purse)
                 ),
             ]
         )
@@ -367,20 +345,17 @@ def create_validator_delegation(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "delegator",
-                public_key_of_delegator,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                cl_value.public_key(public_key_of_delegator)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "validator",
-                public_key_of_validator,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                cl_value.public_key(public_key_of_validator)
                 ),
         ]
     )
@@ -409,20 +384,17 @@ def create_validator_delegation_withdrawal(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_argument(
+            create_deploy_arg(
                 "amount",
-                amount,
-                create_cl_type_of_simple(CLTypeKey.U512)
+                cl_value.u512(amount)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "delegator",
-                public_key_of_delegator,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                cl_value.public_key(public_key_of_delegator)
                 ),
-            create_deploy_argument(
+            create_deploy_arg(
                 "validator",
-                public_key_of_validator,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                cl_value.public_key(public_key_of_validator)
                 ),
         ]
     )

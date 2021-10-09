@@ -99,7 +99,7 @@ def _main(args: argparse.Namespace):
     client: NodeClient = _get_client(args)
 
     # Set validator key.
-    validator: PrivateKey = pycspr.factory.parse_private_key(
+    validator: PrivateKey = pycspr.parse_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
@@ -120,12 +120,10 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-    )
-
-    return NodeClient(connection)
+    ))
 
 
 def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
@@ -133,13 +131,13 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
 
     """
     # Set standard deploy parameters.
-    deploy_params = pycspr.factory.create_deploy_parameters(
+    deploy_params = pycspr.create_deploy_parameters(
         account=validator,
         chain_name=args.chain_name
         )
 
     # Set deploy.
-    deploy = pycspr.factory.create_validator_auction_bid(
+    deploy = pycspr.create_validator_auction_bid(
         params=deploy_params,
         amount=args.amount,
         delegation_rate=args.delegation_rate,

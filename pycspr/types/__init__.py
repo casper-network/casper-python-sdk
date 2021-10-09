@@ -40,9 +40,7 @@ from pycspr.types.state   import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.state   import DictionaryIdentifier_SeedURef
 from pycspr.types.state   import DictionaryIdentifier_UniqueKey
 from pycspr.types.state   import StorageKey
-from pycspr.types.state   import StorageKey_Account
-from pycspr.types.state   import StorageKey_Hash
-from pycspr.types.state   import StorageKey_UnforgeableReference
+from pycspr.types.state   import StorageKeyType
 from pycspr.types.state   import UnforgeableReference
 
 # Synonyms for terseness purposes.

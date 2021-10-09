@@ -232,3 +232,13 @@ class QueriesClient():
         return bytes.fromhex(
             api.get_state_root_hash(self.connection_info, block_id)
         )
+
+
+    def get_validator_changes(self) -> dict:
+        """Returns status changes of active validators.
+
+        :param node: Information required to connect to a node.
+        :returns: Status changes of active validators.
+
+        """
+        return api.get_validator_changes(self.connection_info)

@@ -7,17 +7,12 @@ import typing
 import pycspr
 from pycspr.client import NodeClient
 from pycspr.client import NodeConnectionInfo
-from pycspr.crypto import KeyAlgorithm
-from pycspr.factory.cl import create_cl_type_of_simple
-from pycspr.factory.cl import create_cl_value
-from pycspr.types import CLTypeKey
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
-from pycspr.types import ExecutableDeployItem_ModuleBytes
-from pycspr.types import ExecutableDeployItem_StoredContractByHash
+from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
-from pycspr.utils import io as _io
+from pycspr.types import StoredContractByHash
 
 
 
@@ -93,28 +88,26 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-    )
-
-    return NodeClient(connection)
+    ))
 
 
 def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> bytes:
     """Queries chain for data associated with a contract.
 
     """
-    cl_value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
+    value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
     
-    return cl_value["CLValue"]["parsed"]
+    return value["CLValue"]["parsed"]
 
 
 def _get_operator_key(args: argparse.Namespace) -> PublicKey:
     """Returns the smart contract operator's public key.
 
     """
-    return pycspr.factory.parse_public_key(
+    return pycspr.parse_public_key(
         args.path_to_operator_public_key,
         )
 
@@ -132,35 +125,33 @@ def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: P
     raise ValueError("ERC-20 has not been installed ... see how_tos/how_to_install_a_contract.py")
 
 
-def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user:PublicKey) -> Deploy:
+def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user: PublicKey) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
     # Set standard deploy parameters.
     params: DeployParameters = \
-        pycspr.factory.create_deploy_parameters(
+        pycspr.create_deploy_parameters(
             account=operator,
             chain_name=args.chain_name
             )
 
     # Set payment logic.
-    payment: ExecutableDeployItem_ModuleBytes = \
-        pycspr.factory.create_standard_payment(args.deploy_payment)
+    payment: ModuleBytes = \
+        pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
-    session: ExecutableDeployItem_StoredContractByHash = ExecutableDeployItem_StoredContractByHash(
+    session: StoredContractByHash = StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
         args = [
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "amount",
-                args.amount,
-                create_cl_type_of_simple(CLTypeKey.U256)
+                pycspr.cl_value.u256(args.amount)
                 ),
-            pycspr.create_deploy_argument(
+            pycspr.create_deploy_arg(
                 "recipient",
-                user,
-                create_cl_type_of_simple(CLTypeKey.PUBLIC_KEY)
+                pycspr.cl_value.public_key(user)
                 ),
         ]
     )

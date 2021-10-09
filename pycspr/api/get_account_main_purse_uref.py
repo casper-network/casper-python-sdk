@@ -1,6 +1,5 @@
 import typing
 
-from pycspr import crypto
 from pycspr import factory
 from pycspr import types
 from pycspr.client import NodeConnectionInfo

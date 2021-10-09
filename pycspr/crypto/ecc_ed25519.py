@@ -1,6 +1,7 @@
 import base64
 import typing
 
+from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import ed25519
 
@@ -103,7 +104,7 @@ def is_signature_valid(msg_hash: bytes, sig: bytes, pbk: bytes) -> bool:
     vk = ed25519.Ed25519PublicKey.from_public_bytes(pbk)
     try:
         vk.verify(sig, msg_hash)
-    except cryptography.exceptions.InvalidSignature:
+    except InvalidSignature:
         return False
     else:
         return True

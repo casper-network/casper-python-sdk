@@ -1,12 +1,13 @@
 import typing
 
 from pycspr.serialisation.byte_array.constants import TypeTag_ExecutableDeployItem
-from pycspr.serialisation.byte_array.encoder.cl_value import encode_cl_value
+from pycspr.serialisation.byte_array.encoder.cl_complex import encode_vector_of_t
 from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_string
 from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_byte_array
 from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_u32
 from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_u8_array
-from pycspr.serialisation.byte_array.encoder.cl_complex import encode_vector_of_t
+from pycspr.serialisation.byte_array.encoder.cl_type import encode_cl_type
+from pycspr.serialisation.byte_array.encoder.cl_value import encode as encode_cl_value
 from pycspr.types import Deploy
 from pycspr.types import DeployHeader
 from pycspr.types import ExecutionArgument
@@ -39,7 +40,9 @@ def encode_execution_argument(entity: ExecutionArgument) -> bytes:
     """Encodes an execution argument.
     
     """
-    return encode_string(entity.name) + encode_cl_value(entity.value)
+    return encode_string(entity.name) + \
+           encode_u8_array(encode_cl_value(entity.value)) + \
+           encode_cl_type(entity.value.cl_type)
 
 
 def encode_executable_deploy_item(entity: ExecutableDeployItem) -> bytes:

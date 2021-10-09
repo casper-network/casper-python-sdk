@@ -8,6 +8,7 @@ def test_that_cl_simple_types_can_be_encoded_to_bytes(vector_cl_types):
                 yield vector, type_key
 
     for vector, type_key in yield_vectors():
-        cl_type = pycspr.factory.create_cl_type_of_simple(type_key)
-        cl_value = pycspr.factory.create_cl_value(cl_type, vector["value"])
+        cl_type = pycspr.cl_type_factory.simple(type_key)
+        print(cl_type)
+        cl_value = pycspr.cl_value.create(vector["value"], cl_type)
         assert pycspr.serialisation.to_bytes(cl_value).hex() == vector["hex"], vector["typeof"]

@@ -66,23 +66,37 @@ _INTERFACE_OF_LIBRARY = {
         "KeyAlgorithm",
     },
     _has_constant: set(),
-    _has_exception: set(),
+    _has_exception: {
+        "NodeAPIError",
+    },
     _has_function: {
         "create_deploy",
         "create_deploy_approval",
+        "create_deploy_arg",
         "create_deploy_parameters",
-        "create_deploy_argument",
-        "create_standard_payment",
+        "create_deploy_ttl",
         "create_native_transfer",
+        "create_standard_payment",
+        "create_storage_key",
+        "create_uref_from_string",
         "create_validator_auction_bid",
         "create_validator_auction_bid_withdrawal",
         "create_validator_delegation",
         "create_validator_delegation_withdrawal",
-        "parse_public_key",
+
         "parse_private_key",
+        "parse_private_key_bytes",
+        "parse_public_key",
+        "parse_public_key_bytes",
+
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
+
+        "from_bytes",
+        "from_json",
+        "to_bytes",
+        "to_json",
         "read_deploy",
         "read_wasm",
         "write_deploy",
@@ -92,32 +106,20 @@ _INTERFACE_OF_LIBRARY = {
         "factory",
         "serialisation",
         "types",
+        "cl_type_factory",
+        "cl_value",
     }
 }
 
 
-# Expected interface of factory methods.
-_INTERFACE_OF_FACTORY = {
-    _has_member: {
-        "accounts",
-        "cl",
-        "deploys",
-    },
-}
-
-
 def test_version_of_library():
-    assert pycspr.__version__ == "0.8.7"
+    assert pycspr.__version__ == "0.9.1"
 
 
 def test_exports_of_library():
     for assertor, members in _INTERFACE_OF_LIBRARY.items():
         for member in members:
             assertor(pycspr, member)
-
-
-def test_exports_of_factory():
-    _test_exports(pycspr.factory, _INTERFACE_OF_FACTORY)
 
 
 def _test_exports(module, interface):

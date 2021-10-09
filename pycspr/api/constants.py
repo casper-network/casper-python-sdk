@@ -8,12 +8,14 @@ RPC_DISCOVER = "rpc.discover"
 RPC_INFO_GET_DEPLOY = "info_get_deploy"
 RPC_INFO_GET_PEERS = "info_get_peers"
 RPC_INFO_GET_STATUS = "info_get_status"
+RPC_INFO_GET_VALIDATOR_CHANGES = "info_get_validator_changes"
 RPC_STATE_GET_ACCOUNT_INFO = "state_get_account_info"
 RPC_STATE_GET_AUCTION_INFO = "state_get_auction_info"
 RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
 RPC_STATE_QUERY_GLOBAL_STATE = "query_global_state"
+
 
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
@@ -24,6 +26,7 @@ RPC_ENDPOINTS: set = {
     RPC_INFO_GET_DEPLOY,
     RPC_INFO_GET_PEERS,
     RPC_INFO_GET_STATUS,
+    RPC_INFO_GET_VALIDATOR_CHANGES,
     RPC_STATE_GET_ACCOUNT_INFO,
     RPC_STATE_GET_AUCTION_INFO,
     RPC_STATE_GET_BALANCE,

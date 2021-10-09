@@ -7,9 +7,6 @@ import typing
 import pycspr
 from pycspr.client import NodeClient
 from pycspr.client import NodeConnectionInfo
-from pycspr.types import Deploy
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
 from pycspr.types import UnforgeableReference
 
 
@@ -73,10 +70,10 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set account key of test user.
-    user_public_key = pycspr.factory.parse_public_key(args.path_to_account_key)      
+    user_public_key = pycspr.parse_public_key(args.path_to_account_key)      
 
     # Query 0.1: get_rpc_schema.
-    rpc_schema: typing.List[dict] = client.queries.get_rpc_schema()
+    rpc_schema: dict = client.queries.get_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: Query 0.1: get_rpc_schema")
 
@@ -106,9 +103,14 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 1.3: get_node_peers")
 
     # Query 1.4: get_node_status.
-    node_status: typing.List[dict] = client.queries.get_node_status()
+    node_status: dict = client.queries.get_node_status()
     assert isinstance(node_status, dict)
     print("SUCCESS :: Query 1.4: get_node_status")
+
+    # Query 1.5: get_validator_changes.
+    validator_changes: typing.List[dict] = client.queries.get_validator_changes()
+    assert isinstance(validator_changes, list)
+    print("SUCCESS :: Query 1.5: get_validator_changes")
 
     # Query 2.1: get_state_root_hash - required for global state related queries.
     state_root_hash: bytes = client.queries.get_state_root_hash()
@@ -116,17 +118,18 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 2.1: get_state_root_hash")
 
     # Query 2.2: get_account_info.
-    account_info = client.queries.get_account_info(user_public_key.account_key)
+    account_info: dict = client.queries.get_account_info(user_public_key.account_key)
     assert isinstance(account_info, dict)
     print("SUCCESS :: Query 2.2: get_account_info")
 
     # Query 2.3: get_account_main_purse_uref.
-    account_main_purse = client.queries.get_account_main_purse_uref(user_public_key.account_key)
+    account_main_purse: UnforgeableReference = \
+        client.queries.get_account_main_purse_uref(user_public_key.account_key)
     assert isinstance(account_main_purse, UnforgeableReference)
     print("SUCCESS :: Query 2.3: get_account_main_purse_uref")
 
     # Query 2.4: get_account_balance.
-    account_balance = client.queries.get_account_balance(account_main_purse, state_root_hash)
+    account_balance: int = client.queries.get_account_balance(account_main_purse, state_root_hash)
     assert isinstance(account_balance, int)
     print("SUCCESS :: Query 2.4: get_account_balance")
 
@@ -142,7 +145,7 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 3.2: get_block - by hash & by height")
 
     # Query 3.3: get_block_transfers - by hash & by height.
-    block_transfers = client.queries.get_block_transfers(block["hash"])
+    block_transfers: tuple = client.queries.get_block_transfers(block["hash"])
     assert isinstance(block_transfers, tuple)
     assert isinstance(block_transfers[0], str)      # black hash
     assert isinstance(block_transfers[1], list)     # set of transfers
@@ -150,12 +153,12 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 3.3: get_block_transfers - by hash & by height")
 
     # Query 4.1: get_auction_info.
-    auction_info = client.queries.get_auction_info()
+    auction_info: dict = client.queries.get_auction_info()
     assert isinstance(auction_info, dict)
     print("SUCCESS :: Query 4.1: get_auction_info")
 
     # Query 4.2: get_era_info - by switch block hash.
-    era_info = client.queries.get_era_info(block["hash"])
+    era_info: dict = client.queries.get_era_info(block["hash"])
     assert isinstance(era_info, dict)
     print("SUCCESS :: Query 4.2: get_era_info - by switch block hash")
 
@@ -165,31 +168,16 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 4.3: get_era_info - by switch block height")
 
 
-
 def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    connection = NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rest=args.node_port_rest,
         port_rpc=args.node_port_rpc,
         port_sse=args.node_port_sse
-    )
-
-    return NodeClient(connection)
-
-
-def _get_counter_parties(args: argparse.Namespace) -> PublicKey:
-    """Returns the 2 counter-parties participating in the transfer.
-
-    """
-
-    return pycspr.factory.parse_public_key(
-        args.path_to_cp2_account_key
-        )    
-
-    return cp1, cp2
+    ))
 
 
 # Entry point.

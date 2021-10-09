@@ -1,4 +1,3 @@
-import pycspr
 from pycspr.api import constants
 from pycspr.client import NodeConnectionInfo
 

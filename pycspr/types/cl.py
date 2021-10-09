@@ -71,11 +71,9 @@ TYPES_NUMERIC = {
 # Set of CL types considered to be simple.
 TYPES_SIMPLE = TYPES_NUMERIC.union({
     CLTypeKey.BOOL,
-    CLTypeKey.KEY,
     CLTypeKey.PUBLIC_KEY,
     CLTypeKey.STRING,
     CLTypeKey.UNIT,
-    CLTypeKey.UREF,
 })
 
 
