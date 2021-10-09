@@ -31,6 +31,7 @@ for development](#installing-the-sdk-for-development).
 * **Install a smart contract** See [here](how_tos/how_to_install_a_contract.py).
 * **Invoke a smart contract** See [here](how_tos/how_to_invoke_a_contract.py).
 
+## Development
 ### Set up local test NCTL network
 #### Installing Rust
 
@@ -74,4 +75,3 @@ $ source .venv/bin/activate  # or pipenv shell
 * Casper Documentation: [https://docs.casperlabs.io/](https://docs.casperlabs.io/)
 * How to stake your CSPR:
   [https://casper.network/network/blog/how-to-stake-your-cspr](https://casper.network/network/blog/how-to-stake-your-cspr)
-* Python Enhancement Proposals(PEP): [https://www.python.org/dev/peps/](https://www.python.org/dev/peps/)
