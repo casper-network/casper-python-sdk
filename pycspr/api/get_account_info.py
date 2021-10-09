@@ -37,28 +37,6 @@ def get_params(
 
     """
     account_key = account_key.hex() if isinstance(account_key, bytes) else account_key
-    param = {"public_key":account_key}
-    param.update(get_block_id_param(block_id)
+    param = {"public_key": account_key}
+    param.update(get_block_id_param(block_id))
     return param
-
-
-    if isinstance(block_id, type(None)):
-        return {
-            "public_key":account_key
-        }
-
-    elif isinstance(block_id, (bytes, str)):
-        return {
-            "public_key":account_key,
-            "block_identifier":{
-                "Hash": block_id.hex() if isinstance(block_id, bytes) else block_id
-            }            
-        }
-
-    elif isinstance(block_id, int):
-        return {
-            "public_key":account_key,
-            "block_identifier":{
-                "Height": block_id
-            }            
-        }
