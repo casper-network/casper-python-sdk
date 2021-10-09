@@ -1,6 +1,7 @@
 import typing
 
 from pycspr.api import constants
+from pycspr.api.utils import get_block_id_param
 from pycspr.client import NodeConnectionInfo
 
 
@@ -36,6 +37,10 @@ def get_params(
 
     """
     account_key = account_key.hex() if isinstance(account_key, bytes) else account_key
+    param = {"public_key":account_key}
+    param.update(get_block_id_param(block_id)
+    return param
+
 
     if isinstance(block_id, type(None)):
         return {
