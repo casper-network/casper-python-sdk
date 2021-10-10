@@ -18,7 +18,7 @@ $ source ./.venv/bin/activate  # launch your environment
 $ pip install pycspr
 ```
 If you want to take part in develeopment, follow the [intallation instructions
-for development](#installing-the-sdk-for-development).
+for development](#development).
 
 ## Usage
 
