@@ -39,8 +39,10 @@ Follow the Casper Documentation: [Getting
 Started](https://docs.casperlabs.io/en/latest/dapp-dev-guide/setup-of-rust-contract-sdk.html)
 
 #### Installing a local test NCTL network
-See the Casper Documentation for installation:
+See the Casper Documentation for `capser-node` installation:
 [Local Network Testing](https://docs.casperlabs.io/en/latest/dapp-dev-guide/setup-nctl.html)
+
+IMPORTANT: Atm tests are made for the `dev` branch of `casper-node`. so be sure to compile the dev branch. 
 
 ### Installing the SDK for Development 
 
