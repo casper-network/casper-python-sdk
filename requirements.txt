@@ -1,5 +1,6 @@
 cryptography
 ecdsa
+flake8
 jsonrpcclient
 requests
 pytest
