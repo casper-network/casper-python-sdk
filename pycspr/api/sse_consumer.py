@@ -1,7 +1,6 @@
 import json
 import typing
 
-import requests
 import sseclient
 
 from pycspr.api.constants import SSE_CHANNEL_TO_SSE_EVENT
@@ -11,7 +10,7 @@ from pycspr.api.connection import NodeConnection
 
 
 
-def execute(
+def get_events(
     node: NodeConnection,
     callback: typing.Callable,
     channel_type: NodeEventChannelType,
@@ -30,21 +29,9 @@ def execute(
     if event_type is not None:
         _validate_that_channel_supports_event_type(channel_type, event_type)
 
-    sse_client = _get_sse_client(node, channel_type, event_id)
+    sse_client = node.get_sse_client(channel_type, event_id)
     for event_type, event_id, payload in _yield_events(sse_client):
         callback(channel_type, event_type, event_id, payload)
-
-
-def _get_sse_client(node: NodeConnection, channel_type: NodeEventChannelType, event_id: int):
-    """Returns SSE client.
-
-    """
-    url = f"{node.address_sse}/{channel_type.name.lower()}"
-    if event_id:
-        url = f"{url}?start_from={event_id}"
-    stream = requests.get(url, stream=True)
-
-    return sseclient.SSEClient(stream)
 
 
 def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, int, dict]:

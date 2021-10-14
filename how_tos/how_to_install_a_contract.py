@@ -3,8 +3,8 @@ import os
 import pathlib
 
 import pycspr
-from pycspr.client.node_client import NodeClient
-from pycspr.api.connection import NodeConnection
+from pycspr import NodeClient
+from pycspr import NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters

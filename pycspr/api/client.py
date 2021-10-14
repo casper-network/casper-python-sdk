@@ -4,8 +4,8 @@ import typing
 from pycspr import factory
 from pycspr import types
 from pycspr.api import constants
-from pycspr.api import endpoints
 from pycspr.api import params as params_factory
+from pycspr.api import sse_consumer
 from pycspr.api.connection import NodeConnection
 from pycspr.api.constants import NodeEventChannelType
 from pycspr.api.constants import NodeEventType
@@ -23,6 +23,8 @@ class NodeClient():
         
         """
         self.connection = connection
+        self._get_rest_response = connection.get_rest_response
+        self._get_rpc_response = connection.get_rpc_response
 
 
     def get_account_balance(
@@ -39,7 +41,7 @@ class NodeClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
         params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
-        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
 
         return int(response["balance_value"])
 
@@ -57,7 +59,7 @@ class NodeClient():
 
         """
         params = params_factory.get_account_info_params(account_key, block_id)
-        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params)
 
         return response["account"]
 
@@ -109,7 +111,7 @@ class NodeClient():
 
         """
         params = params_factory.get_auction_info_params(block_id)
-        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_AUCTION_INFO, params)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_AUCTION_INFO, params)
 
         return response
 
@@ -122,7 +124,7 @@ class NodeClient():
 
         """
         params = params_factory.get_block_params(block_id)
-        response = self.connection.get_rpc_response(constants.RPC_CHAIN_GET_BLOCK, params)
+        response = self._get_rpc_response(constants.RPC_CHAIN_GET_BLOCK, params)
 
         return response["block"]
 
@@ -162,7 +164,7 @@ class NodeClient():
 
         """
         params = params_factory.get_block_transfers_params(block_id)
-        response = self.connection.get_rpc_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+        response = self._get_rpc_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
         return (response["block_hash"], response["transfers"])
 
@@ -175,7 +177,7 @@ class NodeClient():
 
         """
         params = params_factory.get_deploy_params(deploy_id)
-        response = self.connection.get_rpc_response(constants.RPC_INFO_GET_DEPLOY, params)
+        response = self._get_rpc_response(constants.RPC_INFO_GET_DEPLOY, params)
 
         return response
 
@@ -188,7 +190,7 @@ class NodeClient():
 
         """
         params = params_factory.get_dictionary_item_params(identifier)
-        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
         return response
 
@@ -201,7 +203,7 @@ class NodeClient():
 
         """
         params = params_factory.get_era_info_params(block_id)
-        response = self.connection.get_rpc_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+        response = self._get_rpc_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
 
         return response["era_summary"]
 
@@ -221,19 +223,7 @@ class NodeClient():
         :param event_id: Identifer of event from which to start stream listening.
 
         """
-        endpoints.get_events.execute(self.connection, callback, channel_type, event_type, event_id)
-
-
-    def get_node_metrics(self) -> list:
-        """Returns set of node metrics.
-
-        :returns: Node metrics information.
-
-        """
-        response = self.connection.get_rest_response(constants.REST_GET_METRICS)
-        metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
-
-        return metrics
+        sse_consumer.get_events(self.connection, callback, channel_type, event_type, event_id)
 
 
     def get_node_metric(self, metric_id: str) -> list:
@@ -246,6 +236,18 @@ class NodeClient():
         metrics = self.get_node_metrics()
 
         return [i for i in metrics if i.lower().startswith(metric_id.lower())]
+
+
+    def get_node_metrics(self) -> list:
+        """Returns set of node metrics.
+
+        :returns: Node metrics information.
+
+        """
+        response = self._get_rest_response(constants.REST_GET_METRICS)
+        metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
+
+        return metrics
 
 
     def get_node_peers(self) -> dict:
@@ -265,7 +267,7 @@ class NodeClient():
         :returns: Node status information.
 
         """
-        response = self.connection.get_rpc_response(constants.RPC_INFO_GET_STATUS)
+        response = self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
 
         return response
 
@@ -300,7 +302,7 @@ class NodeClient():
         :returns: Node JSON-RPC API schema.
 
         """
-        response = self.connection.get_rpc_response(constants.RPC_DISCOVER)
+        response = self._get_rpc_response(constants.RPC_DISCOVER)
 
         return response["schema"]
 
@@ -322,7 +324,7 @@ class NodeClient():
         item_path = item_path if isinstance(item_path, list) else [item_path]
         state_root_hash = state_root_hash or self.get_state_root_hash()
         params = params_factory.get_state_item_params(item_key, item_path, state_root_hash)
-        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_ITEM, params)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_ITEM, params)
 
         return response["stored_value"]
 
@@ -338,7 +340,7 @@ class NodeClient():
 
         """
         params = params_factory.get_state_root_hash_params(block_id)
-        response = self.connection.get_rpc_response(constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params)
+        response = self._get_rpc_response(constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params)
 
         return bytes.fromhex(response["state_root_hash"])
 
@@ -350,7 +352,7 @@ class NodeClient():
         :returns: Status changes of active validators.
 
         """
-        response = self.connection.get_rpc_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES)
+        response = self._get_rpc_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES)
 
         return response["changes"]
 
@@ -362,7 +364,7 @@ class NodeClient():
 
         """
         params = params_factory.put_deploy_params(deploy)
-        response = self.connection.get_rpc_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params)
+        response = self._get_rpc_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params)
 
         return response["deploy_hash"]
 

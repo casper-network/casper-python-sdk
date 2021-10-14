@@ -2,8 +2,10 @@ import dataclasses
 
 import jsonrpcclient
 import requests
+import sseclient
 
 from pycspr.api import constants
+from pycspr.api.constants import NodeEventChannelType
 
 
 
@@ -81,3 +83,15 @@ class NodeConnection:
             raise NodeAPIError(parsed)
 
         return parsed.result
+
+
+    def get_sse_client(self, channel_type: NodeEventChannelType, event_id: int) -> sseclient.SSEClient:
+        """Returns SSE client.
+
+        """
+        url = f"{self.address_sse}/{channel_type.name.lower()}"
+        if event_id:
+            url = f"{url}?start_from={event_id}"
+        stream = requests.get(url, stream=True)
+
+        return sseclient.SSEClient(stream)
