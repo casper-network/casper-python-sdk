@@ -105,10 +105,10 @@ class StorageKey():
         """Returns a string representation for over the wire dispatch.
         
         """
-        prefix = {
+        _PREFIXES = {
             StorageKeyType.ACCOUNT: "account-hash",
             StorageKeyType.HASH: "hash",
             StorageKeyType.UREF: "uref"
-        }[self.typeof]
+        }
 
-        return f"{prefix}-{self.identifier.hex()}"
+        return f"{_PREFIXES[self.typeof]}-{self.identifier.hex()}"

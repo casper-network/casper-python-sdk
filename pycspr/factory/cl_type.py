@@ -47,8 +47,8 @@ def public_key() -> CLType_Simple:
     return CLType_Simple(CLTypeKey.PUBLIC_KEY)
 
 
-def simple(typeof: CLTypeKey) -> CLType_Simple:
-    return CLType_Simple(typeof)
+def simple(type_key: CLTypeKey) -> CLType_Simple:
+    return CLType_Simple(type_key)
 
 
 def string() -> CLType_Simple:

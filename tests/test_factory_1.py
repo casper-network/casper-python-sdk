@@ -72,7 +72,7 @@ def test_create_deploy_arg_tuple_3(vector_cl_types):
 
 def _assert_arg(value, cl_type):
     cl_value = pycspr.cl_value.create(value, cl_type)
-    arg_name = f"a-{cl_type.typeof.name.lower()}-arg"
+    arg_name = f"a-{cl_type.type_key.name.lower()}-arg"
     arg = pycspr.create_deploy_arg(arg_name, cl_value)
     assert isinstance(arg, pycspr.types.ExecutionArgument)
 

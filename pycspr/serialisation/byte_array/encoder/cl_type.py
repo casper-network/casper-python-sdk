@@ -20,7 +20,7 @@ def encode_cl_type(entity: CLType) -> bytes:
     
     """
     def encode_byte_array():
-        return bytes([entity.typeof.value]) + encode_u32(entity.size)
+        return bytes([entity.type_key.value]) + encode_u32(entity.size)
 
     def encode_list():
         raise NotImplementedError()
@@ -29,13 +29,13 @@ def encode_cl_type(entity: CLType) -> bytes:
         raise NotImplementedError()
 
     def encode_option():
-        return bytes([entity.typeof.value]) + encode_cl_type(entity.inner_type)
+        return bytes([entity.type_key.value]) + encode_cl_type(entity.inner_type)
 
     def encode_simple():        
-        return bytes([entity.typeof.value])
+        return bytes([entity.type_key.value])
 
     def encode_storage_key():    
-        return bytes([entity.typeof.value]) + bytes([entity.key_type.value])
+        return bytes([entity.type_key.value]) + bytes([entity.key_type.value])
 
     def encode_tuple_1():
         raise NotImplementedError()

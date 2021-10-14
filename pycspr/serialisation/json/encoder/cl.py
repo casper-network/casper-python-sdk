@@ -41,7 +41,7 @@ def encode_cl_type(entity: CLType) -> dict:
         },
 
         # Simple type.
-        CLType_Simple: lambda: encode_cl_type_key(entity.typeof),
+        CLType_Simple: lambda: encode_cl_type_key(entity.type_key),
 
         # Storage Key.
         CLType_StorageKey: "Key",
@@ -110,17 +110,17 @@ def encode_cl_value(entity: CLValue) -> dict:
 
     """
     def _encode_parsed(type_info: CLType) -> str:
-        if type_info.typeof in TYPES_NUMERIC:
+        if type_info.type_key in TYPES_NUMERIC:
             return str(int(entity.parsed))
-        elif type_info.typeof == CLTypeKey.BYTE_ARRAY:
+        elif type_info.type_key == CLTypeKey.BYTE_ARRAY:
             return entity.parsed.hex()
-        elif type_info.typeof == CLTypeKey.KEY:
+        elif type_info.type_key == CLTypeKey.KEY:
             return entity.parsed.as_string()
-        elif type_info.typeof == CLTypeKey.PUBLIC_KEY:
+        elif type_info.type_key == CLTypeKey.PUBLIC_KEY:
             return entity.parsed.account_key.hex()
-        elif type_info.typeof == CLTypeKey.UREF:
+        elif type_info.type_key == CLTypeKey.UREF:
             return entity.parsed.as_string()
-        elif type_info.typeof == CLTypeKey.OPTION:
+        elif type_info.type_key == CLTypeKey.OPTION:
             return _encode_parsed(type_info.inner_type)
         else:
             return str(entity.parsed)

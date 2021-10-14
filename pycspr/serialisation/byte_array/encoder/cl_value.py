@@ -45,10 +45,10 @@ def encode(value: CLValue) -> bytes:
     :returns: A byte array representation conformant to CL serialisation protocol.
     
     """
-    encoder = ENCODERS[value.cl_type.typeof]
-    if value.cl_type.typeof in {CLTypeKey.LIST, CLTypeKey.OPTION}:
-        return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.typeof])
-    elif value.cl_type.typeof  == CLTypeKey.KEY:
+    encoder = ENCODERS[value.cl_type.type_key]
+    if value.cl_type.type_key in {CLTypeKey.LIST, CLTypeKey.OPTION}:
+        return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.type_key])
+    elif value.cl_type.type_key  == CLTypeKey.KEY:
         return encoder(value.parsed, value.cl_type.key_type)
     else:
         return encoder(value.parsed)

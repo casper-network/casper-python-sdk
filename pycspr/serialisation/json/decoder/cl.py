@@ -44,7 +44,7 @@ def decode_cl_type(obj) -> CLType:
         except KeyError:
             type_key = CLTypeKey[obj]
         finally:
-            return CLType_Simple(typeof=type_key)
+            return CLType_Simple(type_key=type_key)
 
     # Set decoder.
     if isinstance(obj, dict):

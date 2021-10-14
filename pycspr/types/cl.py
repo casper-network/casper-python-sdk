@@ -94,7 +94,7 @@ class CLType_ByteArray(CLType):
     size: int
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.BYTE_ARRAY
+    type_key: CLTypeKey = CLTypeKey.BYTE_ARRAY
 
 
 @dataclasses.dataclass
@@ -106,7 +106,7 @@ class CLType_StorageKey(CLType):
     key_type: CLStorageKeyType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.KEY
+    type_key: CLTypeKey = CLTypeKey.KEY
 
 
 @dataclasses.dataclass
@@ -118,7 +118,7 @@ class CLType_List(CLType):
     inner_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.LIST
+    type_key: CLTypeKey = CLTypeKey.LIST
 
 
 @dataclasses.dataclass
@@ -133,7 +133,7 @@ class CLType_Map(CLType):
     value_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.MAP
+    type_key: CLTypeKey = CLTypeKey.MAP
 
 
 @dataclasses.dataclass
@@ -145,7 +145,7 @@ class CLType_Option(CLType):
     inner_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.OPTION
+    type_key: CLTypeKey = CLTypeKey.OPTION
 
 
 @dataclasses.dataclass
@@ -154,7 +154,7 @@ class CLType_Simple(CLType):
     
     """
     # CSPR type key.
-    typeof: CLTypeKey
+    type_key: CLTypeKey
 
 
 @dataclasses.dataclass
@@ -166,7 +166,7 @@ class CLType_Tuple1(CLType):
     t0_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.TUPLE_1
+    type_key: CLTypeKey = CLTypeKey.TUPLE_1
 
 
 @dataclasses.dataclass
@@ -181,7 +181,7 @@ class CLType_Tuple2(CLType):
     t1_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.TUPLE_2
+    type_key: CLTypeKey = CLTypeKey.TUPLE_2
 
 
 @dataclasses.dataclass
@@ -199,7 +199,7 @@ class CLType_Tuple3(CLType):
     t2_type: CLType
 
     # CSPR type key.
-    typeof: CLTypeKey = CLTypeKey.TUPLE_3
+    type_key: CLTypeKey = CLTypeKey.TUPLE_3
 
 
 @dataclasses.dataclass

@@ -269,7 +269,7 @@ def decode(type_info: CLType, as_bytes: typing.List[int]) -> typing.List[int]:
     
     """
     if isinstance(type_info, CLType_Simple):
-        entity = _SIMPLE_TYPE_DECODERS[type_info.typeof](as_bytes)
+        entity = _SIMPLE_TYPE_DECODERS[type_info.type_key](as_bytes)
     elif isinstance(type_info, CLType_ByteArray):
         entity = decode_byte_array(as_bytes)
     elif isinstance(type_info, CLType_Option):
