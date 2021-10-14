@@ -17,7 +17,7 @@ def execute(node: NodeConnection, metric_id: str = None) -> list:
     endpoint = f"{node.address_rest}/{constants.REST_GET_METRICS}"
     response = rest_client.get(endpoint)
     data = response.content.decode("utf-8")
-    data = sorted([i.strip() for i in data.split("\n") if not i.startswith("#")])
+    metrics = sorted([i.strip() for i in data.split("\n") if not i.startswith("#")])
 
-    return data if metric_id is None else \
-           [i for i in data if i.lower().startswith(metric_id.lower())]
+    return metrics if metric_id is None else \
+           [i for i in metrics if i.lower().startswith(metric_id.lower())]

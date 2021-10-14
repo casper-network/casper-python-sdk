@@ -1,6 +1,7 @@
 import typing
 
 from pycspr import types
+from pycspr.serialisation.json.encoder.deploy import encode_deploy as encode_deploy_as_json
 
 
 def get_account_balance_params(
@@ -226,3 +227,61 @@ def get_era_info_params(block_id: types.OptionalBlockIdentifer = None) -> dict:
                 "Height": block_id
             }            
         }
+
+
+def get_state_item_params(
+    item_key: str,
+    item_path: typing.Union[str, typing.List[str]] = [],
+    state_root_hash: bytes = None,
+) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param item_key: A global state storage item key.
+    :param item_path: Path(s) to a data held beneath the key.
+    :param state_root_hash: A node's root state hash at some point in chain time.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    return {
+        "key": item_key,
+        "path": item_path if isinstance(item_path, list) else [item_path],
+        "state_root_hash": state_root_hash.hex() if state_root_hash else None
+    }
+
+
+def get_state_root_hash_params(block_id: typing.Union[None, str, int] = None) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param block_id: Identifier of a finalised block.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    if isinstance(block_id, bytes):
+        block_id = block_id.hex()
+
+    if isinstance(block_id, type(None)):
+        return None
+    elif isinstance(block_id, str):
+        return {
+            "block_identifier":{
+                "Hash": block_id
+            }            
+        }
+    elif isinstance(block_id, int):
+        return {
+            "block_identifier":{
+                "Height": block_id
+            }            
+        }
+
+
+def put_deploy_params(deploy: types.Deploy) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param deploy: A deploy to be dispatched to a node.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    return {
+        "deploy": encode_deploy_as_json(deploy)
+    }

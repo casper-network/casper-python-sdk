@@ -44,7 +44,11 @@ class NodeClient():
         return int(response["balance_value"])
 
 
-    def get_account_info(self, account_key: typing.Union[bytes, str], block_id: types.OptionalBlockIdentifer = None) -> dict:
+    def get_account_info(
+        self,
+        account_key: typing.Union[bytes, str],
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.
@@ -58,7 +62,11 @@ class NodeClient():
         return response["account"]
 
 
-    def get_account_main_purse_uref(self, account_key: typing.Union[bytes, str], block_id: types.OptionalBlockIdentifer = None) -> types.UnforgeableReference:
+    def get_account_main_purse_uref(
+        self,
+        account_key: typing.Union[bytes, str],
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> types.UnforgeableReference:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_key: Key of an on-chain account.
@@ -71,7 +79,12 @@ class NodeClient():
         return factory.create_uref_from_string(account_info["main_purse"])
 
 
-    def get_account_named_key(self, account_key: typing.Union[bytes, str], key_name: str, block_id: types.OptionalBlockIdentifer = None) -> str:
+    def get_account_named_key(
+        self,
+        account_key: typing.Union[bytes, str],
+        key_name: str,
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> str:
         """Returns a named key stored under an account.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.
@@ -86,7 +99,10 @@ class NodeClient():
         return None if len(named_keys) == 0 else named_keys[0]["key"]
 
 
-    def get_auction_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
+    def get_auction_info(
+        self,
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -125,7 +141,7 @@ class NodeClient():
         """
         elapsed = 0.0
         while True:
-            block = get_block(node)
+            block = self.get_block()
             if block["header"]["era_end"] is not None:
                 return block
 
@@ -134,14 +150,11 @@ class NodeClient():
                 break
             time.sleep(polling_interval_seconds)
 
-        return endpoints.get_block_at_era_switch.execute(
-            self.connection,
-            polling_interval_seconds,
-            max_polling_time_seconds
-            )
 
-
-    def get_block_transfers(self, block_id: types.OptionalBlockIdentifer = None) -> typing.Tuple[str, list]:
+    def get_block_transfers(
+        self,
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -217,7 +230,10 @@ class NodeClient():
         :returns: Node metrics information.
 
         """
-        return endpoints.get_node_metrics.execute(self.connection)
+        response = self.connection.get_rest_response(constants.REST_GET_METRICS)
+        metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
+
+        return metrics
 
 
     def get_node_metric(self, metric_id: str) -> list:
@@ -227,7 +243,9 @@ class NodeClient():
         :returns: Node metrics information filtered by a particular metric.
 
         """
-        return endpoints.get_node_metrics.execute(self.connection, metric_id)
+        metrics = self.get_node_metrics()
+
+        return [i for i in metrics if i.lower().startswith(metric_id.lower())]
 
 
     def get_node_peers(self) -> dict:
@@ -236,7 +254,9 @@ class NodeClient():
         :returns: Node peers information.
 
         """
-        return endpoints.get_node_peers.execute(self.connection)
+        node_status = self.get_node_status()
+
+        return node_status["peers"]
 
 
     def get_node_status(self) -> dict:
@@ -245,7 +265,9 @@ class NodeClient():
         :returns: Node status information.
 
         """
-        return endpoints.get_node_status.execute(self.connection)
+        response = self.connection.get_rpc_response(constants.RPC_INFO_GET_STATUS)
+
+        return response
 
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
@@ -255,7 +277,10 @@ class NodeClient():
         :returns: A JSON-RPC schema endpoint fragment.
 
         """
-        return endpoints.get_rpc_endpoint.execute(self.connection, endpoint)
+        schema = self.get_rpc_schema()
+        for obj in schema["methods"]:
+            if obj["name"].lower() == endpoint.lower():
+                return obj
 
 
     def get_rpc_endpoints(self) -> typing.Union[dict, list]:
@@ -264,7 +289,9 @@ class NodeClient():
         :returns: A list of all supported JSON-RPC endpoints.
 
         """
-        return endpoints.get_rpc_endpoints.execute(self.connection)
+        schema = self.get_rpc_schema()
+
+        return sorted([i["name"] for i in schema["methods"]])
 
 
     def get_rpc_schema(self) -> dict:
@@ -273,7 +300,9 @@ class NodeClient():
         :returns: Node JSON-RPC API schema.
 
         """
-        return endpoints.get_rpc_schema.execute(self.connection)
+        response = self.connection.get_rpc_response(constants.RPC_DISCOVER)
+
+        return response["schema"]
 
 
     def get_state_item(
@@ -281,7 +310,7 @@ class NodeClient():
         item_key: str,
         item_path: typing.Union[str, typing.List[str]] = [],
         state_root_hash: typing.Union[bytes, None] = None
-        ) -> bytes:
+    ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
         :param item_key: Storage item key.
@@ -292,20 +321,26 @@ class NodeClient():
         """
         item_path = item_path if isinstance(item_path, list) else [item_path]
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        
-        return endpoints.get_state_item.execute(self.connection, item_key, item_path, state_root_hash)
+        params = params_factory.get_state_item_params(item_key, item_path, state_root_hash)
+        response = self.connection.get_rpc_response(constants.RPC_STATE_GET_ITEM, params)
+
+        return response["stored_value"]
 
 
-    def get_state_root_hash(self, block_id: types.OptionalBlockIdentifer = None) -> bytes:
+    def get_state_root_hash(
+        self,
+        block_id: types.OptionalBlockIdentifer = None
+    ) -> bytes:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
 
         """
-        return bytes.fromhex(
-            endpoints.get_state_root_hash.execute(self.connection, block_id)
-        )
+        params = params_factory.get_state_root_hash_params(block_id)
+        response = self.connection.get_rpc_response(constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params)
+
+        return bytes.fromhex(response["state_root_hash"])
 
 
     def get_validator_changes(self) -> dict:
@@ -315,7 +350,9 @@ class NodeClient():
         :returns: Status changes of active validators.
 
         """
-        return endpoints.get_validator_changes.execute(self.connection)
+        response = self.connection.get_rpc_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES)
+
+        return response["changes"]
 
 
     def send_deploy(self, deploy: types.Deploy):
@@ -324,4 +361,8 @@ class NodeClient():
         :param deploy: A deploy to be processed at a node.
 
         """
-        return endpoints.put_deploy.execute(self.connection, deploy)
+        params = params_factory.put_deploy_params(deploy)
+        response = self.connection.get_rpc_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params)
+
+        return response["deploy_hash"]
+
