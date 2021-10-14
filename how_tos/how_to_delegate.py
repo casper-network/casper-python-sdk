@@ -5,8 +5,8 @@ import random
 import typing
 
 import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
+from pycspr.client.node_client import NodeClient
+from pycspr.api.connection import NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import Deploy
@@ -100,7 +100,7 @@ def _main(args: argparse.Namespace):
     deploy.approve(delegator)
 
     # Dispatch deploy to a node.
-    client.deploys.send(deploy)
+    client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
@@ -109,7 +109,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
+    return NodeClient(NodeConnection(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     ))

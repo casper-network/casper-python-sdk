@@ -101,5 +101,5 @@ def _get_signing_key_from_pem_file(fpath: str) -> ecdsa.SigningKey:
     """Returns a signing key mapped from a PEM file representation of a private key.
     
     """
-    with open(fpath, "rb") as f:
-        return ecdsa.SigningKey.from_pem(f.read())
+    with open(fpath, "rb") as fstream:
+        return ecdsa.SigningKey.from_pem(fstream.read())

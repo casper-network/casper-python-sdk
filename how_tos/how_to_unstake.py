@@ -3,8 +3,8 @@ import os
 import pathlib
 
 import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
+from pycspr.client.node_client import NodeClient
+from pycspr.api.connection import NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
@@ -96,7 +96,7 @@ def _main(args: argparse.Namespace):
     
     # Set validator unbond purse.
     validator_purse: UnforgeableReference = \
-        client.queries.get_account_main_purse_uref(validator.account_key)
+        client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, validator, validator_purse)
@@ -105,7 +105,7 @@ def _main(args: argparse.Namespace):
     deploy.approve(validator)
 
     # Dispatch deploy.
-    client.deploys.send(deploy)
+    client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
@@ -114,7 +114,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
+    return NodeClient(NodeConnection(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     ))

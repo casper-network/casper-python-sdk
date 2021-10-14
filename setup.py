@@ -8,8 +8,8 @@ from setuptools.dist import Distribution
 
 
 # List of 3rd party python dependencies.
-with open("requirements.txt", "r") as f:
-     _REQUIRES = f.read().splitlines()
+with open("requirements.txt", "r") as fstream:
+     _REQUIRES = fstream.read().splitlines()
 
 
 class _BinaryDistribution(Distribution):
@@ -29,8 +29,8 @@ def _read(fname):
     """
     fpath = os.path.dirname(__file__)
     fpath = os.path.join(fpath, fname)
-    with open(fpath, 'r', encoding='utf-8') as file_:
-        return file_.read()
+    with open(fpath, 'r', encoding='utf-8') as fstream:
+        return fstream.read()
 
 
 def _get_version():

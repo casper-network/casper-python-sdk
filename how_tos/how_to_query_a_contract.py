@@ -5,8 +5,8 @@ import random
 import typing
 
 import pycspr
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
+from pycspr.client.node_client import NodeClient
+from pycspr.api.connection import NodeConnection
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes
@@ -88,7 +88,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
+    return NodeClient(NodeConnection(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     ))
@@ -98,7 +98,7 @@ def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> by
     """Queries chain for data associated with a contract.
 
     """
-    value = client.queries.get_state_item(f"hash-{contract_hash.hex()}", key)
+    value = client.get_state_item(f"hash-{contract_hash.hex()}", key)
     
     return value["CLValue"]["parsed"]
 
@@ -117,7 +117,7 @@ def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: P
 
     """
     # We query operator account for a named key == ERC20, we then return the parsed named key value.  
-    account_info = client.queries.get_account_info(operator.account_key)
+    account_info = client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])

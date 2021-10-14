@@ -57,11 +57,11 @@ def _has_member(mod, member):
 _INTERFACE_OF_LIBRARY = {
     _has_class: {
         "NodeClient",
-        "NodeConnectionInfo",
+        "NodeConnection",
     },
     _has_enum: {
-        "NodeSseChannelType",
-        "NodeSseEventType",
+        "NodeEventChannelType",
+        "NodeEventType",
         "HashAlgorithm",
         "KeyAlgorithm",
     },

@@ -1,10 +1,10 @@
 import argparse
 import json
 
-from pycspr.client import NodeClient
-from pycspr.client import NodeConnectionInfo
-from pycspr import NodeSseChannelType
-from pycspr import NodeSseEventType
+from pycspr.client.node_client import NodeClient
+from pycspr.api.connection import NodeConnection
+from pycspr import NodeEventChannelType
+from pycspr import NodeEventType
 
 
 
@@ -32,11 +32,11 @@ _ARGS.add_argument(
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
     "--channel",
-    default=NodeSseChannelType.main.name,
+    default=NodeEventChannelType.main.name,
     dest="channel",
     help="Node event channel to which to bind - defaults to main.",
     type=str,
-    choices=[i.name for i in NodeSseChannelType],
+    choices=[i.name for i in NodeEventChannelType],
     )
 
 # CLI argument: Type of event to which to listen to - defaults to all.
@@ -46,7 +46,7 @@ _ARGS.add_argument(
     dest="event",
     help="Type of event to which to listen to - defaults to all.",
     type=str,
-    choices=["all"] + [i.name for i in NodeSseEventType],
+    choices=["all"] + [i.name for i in NodeEventType],
     )
 
 
@@ -60,10 +60,10 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Bind to node events.
-    client.events.get_events(
+    client.get_events(
         callback=_on_event,
-        channel_type = NodeSseChannelType[args.channel],
-        event_type = None if args.event == "all" else NodeSseEventType[args.event],
+        channel_type = NodeEventChannelType[args.channel],
+        event_type = None if args.event == "all" else NodeEventType[args.event],
         event_id = 0
     )
 
@@ -72,15 +72,15 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
+    return NodeClient(NodeConnection(
         host=args.node_host,
         port_sse=args.node_port_sse
     ))
 
 
 def _on_event(
-    channel_type: NodeSseChannelType,
-    event_type: NodeSseEventType,
+    channel_type: NodeEventChannelType,
+    event_type: NodeEventType,
     event_id: int,
     event_data: dict
     ):

@@ -82,5 +82,5 @@ def deploy_1() -> list:
     return data
 
 def _read_vector(fname: str, parser: typing.Callable = json.load):
-    with open(_PATH_TO_VECTORS / fname) as fhandle:
-        return fhandle.read() if parser is None else parser(fhandle)
+    with open(_PATH_TO_VECTORS / fname) as fstream:
+        return fstream.read() if parser is None else parser(fstream)

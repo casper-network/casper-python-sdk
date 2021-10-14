@@ -16,10 +16,10 @@ from pycspr               import factory
 from pycspr               import serialisation
 from pycspr               import types
 
-from pycspr.client        import NodeClient
-from pycspr.client        import NodeConnectionInfo
-from pycspr.client        import NodeSseChannelType
-from pycspr.client        import NodeSseEventType
+from pycspr.api.client     import NodeClient
+from pycspr.api.connection import NodeConnection
+from pycspr.api.constants  import NodeEventChannelType
+from pycspr.api.constants  import NodeEventType
 
 from pycspr.crypto        import get_account_hash
 from pycspr.crypto        import get_account_key

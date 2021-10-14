@@ -8,7 +8,7 @@ def test_get_state_root_hash(CLIENT):
         assert len(response) == 32
 
     for block_id in (None, 1):
-        _assert(CLIENT.queries.get_state_root_hash(block_id))
+        _assert(CLIENT.get_state_root_hash(block_id))
 
 
 def test_get_account_info(CLIENT, account_key: bytes):
@@ -29,7 +29,7 @@ def test_get_account_info(CLIENT, account_key: bytes):
         assert "named_keys" in response
         assert isinstance(response["named_keys"], list)
 
-    _assert(CLIENT.queries.get_account_info(account_key))
+    _assert(CLIENT.get_account_info(account_key))
 
 
 def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
@@ -39,7 +39,7 @@ def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
         assert len(response.address) == 32
         assert response.access_rights == pycspr.types.CLAccessRights.READ_ADD_WRITE
 
-    _assert(CLIENT.queries.get_account_main_purse_uref(account_key))
+    _assert(CLIENT.get_account_main_purse_uref(account_key))
 
 
 def test_get_account_balance(CLIENT, account_main_purse_uref: object, state_root_hash: bytes):
@@ -49,4 +49,4 @@ def test_get_account_balance(CLIENT, account_main_purse_uref: object, state_root
         assert isinstance(response, int)
         assert response >= 0
 
-    _assert(CLIENT.queries.get_account_balance(account_main_purse_uref, state_root_hash))
+    _assert(CLIENT.get_account_balance(account_main_purse_uref, state_root_hash))

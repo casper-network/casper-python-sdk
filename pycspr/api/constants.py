@@ -1,3 +1,11 @@
+import enum
+
+
+# Default ports.
+DEFAULT_PORT_REST = 8888
+DEFAULT_PORT_RPC = 7777
+DEFAULT_PORT_SSE = 9999
+
 # Node RPC endpoints.
 RPC_ACCOUNT_PUT_DEPLOY = "account_put_deploy"
 RPC_CHAIN_GET_BLOCK = "chain_get_block"
@@ -15,7 +23,6 @@ RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
 RPC_STATE_QUERY_GLOBAL_STATE = "query_global_state"
-
 
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
@@ -44,13 +51,44 @@ REST_ENDPOINTS: set = {
     REST_GET_STATUS,
     }
 
-# Node SSE endpoints/channels.
-SSE_DEPLOYS = "deploys"
-SSE_MAIN = "main"
-SSE_SIGS = "sigs"
 
-SSE_ENDPOINTS: set = {
-    SSE_DEPLOYS,
-    SSE_MAIN,
-    SSE_SIGS,
+class NodeEventChannelType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    deploys = enum.auto()
+    main = enum.auto()
+    sigs = enum.auto()
+
+
+class NodeEventType(enum.Enum):
+    """Enumeration over set of exposed node SEE event types.
+    
+    """
+    ApiVersion = enum.auto()
+    BlockAdded = enum.auto()
+    DeployAccepted = enum.auto()
+    DeployProcessed = enum.auto()
+    Fault = enum.auto()
+    FinalitySignature = enum.auto()
+    Step = enum.auto()
+
+
+# Map: SSE channel <-> SSE event.
+SSE_CHANNEL_TO_SSE_EVENT = {
+    NodeEventChannelType.deploys: {
+        NodeEventType.ApiVersion,
+        NodeEventType.DeployAccepted
+    },
+    NodeEventChannelType.main: {
+        NodeEventType.ApiVersion,
+        NodeEventType.BlockAdded,
+        NodeEventType.DeployProcessed,
+        NodeEventType.Fault,
+        NodeEventType.Step
+    },
+    NodeEventChannelType.sigs: {
+        NodeEventType.ApiVersion,
+        NodeEventType.FinalitySignature
+    }
 }

@@ -4,7 +4,7 @@ def test_get_node_metrics(CLIENT):
         assert isinstance(response, list)
         assert len(response) > 300
 
-    _assert(CLIENT.queries.get_node_metrics())
+    _assert(CLIENT.get_node_metrics())
 
 
 def test_get_node_metric(CLIENT):
@@ -13,7 +13,7 @@ def test_get_node_metric(CLIENT):
         assert isinstance(response, list)
         assert len(response) == 1
 
-    _assert(CLIENT.queries.get_node_metric("mem_deploy_gossiper"))
+    _assert(CLIENT.get_node_metric("mem_deploy_gossiper"))
 
 
 def test_get_node_peers(CLIENT):
@@ -21,7 +21,7 @@ def test_get_node_peers(CLIENT):
         # e.g. docs/api_reponses/rpc_info_get_peers.json
         assert isinstance(response, list)
 
-    _assert(CLIENT.queries.get_node_peers())
+    _assert(CLIENT.get_node_peers())
 
 
 def test_get_node_status(CLIENT):
@@ -29,7 +29,7 @@ def test_get_node_status(CLIENT):
         # e.g. docs/api_reponses/rpc_info_get_status.json
         assert isinstance(response, dict)
 
-    _assert(CLIENT.queries.get_node_status())
+    _assert(CLIENT.get_node_status())
 
 
 def test_get_validator_changes(CLIENT):
@@ -37,4 +37,4 @@ def test_get_validator_changes(CLIENT):
         # e.g. docs/api_reponses/rpc_info_get_status.json
         assert isinstance(response, list)
 
-    _assert(CLIENT.queries.get_validator_changes())
+    _assert(CLIENT.get_validator_changes())

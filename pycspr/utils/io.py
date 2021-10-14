@@ -52,24 +52,3 @@ def write_deploy(deploy: Deploy, fpath: typing.Union[pathlib.Path, str], force: 
         fstream.writelines(serialisation.to_json(deploy))
 
     return str(fpath)
-
-
-def get_api_response(node, endpoint: str, params: dict) -> dict:
-    """Invokes remote JSON-RPC API and returns parsed response.
-
-    :node: Node connection wrapper.
-    :endpoint: Target endpoint to invoke.
-    :params: Endpoints parameters.
-    :returns: Parsed JSON-RPC response.
-    
-    """
-    response = requests.post(
-        node.address_rpc,
-        json=jsonrpcclient.request(endpoint, params),
-        )
-    response = jsonrpcclient.parse(response.json())
-
-    if isinstance(response, jsonrpcclient.responses.Error):
-        raise NodeAPIError(response)
-    else:
-        return response.result
