@@ -1,13 +1,10 @@
 import json
 import typing
 
-import sseclient
-
 from pycspr.api.constants import SSE_CHANNEL_TO_SSE_EVENT
 from pycspr.api.constants import NodeEventType
 from pycspr.api.constants import NodeEventChannelType
 from pycspr.api.connection import NodeConnection
-
 
 
 def get_events(
@@ -16,7 +13,7 @@ def get_events(
     channel_type: NodeEventChannelType,
     event_type: NodeEventType = None,
     event_id: int = 0
-    ):
+):
     """Binds to a node's event stream - events are passed to callback for processing.
 
     :param node: Information required to connect to a node.
@@ -81,15 +78,18 @@ def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, in
         print("TODO: process unknown event: {payload}")
 
 
-def _validate_that_channel_supports_event_type(channel_type: NodeEventChannelType, event_type: NodeEventType = None):
+def _validate_that_channel_supports_event_type(
+    channel_type: NodeEventChannelType,
+    event_type: NodeEventType = None
+):
     """Validates that the channel supports the event type.
 
-    """    
+    """
     if channel_type not in SSE_CHANNEL_TO_SSE_EVENT:
         raise ValueError(f"Unsupported SSE channel: {channel_type.name}.")
 
     if event_type not in SSE_CHANNEL_TO_SSE_EVENT[channel_type]:
-        raise ValueError(f"Unsupported SSE channel/event permutation: {channel_type.name}:{event_type.name}.")
+        raise ValueError(f"Unsupported channel/event: {channel_type.name}:{event_type.name}.")
 
 
 def _yield_events(sse_client) -> typing.Generator:
@@ -104,7 +104,7 @@ def _yield_events(sse_client) -> typing.Generator:
     except Exception as err:
         try:
             sse_client.close()
-        except:
-            pass
+        except Exception as inner_err:
+            print(inner_err)
         finally:
             raise err

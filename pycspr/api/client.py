@@ -11,16 +11,15 @@ from pycspr.api.constants import NodeEventChannelType
 from pycspr.api.constants import NodeEventType
 
 
-
 class NodeClient():
     """Exposes a set of (categorised) functions for interacting  with a node.
-    
+
     """
     def __init__(self, connection: NodeConnection):
         """Instance constructor.
 
         :param connection: Information required to connect to a node.
-        
+
         """
         self.connection = connection
         self._get_rest_response = connection.get_rest_response
@@ -35,13 +34,15 @@ class NodeClient():
         """Returns account balance at a certain global state root hash.
 
         :param purse_uref: URef of a purse associated with an on-chain account.
-        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
+        :param state_root_hash: A node's root state hash at some point in chain time.
         :returns: Account balance if on-chain account is found.
 
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
+        response = self._get_rpc_response(
+            constants.RPC_STATE_GET_BALANCE,
+            params_factory.get_account_balance_params(purse_uref, state_root_hash)
+            )
 
         return int(response["balance_value"])
 
@@ -58,8 +59,10 @@ class NodeClient():
         :returns: Account information in JSON format.
 
         """
-        params = params_factory.get_account_info_params(account_key, block_id)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params)
+        response = self._get_rpc_response(
+            constants.RPC_STATE_GET_ACCOUNT_INFO,
+            params_factory.get_account_info_params(account_key, block_id)
+            )
 
         return response["account"]
 
@@ -77,7 +80,7 @@ class NodeClient():
 
         """
         account_info = self.get_account_info(account_key, block_id)
-    
+
         return factory.create_uref_from_string(account_info["main_purse"])
 
 
@@ -110,8 +113,10 @@ class NodeClient():
         :returns: Current auction system contract information.
 
         """
-        params = params_factory.get_auction_info_params(block_id)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_AUCTION_INFO, params)
+        response = self._get_rpc_response(
+            constants.RPC_STATE_GET_AUCTION_INFO,
+            params_factory.get_auction_info_params(block_id)
+            )
 
         return response
 
@@ -123,8 +128,10 @@ class NodeClient():
         :returns: On-chain block information.
 
         """
-        params = params_factory.get_block_params(block_id)
-        response = self._get_rpc_response(constants.RPC_CHAIN_GET_BLOCK, params)
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_BLOCK,
+            params_factory.get_block_params(block_id)
+            )
 
         return response["block"]
 
@@ -136,7 +143,7 @@ class NodeClient():
     ) -> dict:
         """Returns last finalised block in current era.
 
-        :param polling_interval_seconds: Time interval time (in seconds) before polling for next switch block.
+        :param polling_interval_seconds: Time interval time before polling for next switch block.
         :param max_polling_time_seconds: Maximum time in seconds to poll.
         :returns: On-chain block information.
 
@@ -163,8 +170,10 @@ class NodeClient():
         :returns: On-chain block transfers information.
 
         """
-        params = params_factory.get_block_transfers_params(block_id)
-        response = self._get_rpc_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
+            params_factory.get_block_transfers_params(block_id)
+            )
 
         return (response["block_hash"], response["transfers"])
 
@@ -176,10 +185,10 @@ class NodeClient():
         :returns: On-chain deploy information.
 
         """
-        params = params_factory.get_deploy_params(deploy_id)
-        response = self._get_rpc_response(constants.RPC_INFO_GET_DEPLOY, params)
-
-        return response
+        return self._get_rpc_response(
+            constants.RPC_INFO_GET_DEPLOY,
+            params_factory.get_deploy_params(deploy_id)
+            )
 
 
     def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
@@ -189,10 +198,10 @@ class NodeClient():
         :returns: On-chain data stored under a dictionary item.
 
         """
-        params = params_factory.get_dictionary_item_params(identifier)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
-
-        return response
+        return self._get_rpc_response(
+            constants.RPC_STATE_GET_DICTIONARY_ITEM,
+            params_factory.get_dictionary_item_params(identifier)
+            )
 
 
     def get_era_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
@@ -202,8 +211,10 @@ class NodeClient():
         :returns: Era information.
 
         """
-        params = params_factory.get_era_info_params(block_id)
-        response = self._get_rpc_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
+            params_factory.get_era_info_params(block_id)
+            )
 
         return response["era_summary"]
 
@@ -317,14 +328,16 @@ class NodeClient():
 
         :param item_key: Storage item key.
         :param item_path: Storage item path.
-        :param state_root_hash: A node's root state hash at some point in chain time, if none then defaults to the most recent.
+        :param state_root_hash: A node's root state hash at some point in chain time.
         :returns: Item stored under passed key/path.
 
         """
         item_path = item_path if isinstance(item_path, list) else [item_path]
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        params = params_factory.get_state_item_params(item_key, item_path, state_root_hash)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_ITEM, params)
+        response = self._get_rpc_response(
+            constants.RPC_STATE_GET_ITEM,
+            params_factory.get_state_item_params(item_key, item_path, state_root_hash)
+            )
 
         return response["stored_value"]
 
@@ -339,8 +352,10 @@ class NodeClient():
         :returns: State root hash at specified block.
 
         """
-        params = params_factory.get_state_root_hash_params(block_id)
-        response = self._get_rpc_response(constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params)
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
+            params_factory.get_state_root_hash_params(block_id)
+            )
 
         return bytes.fromhex(response["state_root_hash"])
 
@@ -363,8 +378,9 @@ class NodeClient():
         :param deploy: A deploy to be processed at a node.
 
         """
-        params = params_factory.put_deploy_params(deploy)
-        response = self._get_rpc_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params)
+        response = self._get_rpc_response(
+            constants.RPC_ACCOUNT_PUT_DEPLOY,
+            params_factory.put_deploy_params(deploy)
+            )
 
         return response["deploy_hash"]
-

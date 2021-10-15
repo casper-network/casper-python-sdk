@@ -6,13 +6,13 @@ import sseclient
 
 from pycspr.api import constants
 from pycspr.api.constants import NodeEventChannelType
-
+from pycspr.utils.exceptions import NodeAPIError
 
 
 @dataclasses.dataclass
 class NodeConnection:
     """Encapsulates information required to connect to a node.
-    
+
     """
     # Host address.
     host: str = "localhost"
@@ -22,7 +22,7 @@ class NodeConnection:
 
     # Number of exposed RPC port.
     port_rpc: int = constants.DEFAULT_PORT_RPC
-    
+
     # Number of exposed SSE port.
     port_sse: int = constants.DEFAULT_PORT_SSE
 
@@ -46,7 +46,6 @@ class NodeConnection:
         """A node's SSE server base address."""
         return f"{self.address}:{self.port_sse}/events"
 
-
     def __str__(self):
         """Instance string representation."""
         return self.host
@@ -57,7 +56,7 @@ class NodeConnection:
 
         :endpoint: Target endpoint to invoke.
         :returns: Parsed REST API response.
-        
+
         """
         endpoint = f"{self.address_rest}/{endpoint}"
         response = requests.get(endpoint)
@@ -71,7 +70,7 @@ class NodeConnection:
         :endpoint: Target endpoint to invoke.
         :params: Endpoints parameters.
         :returns: Parsed JSON-RPC response.
-        
+
         """
         response = requests.post(
             self.address_rpc,
@@ -85,7 +84,11 @@ class NodeConnection:
         return parsed.result
 
 
-    def get_sse_client(self, channel_type: NodeEventChannelType, event_id: int) -> sseclient.SSEClient:
+    def get_sse_client(
+        self,
+        channel_type: NodeEventChannelType,
+        event_id: int
+    ) -> sseclient.SSEClient:
         """Returns SSE client.
 
         """

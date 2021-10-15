@@ -76,15 +76,15 @@ def get_auction_info_params(block_id: types.OptionalBlockIdentifer = None) -> di
         return None
     elif isinstance(block_id, str):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id
-            }            
+            }
         }
     elif isinstance(block_id, int):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Height": block_id
-            }            
+            }
         }
 
 
@@ -99,21 +99,21 @@ def get_block_params(block_id: types.OptionalBlockIdentifer = None) -> dict:
         return None
     elif isinstance(block_id, bytes):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id.hex()
-            }            
+            }
         }
     elif isinstance(block_id, int):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Height": block_id
-            }            
+            }
         }
     else:
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id
-            }            
+            }
         }
 
 
@@ -128,21 +128,21 @@ def get_block_transfers_params(block_id: typing.Union[None, str, int] = None) ->
         return None
     elif isinstance(block_id, bytes):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id.hex()
-            }            
+            }
         }
     elif isinstance(block_id, int):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Height": block_id
-            }            
+            }
         }
     else:
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id
-            }            
+            }
         }
 
 
@@ -217,15 +217,15 @@ def get_era_info_params(block_id: types.OptionalBlockIdentifer = None) -> dict:
         return None
     elif isinstance(block_id, str):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id
-            }            
+            }
         }
     elif isinstance(block_id, int):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Height": block_id
-            }            
+            }
         }
 
 
@@ -263,15 +263,15 @@ def get_state_root_hash_params(block_id: typing.Union[None, str, int] = None) ->
         return None
     elif isinstance(block_id, str):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Hash": block_id
-            }            
+            }
         }
     elif isinstance(block_id, int):
         return {
-            "block_identifier":{
+            "block_identifier": {
                 "Height": block_id
-            }            
+            }
         }
 
 

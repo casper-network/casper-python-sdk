@@ -3,21 +3,20 @@ import enum
 from pycspr.types.cl import CLAccessRights
 
 
-
 @dataclasses.dataclass
 class UnforgeableReference():
     """An unforgeable reference storage key.
-    
+
     """
     # Uref on-chain identifier.
     address: bytes
-    
-    # Access rights granted by issuer. 
+
+    # Access rights granted by issuer.
     access_rights: CLAccessRights
 
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
-        
+
         """
         return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
 
@@ -25,7 +24,7 @@ class UnforgeableReference():
 @dataclasses.dataclass
 class DictionaryIdentifier():
     """A set of variants for performation dictionary item state queries.
-    
+
     """
     pass
 
@@ -33,7 +32,7 @@ class DictionaryIdentifier():
 @dataclasses.dataclass
 class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
-    
+
     """
     # The dictionary item key.
     dictionary_item_key: str
@@ -48,7 +47,7 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
 @dataclasses.dataclass
 class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
-    
+
     """
     # The dictionary item key.
     dictionary_item_key: str
@@ -62,8 +61,9 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
 
 @dataclasses.dataclass
 class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
-    """Encapsulates information required to query a dictionary item via it's seed unforgeable reference.
-    
+    """Encapsulates information required to query a dictionary item
+       via it's seed unforgeable reference.
+
     """
     # The dictionary item key.
     dictionary_item_key: str
@@ -75,7 +75,7 @@ class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
 @dataclasses.dataclass
 class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's unique key.
-    
+
     """
     # The globally unique dictionary key.
     key: str
@@ -83,7 +83,7 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
 
 class StorageKeyType(enum.Enum):
     """Enumeration over set of CL storage key.
-    
+
     """
     ACCOUNT = 0
     HASH = 1
@@ -93,7 +93,7 @@ class StorageKeyType(enum.Enum):
 @dataclasses.dataclass
 class StorageKey():
     """A pointer to data within global state.
-    
+
     """
     # 32 byte key identifier.
     identifier: bytes
@@ -103,7 +103,7 @@ class StorageKey():
 
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
-        
+
         """
         _PREFIXES = {
             StorageKeyType.ACCOUNT: "account-hash",

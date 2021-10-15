@@ -54,7 +54,7 @@ REST_ENDPOINTS: set = {
 
 class NodeEventChannelType(enum.Enum):
     """Enumeration over set of exposed node SEE event types.
-    
+
     """
     deploys = enum.auto()
     main = enum.auto()
@@ -63,7 +63,7 @@ class NodeEventChannelType(enum.Enum):
 
 class NodeEventType(enum.Enum):
     """Enumeration over set of exposed node SEE event types.
-    
+
     """
     ApiVersion = enum.auto()
     BlockAdded = enum.auto()
