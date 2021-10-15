@@ -1,17 +1,5 @@
-from pycspr.types import CLStorageKeyType
-from pycspr.types import CLTypeKey
 from pycspr.types import CLType
-from pycspr.types import CLType_ByteArray
-from pycspr.types import CLType_List
-from pycspr.types import CLType_Map
-from pycspr.types import CLType_Option
-from pycspr.types import CLType_Simple
-from pycspr.types import CLType_StorageKey
-from pycspr.types import CLType_Tuple1
-from pycspr.types import CLType_Tuple2
-from pycspr.types import CLType_Tuple3
 from pycspr.types import CLValue
-
 
 
 def create_cl_value(cl_type: CLType, parsed: object) -> CLValue:

@@ -4,17 +4,9 @@ from pycspr.serialisation.byte_array import decode as byte_array_decoder
 from pycspr.types import CLValue
 from pycspr.types import CLType
 from pycspr.types import CLTypeKey
-from pycspr.types import TYPES_NUMERIC
 from pycspr.types import CLType_ByteArray
-from pycspr.types import CLType_List
-from pycspr.types import CLType_Map
 from pycspr.types import CLType_Option
 from pycspr.types import CLType_Simple
-from pycspr.types import CLType_Tuple1
-from pycspr.types import CLType_Tuple2
-from pycspr.types import CLType_Tuple3
-
-
 
 
 # Map: simple type keys to internal enum.
@@ -31,13 +23,13 @@ _SIMPLE_TYPE_TO_ENUM = {
 def decode_cl_type(obj) -> CLType:
     """Decodes a CL type definition.
 
-    """    
+    """
     def _decode_byte_array():
         return CLType_ByteArray(size=obj["ByteArray"])
 
     def _decode_option():
         return CLType_Option(inner_type=decode_cl_type(obj["Option"]))
-    
+
     def _decode_simple():
         try:
             type_key = _SIMPLE_TYPE_TO_ENUM[obj]
@@ -53,10 +45,10 @@ def decode_cl_type(obj) -> CLType:
         elif "Option" in obj:
             decoder = _decode_option
         else:
-            raise NotImplementError()
+            raise NotImplementedError()
     else:
         decoder = _decode_simple
-    
+
     return decoder()
 
 

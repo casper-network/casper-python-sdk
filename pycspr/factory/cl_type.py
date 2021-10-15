@@ -10,7 +10,6 @@ from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
 
 
-
 def boolean() -> CLType_Simple:
     return CLType_Simple(CLTypeKey.BOOL)
 

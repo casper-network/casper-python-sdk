@@ -10,8 +10,6 @@ from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import PrivateKey
 from pycspr.types import CLAccessRights
-from pycspr.types import CLTypeKey
-from pycspr.types import CLType
 from pycspr.types import CLValue
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
@@ -30,14 +28,17 @@ from pycspr.utils import conversion
 from pycspr.utils import io as _io
 
 
-
 # Maximum value of a transfer ID.
 _MAX_TRANSFER_ID = (2 ** 63) - 1
 
 
-def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, session: ExecutableDeployItem):
+def create_deploy(
+    params: DeployParameters,
+    payment: ExecutableDeployItem,
+    session: ExecutableDeployItem
+):
     """Returns a deploy for subsequent dispatch to a node.
-    
+
     :param params: Standard parameters used when creating a deploy.
     :param session: Session execution information.
     :param payment: Payment execution information.
@@ -57,7 +58,7 @@ def create_deploy(params: DeployParameters, payment: ExecutableDeployItem, sessi
 
 def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: PrivateKey):
     """Returns a deploy approval to be associated with a deploy.
-    
+
     :param deploy: Either a deploy to be approved, or the hash of a deploy to be approved.
     :param approver: Account key of entity approving a deploy.
     :returns: A deploy approval to be associated with a deploy.
@@ -68,13 +69,15 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
 
     return DeployApproval(
         approver.account_key,
-        crypto.get_signature_for_deploy_approval(deploy_hash, approver.private_key, approver.key_algo)
+        crypto.get_signature_for_deploy_approval(
+            deploy_hash, approver.private_key, approver.key_algo
+            )
     )
 
 
 def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
     """Returns an argument associated with deploy execution information (session|payment).
-    
+
     :param name: Deploy argument name.
     :param value: Deploy argument CL value.
     :returns: A deploy argument.
@@ -83,9 +86,12 @@ def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
     return ExecutionArgument(name=name, value=value)
 
 
-def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployItem) -> DeployBody:
+def create_deploy_body(
+    payment: ExecutableDeployItem,
+    session: ExecutableDeployItem
+) -> DeployBody:
     """Returns hash of a deploy's so-called body.
-    
+
     :param payment: Payment execution information.
     :param session: Session execution information.
 
@@ -99,7 +105,7 @@ def create_deploy_body(payment: ExecutableDeployItem, session: ExecutableDeployI
 
 def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHeader:
     """Returns header information associated with a deploy.
-    
+
     :param body: Deploy body, i.e. it's session/payment execution information.
     :param params: Standard parameters associated with a deploy.
 
@@ -122,9 +128,9 @@ def create_deploy_parameters(
     gas_price: int = constants.DEFAULT_GAS_PRICE,
     timestamp: datetime.datetime = None,
     ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL
-    ) -> DeployParameters:
+) -> DeployParameters:
     """Returns header information associated with a deploy.
-    
+
     :param account: Account dispatching deploy.
     :param chain_name: Identifier of target chain.
     :param dependencies: Array of hashes of deploys that must be processed prior to this one.
@@ -133,7 +139,8 @@ def create_deploy_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
-    public_key = account if isinstance(account, PublicKey) else create_public_key(account.algo, account.pbk)
+    public_key = account if isinstance(account, PublicKey) else \
+        create_public_key(account.algo, account.pbk)
     timestamp = timestamp or datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
     timestamp = round(timestamp, 3)
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
@@ -150,13 +157,13 @@ def create_deploy_parameters(
 
 def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> DeployTimeToLive:
     """Returns a deploy's time to live after which it will not longer be accepted by a node.
-    
+
     :param humanized_ttl: A humanized ttl, e.g. 1 day.
 
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl {humanized_ttl} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+        raise ValueError(f"Invalid deploy ttl. Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
 
     return DeployTimeToLive(
         humanized=humanized_ttl,
@@ -169,13 +176,13 @@ def create_native_transfer(
     amount: int,
     target: bytes,
     correlation_id: int = None,
-    ) -> Deploy:
+) -> Deploy:
     """Returns a native transfer deploy.
 
     :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be transferred.
     :param target: Target account hash.
-    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
+    :param correlation_id: Identifier used to correlate transfer to internal systems.
     :returns: A native transfer deploy.
 
     """
@@ -189,13 +196,14 @@ def create_native_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int = None,
-    ) -> ExecutableDeployItem_Transfer:
+) -> ExecutableDeployItem_Transfer:
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
     :param target: Target account hash.
-    :param correlation_id: An identifier used by dispatcher to subsequently correlate the transfer to internal systems.
-    
+    :param correlation_id: Identifier used to correlate transfer to internal systems.
+    :returns: A native transfer session logic.
+
     """
     return ExecutableDeployItem_Transfer(
         args=[
@@ -217,9 +225,9 @@ def create_native_transfer_session(
 
 def create_standard_payment(
     amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-    ) -> ExecutableDeployItem_ModuleBytes:
+) -> ExecutableDeployItem_ModuleBytes:
     """Returns standard payment execution information.
-    
+
     :param amount: Maximum amount in motes to be used for standard payment.
 
     """
@@ -236,7 +244,7 @@ def create_standard_payment(
 
 def create_uref_from_string(as_string: str):
     """Returns an unforgeable reference from it's string representation.
-    
+
     """
     _, address_hex, access_rights = as_string.split("-")
 
@@ -252,7 +260,7 @@ def create_validator_auction_bid(
     delegation_rate: int,
     public_key: PublicKey,
     path_to_wasm: str
-    ) -> Deploy:
+) -> Deploy:
     """Returns a validator auction bid deploy.
 
     :param params: Standard parameters used when creating a deploy.
@@ -281,17 +289,17 @@ def create_validator_auction_bid(
                 ),
             ]
         )
-    
+
     return create_deploy(params, payment, session)
 
 
 def create_validator_auction_bid_withdrawal(
     params: DeployParameters,
     amount: int,
-    public_key: PublicKey,    
+    public_key: PublicKey,
     path_to_wasm: str,
     unbond_purse: str,
-    ) -> Deploy:
+) -> Deploy:
     """Returns an auction bid withdraw delegation deploy.
 
     :param params: Standard parameters used when creating a deploy.
@@ -330,7 +338,7 @@ def create_validator_delegation(
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
     path_to_wasm: str
-    ) -> Deploy:
+) -> Deploy:
     """Returns a standard delegation deploy.
 
     :param params: Standard parameters used when creating a deploy.
@@ -369,7 +377,7 @@ def create_validator_delegation_withdrawal(
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
     path_to_wasm: str
-    ) -> Deploy:
+) -> Deploy:
     """Returns a standard withdraw delegation deploy.
 
     :param params: Standard parameters used when creating a deploy.

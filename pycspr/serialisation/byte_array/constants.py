@@ -3,7 +3,7 @@ import enum
 
 class TypeTag_ExecutableDeployItem(enum.Enum):
     """Enumeration over set of type tags for executable deploy items.
-    
+
     """
     ModuleBytes = 0
     StoredContractByHash = 1
@@ -15,7 +15,7 @@ class TypeTag_ExecutableDeployItem(enum.Enum):
 
 class TypeTag_StorageKey(enum.Enum):
     """Enumeration over set of type tags for global state keys.
-    
+
     """
     Account = 0
     Hash = 1

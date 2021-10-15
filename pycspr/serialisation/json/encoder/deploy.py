@@ -1,6 +1,5 @@
 import datetime
 
-from pycspr import crypto
 from pycspr.serialisation.json.encoder.cl import encode_cl_value
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
@@ -15,7 +14,6 @@ from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
 from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import PublicKey
 from pycspr.types import Timestamp
-
 
 
 def encode_deploy(entity: Deploy) -> dict:
@@ -119,17 +117,23 @@ def encode_execution_info(entity: ExecutableDeployItem) -> dict:
     def _encode_session_for_transfer() -> dict:
         return {
             "Transfer": {
-                "args": [encode_execution_argument(i) for i in entity.args]            
+                "args": [encode_execution_argument(i) for i in entity.args]
             }
         }
 
     _ENCODERS = {
-        ExecutableDeployItem_ModuleBytes: _encode_module_bytes,
-        ExecutableDeployItem_StoredContractByHash: _encode_stored_contract_by_hash,
-        ExecutableDeployItem_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-        ExecutableDeployItem_StoredContractByName: _encode_stored_contract_by_name,
-        ExecutableDeployItem_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-        ExecutableDeployItem_Transfer: _encode_session_for_transfer,
+        ExecutableDeployItem_ModuleBytes:
+            _encode_module_bytes,
+        ExecutableDeployItem_StoredContractByHash:
+            _encode_stored_contract_by_hash,
+        ExecutableDeployItem_StoredContractByHashVersioned:
+            _encode_stored_contract_by_hash_versioned,
+        ExecutableDeployItem_StoredContractByName:
+            _encode_stored_contract_by_name,
+        ExecutableDeployItem_StoredContractByNameVersioned:
+            _encode_stored_contract_by_name_versioned,
+        ExecutableDeployItem_Transfer:
+            _encode_session_for_transfer,
     }
 
     return _ENCODERS[type(entity)]()
@@ -148,7 +152,10 @@ def encode_timestamp(entity: Timestamp) -> str:
     """
     # Node understands ISO millisecond precise timestamps.
     as_ts_3_decimal_places = round(entity, 3)
-    as_datetime = datetime.datetime.fromtimestamp(as_ts_3_decimal_places, tz=datetime.timezone.utc)
+    as_datetime = datetime.datetime.fromtimestamp(
+        as_ts_3_decimal_places,
+        tz=datetime.timezone.utc
+        )
     as_iso = as_datetime.isoformat()
 
     return f"{as_iso[:-9]}Z"

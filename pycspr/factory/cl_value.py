@@ -3,7 +3,6 @@ import typing
 import pycspr.factory.cl_type as cl_type_factory
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import CLAccessRights
-from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import CLValue
 from pycspr.types import PublicKey
@@ -67,7 +66,7 @@ def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
         )
 
 
-def storage_key(value: bytes, typeof: StorageKeyType) -> CLValue:    
+def storage_key(value: bytes, typeof: StorageKeyType) -> CLValue:
     return CLValue(
         cl_type_factory.key(),
         StorageKey(value, typeof)
@@ -138,4 +137,4 @@ def uref(address: bytes, access_rights: CLAccessRights) -> CLValue:
 
 
 def create(value: object, cl_type: CLType) -> CLValue:
-    return CLValue(cl_type, value)        
+    return CLValue(cl_type, value)

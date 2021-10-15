@@ -10,10 +10,6 @@ from pycspr.types import DeployTimeToLive
 from pycspr.types import ExecutionArgument
 from pycspr.types import ExecutableDeployItem
 from pycspr.types import ExecutableDeployItem_ModuleBytes
-from pycspr.types import ExecutableDeployItem_StoredContractByHash
-from pycspr.types import ExecutableDeployItem_StoredContractByHashVersioned
-from pycspr.types import ExecutableDeployItem_StoredContractByName
-from pycspr.types import ExecutableDeployItem_StoredContractByNameVersioned
 from pycspr.types import ExecutableDeployItem_Transfer
 from pycspr.types import PublicKey
 from pycspr.types import Timestamp
@@ -21,23 +17,22 @@ from pycspr.utils import constants
 from pycspr.utils import conversion
 
 
-
 def decode_deploy(obj: dict) -> Deploy:
     """Maps a dict to a deploy.
-    
+
     """
     return Deploy(
         approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
         hash=bytes.fromhex(obj["hash"]),
-        header = decode_deploy_header(obj["header"]),
-        payment = decode_executable_deploy_item(obj["payment"]),
-        session = decode_executable_deploy_item(obj["session"])
+        header=decode_deploy_header(obj["header"]),
+        payment=decode_executable_deploy_item(obj["payment"]),
+        session=decode_executable_deploy_item(obj["session"])
     )
 
 
-def decode_deploy_approval(obj: dict) -> DeployApproval:    
+def decode_deploy_approval(obj: dict) -> DeployApproval:
     """Maps a dict to a deploy approval.
-    
+
     """
     return DeployApproval(
         signer=decode_public_key(obj["signer"]),
@@ -47,7 +42,7 @@ def decode_deploy_approval(obj: dict) -> DeployApproval:
 
 def decode_deploy_header(obj: dict) -> DeployHeader:
     """Maps a dict to a deploy header.
-    
+
     """
     return DeployHeader(
         account_public_key=decode_public_key(obj["account"]),
@@ -62,11 +57,11 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
 
 def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
     """Maps a dict to a deploy ttl wrapper object.
-    
+
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(obj)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl {obj} = {as_milliseconds} ms.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+        raise ValueError(f"Invalid deploy ttl.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
 
     return DeployTimeToLive(
         as_milliseconds=as_milliseconds,
@@ -76,13 +71,13 @@ def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
 
 def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
     """Maps a dict to execution information.
-    
+
     """
     def _decode_module_bytes():
         return ExecutableDeployItem_ModuleBytes(
             args=[decode_execution_argument(i) for i in obj["ModuleBytes"]["args"]],
             module_bytes=bytes.fromhex(obj["ModuleBytes"]["module_bytes"])
-            )        
+            )
 
     def _decode_stored_contract_by_hash() -> dict:
         raise NotImplementedError()
@@ -99,7 +94,7 @@ def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
     def _decode_session_for_transfer():
         return ExecutableDeployItem_Transfer(
             args=[decode_execution_argument(i) for i in obj["Transfer"]["args"]],
-            )  
+            )
 
     if "ModuleBytes" in obj:
         return _decode_module_bytes()
@@ -114,15 +109,15 @@ def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
     elif "Transfer" in obj:
         return _decode_session_for_transfer()
     else:
-        raise NotImplementError("Unsupported execution information variant")
+        raise NotImplementedError("Unsupported execution information variant")
 
 
 def decode_execution_argument(obj) -> ExecutionArgument:
     """Maps a dict to an execution argument.
-    
+
     """
     return ExecutionArgument(
-        name=obj[0], 
+        name=obj[0],
         value=decode_cl_value(obj[1])
         )
 

@@ -2,7 +2,6 @@ from pycspr.serialisation import byte_array as _byte_array
 from pycspr.serialisation import json as _json
 
 
-
 # Maps a domain entity to a byte array.
 to_bytes = _byte_array.encode
 

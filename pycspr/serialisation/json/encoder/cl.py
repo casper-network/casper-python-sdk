@@ -14,10 +14,9 @@ from pycspr.types import CLTypeKey
 from pycspr.types import TYPES_NUMERIC
 
 
-
 def encode_cl_type(entity: CLType) -> dict:
     """Encodes a CL type.
-    
+
     """
     _ENCODERS = {
         # Byte array.
@@ -58,7 +57,11 @@ def encode_cl_type(entity: CLType) -> dict:
 
         # 3-ary tuple.
         CLType_Tuple3: lambda: {
-            "Tuple3": [encode_cl_type(entity.t0_type), encode_cl_type(entity.t1_type), encode_cl_type(entity.t2_type)]
+            "Tuple3": [
+                encode_cl_type(entity.t0_type),
+                encode_cl_type(entity.t1_type),
+                encode_cl_type(entity.t2_type)
+                ]
         },
     }
 
@@ -67,8 +70,8 @@ def encode_cl_type(entity: CLType) -> dict:
 
 def encode_cl_type_key(entity: CLTypeKey) -> str:
     """Encodes a CL type key.
-    
-    """    
+
+    """
     if entity == CLTypeKey.BOOL:
         return "Bool"
     elif entity == CLTypeKey.UNIT:
@@ -87,8 +90,8 @@ def encode_cl_type_key(entity: CLTypeKey) -> str:
 
 def encode_cl_type_storage_key(entity: CLTypeKey) -> str:
     """Encodes a CL type key.
-    
-    """    
+
+    """
     if entity == CLTypeKey.BOOL:
         return "Bool"
     elif entity == CLTypeKey.UNIT:

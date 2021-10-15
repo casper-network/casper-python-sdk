@@ -4,7 +4,6 @@ from pycspr.serialisation.json.encoder.deploy import encode_deploy
 from pycspr.types import Deploy
 
 
-
 # Map: entity type <-> encoder.
 _ENCODERS = {
     Deploy: encode_deploy,
@@ -13,7 +12,7 @@ _ENCODERS = {
 
 def encode(entity: object) -> str:
     """Maps a domain entity to a JSON representation.
-    
+
     :param entity: A domain entity.
     :returns: JSON encoded representation.
 

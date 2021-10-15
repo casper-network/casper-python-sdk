@@ -1,4 +1,3 @@
-from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_byte_array
 from pycspr.serialisation.byte_array.encoder.cl_primitive import encode_u32
 from pycspr.types import CLType
 from pycspr.types import CLType_ByteArray
@@ -10,14 +9,11 @@ from pycspr.types import CLType_StorageKey
 from pycspr.types import CLType_Tuple1
 from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
-from pycspr.types import CLTypeKey
-from pycspr.types import CLType_Option
-
 
 
 def encode_cl_type(entity: CLType) -> bytes:
     """Encodes a CL type definition.
-    
+
     """
     def encode_byte_array():
         return bytes([entity.type_key.value]) + encode_u32(entity.size)
@@ -31,10 +27,10 @@ def encode_cl_type(entity: CLType) -> bytes:
     def encode_option():
         return bytes([entity.type_key.value]) + encode_cl_type(entity.inner_type)
 
-    def encode_simple():        
+    def encode_simple():
         return bytes([entity.type_key.value])
 
-    def encode_storage_key():    
+    def encode_storage_key():
         return bytes([entity.type_key.value]) + bytes([entity.key_type.value])
 
     def encode_tuple_1():
