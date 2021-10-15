@@ -83,16 +83,13 @@ _INTERFACE_OF_LIBRARY = {
         "create_validator_auction_bid_withdrawal",
         "create_validator_delegation",
         "create_validator_delegation_withdrawal",
-
         "parse_private_key",
         "parse_private_key_bytes",
         "parse_public_key",
         "parse_public_key_bytes",
-
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
-
         "from_bytes",
         "from_json",
         "to_bytes",
@@ -113,7 +110,7 @@ _INTERFACE_OF_LIBRARY = {
 
 
 def test_version_of_library():
-    assert pycspr.__version__ == "0.9.1"
+    assert pycspr.__version__ == "0.9.2"
 
 
 def test_exports_of_library():
