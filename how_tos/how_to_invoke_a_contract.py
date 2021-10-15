@@ -15,7 +15,6 @@ from pycspr.types import PublicKey
 from pycspr.types import StoredContractByHash
 
 
-
 # Path to NCTL network assets.
 _PATH_TO_NCTL = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
@@ -95,7 +94,6 @@ _ARGS.add_argument(
     )
 
 
-
 def _main(args: argparse.Namespace):
     """Main entry point.
 
@@ -120,9 +118,9 @@ def _main(args: argparse.Namespace):
     # Dispatch deploy to a node.
     client.send_deploy(deploy)
 
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -150,20 +148,29 @@ def _get_operator_and_user_keys(args: argparse.Namespace) -> typing.Tuple[Privat
     return operator, user
 
 
-def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: PrivateKey) -> bytes:
+def _get_contract_hash(
+    args: argparse.Namespace,
+    client: NodeClient,
+    operator: PrivateKey
+) -> bytes:
     """Returns on-chain contract identifier.
 
     """
-    # We query operator account for a named key == ERC20, we then return the parsed named key value.  
+    # Query operator account for a named key == ERC20 & return parsed named key value.
     account_info = client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])
-    
-    raise ValueError("ERC-20 has not been installed ... see how_tos/how_to_install_a_contract.py")
+
+    raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
 
 
-def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user: PublicKey) -> Deploy:
+def _get_deploy(
+    args: argparse.Namespace,
+    contract_hash: bytes,
+    operator: PrivateKey,
+    user: PublicKey
+) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
@@ -182,7 +189,7 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
     session: StoredContractByHash = StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
-        args = [
+        args=[
             pycspr.create_deploy_arg(
                 "amount",
                 pycspr.cl_value.u256(args.amount)

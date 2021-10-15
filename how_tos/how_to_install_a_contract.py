@@ -12,6 +12,10 @@ from pycspr.types import ExecutableDeployItem_ModuleBytes
 from pycspr.types import PrivateKey
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
+_PATH_TO_NCTL_NODE = _PATH_TO_NCTL_ASSETS / "nodes" / "node-1"
+_PATH_TO_NCTL_USER = _PATH_TO_NCTL_ASSETS / "users" / "user-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")
@@ -19,7 +23,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smar
 # CLI argument: path to contract operator secret key - defaults to NCTL faucet.
 _ARGS.add_argument(
     "--operator-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "faucet" / "secret_key.pem",
+    default=_PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem",
     dest="path_to_operator_secret_key",
     help="Path to operator's secret_key.pem file.",
     type=str,
@@ -37,7 +41,7 @@ _ARGS.add_argument(
 # CLI argument: path to smart contract wasm binary - defaults to NCTL bin/eco/erc20.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "eco" / "erc20.wasm",
+    default=_PATH_TO_NCTL_ASSETS / "bin" / "eco" / "erc20.wasm",
     dest="path_to_wasm",
     help="Path to erc20.wasm file.",
     type=str,
@@ -116,7 +120,6 @@ _ARGS.add_argument(
     )
 
 
-
 def _main(args: argparse.Namespace):
     """Main entry point.
 
@@ -138,9 +141,9 @@ def _main(args: argparse.Namespace):
     # Dispatch deploy to a node.
     client.send_deploy(deploy)
 
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -181,7 +184,7 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
     # Set session logic.
     session: ExecutableDeployItem_ModuleBytes = ExecutableDeployItem_ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
-        args = [
+        args=[
             pycspr.create_deploy_arg(
                 "token_decimals",
                 pycspr.cl_value.u8(args.token_decimals)

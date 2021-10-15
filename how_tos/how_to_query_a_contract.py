@@ -1,8 +1,6 @@
 import argparse
 import os
 import pathlib
-import random
-import typing
 
 import pycspr
 from pycspr import NodeClient
@@ -15,6 +13,8 @@ from pycspr.types import PublicKey
 from pycspr.types import StoredContractByHash
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to qeury an ERC-20 smart contract.")
@@ -22,7 +22,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to qeury an ERC-20 smart 
 # CLI argument: path to contract operator public key - defaults to NCTL faucet.
 _ARGS.add_argument(
     "--operator-public-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "faucet" / "public_key_hex",
+    default=_PATH_TO_NCTL_ASSETS / "faucet" / "public_key_hex",
     dest="path_to_operator_public_key",
     help="Path to operator's public_key_hex file.",
     type=str,
@@ -55,6 +55,7 @@ _ARGS.add_argument(
     type=int,
     )
 
+
 def _main(args: argparse.Namespace):
     """Main entry point.
 
@@ -76,12 +77,12 @@ def _main(args: argparse.Namespace):
     token_symbol = _get_contract_data(client, contract_hash, "symbol")
     token_supply = _get_contract_data(client, contract_hash, "total_supply")
 
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
     print(f"Token Decimals: {token_decimals}")
     print(f"Token Name: {token_name}")
     print(f"Token Symbol: {token_symbol}")
     print(f"Token Supply: {token_supply}")
-    print("-------------------------------------------------------------------------------------------------------")
+    print("-" * 72)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -99,7 +100,7 @@ def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> by
 
     """
     value = client.get_state_item(f"hash-{contract_hash.hex()}", key)
-    
+
     return value["CLValue"]["parsed"]
 
 
@@ -112,20 +113,29 @@ def _get_operator_key(args: argparse.Namespace) -> PublicKey:
         )
 
 
-def _get_contract_hash(args: argparse.Namespace, client: NodeClient, operator: PrivateKey) -> bytes:
+def _get_contract_hash(
+    args: argparse.Namespace,
+    client: NodeClient,
+    operator: PrivateKey
+) -> bytes:
     """Returns on-chain contract identifier.
 
     """
-    # We query operator account for a named key == ERC20, we then return the parsed named key value.  
+    # Query operator account for a named key == ERC20 & return parsed named key value.
     account_info = client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])
-    
-    raise ValueError("ERC-20 has not been installed ... see how_tos/how_to_install_a_contract.py")
+
+    raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
 
 
-def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: PrivateKey, user: PublicKey) -> Deploy:
+def _get_deploy(
+    args: argparse.Namespace,
+    contract_hash: bytes,
+    operator: PrivateKey,
+    user: PublicKey
+) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
@@ -144,7 +154,7 @@ def _get_deploy(args: argparse.Namespace, contract_hash: bytes, operator: Privat
     session: StoredContractByHash = StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
-        args = [
+        args=[
             pycspr.create_deploy_arg(
                 "amount",
                 pycspr.cl_value.u256(args.amount)

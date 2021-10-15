@@ -1,16 +1,14 @@
 import argparse
 import json
 
-
 from pycspr import NodeClient
 from pycspr import NodeConnection
 from pycspr import NodeEventChannelType
 from pycspr import NodeEventType
 
 
-
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to consume SSE events emitted by a node.")
+_ARGS = argparse.ArgumentParser("How to consume node SSE events demo.")
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -63,9 +61,9 @@ def _main(args: argparse.Namespace):
     # Bind to node events.
     client.get_events(
         callback=_on_event,
-        channel_type = NodeEventChannelType[args.channel],
-        event_type = None if args.event == "all" else NodeEventType[args.event],
-        event_id = 0
+        channel_type=NodeEventChannelType[args.channel],
+        event_type=None if args.event == "all" else NodeEventType[args.event],
+        event_id=0
     )
 
 
@@ -84,15 +82,15 @@ def _on_event(
     event_type: NodeEventType,
     event_id: int,
     event_data: dict
-    ):
+):
     """Event callback handler.
 
     """
-    print("--------------------------------------------------------------------------")
+    print("-" * 74)
     print(f"Event #{event_id} :: {channel_type.name} :: {event_type.name}")
-    print("--------------------------------------------------------------------------")
+    print("-" * 74)
     print(json.dumps(event_data, indent=4))
-    print("--------------------------------------------------------------------------")
+    print("-" * 74)
 
 
 # Entry point.

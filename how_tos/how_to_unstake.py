@@ -11,6 +11,8 @@ from pycspr.types import PrivateKey
 from pycspr.types import UnforgeableReference
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to unstake CSPR tokens as a validator.")
@@ -18,7 +20,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to unstake CSPR tokens as
 # CLI argument: path to validator secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
     "--validator-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "secret_key.pem",
+    default=_PATH_TO_NCTL_ASSETS / "nodes" / "node-1" / "keys" / "secret_key.pem",
     dest="path_to_validator_secret_key",
     help="Path to validator's secret_key.pem file.",
     type=str,
@@ -36,7 +38,7 @@ _ARGS.add_argument(
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/withdraw_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "withdraw_bid.wasm",
+    default=_PATH_TO_NCTL_ASSETS / "bin" / "auction" / "withdraw_bid.wasm",
     dest="path_to_wasm",
     help="Path to withdraw_bid.wasm file.",
     type=str,
@@ -93,7 +95,7 @@ def _main(args: argparse.Namespace):
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
         )
-    
+
     # Set validator unbond purse.
     validator_purse: UnforgeableReference = \
         client.get_account_main_purse_uref(validator.account_key)
@@ -124,7 +126,7 @@ def _get_deploy(
     args: argparse.Namespace,
     validator: PrivateKey,
     validator_purse: UnforgeableReference
-    ) -> Deploy:
+) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
@@ -149,4 +151,3 @@ def _get_deploy(
 # Entry point.
 if __name__ == '__main__':
     _main(_ARGS.parse_args())
-

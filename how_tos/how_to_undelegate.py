@@ -12,14 +12,16 @@ from pycspr.types import Deploy
 from pycspr.types import PublicKey
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to undelegate CSPR tokens from a validator.")
+_ARGS = argparse.ArgumentParser("Illustration of how to undelegate CSPR tokens.")
 
 # CLI argument: path to delegator secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
     "--delegator-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-1" / "secret_key.pem",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "secret_key.pem",
     dest="path_to_delegator_secret_key",
     help="Path to delegator's secret_key.pem file.",
     type=str,
@@ -37,7 +39,7 @@ _ARGS.add_argument(
 # CLI argument: path to validator's account key - defaults to NCTL node 1.
 _ARGS.add_argument(
     "--validator-account-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "public_key_hex",
+    default=_PATH_TO_NCTL_ASSETS / "nodes" / "node-1" / "keys" / "public_key_hex",
     dest="path_to_validator_account_key",
     help="Path to validator's public_key_hex file.",
     type=str,
@@ -46,7 +48,7 @@ _ARGS.add_argument(
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/undelegate.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "undelegate.wasm",
+    default=_PATH_TO_NCTL_ASSETS / "bin" / "auction" / "undelegate.wasm",
     dest="path_to_wasm",
     help="Path to delegate.wasm file.",
     type=str,
@@ -124,7 +126,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
         )
     validator = pycspr.parse_public_key(
         args.path_to_validator_account_key
-        )    
+        )
 
     return delegator, validator
 

@@ -1,8 +1,6 @@
 import argparse
 import os
 import pathlib
-import random
-import typing
 
 import pycspr
 from pycspr import NodeClient
@@ -12,6 +10,8 @@ from pycspr.types import Deploy
 from pycspr.types import PrivateKey
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to stake CSPR tokens as a validator.")
@@ -19,7 +19,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to stake CSPR tokens as a
 # CLI argument: path to validator secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
     "--validator-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "nodes" / "node-1" / "keys" / "secret_key.pem",
+    default=_PATH_TO_NCTL_ASSETS / "nodes" / "node-1" / "keys" / "secret_key.pem",
     dest="path_to_validator_secret_key",
     help="Path to validator's secret_key.pem file.",
     type=str,
@@ -37,7 +37,7 @@ _ARGS.add_argument(
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/add_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "bin" / "auction" / "add_bid.wasm",
+    default=_PATH_TO_NCTL_ASSETS / "bin" / "auction" / "add_bid.wasm",
     dest="path_to_wasm",
     help="Path to add_bid.wasm file.",
     type=str,

@@ -1,7 +1,6 @@
 import argparse
 import os
 import pathlib
-import random
 import typing
 
 import pycspr
@@ -10,6 +9,8 @@ from pycspr import NodeConnection
 from pycspr.types import UnforgeableReference
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfers with pycspr.")
@@ -17,7 +18,7 @@ _ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfe
 # CLI argument: path to cp2 account key - defaults to NCTL user 2.
 _ARGS.add_argument(
     "--account-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-1" / "public_key_hex",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "public_key_hex",
     dest="path_to_account_key",
     help="Path to a test user's public_key_hex file.",
     type=str,
@@ -70,7 +71,7 @@ def _main(args: argparse.Namespace):
     client = _get_client(args)
 
     # Set account key of test user.
-    user_public_key = pycspr.parse_public_key(args.path_to_account_key)      
+    user_public_key = pycspr.parse_public_key(args.path_to_account_key)
 
     # Query 0.1: get_rpc_schema.
     rpc_schema: dict = client.get_rpc_schema()
@@ -139,7 +140,7 @@ def _main(args: argparse.Namespace):
     assert isinstance(block, dict)
     print("SUCCESS :: Query 3.1: get_block_at_era_switch")
 
-    # Query 3.2: get_block - by hash & by height.    
+    # Query 3.2: get_block - by hash & by height.
     assert client.get_block(block["hash"]) == \
            client.get_block(block["header"]["height"])
     print("SUCCESS :: Query 3.2: get_block - by hash & by height")

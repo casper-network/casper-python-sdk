@@ -13,14 +13,16 @@ from pycspr.types import Deploy
 from pycspr.types import PublicKey
 
 
+# Path to NCTL assets.
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfers with pycspr.")
+_ARGS = argparse.ArgumentParser("Illustration of how to execute native transfers.")
 
 # CLI argument: path to cp1 secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
     "--cp1-secret-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-1" / "secret_key.pem",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "secret_key.pem",
     dest="path_to_cp1_secret_key",
     help="Path to counter-party one's secret_key.pem file.",
     type=str,
@@ -38,7 +40,7 @@ _ARGS.add_argument(
 # CLI argument: path to cp2 account key - defaults to NCTL user 2.
 _ARGS.add_argument(
     "--cp2-account-key-path",
-    default=pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1" / "users" / "user-2" / "public_key_hex",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-2" / "public_key_hex",
     dest="path_to_cp2_account_key",
     help="Path to counter-party two's public_key_hex file.",
     type=str,
@@ -116,7 +118,7 @@ def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, P
         )
     cp2 = pycspr.parse_public_key(
         args.path_to_cp2_account_key
-        )    
+        )
 
     return cp1, cp2
 
