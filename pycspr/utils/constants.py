@@ -3,7 +3,6 @@ import collections
 from pycspr.types import CLTypeKey
 
 
-
 # Data structure representing numerical constraints.
 NumericConstraints = collections.namedtuple("NumericConstraints", ["LENGTH", "MIN", "MAX"])
 
@@ -21,8 +20,9 @@ NUMERIC_CONSTRAINTS = {
 
 
 def is_outside_of_range(type_key: CLTypeKey, value: int) -> bool:
-    """Returns flag indicating whether a value is outside of numeric range associated with the CL type.
-    
+    """Returns flag indicating whether a value is outside of numeric range
+       associated with the CL type.
+
     """
     constraints = NUMERIC_CONSTRAINTS[type_key]
 
@@ -31,7 +31,7 @@ def is_outside_of_range(type_key: CLTypeKey, value: int) -> bool:
 
 def is_within_range(type_key: CLTypeKey, value: int) -> bool:
     """Returns flag indicating whether a value is within a numeric range associated with the CL type.
-    
+
     """
     constraints = NUMERIC_CONSTRAINTS[type_key]
 

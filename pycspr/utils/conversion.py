@@ -6,7 +6,7 @@ def le_bytes_to_int(as_bytes: bytes, signed: bool) -> int:
     :param signed: Flag indicating whether integer is signed.
 
     """
-    return int.from_bytes(as_bytes, byteorder='little', signed=signed)    
+    return int.from_bytes(as_bytes, byteorder='little', signed=signed)
 
 
 def int_to_le_bytes(x: int, length: int, signed: bool) -> bytes:
@@ -30,18 +30,18 @@ def int_to_le_bytes_trimmed(x: int, length: int, signed: bool) -> bytes:
     :param length: Length of mapping output.
     :param signed: Flag indicating whether integer is signed.
 
-    """    
+    """
     value = int_to_le_bytes(x, length, signed)
     while value[-1] == 0:
         value = value[0:-1]
-    
+
     return value or bytes([0])
 
 
-def humanized_time_interval_to_milliseconds(interval: str) -> int: 
+def humanized_time_interval_to_milliseconds(interval: str) -> int:
     """Converts a human readable time interval to milliseconds.
 
-    :param interval: A human readable time interval. 
+    :param interval: A human readable time interval.
     :returns: Time interval in milliseconds.
 
     """
@@ -71,8 +71,8 @@ def humanized_time_interval_to_milliseconds(interval: str) -> int:
 
 def milliseconds_to_humanized_time_interval(interval: int):
     """Converts milliseconds to a human readable time interval.
-    
-    :param interval: Time interval in milliseconds. 
+
+    :param interval: Time interval in milliseconds.
     :returns: A human readable time interval.
 
     """
