@@ -40,7 +40,7 @@ RPC_ENDPOINTS: set = {
     RPC_STATE_GET_DICTIONARY_ITEM,
     RPC_STATE_GET_ITEM,
     RPC_STATE_QUERY_GLOBAL_STATE,
-    }
+}
 
 # Node REST endpoints.
 REST_GET_METRICS = "metrics"
@@ -49,22 +49,20 @@ REST_GET_STATUS = "status"
 REST_ENDPOINTS: set = {
     REST_GET_METRICS,
     REST_GET_STATUS,
-    }
+}
 
 
 class NodeEventChannelType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
+    """Enumeration over set of exposed node SEE event types."""
 
-    """
     deploys = enum.auto()
     main = enum.auto()
     sigs = enum.auto()
 
 
 class NodeEventType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
+    """Enumeration over set of exposed node SEE event types."""
 
-    """
     ApiVersion = enum.auto()
     BlockAdded = enum.auto()
     DeployAccepted = enum.auto()
@@ -78,17 +76,17 @@ class NodeEventType(enum.Enum):
 SSE_CHANNEL_TO_SSE_EVENT = {
     NodeEventChannelType.deploys: {
         NodeEventType.ApiVersion,
-        NodeEventType.DeployAccepted
+        NodeEventType.DeployAccepted,
     },
     NodeEventChannelType.main: {
         NodeEventType.ApiVersion,
         NodeEventType.BlockAdded,
         NodeEventType.DeployProcessed,
         NodeEventType.Fault,
-        NodeEventType.Step
+        NodeEventType.Step,
     },
     NodeEventChannelType.sigs: {
         NodeEventType.ApiVersion,
-        NodeEventType.FinalitySignature
-    }
+        NodeEventType.FinalitySignature,
+    },
 }

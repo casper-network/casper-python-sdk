@@ -21,33 +21,27 @@ from pycspr.types import ExecutableDeployItem_Transfer
 
 
 def encode_deploy(entity: Deploy) -> bytes:
-    """Encodes a deploy.
-
-    """
+    """Encodes a deploy."""
     raise NotImplementedError()
 
 
 def encode_deploy_header(entity: DeployHeader) -> bytes:
-    """Encodes a deploy header.
-
-    """
+    """Encodes a deploy header."""
     raise NotImplementedError()
 
 
 def encode_execution_argument(entity: ExecutionArgument) -> bytes:
-    """Encodes an execution argument.
-
-    """
-    return \
-        encode_string(entity.name) + \
-        encode_u8_array(encode_cl_value(entity.value)) + \
-        encode_cl_type(entity.value.cl_type)
+    """Encodes an execution argument."""
+    return (
+        encode_string(entity.name)
+        + encode_u8_array(encode_cl_value(entity.value))
+        + encode_cl_type(entity.value.cl_type)
+    )
 
 
 def encode_executable_deploy_item(entity: ExecutableDeployItem) -> bytes:
-    """Encodes execution information for subsequent interpretation by VM.
+    """Encodes execution information for subsequent interpretation by VM."""
 
-    """
     def _encode_type_tag(tag: TypeTag_ExecutableDeployItem):
         return bytes([tag.value])
 
@@ -55,53 +49,58 @@ def encode_executable_deploy_item(entity: ExecutableDeployItem) -> bytes:
         return encode_vector_of_t(list(map(encode_execution_argument, args)))
 
     def _encode_module_bytes():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.ModuleBytes) + \
-               encode_u8_array(list(entity.module_bytes)) + \
-               _encode_args(entity.args)
+        return (
+            _encode_type_tag(TypeTag_ExecutableDeployItem.ModuleBytes)
+            + encode_u8_array(list(entity.module_bytes))
+            + _encode_args(entity.args)
+        )
 
     def _encode_stored_contract_by_hash():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHash) + \
-               encode_byte_array(entity.hash) + \
-               encode_string(entity.entry_point) + \
-               _encode_args(entity.args)
+        return (
+            _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHash)
+            + encode_byte_array(entity.hash)
+            + encode_string(entity.entry_point)
+            + _encode_args(entity.args)
+        )
 
     def _encode_stored_contract_by_hash_versioned():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHashVersioned) + \
-               encode_byte_array(entity.hash) + \
-               encode_u32(entity.version) + \
-               encode_string(entity.entry_point) + \
-               _encode_args(entity.args)
+        return (
+            _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByHashVersioned)
+            + encode_byte_array(entity.hash)
+            + encode_u32(entity.version)
+            + encode_string(entity.entry_point)
+            + _encode_args(entity.args)
+        )
 
     def _encode_stored_contract_by_name():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByName) + \
-               encode_string(entity.name) + \
-               encode_string(entity.entry_point) + \
-               _encode_args(entity.args)
+        return (
+            _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByName)
+            + encode_string(entity.name)
+            + encode_string(entity.entry_point)
+            + _encode_args(entity.args)
+        )
 
     def _encode_stored_contract_by_name_versioned():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByNameVersioned) + \
-               encode_string(entity.name) + \
-               encode_u32(entity.version) + \
-               encode_string(entity.entry_point) + \
-               _encode_args(entity.args)
+        return (
+            _encode_type_tag(TypeTag_ExecutableDeployItem.StoredContractByNameVersioned)
+            + encode_string(entity.name)
+            + encode_u32(entity.version)
+            + encode_string(entity.entry_point)
+            + _encode_args(entity.args)
+        )
 
     def _encode_transfer():
-        return _encode_type_tag(TypeTag_ExecutableDeployItem.Transfer) + \
-               _encode_args(entity.args)
+        return _encode_type_tag(TypeTag_ExecutableDeployItem.Transfer) + _encode_args(
+            entity.args
+        )
 
     _ENCODERS = {
-        ExecutableDeployItem_ModuleBytes:
-            _encode_module_bytes,
-        ExecutableDeployItem_StoredContractByHash:
-            _encode_stored_contract_by_hash,
-        ExecutableDeployItem_StoredContractByHashVersioned:
-            _encode_stored_contract_by_hash_versioned,
-        ExecutableDeployItem_StoredContractByName:
-            _encode_stored_contract_by_name,
-        ExecutableDeployItem_StoredContractByNameVersioned:
-            _encode_stored_contract_by_name_versioned,
-        ExecutableDeployItem_Transfer:
-            _encode_transfer,
+        ExecutableDeployItem_ModuleBytes: _encode_module_bytes,
+        ExecutableDeployItem_StoredContractByHash: _encode_stored_contract_by_hash,
+        ExecutableDeployItem_StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,  # noqa: E501
+        ExecutableDeployItem_StoredContractByName: _encode_stored_contract_by_name,
+        ExecutableDeployItem_StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,  # noqa: E501
+        ExecutableDeployItem_Transfer: _encode_transfer,
     }
 
     try:
@@ -127,9 +126,7 @@ ENCODERS = {
 
 
 def encode(entity) -> bytes:
-    """Encodes a deploy related domain entity as an array of bytes.
-
-    """
+    """Encodes a deploy related domain entity as an array of bytes."""
     try:
         encoder = ENCODERS[type(entity)]
     except KeyError:

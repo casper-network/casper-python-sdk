@@ -35,19 +35,18 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     chain_name = cl_value.string(header.chain_name)
 
     return crypto.get_hash(
-        serialisation.to_bytes(account) +
-        serialisation.to_bytes(timestamp) +
-        serialisation.to_bytes(ttl) +
-        serialisation.to_bytes(gas_price) +
-        serialisation.to_bytes(body_hash) +
-        serialisation.to_bytes(dependencies) +
-        serialisation.to_bytes(chain_name)
-        )
+        serialisation.to_bytes(account)
+        + serialisation.to_bytes(timestamp)
+        + serialisation.to_bytes(ttl)
+        + serialisation.to_bytes(gas_price)
+        + serialisation.to_bytes(body_hash)
+        + serialisation.to_bytes(dependencies)
+        + serialisation.to_bytes(chain_name)
+    )
 
 
 def create_digest_of_deploy_body(
-    payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    payment: ExecutableDeployItem, session: ExecutableDeployItem
 ) -> bytes:
     """Returns a deploy body's hash digest.
 
@@ -56,4 +55,6 @@ def create_digest_of_deploy_body(
     :returns: Hash digest of a deploy body.
 
     """
-    return crypto.get_hash(serialisation.to_bytes(payment) + serialisation.to_bytes(session))
+    return crypto.get_hash(
+        serialisation.to_bytes(payment) + serialisation.to_bytes(session)
+    )

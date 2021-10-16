@@ -11,10 +11,9 @@ from pycspr.api.constants import NodeEventChannelType
 from pycspr.api.constants import NodeEventType
 
 
-class NodeClient():
-    """Exposes a set of (categorised) functions for interacting  with a node.
+class NodeClient:
+    """Exposes a set of (categorised) functions for interacting  with a node."""
 
-    """
     def __init__(self, connection: NodeConnection):
         """Instance constructor.
 
@@ -25,11 +24,10 @@ class NodeClient():
         self._get_rest_response = connection.get_rest_response
         self._get_rpc_response = connection.get_rpc_response
 
-
     def get_account_balance(
         self,
         purse_uref: typing.Union[str, types.UnforgeableReference],
-        state_root_hash: typing.Union[bytes, None] = None
+        state_root_hash: typing.Union[bytes, None] = None,
     ) -> int:
         """Returns account balance at a certain global state root hash.
 
@@ -41,16 +39,15 @@ class NodeClient():
         state_root_hash = state_root_hash or self.get_state_root_hash()
         response = self._get_rpc_response(
             constants.RPC_STATE_GET_BALANCE,
-            params_factory.get_account_balance_params(purse_uref, state_root_hash)
-            )
+            params_factory.get_account_balance_params(purse_uref, state_root_hash),
+        )
 
         return int(response["balance_value"])
-
 
     def get_account_info(
         self,
         account_key: typing.Union[bytes, str],
-        block_id: types.OptionalBlockIdentifer = None
+        block_id: types.OptionalBlockIdentifer = None,
     ) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -61,16 +58,15 @@ class NodeClient():
         """
         response = self._get_rpc_response(
             constants.RPC_STATE_GET_ACCOUNT_INFO,
-            params_factory.get_account_info_params(account_key, block_id)
-            )
+            params_factory.get_account_info_params(account_key, block_id),
+        )
 
         return response["account"]
-
 
     def get_account_main_purse_uref(
         self,
         account_key: typing.Union[bytes, str],
-        block_id: types.OptionalBlockIdentifer = None
+        block_id: types.OptionalBlockIdentifer = None,
     ) -> types.UnforgeableReference:
         """Returns an on-chain account's main purse unforgeable reference.
 
@@ -83,12 +79,11 @@ class NodeClient():
 
         return factory.create_uref_from_string(account_info["main_purse"])
 
-
     def get_account_named_key(
         self,
         account_key: typing.Union[bytes, str],
         key_name: str,
-        block_id: types.OptionalBlockIdentifer = None
+        block_id: types.OptionalBlockIdentifer = None,
     ) -> str:
         """Returns a named key stored under an account.
 
@@ -103,11 +98,7 @@ class NodeClient():
 
         return None if len(named_keys) == 0 else named_keys[0]["key"]
 
-
-    def get_auction_info(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
-    ) -> dict:
+    def get_auction_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -115,11 +106,10 @@ class NodeClient():
         """
         response = self._get_rpc_response(
             constants.RPC_STATE_GET_AUCTION_INFO,
-            params_factory.get_auction_info_params(block_id)
-            )
+            params_factory.get_auction_info_params(block_id),
+        )
 
         return response
-
 
     def get_block(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns on-chain block information.
@@ -129,17 +119,15 @@ class NodeClient():
 
         """
         response = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_BLOCK,
-            params_factory.get_block_params(block_id)
-            )
+            constants.RPC_CHAIN_GET_BLOCK, params_factory.get_block_params(block_id)
+        )
 
         return response["block"]
-
 
     def get_block_at_era_switch(
         self,
         polling_interval_seconds: float = 1.0,
-        max_polling_time_seconds: float = 120.0
+        max_polling_time_seconds: float = 120.0,
     ) -> dict:
         """Returns last finalised block in current era.
 
@@ -159,10 +147,8 @@ class NodeClient():
                 break
             time.sleep(polling_interval_seconds)
 
-
     def get_block_transfers(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
+        self, block_id: types.OptionalBlockIdentifer = None
     ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
@@ -172,11 +158,10 @@ class NodeClient():
         """
         response = self._get_rpc_response(
             constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
-            params_factory.get_block_transfers_params(block_id)
-            )
+            params_factory.get_block_transfers_params(block_id),
+        )
 
         return (response["block_hash"], response["transfers"])
-
 
     def get_deploy(self, deploy_id: typing.Union[bytes, str]) -> dict:
         """Returns on-chain deploy information.
@@ -186,10 +171,8 @@ class NodeClient():
 
         """
         return self._get_rpc_response(
-            constants.RPC_INFO_GET_DEPLOY,
-            params_factory.get_deploy_params(deploy_id)
-            )
-
+            constants.RPC_INFO_GET_DEPLOY, params_factory.get_deploy_params(deploy_id)
+        )
 
     def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
         """Returns on-chain data stored under a dictionary item.
@@ -200,9 +183,8 @@ class NodeClient():
         """
         return self._get_rpc_response(
             constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            params_factory.get_dictionary_item_params(identifier)
-            )
-
+            params_factory.get_dictionary_item_params(identifier),
+        )
 
     def get_era_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
         """Returns current era information.
@@ -213,18 +195,17 @@ class NodeClient():
         """
         response = self._get_rpc_response(
             constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-            params_factory.get_era_info_params(block_id)
-            )
+            params_factory.get_era_info_params(block_id),
+        )
 
         return response["era_summary"]
-
 
     def get_events(
         self,
         callback: typing.Callable,
         channel_type: NodeEventChannelType,
         event_type: NodeEventType = None,
-        event_id: int = 0
+        event_id: int = 0,
     ):
         """Binds to a node's event stream - events are passed to callback for processing.
 
@@ -234,8 +215,9 @@ class NodeClient():
         :param event_id: Identifer of event from which to start stream listening.
 
         """
-        sse_consumer.get_events(self.connection, callback, channel_type, event_type, event_id)
-
+        sse_consumer.get_events(
+            self.connection, callback, channel_type, event_type, event_id
+        )
 
     def get_node_metric(self, metric_id: str) -> list:
         """Returns node metrics information filtered by a particular metric.
@@ -248,7 +230,6 @@ class NodeClient():
 
         return [i for i in metrics if i.lower().startswith(metric_id.lower())]
 
-
     def get_node_metrics(self) -> list:
         """Returns set of node metrics.
 
@@ -256,10 +237,11 @@ class NodeClient():
 
         """
         response = self._get_rest_response(constants.REST_GET_METRICS)
-        metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
+        metrics = sorted(
+            [i.strip() for i in response.split("\n") if not i.startswith("#")]
+        )
 
         return metrics
-
 
     def get_node_peers(self) -> dict:
         """Returns node peers information.
@@ -271,7 +253,6 @@ class NodeClient():
 
         return node_status["peers"]
 
-
     def get_node_status(self) -> dict:
         """Returns node status information.
 
@@ -281,7 +262,6 @@ class NodeClient():
         response = self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
 
         return response
-
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
@@ -295,7 +275,6 @@ class NodeClient():
             if obj["name"].lower() == endpoint.lower():
                 return obj
 
-
     def get_rpc_endpoints(self) -> typing.Union[dict, list]:
         """Returns RPC schema.
 
@@ -305,7 +284,6 @@ class NodeClient():
         schema = self.get_rpc_schema()
 
         return sorted([i["name"] for i in schema["methods"]])
-
 
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
@@ -317,12 +295,11 @@ class NodeClient():
 
         return response["schema"]
 
-
     def get_state_item(
         self,
         item_key: str,
         item_path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: typing.Union[bytes, None] = None
+        state_root_hash: typing.Union[bytes, None] = None,
     ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
@@ -336,15 +313,13 @@ class NodeClient():
         state_root_hash = state_root_hash or self.get_state_root_hash()
         response = self._get_rpc_response(
             constants.RPC_STATE_GET_ITEM,
-            params_factory.get_state_item_params(item_key, item_path, state_root_hash)
-            )
+            params_factory.get_state_item_params(item_key, item_path, state_root_hash),
+        )
 
         return response["stored_value"]
 
-
     def get_state_root_hash(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
+        self, block_id: types.OptionalBlockIdentifer = None
     ) -> bytes:
         """Returns an root hash of global state at a specified block.
 
@@ -354,11 +329,10 @@ class NodeClient():
         """
         response = self._get_rpc_response(
             constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
-            params_factory.get_state_root_hash_params(block_id)
-            )
+            params_factory.get_state_root_hash_params(block_id),
+        )
 
         return bytes.fromhex(response["state_root_hash"])
-
 
     def get_validator_changes(self) -> dict:
         """Returns status changes of active validators.
@@ -371,7 +345,6 @@ class NodeClient():
 
         return response["changes"]
 
-
     def send_deploy(self, deploy: types.Deploy):
         """Dispatches a deploy to a node for processing.
 
@@ -379,8 +352,7 @@ class NodeClient():
 
         """
         response = self._get_rpc_response(
-            constants.RPC_ACCOUNT_PUT_DEPLOY,
-            params_factory.put_deploy_params(deploy)
-            )
+            constants.RPC_ACCOUNT_PUT_DEPLOY, params_factory.put_deploy_params(deploy)
+        )
 
         return response["deploy_hash"]

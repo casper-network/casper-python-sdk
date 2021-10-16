@@ -1,7 +1,6 @@
 import pycspr
 
 
-
 def test_get_state_root_hash(CLIENT):
     def _assert(response):
         assert isinstance(response, bytes)
@@ -42,7 +41,9 @@ def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
     _assert(CLIENT.get_account_main_purse_uref(account_key))
 
 
-def test_get_account_balance(CLIENT, account_main_purse_uref: object, state_root_hash: bytes):
+def test_get_account_balance(
+    CLIENT, account_main_purse_uref: object, state_root_hash: bytes
+):
     assert isinstance(account_main_purse_uref, pycspr.types.UnforgeableReference)
 
     def _assert(response):

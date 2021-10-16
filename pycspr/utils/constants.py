@@ -4,7 +4,9 @@ from pycspr.types import CLTypeKey
 
 
 # Data structure representing numerical constraints.
-NumericConstraints = collections.namedtuple("NumericConstraints", ["LENGTH", "MIN", "MAX"])
+NumericConstraints = collections.namedtuple(
+    "NumericConstraints", ["LENGTH", "MIN", "MAX"]
+)
 
 # Map: numerical type <-> constraints.
 NUMERIC_CONSTRAINTS = {
@@ -15,14 +17,14 @@ NUMERIC_CONSTRAINTS = {
     CLTypeKey.U64: NumericConstraints(8, 0, (2 ** 64) - 1),
     CLTypeKey.U128: NumericConstraints(16, 0, (2 ** 128) - 1),
     CLTypeKey.U256: NumericConstraints(32, 0, (2 ** 256) - 1),
-    CLTypeKey.U512: NumericConstraints(64, 0, (2 ** 512) - 1)
+    CLTypeKey.U512: NumericConstraints(64, 0, (2 ** 512) - 1),
 }
 
 
 def is_outside_of_range(type_key: CLTypeKey, value: int) -> bool:
-    """Returns flag indicating whether a value is outside of numeric range
-       associated with the CL type.
-
+    """
+    Returns flag indicating whether a value is outside of numeric range
+    associated with the CL type.
     """
     constraints = NUMERIC_CONSTRAINTS[type_key]
 
@@ -30,8 +32,9 @@ def is_outside_of_range(type_key: CLTypeKey, value: int) -> bool:
 
 
 def is_within_range(type_key: CLTypeKey, value: int) -> bool:
-    """Returns flag indicating whether a value is within a numeric range associated with the CL type.
-
+    """
+    Returns flag indicating whether a value is within a numeric range
+    associated with the CL type.
     """
     constraints = NUMERIC_CONSTRAINTS[type_key]
 

@@ -10,7 +10,8 @@ OptionalBlockIdentifer = typing.Union[None, BlockIdentifer]
 
 # Root hash of a node's global state.
 StateRootHash = typing.NewType(
-    "Cumulative hash of block execution effects over global state.", bytes)
+    "Cumulative hash of block execution effects over global state.", bytes
+)
 
 # An optional state root hash.
 OptionalStateRootHash = typing.Union[None, StateRootHash]

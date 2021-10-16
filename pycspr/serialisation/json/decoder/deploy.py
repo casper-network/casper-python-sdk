@@ -18,22 +18,18 @@ from pycspr.utils import conversion
 
 
 def decode_deploy(obj: dict) -> Deploy:
-    """Maps a dict to a deploy.
-
-    """
+    """Maps a dict to a deploy."""
     return Deploy(
         approvals=[decode_deploy_approval(i) for i in obj["approvals"]],
         hash=bytes.fromhex(obj["hash"]),
         header=decode_deploy_header(obj["header"]),
         payment=decode_executable_deploy_item(obj["payment"]),
-        session=decode_executable_deploy_item(obj["session"])
+        session=decode_executable_deploy_item(obj["session"]),
     )
 
 
 def decode_deploy_approval(obj: dict) -> DeployApproval:
-    """Maps a dict to a deploy approval.
-
-    """
+    """Maps a dict to a deploy approval."""
     return DeployApproval(
         signer=decode_public_key(obj["signer"]),
         signature=bytes.fromhex(obj["signature"]),
@@ -41,9 +37,7 @@ def decode_deploy_approval(obj: dict) -> DeployApproval:
 
 
 def decode_deploy_header(obj: dict) -> DeployHeader:
-    """Maps a dict to a deploy header.
-
-    """
+    """Maps a dict to a deploy header."""
     return DeployHeader(
         account_public_key=decode_public_key(obj["account"]),
         body_hash=bytes.fromhex(obj["body_hash"]),
@@ -51,33 +45,29 @@ def decode_deploy_header(obj: dict) -> DeployHeader:
         dependencies=[],
         gas_price=obj["gas_price"],
         timestamp=decode_timestamp(obj["timestamp"]),
-        ttl=decode_deploy_ttl(obj["ttl"])
+        ttl=decode_deploy_ttl(obj["ttl"]),
     )
 
 
 def decode_deploy_ttl(obj: str) -> DeployTimeToLive:
-    """Maps a dict to a deploy ttl wrapper object.
-
-    """
+    """Maps a dict to a deploy ttl wrapper object."""
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(obj)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+        raise ValueError(
+            f"Invalid deploy ttl.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}"
+        )
 
-    return DeployTimeToLive(
-        as_milliseconds=as_milliseconds,
-        humanized=obj
-    )
+    return DeployTimeToLive(as_milliseconds=as_milliseconds, humanized=obj)
 
 
 def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
-    """Maps a dict to execution information.
+    """Maps a dict to execution information."""
 
-    """
     def _decode_module_bytes():
         return ExecutableDeployItem_ModuleBytes(
             args=[decode_execution_argument(i) for i in obj["ModuleBytes"]["args"]],
-            module_bytes=bytes.fromhex(obj["ModuleBytes"]["module_bytes"])
-            )
+            module_bytes=bytes.fromhex(obj["ModuleBytes"]["module_bytes"]),
+        )
 
     def _decode_stored_contract_by_hash() -> dict:
         raise NotImplementedError()
@@ -94,7 +84,7 @@ def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
     def _decode_session_for_transfer():
         return ExecutableDeployItem_Transfer(
             args=[decode_execution_argument(i) for i in obj["Transfer"]["args"]],
-            )
+        )
 
     if "ModuleBytes" in obj:
         return _decode_module_bytes()
@@ -113,29 +103,17 @@ def decode_executable_deploy_item(obj) -> ExecutableDeployItem:
 
 
 def decode_execution_argument(obj) -> ExecutionArgument:
-    """Maps a dict to an execution argument.
-
-    """
-    return ExecutionArgument(
-        name=obj[0],
-        value=decode_cl_value(obj[1])
-        )
+    """Maps a dict to an execution argument."""
+    return ExecutionArgument(name=obj[0], value=decode_cl_value(obj[1]))
 
 
 def decode_public_key(obj: str) -> PublicKey:
-    """Decodes a public key.
-
-    """
-    return PublicKey(
-        crypto.KeyAlgorithm(int(obj[0:2])),
-        bytes.fromhex(obj[2:])
-    )
+    """Decodes a public key."""
+    return PublicKey(crypto.KeyAlgorithm(int(obj[0:2])), bytes.fromhex(obj[2:]))
 
 
 def decode_timestamp(obj: str) -> Timestamp:
-    """Decodes a millisecond precise timestamp.
-
-    """
+    """Decodes a millisecond precise timestamp."""
     # Strip trailing TZ offset - TODO review.
     if obj.endswith("Z"):
         obj = obj[:-1]

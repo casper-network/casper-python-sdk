@@ -18,7 +18,9 @@ _PATH_TO_NCTL_NODE = _PATH_TO_NCTL_ASSETS / "nodes" / "node-1"
 _PATH_TO_NCTL_USER = _PATH_TO_NCTL_ASSETS / "users" / "user-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")
+_ARGS = argparse.ArgumentParser(
+    "Demo illustrating how to install an ERC-20 smart contract."
+)
 
 # CLI argument: path to contract operator secret key - defaults to NCTL faucet.
 _ARGS.add_argument(
@@ -27,7 +29,7 @@ _ARGS.add_argument(
     dest="path_to_operator_secret_key",
     help="Path to operator's secret_key.pem file.",
     type=str,
-    )
+)
 
 # CLI argument: type of contract operator secret key - defaults to ED25519.
 _ARGS.add_argument(
@@ -36,7 +38,7 @@ _ARGS.add_argument(
     dest="type_of_operator_secret_key",
     help="Type of operator's secret key.",
     type=str,
-    )
+)
 
 # CLI argument: path to smart contract wasm binary - defaults to NCTL bin/eco/erc20.wasm.
 _ARGS.add_argument(
@@ -45,7 +47,7 @@ _ARGS.add_argument(
     dest="path_to_wasm",
     help="Path to erc20.wasm file.",
     type=str,
-    )
+)
 
 # CLI argument: name of target chain - defaults to NCTL chain.
 _ARGS.add_argument(
@@ -54,7 +56,7 @@ _ARGS.add_argument(
     dest="chain_name",
     help="Name of target chain.",
     type=str,
-    )
+)
 
 # CLI argument: amount in motes to be offered as payment.
 _ARGS.add_argument(
@@ -63,7 +65,7 @@ _ARGS.add_argument(
     dest="deploy_payment",
     help="Amount in motes to be offered as payment.",
     type=int,
-    )
+)
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -72,7 +74,7 @@ _ARGS.add_argument(
     dest="node_host",
     help="Host address of target node.",
     type=str,
-    )
+)
 
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -81,7 +83,7 @@ _ARGS.add_argument(
     dest="node_port_rpc",
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
-    )
+)
 
 # CLI argument: number of decimal places within ERC-20 token to be minted.
 _ARGS.add_argument(
@@ -90,7 +92,7 @@ _ARGS.add_argument(
     dest="token_decimals",
     help="Number of decimal places within ERC-20 token to be minted.",
     type=int,
-    )
+)
 
 # CLI argument: name of ERC-20 token to be minted.
 _ARGS.add_argument(
@@ -99,7 +101,7 @@ _ARGS.add_argument(
     dest="token_name",
     help="Name of ERC-20 token to be minted.",
     type=str,
-    )
+)
 
 # CLI argument: Total number of ERC-20 tokens to be issued.
 _ARGS.add_argument(
@@ -108,7 +110,7 @@ _ARGS.add_argument(
     dest="token_total_supply",
     help="Total number of ERC-20 tokens to be issued.",
     type=int,
-    )
+)
 
 # CLI argument: symbol of ERC-20 token to be minted.
 _ARGS.add_argument(
@@ -117,7 +119,7 @@ _ARGS.add_argument(
     dest="token_symbol",
     help="Symbol of ERC-20 token to be minted.",
     type=str,
-    )
+)
 
 
 def _main(args: argparse.Namespace):
@@ -147,66 +149,57 @@ def _main(args: argparse.Namespace):
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
-
-    """
-    return NodeClient(NodeConnection(
-        host=args.node_host,
-        port_rpc=args.node_port_rpc,
-    ))
+    """Returns a pycspr client instance."""
+    return NodeClient(
+        NodeConnection(
+            host=args.node_host,
+            port_rpc=args.node_port_rpc,
+        )
+    )
 
 
 def _get_operator_key(args: argparse.Namespace) -> PrivateKey:
-    """Returns the smart contract operator's private key.
-
-    """
+    """Returns the smart contract operator's private key."""
     return pycspr.parse_private_key(
         args.path_to_operator_secret_key,
         args.type_of_operator_secret_key,
-        )
+    )
 
 
 def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
-    """Returns delegation deploy to be dispatched to a node.
-
-    """
+    """Returns delegation deploy to be dispatched to a node."""
     # Set standard deploy parameters.
-    params: DeployParameters = \
-        pycspr.create_deploy_parameters(
-            account=operator,
-            chain_name=args.chain_name
-            )
+    params: DeployParameters = pycspr.create_deploy_parameters(
+        account=operator, chain_name=args.chain_name
+    )
 
     # Set payment logic.
-    payment: ExecutableDeployItem_ModuleBytes = \
-        pycspr.create_standard_payment(args.deploy_payment)
+    payment: ExecutableDeployItem_ModuleBytes = pycspr.create_standard_payment(
+        args.deploy_payment
+    )
 
     # Set session logic.
     session: ExecutableDeployItem_ModuleBytes = ExecutableDeployItem_ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args=[
             pycspr.create_deploy_arg(
-                "token_decimals",
-                pycspr.cl_value.u8(args.token_decimals)
-                ),
+                "token_decimals", pycspr.cl_value.u8(args.token_decimals)
+            ),
             pycspr.create_deploy_arg(
-                "token_name",
-                pycspr.cl_value.string(args.token_name)
-                ),
+                "token_name", pycspr.cl_value.string(args.token_name)
+            ),
             pycspr.create_deploy_arg(
-                "token_symbol",
-                pycspr.cl_value.string(args.token_symbol)
-                ),
+                "token_symbol", pycspr.cl_value.string(args.token_symbol)
+            ),
             pycspr.create_deploy_arg(
-                "token_total_supply",
-                pycspr.cl_value.u256(args.token_total_supply)
-                ),
-        ]
+                "token_total_supply", pycspr.cl_value.u256(args.token_total_supply)
+            ),
+        ],
     )
 
     return pycspr.create_deploy(params, payment, session)
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

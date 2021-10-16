@@ -11,9 +11,8 @@ from pycspr.utils.exceptions import NodeAPIError
 
 @dataclasses.dataclass
 class NodeConnection:
-    """Encapsulates information required to connect to a node.
+    """Encapsulates information required to connect to a node."""
 
-    """
     # Host address.
     host: str = "localhost"
 
@@ -50,7 +49,6 @@ class NodeConnection:
         """Instance string representation."""
         return self.host
 
-
     def get_rest_response(self, endpoint: str) -> dict:
         """Invokes remote REST API and returns parsed response.
 
@@ -63,7 +61,6 @@ class NodeConnection:
 
         return response.content.decode("utf-8")
 
-
     def get_rpc_response(self, endpoint: str, params: dict = None) -> dict:
         """Invokes remote JSON-RPC API and returns parsed response.
 
@@ -75,7 +72,7 @@ class NodeConnection:
         response = requests.post(
             self.address_rpc,
             json=jsonrpcclient.request(endpoint, params),
-            )
+        )
 
         parsed = jsonrpcclient.parse(response.json())
         if isinstance(parsed, jsonrpcclient.responses.Error):
@@ -83,15 +80,10 @@ class NodeConnection:
 
         return parsed.result
 
-
     def get_sse_client(
-        self,
-        channel_type: NodeEventChannelType,
-        event_id: int
+        self, channel_type: NodeEventChannelType, event_id: int
     ) -> sseclient.SSEClient:
-        """Returns SSE client.
-
-        """
+        """Returns SSE client."""
         url = f"{self.address_sse}/{channel_type.name.lower()}"
         if event_id:
             url = f"{url}?start_from={event_id}"

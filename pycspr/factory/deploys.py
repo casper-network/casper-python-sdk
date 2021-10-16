@@ -35,7 +35,7 @@ _MAX_TRANSFER_ID = (2 ** 63) - 1
 def create_deploy(
     params: DeployParameters,
     payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    session: ExecutableDeployItem,
 ):
     """Returns a deploy for subsequent dispatch to a node.
 
@@ -52,7 +52,7 @@ def create_deploy(
         hash=create_digest_of_deploy(header),
         header=header,
         payment=payment,
-        session=session
+        session=session,
     )
 
 
@@ -71,7 +71,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
         approver.account_key,
         crypto.get_signature_for_deploy_approval(
             deploy_hash, approver.private_key, approver.key_algo
-            )
+        ),
     )
 
 
@@ -87,8 +87,7 @@ def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
 
 
 def create_deploy_body(
-    payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    payment: ExecutableDeployItem, session: ExecutableDeployItem
 ) -> DeployBody:
     """Returns hash of a deploy's so-called body.
 
@@ -96,11 +95,7 @@ def create_deploy_body(
     :param session: Session execution information.
 
     """
-    return DeployBody(
-        session,
-        payment,
-        create_digest_of_deploy_body(payment, session)
-        )
+    return DeployBody(session, payment, create_digest_of_deploy_body(payment, session))
 
 
 def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHeader:
@@ -127,7 +122,7 @@ def create_deploy_parameters(
     dependencies: typing.List[bytes] = [],
     gas_price: int = constants.DEFAULT_GAS_PRICE,
     timestamp: datetime.datetime = None,
-    ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL
+    ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL,
 ) -> DeployParameters:
     """Returns header information associated with a deploy.
 
@@ -139,8 +134,11 @@ def create_deploy_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
-    public_key = account if isinstance(account, PublicKey) else \
-        create_public_key(account.algo, account.pbk)
+    public_key = (
+        account
+        if isinstance(account, PublicKey)
+        else create_public_key(account.algo, account.pbk)
+    )
     timestamp = timestamp or datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
     timestamp = round(timestamp, 3)
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
@@ -155,7 +153,9 @@ def create_deploy_parameters(
     )
 
 
-def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> DeployTimeToLive:
+def create_deploy_ttl(
+    humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL,
+) -> DeployTimeToLive:
     """Returns a deploy's time to live after which it will not longer be accepted by a node.
 
     :param humanized_ttl: A humanized ttl, e.g. 1 day.
@@ -163,12 +163,11 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl. Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+        raise ValueError(
+            f"Invalid deploy ttl. Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}"
+        )
 
-    return DeployTimeToLive(
-        humanized=humanized_ttl,
-        as_milliseconds=as_milliseconds
-    )
+    return DeployTimeToLive(humanized=humanized_ttl, as_milliseconds=as_milliseconds)
 
 
 def create_native_transfer(
@@ -207,24 +206,18 @@ def create_native_transfer_session(
     """
     return ExecutableDeployItem_Transfer(
         args=[
-            create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
-            create_deploy_arg(
-                "target",
-                cl_value.byte_array(target)
-                ),
+            create_deploy_arg("amount", cl_value.u512(amount)),
+            create_deploy_arg("target", cl_value.byte_array(target)),
             create_deploy_arg(
                 "id",
-                cl_value.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID))
-                ),
+                cl_value.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID)),
+            ),
         ]
     )
 
 
 def create_standard_payment(
-    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
+    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS,
 ) -> ExecutableDeployItem_ModuleBytes:
     """Returns standard payment execution information.
 
@@ -233,25 +226,19 @@ def create_standard_payment(
     """
     return ExecutableDeployItem_ModuleBytes(
         args=[
-            create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
+            create_deploy_arg("amount", cl_value.u512(amount)),
         ],
-        module_bytes=bytes([])
-        )
+        module_bytes=bytes([]),
+    )
 
 
 def create_uref_from_string(as_string: str):
-    """Returns an unforgeable reference from it's string representation.
-
-    """
+    """Returns an unforgeable reference from it's string representation."""
     _, address_hex, access_rights = as_string.split("-")
 
     return UnforgeableReference(
-        bytes.fromhex(address_hex),
-        CLAccessRights(int(access_rights))
-        )
+        bytes.fromhex(address_hex), CLAccessRights(int(access_rights))
+    )
 
 
 def create_validator_auction_bid(
@@ -259,7 +246,7 @@ def create_validator_auction_bid(
     amount: int,
     delegation_rate: int,
     public_key: PublicKey,
-    path_to_wasm: str
+    path_to_wasm: str,
 ) -> Deploy:
     """Returns a validator auction bid deploy.
 
@@ -275,20 +262,11 @@ def create_validator_auction_bid(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
-            create_deploy_arg(
-                "delegation_rate",
-                cl_value.u8(delegation_rate)
-                ),
-            create_deploy_arg(
-                "public_key",
-                cl_value.public_key(public_key)
-                ),
-            ]
-        )
+            create_deploy_arg("amount", cl_value.u512(amount)),
+            create_deploy_arg("delegation_rate", cl_value.u8(delegation_rate)),
+            create_deploy_arg("public_key", cl_value.public_key(public_key)),
+        ],
+    )
 
     return create_deploy(params, payment, session)
 
@@ -310,24 +288,17 @@ def create_validator_auction_bid_withdrawal(
     :returns: A standard delegation deploy.
 
     """
-    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
+    payment = create_standard_payment(
+        constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL
+    )
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
-            create_deploy_arg(
-                "public_key",
-                cl_value.public_key(public_key)
-                ),
-            create_deploy_arg(
-                "unbond_purse",
-                cl_value.uref(unbond_purse)
-                ),
-            ]
-        )
+            create_deploy_arg("amount", cl_value.u512(amount)),
+            create_deploy_arg("public_key", cl_value.public_key(public_key)),
+            create_deploy_arg("unbond_purse", cl_value.uref(unbond_purse)),
+        ],
+    )
 
     return create_deploy(params, payment, session)
 
@@ -337,7 +308,7 @@ def create_validator_delegation(
     amount: int,
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
-    path_to_wasm: str
+    path_to_wasm: str,
 ) -> Deploy:
     """Returns a standard delegation deploy.
 
@@ -353,19 +324,14 @@ def create_validator_delegation(
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
+            create_deploy_arg("amount", cl_value.u512(amount)),
             create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
+                "delegator", cl_value.public_key(public_key_of_delegator)
+            ),
             create_deploy_arg(
-                "delegator",
-                cl_value.public_key(public_key_of_delegator)
-                ),
-            create_deploy_arg(
-                "validator",
-                cl_value.public_key(public_key_of_validator)
-                ),
-        ]
+                "validator", cl_value.public_key(public_key_of_validator)
+            ),
+        ],
     )
 
     return create_deploy(params, payment, session)
@@ -376,7 +342,7 @@ def create_validator_delegation_withdrawal(
     amount: int,
     public_key_of_delegator: PublicKey,
     public_key_of_validator: PublicKey,
-    path_to_wasm: str
+    path_to_wasm: str,
 ) -> Deploy:
     """Returns a standard withdraw delegation deploy.
 
@@ -388,23 +354,20 @@ def create_validator_delegation_withdrawal(
     :returns: A standard delegation deploy.
 
     """
-    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
+    payment = create_standard_payment(
+        constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL
+    )
     session = ExecutableDeployItem_ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
+            create_deploy_arg("amount", cl_value.u512(amount)),
             create_deploy_arg(
-                "amount",
-                cl_value.u512(amount)
-                ),
+                "delegator", cl_value.public_key(public_key_of_delegator)
+            ),
             create_deploy_arg(
-                "delegator",
-                cl_value.public_key(public_key_of_delegator)
-                ),
-            create_deploy_arg(
-                "validator",
-                cl_value.public_key(public_key_of_validator)
-                ),
-        ]
+                "validator", cl_value.public_key(public_key_of_validator)
+            ),
+        ],
     )
 
     return create_deploy(params, payment, session)

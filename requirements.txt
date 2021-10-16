@@ -1,8 +1,0 @@
-cryptography
-ecdsa
-flake8
-jsonrpcclient
-requests
-pytest
-sseclient-py
-tox

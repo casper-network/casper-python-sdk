@@ -19,10 +19,9 @@ Timestamp = typing.NewType("POSIX timestamp", datetime.datetime)
 
 
 @dataclasses.dataclass
-class ExecutionArgument():
-    """An argument to be passed to vm for execution.
+class ExecutionArgument:
+    """An argument to be passed to vm for execution."""
 
-    """
     # Argument name mapped to an entry point parameter.
     name: str
 
@@ -31,37 +30,34 @@ class ExecutionArgument():
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem():
-    """Encapsulates vm execution information.
+class ExecutableDeployItem:
+    """Encapsulates vm execution information."""
 
-    """
     # Set of arguments mapped to endpoint parameters.
     args: typing.List[ExecutionArgument]
 
 
 @dataclasses.dataclass
 class ExecutableDeployItem_ModuleBytes(ExecutableDeployItem):
-    """Encapsulates information required to execute an in-line wasm binary.
+    """Encapsulates information required to execute an in-line wasm binary."""
 
-    """
     # Raw WASM payload.
     module_bytes: bytes
 
 
 @dataclasses.dataclass
 class ExecutableDeployItem_StoredContract(ExecutableDeployItem):
-    """Encapsulates information required to execute an on-chain smart contract.
+    """Encapsulates information required to execute an on-chain smart contract."""
 
-    """
     # Name of a smart contract entry point to be executed.
     entry_point: str
 
 
 @dataclasses.dataclass
 class ExecutableDeployItem_StoredContractByHash(ExecutableDeployItem_StoredContract):
-    """Encapsulates information required to execute an on-chain smart contract referenced by hash.
+    """Encapsulates information required to execute an on-chain smart contract
+    referenced by hash."""
 
-    """
     # On-chain smart contract address.
     hash: ContractHash
 
@@ -74,6 +70,7 @@ class ExecutableDeployItem_StoredContractByHashVersioned(
     contract referenced by hash.
 
     """
+
     # Smart contract version identifier.
     version: ContractVersion
 
@@ -81,9 +78,10 @@ class ExecutableDeployItem_StoredContractByHashVersioned(
 @dataclasses.dataclass
 class ExecutableDeployItem_StoredContractByName(ExecutableDeployItem_StoredContract):
     """Encapsulates information required to execute an on-chain
-       smart contract referenced by name.
+    smart contract referenced by name.
 
     """
+
     # On-chain smart contract name - in scope when dispatch & contract accounts are synonmous.
     name: str
 
@@ -93,26 +91,25 @@ class ExecutableDeployItem_StoredContractByNameVersioned(
     ExecutableDeployItem_StoredContractByName
 ):
     """Encapsulates information required to execute a versioned
-       on-chain smart contract referenced by name.
+    on-chain smart contract referenced by name.
 
     """
+
     # Smart contract version identifier.
     version: ContractVersion
 
 
 @dataclasses.dataclass
 class ExecutableDeployItem_Transfer(ExecutableDeployItem):
-    """Encapsulates information required to execute a host-side balance transfer.
+    """Encapsulates information required to execute a host-side balance transfer."""
 
-    """
     pass
 
 
 @dataclasses.dataclass
 class DeployApproval:
-    """A digital signature approving deploy processing.
+    """A digital signature approving deploy processing."""
 
-    """
     # The public key component to the signing key used to sign a deploy.
     signer: PublicKey
 
@@ -121,10 +118,9 @@ class DeployApproval:
 
 
 @dataclasses.dataclass
-class DeployBody():
-    """Encapsulates a deploy's body, i.e. executable payload.
+class DeployBody:
+    """Encapsulates a deploy's body, i.e. executable payload."""
 
-    """
     # Executable information passed to chain's VM for taking
     # payment required to process session logic.
     payment: ExecutableDeployItem
@@ -137,10 +133,9 @@ class DeployBody():
 
 
 @dataclasses.dataclass
-class DeployTimeToLive():
-    """Encapsulates a timeframe within which a deploy must be processed.
+class DeployTimeToLive:
+    """Encapsulates a timeframe within which a deploy must be processed."""
 
-    """
     # TTL in milliseconds.
     as_milliseconds: int
 
@@ -149,10 +144,9 @@ class DeployTimeToLive():
 
 
 @dataclasses.dataclass
-class DeployHeader():
-    """Encapsulates header information associated with a deploy.
+class DeployHeader:
+    """Encapsulates header information associated with a deploy."""
 
-    """
     # Public key of account dispatching deploy to a node.
     account_public_key: PublicKey
 
@@ -176,10 +170,9 @@ class DeployHeader():
 
 
 @dataclasses.dataclass
-class Deploy():
-    """Top level container encapsulating information required to interact with chain.
+class Deploy:
+    """Top level container encapsulating information required to interact with chain."""
 
-    """
     # Set of signatures approving this deploy for execution.
     approvals: typing.List[DeployApproval]
 
@@ -204,9 +197,8 @@ class Deploy():
         """
         sig = crypto.get_signature_for_deploy_approval(
             self.hash, approver.private_key, approver.key_algo
-            )
+        )
         self._append_approval(DeployApproval(approver.account_key, sig))
-
 
     def set_approval(self, approval: DeployApproval):
         """Appends an approval to associated set.
@@ -221,23 +213,21 @@ class Deploy():
 
         self._append_approval(approval)
 
-
     def _append_approval(self, approval: DeployApproval):
-        """Appends an approval to managed set - implicitly deduplicating.
-
-        """
+        """Appends an approval to managed set - implicitly deduplicating."""
         self.approvals.append(approval)
         uniques = set()
         self.approvals = [
-            uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques
-            ]
+            uniques.add(a.signer) or a
+            for a in self.approvals
+            if a.signer not in uniques
+        ]
 
 
 @dataclasses.dataclass
-class DeployParameters():
-    """Encapsulates standard information associated with a deploy.
+class DeployParameters:
+    """Encapsulates standard information associated with a deploy."""
 
-    """
     # Public key of account dispatching deploy to a node.
     account_public_key: PublicKey
 

@@ -13,7 +13,9 @@ from pycspr.types import UnforgeableReference
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfers with pycspr.")
+_ARGS = argparse.ArgumentParser(
+    "Demo illustrating how to execute native transfers with pycspr."
+)
 
 # CLI argument: path to cp2 account key - defaults to NCTL user 2.
 _ARGS.add_argument(
@@ -22,7 +24,7 @@ _ARGS.add_argument(
     dest="path_to_account_key",
     help="Path to a test user's public_key_hex file.",
     type=str,
-    )
+)
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -31,7 +33,7 @@ _ARGS.add_argument(
     dest="node_host",
     help="Host address of target node.",
     type=str,
-    )
+)
 
 # CLI argument: Node API REST port - defaults to 14101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -40,7 +42,7 @@ _ARGS.add_argument(
     dest="node_port_rest",
     help="Node API REST port.  Typically 8888 on most nodes.",
     type=int,
-    )
+)
 
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -49,7 +51,7 @@ _ARGS.add_argument(
     dest="node_port_rpc",
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
-    )
+)
 
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -58,7 +60,7 @@ _ARGS.add_argument(
     dest="node_port_sse",
     help="Node API SSE port.  Typically 9999 on most nodes.",
     type=int,
-    )
+)
 
 
 def _main(args: argparse.Namespace):
@@ -124,13 +126,16 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 2.2: get_account_info")
 
     # Query 2.3: get_account_main_purse_uref.
-    account_main_purse: UnforgeableReference = \
-        client.get_account_main_purse_uref(user_public_key.account_key)
+    account_main_purse: UnforgeableReference = client.get_account_main_purse_uref(
+        user_public_key.account_key
+    )
     assert isinstance(account_main_purse, UnforgeableReference)
     print("SUCCESS :: Query 2.3: get_account_main_purse_uref")
 
     # Query 2.4: get_account_balance.
-    account_balance: int = client.get_account_balance(account_main_purse, state_root_hash)
+    account_balance: int = client.get_account_balance(
+        account_main_purse, state_root_hash
+    )
     assert isinstance(account_balance, int)
     print("SUCCESS :: Query 2.4: get_account_balance")
 
@@ -141,15 +146,16 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 3.1: get_block_at_era_switch")
 
     # Query 3.2: get_block - by hash & by height.
-    assert client.get_block(block["hash"]) == \
-           client.get_block(block["header"]["height"])
+    assert client.get_block(block["hash"]) == client.get_block(
+        block["header"]["height"]
+    )
     print("SUCCESS :: Query 3.2: get_block - by hash & by height")
 
     # Query 3.3: get_block_transfers - by hash & by height.
     block_transfers: tuple = client.get_block_transfers(block["hash"])
     assert isinstance(block_transfers, tuple)
-    assert isinstance(block_transfers[0], str)      # black hash
-    assert isinstance(block_transfers[1], list)     # set of transfers
+    assert isinstance(block_transfers[0], str)  # black hash
+    assert isinstance(block_transfers[1], list)  # set of transfers
     assert block_transfers == client.get_block_transfers(block["header"]["height"])
     print("SUCCESS :: Query 3.3: get_block_transfers - by hash & by height")
 
@@ -164,23 +170,24 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 4.2: get_era_info - by switch block hash")
 
     # Query 4.3: get_era_info - by switch block height.
-    assert client.get_era_info(block["hash"]) == \
-           client.get_era_info(block["header"]["height"])
+    assert client.get_era_info(block["hash"]) == client.get_era_info(
+        block["header"]["height"]
+    )
     print("SUCCESS :: Query 4.3: get_era_info - by switch block height")
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
-
-    """
-    return NodeClient(NodeConnection(
-        host=args.node_host,
-        port_rest=args.node_port_rest,
-        port_rpc=args.node_port_rpc,
-        port_sse=args.node_port_sse
-    ))
+    """Returns a pycspr client instance."""
+    return NodeClient(
+        NodeConnection(
+            host=args.node_host,
+            port_rest=args.node_port_rest,
+            port_rpc=args.node_port_rpc,
+            port_sse=args.node_port_sse,
+        )
+    )
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

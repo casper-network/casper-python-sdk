@@ -1,6 +1,6 @@
 def test_get_most_recent_block(CLIENT):
     _assert_block(CLIENT.get_block())
-        
+
 
 def test_get_block_by_height(CLIENT):
     for block_id in (1, 2, 3):
@@ -29,7 +29,7 @@ def test_get_block_transfers(CLIENT):
         assert len(deploy_hash) == 64
 
 
-def test_get_block_transfers(CLIENT):
+def test_get_block_transfers(CLIENT):  # noqa: F811
     (block_hash, transfers) = CLIENT.get_block_transfers()
     assert isinstance(block_hash, str)
     assert len(block_hash) == 64
@@ -41,7 +41,7 @@ def test_get_block_transfers(CLIENT):
 
 def _assert_block(block: dict):
     assert isinstance(block, dict)
-    assert "body" in block        
-    assert "hash" in block        
-    assert "header" in block        
-    assert "proofs" in block       
+    assert "body" in block
+    assert "hash" in block
+    assert "header" in block
+    assert "proofs" in block

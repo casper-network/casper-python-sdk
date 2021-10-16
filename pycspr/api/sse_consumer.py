@@ -12,7 +12,7 @@ def get_events(
     callback: typing.Callable,
     channel_type: NodeEventChannelType,
     event_type: NodeEventType = None,
-    event_id: int = 0
+    event_id: int = 0,
 ):
     """Binds to a node's event stream - events are passed to callback for processing.
 
@@ -31,71 +31,50 @@ def get_events(
         callback(channel_type, event_type, event_id, payload)
 
 
-def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, int, dict]:
-    """Parses raw event data for upstream processing.
-
-    """
+def _parse_event(
+    event_id: int, payload: dict
+) -> typing.Tuple[NodeEventType, int, dict]:
+    """Parses raw event data for upstream processing."""
     if "ApiVersion" in payload:
         pass
 
     elif "BlockAdded" in payload:
-        return \
-            NodeEventType.BlockAdded, \
-            event_id, \
-            payload
+        return NodeEventType.BlockAdded, event_id, payload
 
     elif "DeployProcessed" in payload:
-        return \
-            NodeEventType.DeployProcessed, \
-            event_id, \
-            payload
+        return NodeEventType.DeployProcessed, event_id, payload
 
     elif "Fault" in payload:
-        return \
-            NodeEventType.Fault, \
-            event_id, \
-            payload
+        return NodeEventType.Fault, event_id, payload
 
     elif "Step" in payload:
-        return \
-            NodeEventType.Step, \
-            event_id, \
-            payload
+        return NodeEventType.Step, event_id, payload
 
     elif "DeployAccepted" in payload:
-        return \
-            NodeEventType.DeployAccepted, \
-            event_id, \
-            payload
+        return NodeEventType.DeployAccepted, event_id, payload
 
     elif "FinalitySignature" in payload:
-        return \
-            NodeEventType.FinalitySignature, \
-            event_id, \
-            payload
+        return NodeEventType.FinalitySignature, event_id, payload
 
     else:
         print("TODO: process unknown event: {payload}")
 
 
 def _validate_that_channel_supports_event_type(
-    channel_type: NodeEventChannelType,
-    event_type: NodeEventType = None
+    channel_type: NodeEventChannelType, event_type: NodeEventType = None
 ):
-    """Validates that the channel supports the event type.
-
-    """
+    """Validates that the channel supports the event type."""
     if channel_type not in SSE_CHANNEL_TO_SSE_EVENT:
         raise ValueError(f"Unsupported SSE channel: {channel_type.name}.")
 
     if event_type not in SSE_CHANNEL_TO_SSE_EVENT[channel_type]:
-        raise ValueError(f"Unsupported channel/event: {channel_type.name}:{event_type.name}.")
+        raise ValueError(
+            f"Unsupported channel/event: {channel_type.name}:{event_type.name}."
+        )
 
 
 def _yield_events(sse_client) -> typing.Generator:
-    """Yields events streaming from node.
-
-    """
+    """Yields events streaming from node."""
     try:
         for event in sse_client.events():
             parsed = _parse_event(event.id, json.loads(event.data))

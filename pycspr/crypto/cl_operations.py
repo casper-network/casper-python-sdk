@@ -25,10 +25,7 @@ def get_account_hash(account_key: bytes) -> bytes:
     """
     key_algo: KeyAlgorithm = get_account_key_algo(account_key)
     public_key: bytes = account_key[1:]
-    as_bytes: bytes = \
-        bytes(key_algo.name.lower(), "utf-8") + \
-        bytearray(1) + \
-        public_key
+    as_bytes: bytes = bytes(key_algo.name.lower(), "utf-8") + bytearray(1) + public_key
 
     return get_hash(as_bytes, _DIGEST_LENGTH, HashAlgorithm.BLAKE2B)
 
@@ -41,8 +38,9 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
     :returns: An on-chain account key.
 
     """
-    assert len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo], \
-           f"Invalid {key_algo.name} public key length."
+    assert (
+        len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo]
+    ), f"Invalid {key_algo.name} public key length."
 
     return bytes([key_algo.value]) + public_key
 
@@ -61,9 +59,7 @@ def get_account_key_algo(account_key: bytes) -> KeyAlgorithm:
 
 
 def get_signature_for_deploy_approval(
-    deploy_hash: bytes,
-    private_key: bytes,
-    key_algo: KeyAlgorithm
+    deploy_hash: bytes, private_key: bytes, key_algo: KeyAlgorithm
 ) -> bytes:
     """Returns a signature designated to approve a deploy.
 
@@ -73,13 +69,13 @@ def get_signature_for_deploy_approval(
     :returns: Digital signature of input data.
 
     """
-    return bytes([key_algo.value]) + get_signature(deploy_hash, private_key, algo=key_algo)
+    return bytes([key_algo.value]) + get_signature(
+        deploy_hash, private_key, algo=key_algo
+    )
 
 
 def verify_deploy_approval_signature(
-    deploy_hash: bytes,
-    sig: bytes,
-    account_key: bytes
+    deploy_hash: bytes, sig: bytes, account_key: bytes
 ) -> bool:
     """Returns a flag indicating whether a deploy signature was signed by private key
        associated with the passed account key.
@@ -90,10 +86,8 @@ def verify_deploy_approval_signature(
     :returns: A flag indicating whether a deploy signature was signed by private key.
 
     """
-    assert len(deploy_hash) == 32, \
-           "Invalid deploy hash.  Expected length = 32"
-    assert len(sig) == 65, \
-           "Invalid deploy approval signature.  Expected length = 65"
+    assert len(deploy_hash) == 32, "Invalid deploy hash.  Expected length = 32"
+    assert len(sig) == 65, "Invalid deploy approval signature.  Expected length = 65"
 
     algo = get_account_key_algo(account_key)
 

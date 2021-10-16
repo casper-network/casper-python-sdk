@@ -14,7 +14,9 @@ from pycspr.types import PrivateKey
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to stake CSPR tokens as a validator.")
+_ARGS = argparse.ArgumentParser(
+    "Demo illustrating how to stake CSPR tokens as a validator."
+)
 
 # CLI argument: path to validator secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
@@ -23,7 +25,7 @@ _ARGS.add_argument(
     dest="path_to_validator_secret_key",
     help="Path to validator's secret_key.pem file.",
     type=str,
-    )
+)
 
 # CLI argument: type of validator secret key - defaults to ED25519.
 _ARGS.add_argument(
@@ -32,7 +34,7 @@ _ARGS.add_argument(
     dest="type_of_validator_secret_key",
     help="Type of validator's secret key.",
     type=str,
-    )
+)
 
 # CLI argument: path to session code wasm binary - defaults to NCTL bin/eco/add_bid.wasm.
 _ARGS.add_argument(
@@ -41,7 +43,7 @@ _ARGS.add_argument(
     dest="path_to_wasm",
     help="Path to add_bid.wasm file.",
     type=str,
-    )
+)
 
 # CLI argument: amount to stake, i.e. bond, into the network.
 _ARGS.add_argument(
@@ -50,7 +52,7 @@ _ARGS.add_argument(
     dest="amount",
     help="Amount to bond.",
     type=int,
-    )
+)
 
 # CLI argument: amount to charge delegators for service provision.
 _ARGS.add_argument(
@@ -59,7 +61,7 @@ _ARGS.add_argument(
     dest="delegation_rate",
     help="Amount to charge delegators for servie provision.",
     type=int,
-    )
+)
 
 # CLI argument: name of target chain - defaults to NCTL chain.
 _ARGS.add_argument(
@@ -68,7 +70,7 @@ _ARGS.add_argument(
     dest="chain_name",
     help="Name of target chain.",
     type=str,
-    )
+)
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -77,7 +79,7 @@ _ARGS.add_argument(
     dest="node_host",
     help="Host address of target node.",
     type=str,
-    )
+)
 
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -86,7 +88,7 @@ _ARGS.add_argument(
     dest="node_port_rpc",
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
-    )
+)
 
 
 def _main(args: argparse.Namespace):
@@ -102,7 +104,7 @@ def _main(args: argparse.Namespace):
     validator: PrivateKey = pycspr.parse_private_key(
         args.path_to_validator_secret_key,
         args.type_of_validator_secret_key,
-        )
+    )
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, validator)
@@ -117,24 +119,21 @@ def _main(args: argparse.Namespace):
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
-
-    """
-    return NodeClient(NodeConnection(
-        host=args.node_host,
-        port_rpc=args.node_port_rpc,
-    ))
+    """Returns a pycspr client instance."""
+    return NodeClient(
+        NodeConnection(
+            host=args.node_host,
+            port_rpc=args.node_port_rpc,
+        )
+    )
 
 
 def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
-    """Returns delegation deploy to be dispatched to a node.
-
-    """
+    """Returns delegation deploy to be dispatched to a node."""
     # Set standard deploy parameters.
     deploy_params = pycspr.create_deploy_parameters(
-        account=validator,
-        chain_name=args.chain_name
-        )
+        account=validator, chain_name=args.chain_name
+    )
 
     # Set deploy.
     deploy = pycspr.create_validator_auction_bid(
@@ -142,12 +141,12 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
         amount=args.amount,
         delegation_rate=args.delegation_rate,
         public_key=validator.as_public_key(),
-        path_to_wasm=args.path_to_wasm
-        )
+        path_to_wasm=args.path_to_wasm,
+    )
 
     return deploy
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

@@ -11,4 +11,6 @@ def test_that_cl_simple_types_can_be_encoded_to_bytes(vector_cl_types):
         cl_type = pycspr.cl_type_factory.simple(type_key)
         print(cl_type)
         cl_value = pycspr.cl_value.create(vector["value"], cl_type)
-        assert pycspr.serialisation.to_bytes(cl_value).hex() == vector["hex"], vector["typeof"]
+        assert pycspr.serialisation.to_bytes(cl_value).hex() == vector["hex"], vector[
+            "typeof"
+        ]

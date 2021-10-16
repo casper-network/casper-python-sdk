@@ -1,7 +1,6 @@
 from pycspr.api.constants import RPC_ENDPOINTS
 
 
-
 def test_get_rpc_schema(CLIENT):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_discover.json
@@ -23,7 +22,7 @@ def test_get_rpc_endpoints(CLIENT):
 def test_get_rpc_endpoint(CLIENT):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_discover.json
-        assert isinstance(response, dict)        
+        assert isinstance(response, dict)
 
     for endpoint in RPC_ENDPOINTS:
         _assert(CLIENT.get_rpc_endpoint(endpoint))

@@ -15,53 +15,33 @@ from pycspr.types import TYPES_NUMERIC
 
 
 def encode_cl_type(entity: CLType) -> dict:
-    """Encodes a CL type.
-
-    """
+    """Encodes a CL type."""
     _ENCODERS = {
         # Byte array.
-        CLType_ByteArray: lambda: {
-            "ByteArray": entity.size
-        },
-
+        CLType_ByteArray: lambda: {"ByteArray": entity.size},
         # List.
-        CLType_List: lambda: {
-            "List": encode_cl_type(entity.inner_type)
-        },
-
+        CLType_List: lambda: {"List": encode_cl_type(entity.inner_type)},
         # Map.
-        CLType_Map: lambda: {
-            "Map": encode_cl_type(entity.inner_type)
-        },
-
+        CLType_Map: lambda: {"Map": encode_cl_type(entity.inner_type)},
         # Optional.
-        CLType_Option: lambda: {
-            "Option": encode_cl_type(entity.inner_type)
-        },
-
+        CLType_Option: lambda: {"Option": encode_cl_type(entity.inner_type)},
         # Simple type.
         CLType_Simple: lambda: encode_cl_type_key(entity.type_key),
-
         # Storage Key.
         CLType_StorageKey: "Key",
-
         # 1-ary tuple.
-        CLType_Tuple1: lambda: {
-            "Tuple1": encode_cl_type(entity.t0_type)
-        },
-
+        CLType_Tuple1: lambda: {"Tuple1": encode_cl_type(entity.t0_type)},
         # 2-ary tuple.
         CLType_Tuple2: lambda: {
             "Tuple2": [encode_cl_type(entity.t0_type), encode_cl_type(entity.t1_type)]
         },
-
         # 3-ary tuple.
         CLType_Tuple3: lambda: {
             "Tuple3": [
                 encode_cl_type(entity.t0_type),
                 encode_cl_type(entity.t1_type),
-                encode_cl_type(entity.t2_type)
-                ]
+                encode_cl_type(entity.t2_type),
+            ]
         },
     }
 
@@ -69,9 +49,7 @@ def encode_cl_type(entity: CLType) -> dict:
 
 
 def encode_cl_type_key(entity: CLTypeKey) -> str:
-    """Encodes a CL type key.
-
-    """
+    """Encodes a CL type key."""
     if entity == CLTypeKey.BOOL:
         return "Bool"
     elif entity == CLTypeKey.UNIT:
@@ -89,9 +67,7 @@ def encode_cl_type_key(entity: CLTypeKey) -> str:
 
 
 def encode_cl_type_storage_key(entity: CLTypeKey) -> str:
-    """Encodes a CL type key.
-
-    """
+    """Encodes a CL type key."""
     if entity == CLTypeKey.BOOL:
         return "Bool"
     elif entity == CLTypeKey.UNIT:
@@ -109,9 +85,8 @@ def encode_cl_type_storage_key(entity: CLTypeKey) -> str:
 
 
 def encode_cl_value(entity: CLValue) -> dict:
-    """Encodes a CL value.
+    """Encodes a CL value."""
 
-    """
     def _encode_parsed(type_info: CLType) -> str:
         if type_info.type_key in TYPES_NUMERIC:
             return str(int(entity.parsed))

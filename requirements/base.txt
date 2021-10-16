@@ -1,0 +1,5 @@
+cryptography==35.0.0
+ecdsa==0.17.0
+jsonrpcclient==4.0.1
+requests==2.26.0
+sseclient-py==1.7.2

@@ -1,7 +1,6 @@
 import pycspr
 
 
-
 def test_create_deploy_arg_simple(vector_cl_types):
     for type_key in pycspr.types.TYPES_SIMPLE:
         for vector in vector_cl_types.get_vectors(type_key):
@@ -29,7 +28,10 @@ def test_create_deploy_arg_map(vector_cl_types):
     for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.MAP):
         type_key_of_map_key = pycspr.types.CLTypeKey[vector["typeof_key"]]
         type_key_of_map_value = pycspr.types.CLTypeKey[vector["typeof_value"]]
-        if type_key_of_map_key in pycspr.types.TYPES_SIMPLE and type_key_of_map_value in pycspr.types.TYPES_SIMPLE:
+        if (
+            type_key_of_map_key in pycspr.types.TYPES_SIMPLE
+            and type_key_of_map_value in pycspr.types.TYPES_SIMPLE
+        ):
             cl_type_map_key = pycspr.cl_type_factory.simple(type_key_of_map_key)
             cl_type_map_value = pycspr.cl_type_factory.simple(type_key_of_map_value)
             cl_type = pycspr.cl_type_factory.map(cl_type_map_key, cl_type_map_value)
@@ -49,7 +51,10 @@ def test_create_deploy_arg_tuple_2(vector_cl_types):
     for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.TUPLE_2):
         type_key_t0 = pycspr.types.CLTypeKey[vector["typeof_t0"]]
         type_key_t1 = pycspr.types.CLTypeKey[vector["typeof_t1"]]
-        if type_key_t0 in pycspr.types.TYPES_SIMPLE and type_key_t1 in pycspr.types.TYPES_SIMPLE:
+        if (
+            type_key_t0 in pycspr.types.TYPES_SIMPLE
+            and type_key_t1 in pycspr.types.TYPES_SIMPLE
+        ):
             cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
             cl_type_t1 = pycspr.cl_type_factory.simple(type_key_t1)
             cl_type = pycspr.cl_type_factory.tuple_2(cl_type_t0, cl_type_t1)
@@ -61,8 +66,11 @@ def test_create_deploy_arg_tuple_3(vector_cl_types):
         type_key_t0 = pycspr.types.CLTypeKey[vector["typeof_t0"]]
         type_key_t1 = pycspr.types.CLTypeKey[vector["typeof_t1"]]
         type_key_t2 = pycspr.types.CLTypeKey[vector["typeof_t2"]]
-        if type_key_t0 in pycspr.types.TYPES_SIMPLE and type_key_t1 in \
-            pycspr.types.TYPES_SIMPLE and type_key_t2 in pycspr.types.TYPES_SIMPLE:
+        if (
+            type_key_t0 in pycspr.types.TYPES_SIMPLE
+            and type_key_t1 in pycspr.types.TYPES_SIMPLE
+            and type_key_t2 in pycspr.types.TYPES_SIMPLE
+        ):
             cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
             cl_type_t1 = pycspr.cl_type_factory.simple(type_key_t1)
             cl_type_t2 = pycspr.cl_type_factory.simple(type_key_t2)

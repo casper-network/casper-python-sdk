@@ -1,4 +1,3 @@
-
 def le_bytes_to_int(as_bytes: bytes, signed: bool) -> int:
     """Converts a little endian byte array to an integer.
 
@@ -6,7 +5,7 @@ def le_bytes_to_int(as_bytes: bytes, signed: bool) -> int:
     :param signed: Flag indicating whether integer is signed.
 
     """
-    return int.from_bytes(as_bytes, byteorder='little', signed=signed)
+    return int.from_bytes(as_bytes, byteorder="little", signed=signed)
 
 
 def int_to_le_bytes(x: int, length: int, signed: bool) -> bytes:
@@ -20,7 +19,7 @@ def int_to_le_bytes(x: int, length: int, signed: bool) -> bytes:
     if not isinstance(x, int):
         x = int(x)
 
-    return bytes([i for i in x.to_bytes(length, 'little', signed=signed)])
+    return bytes([i for i in x.to_bytes(length, "little", signed=signed)])
 
 
 def int_to_le_bytes_trimmed(x: int, length: int, signed: bool) -> bytes:

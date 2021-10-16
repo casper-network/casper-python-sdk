@@ -27,7 +27,7 @@ _ARGS.add_argument(
     dest="path_to_delegator_secret_key",
     help="Path to delegator's secret_key.pem file.",
     type=str,
-    )
+)
 
 # CLI argument: type of delegator secret key - defaults to ED25519.
 _ARGS.add_argument(
@@ -36,7 +36,7 @@ _ARGS.add_argument(
     dest="type_of_delegator_secret_key",
     help="Type of delegator's secret key.",
     type=str,
-    )
+)
 
 # CLI argument: path to validator's account key - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -45,7 +45,7 @@ _ARGS.add_argument(
     dest="path_to_validator_account_key",
     help="Path to validator's public_key_hex file.",
     type=str,
-    )
+)
 
 # CLI argument: path to session code wasm binary.
 _ARGS.add_argument(
@@ -54,7 +54,7 @@ _ARGS.add_argument(
     dest="path_to_wasm",
     help="Path to delegate.wasm file.",
     type=str,
-    )
+)
 
 # CLI argument: name of target chain - defaults to NCTL chain.
 _ARGS.add_argument(
@@ -63,7 +63,7 @@ _ARGS.add_argument(
     dest="chain_name",
     help="Name of target chain.",
     type=str,
-    )
+)
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
 _ARGS.add_argument(
@@ -72,7 +72,7 @@ _ARGS.add_argument(
     dest="node_host",
     help="Host address of target node.",
     type=str,
-    )
+)
 
 # CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -81,7 +81,7 @@ _ARGS.add_argument(
     dest="node_port_rpc",
     help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
     type=int,
-    )
+)
 
 
 def _main(args: argparse.Namespace):
@@ -109,39 +109,36 @@ def _main(args: argparse.Namespace):
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
+    """Returns a pycspr client instance."""
+    return NodeClient(
+        NodeConnection(
+            host=args.node_host,
+            port_rpc=args.node_port_rpc,
+        )
+    )
 
-    """
-    return NodeClient(NodeConnection(
-        host=args.node_host,
-        port_rpc=args.node_port_rpc,
-    ))
 
-
-def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
-    """Returns the 2 counter-parties participating in the delegation.
-
-    """
+def _get_counter_parties(
+    args: argparse.Namespace,
+) -> typing.Tuple[PrivateKey, PublicKey]:
+    """Returns the 2 counter-parties participating in the delegation."""
     delegator = pycspr.parse_private_key(
         args.path_to_delegator_secret_key,
         args.type_of_delegator_secret_key,
-        )
-    validator = pycspr.parse_public_key(
-        args.path_to_validator_account_key
-        )
+    )
+    validator = pycspr.parse_public_key(args.path_to_validator_account_key)
 
     return delegator, validator
 
 
-def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: PublicKey) -> Deploy:
-    """Returns delegation deploy to be dispatched to a node.
-
-    """
+def _get_deploy(
+    args: argparse.Namespace, delegator: PrivateKey, validator: PublicKey
+) -> Deploy:
+    """Returns delegation deploy to be dispatched to a node."""
     # Set standard deploy parameters.
     deploy_params = pycspr.create_deploy_parameters(
-        account=delegator,
-        chain_name=args.chain_name
-        )
+        account=delegator, chain_name=args.chain_name
+    )
 
     # Set deploy.
     deploy = pycspr.create_validator_delegation(
@@ -149,12 +146,12 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
         amount=int(1e9),
         public_key_of_delegator=delegator,
         public_key_of_validator=validator,
-        path_to_wasm=args.path_to_wasm
-        )
+        path_to_wasm=args.path_to_wasm,
+    )
 
     return deploy
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

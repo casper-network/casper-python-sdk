@@ -91,15 +91,11 @@ def is_signature_valid(msg: bytes, sig: bytes, pbk: bytes) -> bool:
 
 
 def _get_key_pair(sk: ecdsa.SigningKey) -> typing.Tuple[bytes, bytes]:
-    """Returns key pair from a signing key.
-
-    """
+    """Returns key pair from a signing key."""
     return sk.to_string(), sk.verifying_key.to_string("compressed")
 
 
 def _get_signing_key_from_pem_file(fpath: str) -> ecdsa.SigningKey:
-    """Returns a signing key mapped from a PEM file representation of a private key.
-
-    """
+    """Returns a signing key mapped from a PEM file representation of a private key."""
     with open(fpath, "rb") as fstream:
         return ecdsa.SigningKey.from_pem(fstream.read())

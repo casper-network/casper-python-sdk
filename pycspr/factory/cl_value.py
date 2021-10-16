@@ -22,118 +22,70 @@ from pycspr.types import UnforgeableReference
 
 
 def boolean(value: bool) -> CLValue:
-    return CLValue(
-        cl_type_factory.boolean(),
-        value
-        )
+    return CLValue(cl_type_factory.boolean(), value)
 
 
 def byte_array(value: bytes) -> CLValue:
-    return CLValue(
-        cl_type_factory.byte_array(len(value)),
-        value
-        )
+    return CLValue(cl_type_factory.byte_array(len(value)), value)
 
 
 def i32(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.i32(),
-        value
-        )
+    return CLValue(cl_type_factory.i32(), value)
 
 
 def i64(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.i64(),
-        value
-        )
+    return CLValue(cl_type_factory.i64(), value)
 
 
 def list(item_type: CLType, value: list) -> CLValue:
-    return CLValue(
-        cl_type_factory.list(item_type),
-        value
-        )
+    return CLValue(cl_type_factory.list(item_type), value)
 
 
 def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
     if isinstance(value, bytes):
         value = PublicKey(KeyAlgorithm(value[0]), value[1:])
 
-    return CLValue(
-        cl_type_factory.public_key(),
-        value
-        )
+    return CLValue(cl_type_factory.public_key(), value)
 
 
 def storage_key(value: bytes, typeof: StorageKeyType) -> CLValue:
-    return CLValue(
-        cl_type_factory.key(),
-        StorageKey(value, typeof)
-        )
+    return CLValue(cl_type_factory.key(), StorageKey(value, typeof))
 
 
 def string(value: str) -> CLValue:
-    return CLValue(
-        cl_type_factory.string(),
-        value
-        )
+    return CLValue(cl_type_factory.string(), value)
 
 
 def u8(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u8(),
-        value
-        )
+    return CLValue(cl_type_factory.u8(), value)
 
 
 def u32(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u32(),
-        value
-        )
+    return CLValue(cl_type_factory.u32(), value)
 
 
 def u64(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u64(),
-        value
-        )
+    return CLValue(cl_type_factory.u64(), value)
 
 
 def u128(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u128(),
-        value
-        )
+    return CLValue(cl_type_factory.u128(), value)
 
 
 def u256(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u256(),
-        value
-        )
+    return CLValue(cl_type_factory.u256(), value)
 
 
 def u512(value: int) -> CLValue:
-    return CLValue(
-        cl_type_factory.u512(),
-        value
-        )
+    return CLValue(cl_type_factory.u512(), value)
 
 
 def unit() -> CLValue:
-    return CLValue(
-        cl_type_factory.unit(),
-        None
-        )
+    return CLValue(cl_type_factory.unit(), None)
 
 
 def uref(address: bytes, access_rights: CLAccessRights) -> CLValue:
-    return CLValue(
-        cl_type_factory.uref(),
-        UnforgeableReference(address, access_rights)
-        )
+    return CLValue(cl_type_factory.uref(), UnforgeableReference(address, access_rights))
 
 
 def create(value: object, cl_type: CLType) -> CLValue:

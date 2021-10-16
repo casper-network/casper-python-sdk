@@ -17,7 +17,7 @@ _ARGS.add_argument(
     dest="node_host",
     help="Host address of target node.",
     type=str,
-    )
+)
 
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -26,7 +26,7 @@ _ARGS.add_argument(
     dest="node_port_sse",
     help="Node API SSE port.  Typically 9999 on most nodes.",
     type=int,
-    )
+)
 
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
@@ -36,7 +36,7 @@ _ARGS.add_argument(
     help="Node event channel to which to bind - defaults to main.",
     type=str,
     choices=[i.name for i in NodeEventChannelType],
-    )
+)
 
 # CLI argument: Type of event to which to listen to - defaults to all.
 _ARGS.add_argument(
@@ -46,7 +46,7 @@ _ARGS.add_argument(
     help="Type of event to which to listen to - defaults to all.",
     type=str,
     choices=["all"] + [i.name for i in NodeEventType],
-    )
+)
 
 
 def _main(args: argparse.Namespace):
@@ -63,29 +63,22 @@ def _main(args: argparse.Namespace):
         callback=_on_event,
         channel_type=NodeEventChannelType[args.channel],
         event_type=None if args.event == "all" else NodeEventType[args.event],
-        event_id=0
+        event_id=0,
     )
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
-
-    """
-    return NodeClient(NodeConnection(
-        host=args.node_host,
-        port_sse=args.node_port_sse
-    ))
+    """Returns a pycspr client instance."""
+    return NodeClient(NodeConnection(host=args.node_host, port_sse=args.node_port_sse))
 
 
 def _on_event(
     channel_type: NodeEventChannelType,
     event_type: NodeEventType,
     event_id: int,
-    event_data: dict
+    event_data: dict,
 ):
-    """Event callback handler.
-
-    """
+    """Event callback handler."""
     print("-" * 74)
     print(f"Event #{event_id} :: {channel_type.name} :: {event_type.name}")
     print("-" * 74)
@@ -94,5 +87,5 @@ def _on_event(
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

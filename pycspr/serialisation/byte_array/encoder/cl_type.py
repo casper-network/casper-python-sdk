@@ -12,9 +12,8 @@ from pycspr.types import CLType_Tuple3
 
 
 def encode_cl_type(entity: CLType) -> bytes:
-    """Encodes a CL type definition.
+    """Encodes a CL type definition."""
 
-    """
     def encode_byte_array():
         return bytes([entity.type_key.value]) + encode_u32(entity.size)
 

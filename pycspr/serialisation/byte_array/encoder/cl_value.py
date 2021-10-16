@@ -50,9 +50,7 @@ def encode(value: CLValue) -> bytes:
 
 
 def encode_cl_value(entity: CLValue) -> bytes:
-    """Encodes a CL value.
-
-    """
-    return \
-        primitives_encoder.encode_u8_array(encode(entity)) + \
-        type_encoder.encode_cl_type(entity.cl_type)
+    """Encodes a CL value."""
+    return primitives_encoder.encode_u8_array(
+        encode(entity)
+    ) + type_encoder.encode_cl_type(entity.cl_type)

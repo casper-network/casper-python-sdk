@@ -47,7 +47,7 @@ def get_pvk_pem_from_bytes(pvk: bytes) -> bytes:
     return ed25519.Ed25519PrivateKey.from_private_bytes(pvk).private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption()
+        encryption_algorithm=serialization.NoEncryption(),
     )
 
 
@@ -59,7 +59,7 @@ def get_pvk_from_pem_file(fpath: str) -> bytes:
 
     """
     # Open pem file.
-    with open(fpath, 'r') as fstream:
+    with open(fpath, "r") as fstream:
         as_pem = fstream.readlines()
 
     # Decode bytes.
@@ -112,18 +112,13 @@ def is_signature_valid(msg_hash: bytes, sig: bytes, pbk: bytes) -> bool:
 
 
 def _get_key_pair(sk: ed25519.Ed25519PrivateKey) -> typing.Tuple[bytes, bytes]:
-    """Returns key pair from a signing key.
-
-    """
+    """Returns key pair from a signing key."""
     pk = sk.public_key()
 
-    return \
-        sk.private_bytes(
-            encoding=serialization.Encoding.Raw,
-            format=serialization.PrivateFormat.Raw,
-            encryption_algorithm=serialization.NoEncryption()
-        ), \
-        pk.public_bytes(
-            encoding=serialization.Encoding.Raw,
-            format=serialization.PublicFormat.Raw
-        )
+    return sk.private_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PrivateFormat.Raw,
+        encryption_algorithm=serialization.NoEncryption(),
+    ), pk.public_bytes(
+        encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw
+    )

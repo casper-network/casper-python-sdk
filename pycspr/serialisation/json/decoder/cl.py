@@ -21,9 +21,8 @@ _SIMPLE_TYPE_TO_ENUM = {
 
 
 def decode_cl_type(obj) -> CLType:
-    """Decodes a CL type definition.
+    """Decodes a CL type definition."""
 
-    """
     def _decode_byte_array():
         return CLType_ByteArray(size=obj["ByteArray"])
 
@@ -53,9 +52,7 @@ def decode_cl_type(obj) -> CLType:
 
 
 def decode_cl_value(obj: typing.Union[dict, str]) -> CLValue:
-    """Decodes a CL value.
-
-    """
+    """Decodes a CL value."""
     cl_type = decode_cl_type(obj["cl_type"])
     as_bytes = bytes.fromhex(obj["bytes"])
     if isinstance(cl_type, (CLType_Simple, CLType_ByteArray, CLType_Option)):

@@ -8,18 +8,19 @@ import pytest
 import pycspr
 
 
-
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
 _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 
 
 @pytest.fixture(scope="session")
 def cl_types() -> list:
-    class _Accessor():
-        def __init__(self):            
-            self._fixtures = _read_vector("cl_types_complex.json") + \
-                             _read_vector("cl_types_simple_numeric.json") + \
-                             _read_vector("cl_types_simple_other.json")
+    class _Accessor:
+        def __init__(self):
+            self._fixtures = (
+                _read_vector("cl_types_complex.json")
+                + _read_vector("cl_types_simple_numeric.json")
+                + _read_vector("cl_types_simple_other.json")
+            )
             self._parse_fixtures()
 
         def get_vectors(self, typeof: str) -> list:
@@ -30,9 +31,11 @@ def cl_types() -> list:
             for obj in self._fixtures:
                 if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
                     obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
-                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
-                    obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
-    
+                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:
+                    obj["value"] = pycspr.factory.create_public_key_from_account_key(
+                        bytes.fromhex(obj["value"])
+                    )
+
     return _Accessor()
 
 
@@ -80,6 +83,7 @@ def deploy_1() -> list:
         i["session"]["target"] = bytes.fromhex(i["session"]["target"])
 
     return data
+
 
 def _read_vector(fname: str, parser: typing.Callable = json.load):
     with open(_PATH_TO_VECTORS / fname) as fstream:

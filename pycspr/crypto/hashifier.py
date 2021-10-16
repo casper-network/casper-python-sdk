@@ -12,9 +12,7 @@ DIGEST_LENGTH = 32
 
 
 def get_hash(
-    data: bytes,
-    size: int = DIGEST_LENGTH,
-    algo: HashAlgorithm = HashAlgorithm.BLAKE2B
+    data: bytes, size: int = DIGEST_LENGTH, algo: HashAlgorithm = HashAlgorithm.BLAKE2B
 ) -> bytes:
     """Maps input to a blake2b hash.
 

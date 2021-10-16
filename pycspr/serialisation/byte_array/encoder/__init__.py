@@ -6,9 +6,7 @@ from pycspr.types import CLValue
 
 
 def encode(entity: object) -> bytes:
-    """Encodes a domain entity as an array of bytes.
-
-    """
+    """Encodes a domain entity as an array of bytes."""
     if type(entity) == CLValue:
         return cl_value_encoder.encode(entity)
     else:
