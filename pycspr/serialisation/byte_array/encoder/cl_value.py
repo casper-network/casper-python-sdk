@@ -44,7 +44,7 @@ def encode(value: CLValue) -> bytes:
     if value.cl_type.type_key in {CLTypeKey.LIST, CLTypeKey.OPTION}:
         return encoder(value.parsed, ENCODERS[value.cl_type.inner_type.type_key])
     elif value.cl_type.type_key == CLTypeKey.KEY:
-        return encoder(value.parsed, value.cl_type.key_type)
+        return encoder(value.parsed)
     else:
         return encoder(value.parsed)
 

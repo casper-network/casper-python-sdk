@@ -39,7 +39,7 @@ def is_within_range(type_key: CLTypeKey, value: int) -> bool:
 
 
 # Default number of motes to pay for standard payments.
-STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = int(1e9)
+STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = int(1e8)
 
 # Default number of motes to pay for standard delegation.
 STANDARD_PAYMENT_FOR_DELEGATION = int(3e9)

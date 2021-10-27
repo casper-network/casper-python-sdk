@@ -1,6 +1,5 @@
 import typing
 
-from pycspr.serialisation.byte_array.constants import TypeTag_StorageKey
 import pycspr.serialisation.byte_array.encoder.cl_primitive as primitives_encoder
 from pycspr.types import PublicKey
 from pycspr.types import StorageKey
@@ -54,19 +53,14 @@ def encode_storage_key(value: StorageKey) -> bytes:
     """Encodes a key mapped to data within global state.
 
     """
-    _TYPE_TAGS = {
-        StorageKeyType.ACCOUNT: TypeTag_StorageKey.Account,
-        StorageKeyType.HASH: TypeTag_StorageKey.Hash,
-        StorageKeyType.UREF: TypeTag_StorageKey.URef,
-    }
-
-    try:
-        type_tag = _TYPE_TAGS[value.typeof]
-    except KeyError:
-        raise ValueError(f"Unencodeable key type: {value}")
+    if value.key_type == StorageKeyType.ACCOUNT:
+        return bytes([0]) + value.identifier
+    elif value.key_type == StorageKeyType.HASH:
+        return bytes([1]) + value.identifier
+    elif value.key_type == StorageKeyType.UREF:
+        return bytes([2]) + value.identifier
     else:
-        return bytes([type_tag.value]) + value.identifier
-
+        raise ValueError(f"Unencodeable key type: {value}")
 
 def encode_tuple1(value: tuple) -> bytes:
     """Encodes a 1-ary tuple of CL values.

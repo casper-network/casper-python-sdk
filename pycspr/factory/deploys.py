@@ -3,7 +3,8 @@ import random
 import typing
 
 from pycspr import crypto
-from pycspr.factory import cl_value as cl_value
+from pycspr.factory import cl_value
+from pycspr.factory import cl_type
 
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
@@ -205,6 +206,9 @@ def create_native_transfer_session(
     :returns: A native transfer session logic.
 
     """
+    correlation_id = correlation_id or random.randint(1, _MAX_TRANSFER_ID)
+    correlation_id = 123
+
     return ExecutableDeployItem_Transfer(
         args=[
             create_deploy_arg(
@@ -217,7 +221,7 @@ def create_native_transfer_session(
                 ),
             create_deploy_arg(
                 "id",
-                cl_value.u64(correlation_id or random.randint(1, _MAX_TRANSFER_ID))
+                cl_value.option(cl_type.u64(), correlation_id)
                 ),
         ]
     )

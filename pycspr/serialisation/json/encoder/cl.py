@@ -12,6 +12,7 @@ from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
 from pycspr.types import CLTypeKey
 from pycspr.types import TYPES_NUMERIC
+from pycspr.types import StorageKeyType
 
 
 def encode_cl_type(entity: CLType) -> dict:
@@ -43,7 +44,7 @@ def encode_cl_type(entity: CLType) -> dict:
         CLType_Simple: lambda: encode_cl_type_key(entity.type_key),
 
         # Storage Key.
-        CLType_StorageKey: "Key",
+        CLType_StorageKey: lambda: "Key",
 
         # 1-ary tuple.
         CLType_Tuple1: lambda: {
@@ -112,24 +113,32 @@ def encode_cl_value(entity: CLValue) -> dict:
     """Encodes a CL value.
 
     """
-    def _encode_parsed(type_info: CLType) -> str:
-        if type_info.type_key in TYPES_NUMERIC:
-            return str(int(entity.parsed))
-        elif type_info.type_key == CLTypeKey.BYTE_ARRAY:
-            return entity.parsed.hex()
-        elif type_info.type_key == CLTypeKey.KEY:
-            return entity.parsed.as_string()
-        elif type_info.type_key == CLTypeKey.PUBLIC_KEY:
-            return entity.parsed.account_key.hex()
-        elif type_info.type_key == CLTypeKey.UREF:
-            return entity.parsed.as_string()
-        elif type_info.type_key == CLTypeKey.OPTION:
-            return _encode_parsed(type_info.inner_type)
-        else:
-            return str(entity.parsed)
-
     return {
         "bytes": serialisation.to_bytes(entity).hex(),
         "cl_type": encode_cl_type(entity.cl_type),
-        "parsed": _encode_parsed(entity.cl_type),
+        "parsed": _encode_cl_value_parsed(entity, entity.cl_type),
     }
+
+
+def _encode_cl_value_parsed(entity: CLValue, type_info: CLType) -> str:
+    """Encodes parsed represenation of a CL value.  This is uninterpreted by a node but useful nonetheless.
+
+    """
+    if type_info.type_key in TYPES_NUMERIC:
+        return str(int(entity.parsed))
+    elif type_info.type_key == CLTypeKey.BYTE_ARRAY:
+        return entity.parsed.hex()
+    elif type_info.type_key == CLTypeKey.KEY:
+        if type_info.key_type == StorageKeyType.ACCOUNT:
+            return {
+                "Account": entity.parsed.as_string()
+            }
+        return entity.parsed.as_string()
+    elif type_info.type_key == CLTypeKey.PUBLIC_KEY:
+        return entity.parsed.account_key.hex()
+    elif type_info.type_key == CLTypeKey.UREF:
+        return entity.parsed.as_string()
+    elif type_info.type_key == CLTypeKey.OPTION:
+        return _encode_cl_value_parsed(entity, type_info.inner_type)
+    else:
+        return str(entity.parsed)

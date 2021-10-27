@@ -99,7 +99,7 @@ class StorageKey():
     identifier: bytes
 
     # Key type identifier.
-    typeof: StorageKeyType
+    key_type: StorageKeyType
 
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
@@ -111,4 +111,4 @@ class StorageKey():
             StorageKeyType.UREF: "uref"
         }
 
-        return f"{_PREFIXES[self.typeof]}-{self.identifier.hex()}"
+        return f"{_PREFIXES[self.key_type]}-{self.identifier.hex()}"

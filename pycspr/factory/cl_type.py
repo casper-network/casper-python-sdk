@@ -5,9 +5,11 @@ from pycspr.types import CLType_List
 from pycspr.types import CLType_Map
 from pycspr.types import CLType_Option
 from pycspr.types import CLType_Simple
+from pycspr.types import CLType_StorageKey
 from pycspr.types import CLType_Tuple1
 from pycspr.types import CLType_Tuple2
 from pycspr.types import CLType_Tuple3
+from pycspr.types import StorageKeyType
 
 
 def boolean() -> CLType_Simple:
@@ -26,8 +28,8 @@ def i64() -> CLType_Simple:
     return CLType_Simple(CLTypeKey.I64)
 
 
-def key() -> CLType_Simple:
-    return CLType_Simple(CLTypeKey.KEY)
+def key(key_type: StorageKeyType) -> CLType_StorageKey:
+    return CLType_StorageKey(key_type)
 
 
 def list(inner_type: CLType) -> CLType_List:

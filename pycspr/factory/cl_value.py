@@ -49,9 +49,16 @@ def i64(value: int) -> CLValue:
         )
 
 
-def list(item_type: CLType, value: list) -> CLValue:
+def list(inner_type: CLType, value: list) -> CLValue:
     return CLValue(
-        cl_type_factory.list(item_type),
+        cl_type_factory.list(inner_type),
+        value
+        )
+
+
+def option(inner_type: CLType, value: object = None) -> CLValue:
+    return CLValue(
+        cl_type_factory.option(inner_type),
         value
         )
 
@@ -66,10 +73,10 @@ def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
         )
 
 
-def storage_key(value: bytes, typeof: StorageKeyType) -> CLValue:
+def storage_key(value: bytes, key_type: StorageKeyType) -> CLValue:
     return CLValue(
-        cl_type_factory.key(),
-        StorageKey(value, typeof)
+        cl_type_factory.key(key_type),
+        StorageKey(value, key_type)
         )
 
 
