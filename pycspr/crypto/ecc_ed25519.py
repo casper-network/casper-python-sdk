@@ -59,7 +59,7 @@ def get_pvk_from_pem_file(fpath: str) -> bytes:
 
     """
     # Open pem file.
-    with open(fpath, 'r') as fstream:
+    with open(fpath, "r") as fstream:
         as_pem = fstream.readlines()
 
     # Decode bytes.

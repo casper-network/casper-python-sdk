@@ -29,7 +29,7 @@ def _read(fname):
     """
     fpath = os.path.dirname(__file__)
     fpath = os.path.join(fpath, fname)
-    with open(fpath, 'r', encoding='utf-8') as fstream:
+    with open(fpath, "r", encoding="utf-8") as fstream:
         return fstream.read()
 
 
@@ -49,33 +49,33 @@ _VERSION = _get_version()
 _PACKAGES = find_packages()
 
 # User readme.
-_README = _read('README.rst')
+_README = _read("README.rst")
 
 
 setup(
-    name='pycspr',
+    name="pycspr",
     version=_VERSION,
     description="Python library for interacting with a CSPR node",
     description_content_type="text/plain",
     long_description=_README,
     long_description_content_type="text/plain",
-    author='Mark A. Greenslade',
-    author_email='mark@casperlabs.io',
-    url='https://github.com/casper-network/casper-python-sdk',
+    author="Mark A. Greenslade",
+    author_email="mark@casperlabs.io",
+    url="https://github.com/casper-network/casper-python-sdk",
     packages=_PACKAGES,
     include_package_data=True,
     install_requires=_REQUIRES,
-    license='Apache-2.0',
+    license="Apache-2.0",
     zip_safe=False,
     distclass=_BinaryDistribution,
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ]
 )

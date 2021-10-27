@@ -170,5 +170,5 @@ def _get_deploy(
 
 
 # Entry point.
-if __name__ == '__main__':
+if __name__ == "__main__":
     _main(_ARGS.parse_args())

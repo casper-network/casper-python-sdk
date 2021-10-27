@@ -10,7 +10,7 @@ def _has_class(mod, cls):
 
     """
     _has_member(mod, cls)
-    assert inspect.isclass(getattr(mod, cls)), '{} is not a class'.format(cls)
+    assert inspect.isclass(getattr(mod, cls)), "{} is not a class".format(cls)
 
 
 def _has_constant(mod, constant):
@@ -25,7 +25,7 @@ def _has_enum(mod, enm):
 
     """
     _has_member(mod, enm)
-    assert issubclass(getattr(mod, enm), enum.Enum), '{} is not an enum'.format(enm)
+    assert issubclass(getattr(mod, enm), enum.Enum), "{} is not an enum".format(enm)
 
 
 def _has_exception(mod, err):
@@ -34,7 +34,7 @@ def _has_exception(mod, err):
     """
     _has_class(mod, err)
     assert issubclass(getattr(mod, err), Exception), \
-           'Exception type does not inherit from builtin Exception class.'
+           "Exception type does not inherit from builtin Exception class."
 
 
 def _has_function(mod, func):
@@ -42,7 +42,7 @@ def _has_function(mod, func):
 
     """
     _has_member(mod, func)
-    assert inspect.isfunction(getattr(mod, func)), '{} is not a function'.format(func)
+    assert inspect.isfunction(getattr(mod, func)), "{} is not a function".format(func)
 
 
 def _has_member(mod, member):
@@ -50,7 +50,7 @@ def _has_member(mod, member):
 
     """
     assert inspect.ismodule(mod)
-    assert hasattr(mod, member), 'Missing member: {}'.format(member)
+    assert hasattr(mod, member), "Missing member: {}".format(member)
 
 
 # Expected interface.

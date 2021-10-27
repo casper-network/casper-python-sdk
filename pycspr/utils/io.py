@@ -23,7 +23,7 @@ def read_wasm(fpath: typing.Union[pathlib.Path, str]) -> bytes:
 
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
-    with open(fpath, 'rb') as fstream:
+    with open(fpath, "rb") as fstream:
         return fstream.read()
 
 
