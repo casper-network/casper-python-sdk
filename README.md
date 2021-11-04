@@ -57,6 +57,16 @@ How To: Invoke a smart contract  ?
 
 See [here](how_tos/how_to_invoke_a_contract.py).
 
+How To: Hash data  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_hash_data.py).
+
+How To: Create Key Pairs  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_create_key_pairs.py).
+
 How To: Run unit tests against an NCTL network ?
 ------------------------------------------------------
 
