@@ -59,7 +59,7 @@ def test_that_a_key_pair_can_be_deserialized_from_pem_file(key_pair_specs):
 def test_that_a_key_pair_can_be_deserialized_from_a_seed(key_pair_specs):
     for key_algo, pvk_length, pbk_length in key_pair_specs:
         seed = secrets.token_bytes(32)
-        pvk, pbk = pycspr.crypto.get_key_pair_from_bytes(seed, key_algo)
+        pvk, pbk = pycspr.crypto.get_key_pair_from_seed(seed, key_algo)
         assert len(pvk) == pvk_length
         assert len(pbk) == pbk_length
 

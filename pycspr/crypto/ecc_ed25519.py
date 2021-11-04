@@ -44,7 +44,9 @@ def get_pvk_pem_from_bytes(pvk: bytes) -> bytes:
     :returns: PEM represenation of signing key.
 
     """
-    return ed25519.Ed25519PrivateKey.from_private_bytes(pvk).private_bytes(
+    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(pvk)
+
+    return private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption()

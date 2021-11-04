@@ -183,3 +183,7 @@ def is_signature_valid(
 
     """
     return ALGOS[algo].is_signature_valid(msg_hash, sig, vk)
+
+
+# Synonym.
+get_key_pair_from_seed = get_key_pair_from_bytes
