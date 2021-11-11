@@ -40,6 +40,33 @@
         "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
     }, 
     {
+        "cl_type": "LIST",
+        "cl_type_item": "U64",
+        "value": [
+            10222542040955046838,
+            10276207219237930607,
+            15939564377751427208
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "MAP",
+        "cl_type_key": "STRING",
+        "cl_type_value": "U64",
+        "value": {
+            "a": 10222542040955046838,
+            "b": 10276207219237930607,
+            "c": 15939564377751427208
+        },
+        "hex": ""
+    },
+    {
+        "cl_type": "OPTION",
+        "cl_type_inner": "U64",
+        "value": 15939564377751427208,
+        "hex": ""
+    },
+    {
         "cl_type": "PUBLIC_KEY",
         "value": "01974537e2aa9794a1e117b1407769d1ae64819c2f3ab24e1ac0adea94ccb18b7f",
         "hex": "01974537e2aa9794a1e117b1407769d1ae64819c2f3ab24e1ac0adea94ccb18b7f"
@@ -48,6 +75,36 @@
         "cl_type": "STRING",
         "value": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
         "hex": "49000000d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
+    },
+    {
+        "cl_type": "TUPLE_1",
+        "cl_type_t0": "U64",
+        "value": [
+            10222542040955046838
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "TUPLE_2",
+        "cl_type_t0": "U64",
+        "cl_type_t1": "STRING",
+        "value": [
+            10222542040955046838,
+            "al-kindi"
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "TUPLE_3",
+        "cl_type_t0": "U64",
+        "cl_type_t1": "STRING",
+        "cl_type_t2": "BOOL",
+        "value": [
+            10222542040955046838,
+            "al-kindi",
+            false
+        ],
+        "hex": ""
     },
     {
         "cl_type": "U8",

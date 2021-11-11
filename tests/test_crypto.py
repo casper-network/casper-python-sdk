@@ -8,18 +8,18 @@ import pycspr
 
 
 
-def test_get_hash(vector_crypto_1):
+def test_get_hash(vector_crypto_hashes):
     getter_1 = operator.itemgetter("data", "hashes")
     getter_2 = operator.itemgetter("algo", "digest")
-    for data, hashes in [getter_1(i) for i in vector_crypto_1]:
+    for data, hashes in [getter_1(i) for i in vector_crypto_hashes]:
         for algo, digest in [getter_2(j) for j in hashes]:
             algo = pycspr.crypto.HashAlgorithm[algo]
             assert digest == pycspr.crypto.get_hash(data.encode("utf-8"), 32, algo)
 
 
-def test_get_account(vector_crypto_2):
+def test_get_account(vector_crypto_key_pairs):
     getter = operator.itemgetter("algo", "pbk", "accountKey", "accountHash")
-    for algo, pbk, account_key, accountHash in [getter(i) for i in vector_crypto_2]:
+    for algo, pbk, account_key, accountHash in [getter(i) for i in vector_crypto_key_pairs]:
         algo = pycspr.crypto.KeyAlgorithm[algo]
         assert algo == pycspr.crypto.get_account_key_algo(account_key)
         assert account_key == pycspr.crypto.get_account_key(algo, pbk)
@@ -64,37 +64,37 @@ def test_that_a_key_pair_can_be_deserialized_from_a_seed(key_pair_specs):
         assert len(pbk) == pbk_length
 
 
-def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_byte_array(vector_crypto_2):
-    for fixture in vector_crypto_2:
+def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_byte_array(vector_crypto_key_pairs):
+    for fixture in vector_crypto_key_pairs:
         algo = pycspr.crypto.KeyAlgorithm[fixture["algo"]]
         _, pbk = pycspr.crypto.get_key_pair_from_bytes(fixture["pvk"], algo)
         assert fixture["pbk"] == pbk
 
 
-def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_base64(vector_crypto_2):
-    for fixture in vector_crypto_2:
+def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_base64(vector_crypto_key_pairs):
+    for fixture in vector_crypto_key_pairs:
         algo = pycspr.crypto.KeyAlgorithm[fixture["algo"]]
         _, pbk = pycspr.crypto.get_key_pair_from_base64(base64.b64encode(fixture["pvk"]), algo)
         assert fixture["pbk"] == pbk
 
 
-def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_hex(vector_crypto_2):
-    for fixture in vector_crypto_2:
+def test_that_a_public_key_can_be_deserialized_from_a_private_key_encoded_as_hex(vector_crypto_key_pairs):
+    for fixture in vector_crypto_key_pairs:
         algo = pycspr.crypto.KeyAlgorithm[fixture["algo"]]
         _, pbk = pycspr.crypto.get_key_pair_from_hex_string(fixture["pvk"].hex(), algo)
         assert fixture["pbk"] == pbk
 
 
-def test_that_a_signature_can_be_generated(vector_crypto_3):
-    for fixture in vector_crypto_3:
+def test_that_a_signature_can_be_generated(vector_crypto_signatures):
+    for fixture in vector_crypto_signatures:
         algo = pycspr.crypto.KeyAlgorithm[fixture["key"]["algo"]]
         data = fixture["data"].encode("utf-8")
         pvk = fixture["key"]["pvk"]
         assert fixture["sig"] == pycspr.crypto.get_signature(data, pvk, algo), pycspr.crypto.get_signature(data, pvk, algo).hex()
 
 
-def test_that_a_signature_can_be_verified(vector_crypto_3):
-    for fixture in vector_crypto_3:
+def test_that_a_signature_can_be_verified(vector_crypto_signatures):
+    for fixture in vector_crypto_signatures:
         algo = pycspr.crypto.KeyAlgorithm[fixture["key"]["algo"]]
         data = fixture["data"].encode("utf-8")
         sig = fixture["sig"]

@@ -1,4 +1,3 @@
-$nctl-view-node-rpc-schema 
 {
   "openrpc": "1.0.0-rc1",
   "info": {

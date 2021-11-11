@@ -18,9 +18,7 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 def cl_types() -> list:
     class _Accessor():
         def __init__(self):            
-            self._fixtures = _read_vector("cl_types_complex.json") + \
-                             _read_vector("cl_types_simple_numeric.json") + \
-                             _read_vector("cl_types_simple_other.json")
+            self._fixtures = _read_vector("cl-types.json")
             self._parse_fixtures()
             self.SIMPLE_TYPES = {
                 CLTypeKey.I32,
@@ -61,31 +59,16 @@ def cl_values() -> list:
         
         """
         def __init__(self):            
-            self.fixtures = _read_vector("cl-values-simple.json")
-            self._parse_fixtures()
-
-
-        def _parse_fixtures(self):
-            """Map input values to higher order domain types where appropriate.
-            
-            """
+            self.fixtures = _read_vector("cl-values.json")
             for obj in self.fixtures:
                 obj["cl_type"] = CLTypeKey[obj["cl_type"]]
-            for obj in self.fixtures:
-                    # if obj["cl_type"] == CLTypeKey.KEY:
-                    #     obj["value"] = pycspr.factory.create_key_from_string(obj["value"])
-                if obj["cl_type"] == CLTypeKey.LIST:
-                    obj["value"] = pycspr.factory.create_list(
-                        obj["value"], CLTypeKey[obj["cl_type_item"]]
-                        )
-                    print(obj["value"])
     
     return _Accessor()
 
 
 @pytest.fixture(scope="session")
-def crypto_1() -> list:
-    data = _read_vector("crypto_hashes.json")
+def crypto_hashes() -> list:
+    data = _read_vector("crypto-hashes.json")
     for i in data:
         for j in i["hashes"]:
             j["digest"] = bytes.fromhex(j["digest"])
@@ -94,8 +77,8 @@ def crypto_1() -> list:
 
 
 @pytest.fixture(scope="session")
-def crypto_2() -> list:
-    data = _read_vector("crypto_key_pairs.json")
+def crypto_key_pairs() -> list:
+    data = _read_vector("crypto-key-pairs.json")
     for i in data:
         i["pbk"] = bytes.fromhex(i["pbk"])
         i["pvk"] = bytes.fromhex(i["pvk"])
@@ -106,8 +89,8 @@ def crypto_2() -> list:
 
 
 @pytest.fixture(scope="session")
-def crypto_3() -> list:
-    data = _read_vector("crypto_signatures.json")
+def crypto_signatures() -> list:
+    data = _read_vector("crypto-signatures.json")
     for i in data:
         i["key"]["pbk"] = bytes.fromhex(i["key"]["pbk"])
         i["key"]["pvk"] = bytes.fromhex(i["key"]["pvk"])
@@ -118,7 +101,7 @@ def crypto_3() -> list:
 
 @pytest.fixture(scope="session")
 def deploy_1() -> list:
-    data = _read_vector("deploys_1.json")
+    data = _read_vector("deploys-1.json")
     for i in data:
         i["bytes"]["payment"] = bytes.fromhex(i["bytes"]["payment"])
         i["bytes"]["session"] = bytes.fromhex(i["bytes"]["session"])
@@ -127,6 +110,7 @@ def deploy_1() -> list:
         i["session"]["target"] = bytes.fromhex(i["session"]["target"])
 
     return data
+
 
 def _read_vector(fname: str, parser: typing.Callable = json.load):
     with open(_PATH_TO_VECTORS / fname) as fstream:

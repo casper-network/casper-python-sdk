@@ -19,11 +19,11 @@ _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 
 @pytest.fixture(scope="session")
-def a_test_account(vector_crypto_2):
+def a_test_account(vector_crypto_key_pairs):
     """Returns a test account key. 
     
     """
-    algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vector_crypto_2[0])
+    algo, pbk, pvk = operator.itemgetter("algo", "pbk", "pvk")(vector_crypto_key_pairs[0])
     
     return pycspr.factory.create_private_key(algo, pvk, pbk)
 

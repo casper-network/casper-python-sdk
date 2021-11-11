@@ -1,5 +1,9 @@
 [
     {
+        "cl_type": "ANY",
+        "hex": "XXX"
+    },
+    {
         "cl_type": "BOOL",
         "hex": "XXX"
     },
@@ -21,11 +25,55 @@
         "hex": "XXX"
     },
     {
+        "cl_type": "LIST",
+        "cl_type_inner_type": "BOOL",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "LIST",
+        "cl_type_inner_type": "U64",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "MAP",
+        "cl_type_key_type": "STRING",
+        "cl_type_value_type": "U64",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "OPTION",
+        "cl_type_inner_type": "STRING",
+        "hex": "XXX"
+    },
+    {
         "cl_type": "PUBLIC_KEY",
         "hex": "XXX"
     },
     {
+        "cl_type": "RESULT",
+        "hex": "XXX"
+    },
+    {
         "cl_type": "STRING",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "TUPLE_1",
+        "cl_type_t0_type": "U64",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "TUPLE_2",
+        "cl_type_t0_type": "U64",
+        "cl_type_t1_type": "U128",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "TUPLE_3",
+        "cl_type_t0_type": "U64",
+        "cl_type_t1_type": "U128",
+        "cl_type_t2_type": "U256",
+        "hex": "XXX"
     },
     {
         "cl_type": "U8",
@@ -61,7 +109,6 @@
     },    
     {
         "cl_type": "UREF",
-        "cl_type_access_right": 7,
         "hex": "XXX"
     }
 ]
