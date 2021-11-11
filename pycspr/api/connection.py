@@ -17,7 +17,7 @@ class NodeAPIError(Exception):
 
         """
         super(NodeAPIError, self).__init__(msg)
-        
+
 
 @dataclasses.dataclass
 class NodeConnection:
