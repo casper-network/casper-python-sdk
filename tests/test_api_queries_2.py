@@ -1,7 +1,6 @@
 import pycspr
 
 
-
 def test_get_state_root_hash(CLIENT):
     def _assert(response):
         assert isinstance(response, bytes)

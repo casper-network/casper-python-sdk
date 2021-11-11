@@ -4,7 +4,6 @@ import inspect
 import pycspr
 
 
-
 def _has_class(mod, cls):
     """Asserts that a container exposes a class.
 

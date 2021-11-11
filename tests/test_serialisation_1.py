@@ -1,7 +1,5 @@
 from pycspr import factory
-from pycspr import serialisation
 from pycspr.serialisation import cl_type as serialiser
-from pycspr.types import CLType
 
 
 def test_that_cl_types_serialise_as_bytes_correctly():
@@ -70,7 +68,7 @@ def _get_cl_type(fixture: dict):
         return cl_type_factory.any()
     elif fixture["cl_type"] == CLTypeKey.BOOL:
         return cl_type_factory.boolean()
-    elif fixture["cl_type"] == CLTypeKey.BYTE_ARRAY:        
+    elif fixture["cl_type"] == CLTypeKey.BYTE_ARRAY:
         return cl_type_factory.byte_array(fixture["cl_type_size"])
     elif fixture["cl_type"] == CLTypeKey.I32:
         return cl_type_factory.i32()

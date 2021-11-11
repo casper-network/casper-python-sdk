@@ -1,7 +1,6 @@
 import pycspr
 
 
-
 def test_create_deploy_arg_simple(vector_cl_types):
     for type_key in vector_cl_types.SIMPLE_TYPES:
         for vector in vector_cl_types.get_vectors(type_key):
@@ -63,7 +62,9 @@ def test_create_deploy_arg_tuple_3(vector_cl_types):
         type_key_t0 = pycspr.types.CLTypeKey[vector["typeof_t0"]]
         type_key_t1 = pycspr.types.CLTypeKey[vector["typeof_t1"]]
         type_key_t2 = pycspr.types.CLTypeKey[vector["typeof_t2"]]
-        if type_key_t0 in vector_cl_types.SIMPLE_TYPES and type_key_t1 in vector_cl_types.SIMPLE_TYPES and type_key_t2 in vector_cl_types.SIMPLE_TYPES:
+        if type_key_t0 in vector_cl_types.SIMPLE_TYPES and \
+           type_key_t1 in vector_cl_types.SIMPLE_TYPES and \
+           type_key_t2 in vector_cl_types.SIMPLE_TYPES:
             cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
             cl_type_t1 = pycspr.cl_type_factory.simple(type_key_t1)
             cl_type_t2 = pycspr.cl_type_factory.simple(type_key_t2)

@@ -28,7 +28,7 @@ def _yield_cl_values(fixtures: list) -> typing.Iterator[CLValue]:
             yield None
         elif type_key == CLTypeKey.BOOL:
             yield cl_value_factory.boolean(value)
-        elif type_key == CLTypeKey.BYTE_ARRAY:   
+        elif type_key == CLTypeKey.BYTE_ARRAY:
             yield cl_value_factory.byte_array(bytes.fromhex(value))
         elif type_key == CLTypeKey.I32:
             yield cl_value_factory.i32(value)

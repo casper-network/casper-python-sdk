@@ -7,7 +7,6 @@ import pytest
 
 import pycspr
 from pycspr.types import CLTypeKey
-from pycspr.serialisation import CL_VALUE_SERIALISERS
 
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
@@ -17,7 +16,7 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 @pytest.fixture(scope="session")
 def cl_types() -> list:
     class _Accessor():
-        def __init__(self):            
+        def __init__(self):
             self._fixtures = _read_vector("cl-types.json")
             self._parse_fixtures()
             self.SIMPLE_TYPES = {
@@ -45,10 +44,11 @@ def cl_types() -> list:
         def _parse_fixtures(self):
             for obj in self._fixtures:
                 if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
-                    obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
-                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
-                    obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
-    
+                    obj["value"] = pycspr.create_uref_from_string(obj["value"])
+                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:
+                    obj["value"] = \
+                        pycspr.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
+
     return _Accessor()
 
 
@@ -56,13 +56,13 @@ def cl_types() -> list:
 def cl_values() -> list:
     class _Accessor():
         """Streamlines access to cl values vector.
-        
+
         """
-        def __init__(self):            
+        def __init__(self):
             self.fixtures = _read_vector("cl-values.json")
             for obj in self.fixtures:
                 obj["cl_type"] = CLTypeKey[obj["cl_type"]]
-    
+
     return _Accessor()
 
 
@@ -86,6 +86,17 @@ def crypto_key_pairs() -> list:
         i["accountHash"] = bytes.fromhex(i["accountHash"])
 
     return data
+
+
+@pytest.fixture(scope="session")
+def crypto_key_pair_specs() -> typing.Tuple[pycspr.KeyAlgorithm, int, int]:
+    """Returns sets of specifications for key pair generation.
+
+    """
+    return (
+        (pycspr.KeyAlgorithm.ED25519, 32, 32),
+        (pycspr.KeyAlgorithm.SECP256K1, 32, 33),
+    )
 
 
 @pytest.fixture(scope="session")
