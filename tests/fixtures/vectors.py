@@ -67,6 +67,20 @@ def cl_values() -> list:
 
 
 @pytest.fixture(scope="session")
+def cl_types_1() -> list:
+    class _Accessor():
+        """Streamlines access to cl types vector.
+
+        """
+        def __init__(self):
+            self.fixtures = _read_vector("cl-types.json")
+            for obj in self.fixtures:
+                obj["cl_type"] = CLTypeKey[obj["cl_type"]]
+
+    return _Accessor()
+
+
+@pytest.fixture(scope="session")
 def crypto_hashes() -> list:
     data = _read_vector("crypto-hashes.json")
     for i in data:

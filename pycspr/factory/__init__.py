@@ -6,6 +6,7 @@ from pycspr.factory.accounts import parse_private_key_bytes
 from pycspr.factory.accounts import parse_public_key
 from pycspr.factory.accounts import parse_public_key_bytes
 
+import pycspr.factory.cl_type as cl_type
 import pycspr.factory.cl_type as cl_type_factory
 import pycspr.factory.cl_value as cl_value
 import pycspr.factory.cl_value as cl_value_factory

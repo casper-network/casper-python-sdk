@@ -18,7 +18,7 @@ class CLValue():
     bytes: bytes = None
 
     def __eq__(self, other):
-        """Instance equality comparison.
+        """Instance equality comparator.
 
         """
         return self.parsed == other.parsed
