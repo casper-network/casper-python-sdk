@@ -6,8 +6,18 @@ import sseclient
 
 from pycspr.api import constants
 from pycspr.api.constants import NodeEventChannelType
-from pycspr.utils.exceptions import NodeAPIError
 
+
+class NodeAPIError(Exception):
+    """Node API error wrapper.
+
+    """
+    def __init__(self, msg):
+        """Instance constructor.
+
+        """
+        super(NodeAPIError, self).__init__(msg)
+        
 
 @dataclasses.dataclass
 class NodeConnection:

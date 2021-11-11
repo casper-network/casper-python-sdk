@@ -17,6 +17,7 @@ from pycspr import serialisation
 from pycspr import types
 
 from pycspr.api.client import NodeClient
+from pycspr.api.connection import NodeAPIError
 from pycspr.api.connection import NodeConnection
 from pycspr.api.constants import NodeEventChannelType
 from pycspr.api.constants import NodeEventType
@@ -54,7 +55,6 @@ from pycspr.serialisation import from_json
 from pycspr.serialisation import to_bytes
 from pycspr.serialisation import to_json
 
-from pycspr.utils.exceptions import NodeAPIError
 from pycspr.utils.io import read_deploy
 from pycspr.utils.io import read_wasm
 from pycspr.utils.io import write_deploy
