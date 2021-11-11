@@ -19,4 +19,3 @@ def from_json(value: str) -> int:
 
 def to_json(value: int) -> str:
     return str(value)
-

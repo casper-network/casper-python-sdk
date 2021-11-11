@@ -1,6 +1,5 @@
 import typing
 
-from pycspr.serialisation import cl_key as cl_key_serialiser
 from pycspr.types import CLAccessRights
 from pycspr.types import CLTypeKey
 from pycspr.types import UnforgeableReference
@@ -54,7 +53,7 @@ def create_dictionary_identifier_for_a_unique_key(key: str) -> DictionaryIdentif
 def create_key(identifier: bytes, typeof: KeyType) -> Key:
     """Returns a global state value key.
 
-    """    
+    """
     return Key(identifier, typeof)
 
 
@@ -62,7 +61,15 @@ def create_key_from_string(as_string: str) -> Key:
     """Returns a global state value key derived froma string representation.
 
     """
-    return cl_key_serialiser.from_json(as_string)
+    identifier = bytes.fromhex(as_string.split("-")[-1])
+    if as_string.startswith("account-hash-"):
+        return create_key(identifier, KeyType.ACCOUNT)
+    elif as_string.startswith("hash-"):
+        return create_key(identifier, KeyType.HASH)
+    elif as_string.startswith("uref-"):
+        return create_key(identifier, KeyType.UREF)
+    else:
+        raise ValueError(f"Invalid key: {as_string}")
 
 
 def create_list(items: typing.List, item_type: CLTypeKey) -> List:

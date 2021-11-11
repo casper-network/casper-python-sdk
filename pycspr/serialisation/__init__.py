@@ -21,7 +21,6 @@ from pycspr.types import DeployTimeToLive
 from pycspr.types import DeployExecutableItem
 
 
-
 # Map: Domain entity type <-> serialiser.
 _SERIALISERS = {
     CLType: cl_type,
@@ -92,4 +91,4 @@ def _get_serialiser(entity_type: typing.Type) -> typing.Callable:
     elif entity_type.__bases__ and entity_type.__bases__[0] in _SERIALISERS:
         return _SERIALISERS[entity_type.__bases__[0]]
     else:
-        raise ValueError("Domain entity cannot be mapped to a serialiser")    
+        raise ValueError("Domain entity cannot be mapped to a serialiser")

@@ -3,7 +3,7 @@ from pycspr.serialisation import cl_u32
 
 def from_bytes(value: bytes) -> object:
     raise NotImplementedError()
-    
+
 
 def to_bytes(value: object) -> bytes:
     return cl_u32.to_bytes(len(value)) + bytes(value)

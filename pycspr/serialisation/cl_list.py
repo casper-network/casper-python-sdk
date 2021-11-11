@@ -1,5 +1,3 @@
-import typing
-
 from pycspr.serialisation import cl_any
 from pycspr.serialisation import cl_bool
 from pycspr.serialisation import cl_byte_array

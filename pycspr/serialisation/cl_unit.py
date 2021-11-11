@@ -5,7 +5,7 @@ def from_bytes(value: bytes) -> None:
     if len(value) != 0:
         raise ValueError("Invalid unit bytes")
     return None
-    
+
 
 def to_bytes(_: typing.Type[None]) -> bytes:
     return bytes([])

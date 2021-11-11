@@ -52,7 +52,6 @@ from pycspr.factory import parse_public_key_bytes
 from pycspr.serialisation import from_bytes
 from pycspr.serialisation import from_json
 from pycspr.serialisation import to_bytes
-from pycspr.serialisation import to_bytes
 from pycspr.serialisation import to_json
 
 from pycspr.utils.exceptions import NodeAPIError

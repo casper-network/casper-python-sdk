@@ -123,10 +123,11 @@ def to_bytes(entity: CLType) -> bytes:
     elif kls == CLType_Tuple2:
         return type_tag + to_bytes(entity.t0_type) + to_bytes(entity.t1_type)
     elif kls == CLType_Tuple3:
-        return type_tag + to_bytes(entity.t0_type) + to_bytes(entity.t1_type) + to_bytes(entity.t2_type)
+        return type_tag + to_bytes(entity.t0_type) + to_bytes(entity.t1_type) + \
+               to_bytes(entity.t2_type)
     else:
         return type_tag
-    
+
 
 def from_json(value: typing.Union[dict, str]) -> object:
     if isinstance(value, str):
@@ -170,7 +171,7 @@ def from_json(value: typing.Union[dict, str]) -> object:
 def to_json(entity: CLType) -> dict:
     kls = type(entity)
     if kls not in _CL_TYPE_JSON_TAG:
-        raise ValueError(f"Invalid cl type: {typeof(entity)}")
+        raise ValueError("Invalid cl type definition")
 
     type_tag = _CL_TYPE_JSON_TAG[kls]
     if kls == CLType_ByteArray:

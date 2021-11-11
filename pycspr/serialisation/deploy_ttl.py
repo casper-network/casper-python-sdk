@@ -1,5 +1,6 @@
 from pycspr.types import DeployTimeToLive
 from pycspr.utils import constants
+from pycspr.utils import conversion
 
 
 def from_bytes(value: bytes) -> DeployTimeToLive:

@@ -57,7 +57,7 @@ def key(value: bytes, key_type: typing.Union[KeyType, int]) -> CLValue:
 
 def key_from_string(value: str) -> CLValue:
     identifier = bytes.fromhex(value.split("-")[-1])
-    if value.startswith("account-hash-"):        
+    if value.startswith("account-hash-"):
         return key(identifier, KeyType.ACCOUNT)
     elif value.startswith("hash-"):
         return key(identifier, KeyType.HASH)
@@ -65,12 +65,6 @@ def key_from_string(value: str) -> CLValue:
         return key(identifier, KeyType.UREF)
     else:
         raise ValueError(f"Invalid key: {value}")
-
-
-    return CLValue(
-        cl_type_factory.key(key_type),
-        Key(value, key_type)
-        )
 
 
 def list(inner_type: CLType, value: list) -> CLValue:

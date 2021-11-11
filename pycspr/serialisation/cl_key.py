@@ -4,7 +4,7 @@ from pycspr.types import KeyType
 
 def from_bytes(value: bytes) -> Key:
     return Key(value[1:], KeyType(value[0]))
-    
+
 
 def to_bytes(value: Key) -> bytes:
     if value.key_type == KeyType.ACCOUNT:
@@ -17,9 +17,9 @@ def to_bytes(value: Key) -> bytes:
         raise ValueError(f"Invalid key: {value}")
 
 
-def from_json(value: str) -> Key:    
+def from_json(value: str) -> Key:
     identifier = bytes.fromhex(value.split("-")[-1])
-    if value.startswith("account-hash-"):        
+    if value.startswith("account-hash-"):
         return Key(identifier, KeyType.ACCOUNT)
     elif value.startswith("hash-"):
         return Key(identifier, KeyType.HASH)

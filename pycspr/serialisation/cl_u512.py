@@ -12,7 +12,7 @@ def from_bytes(value: bytes) -> int:
         return le_bytes_to_int(value[1:], False)
     else:
         raise ValueError("Cannot decode U512 as bytes are too large")
-    
+
 
 def to_bytes(value: int) -> bytes:
     for type_key in (

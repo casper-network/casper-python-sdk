@@ -1,4 +1,3 @@
-from pycspr.types import CLTypeKey
 from pycspr.types import CLType
 from pycspr.types import CLType_Any
 from pycspr.types import CLType_Boolean
@@ -23,7 +22,6 @@ from pycspr.types import CLType_U256
 from pycspr.types import CLType_U512
 from pycspr.types import CLType_Unit
 from pycspr.types import CLType_URef
-from pycspr.types import KeyType
 
 
 def any() -> CLType_Any:

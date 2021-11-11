@@ -1,6 +1,6 @@
 def from_bytes(value: bytes) -> bool:
     return bool(value[0])
-    
+
 
 def to_bytes(value: bool) -> bytes:
     return bytes([int(value)])

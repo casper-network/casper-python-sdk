@@ -6,13 +6,13 @@ from pycspr.serialisation import deploy_ttl
 
 def from_bytes(value: bytes) -> DeployHeader:
     raise NotImplementedError()
-    
+
 
 def to_bytes(entity: DeployHeader) -> bytes:
     raise NotImplementedError()
 
 
-def from_json(entity: dict) -> DeployHeader:
+def from_json(obj: dict) -> DeployHeader:
     return DeployHeader(
         account_public_key=cl_public_key.from_json(obj["account"]),
         body_hash=bytes.fromhex(obj["body_hash"]),

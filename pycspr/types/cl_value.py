@@ -17,9 +17,8 @@ class CLValue():
     # Byte array representation of underlying data.
     bytes: bytes = None
 
-
     def __eq__(self, other):
         """Instance equality comparison.
-        
+
         """
         return self.parsed == other.parsed

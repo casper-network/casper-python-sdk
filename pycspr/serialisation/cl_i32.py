@@ -7,7 +7,7 @@ BYTE_LENGTH = 4
 
 def from_bytes(value: bytes) -> int:
     return le_bytes_to_int(value, True)
-    
+
 
 def to_bytes(value: int) -> bytes:
     return int_to_le_bytes(value, BYTE_LENGTH, True)
