@@ -10,7 +10,6 @@ from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import PrivateKey
-from pycspr.types import CLAccessRights
 from pycspr.types import CLValue
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
@@ -18,12 +17,11 @@ from pycspr.types import DeployBody
 from pycspr.types import DeployHeader
 from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
-from pycspr.types import ExecutionArgument
-from pycspr.types import ExecutableDeployItem
-from pycspr.types import ExecutableDeployItem_ModuleBytes
-from pycspr.types import ExecutableDeployItem_Transfer
+from pycspr.types import DeployArgument
+from pycspr.types import DeployExecutableItem
+from pycspr.types import ModuleBytes
+from pycspr.types import Transfer
 from pycspr.types import PublicKey
-from pycspr.types import UnforgeableReference
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
@@ -35,8 +33,8 @@ _MAX_TRANSFER_ID = (2 ** 63) - 1
 
 def create_deploy(
     params: DeployParameters,
-    payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    payment: DeployExecutableItem,
+    session: DeployExecutableItem
 ):
     """Returns a deploy for subsequent dispatch to a node.
 
@@ -76,7 +74,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     )
 
 
-def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
+def create_deploy_arg(name: str, value: CLValue) -> DeployArgument:
     """Returns an argument associated with deploy execution information (session|payment).
 
     :param name: Deploy argument name.
@@ -84,12 +82,12 @@ def create_deploy_arg(name: str, value: CLValue) -> ExecutionArgument:
     :returns: A deploy argument.
 
     """
-    return ExecutionArgument(name=name, value=value)
+    return DeployArgument(name=name, value=value)
 
 
 def create_deploy_body(
-    payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    payment: DeployExecutableItem,
+    session: DeployExecutableItem
 ) -> DeployBody:
     """Returns hash of a deploy's so-called body.
 
@@ -197,7 +195,7 @@ def create_native_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int = None,
-) -> ExecutableDeployItem_Transfer:
+) -> Transfer:
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
@@ -209,7 +207,7 @@ def create_native_transfer_session(
     correlation_id = correlation_id or random.randint(1, _MAX_TRANSFER_ID)
     correlation_id = 123
 
-    return ExecutableDeployItem_Transfer(
+    return Transfer(
         args=[
             create_deploy_arg(
                 "amount",
@@ -229,13 +227,13 @@ def create_native_transfer_session(
 
 def create_standard_payment(
     amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-) -> ExecutableDeployItem_ModuleBytes:
+) -> ModuleBytes:
     """Returns standard payment execution information.
 
     :param amount: Maximum amount in motes to be used for standard payment.
 
     """
-    return ExecutableDeployItem_ModuleBytes(
+    return ModuleBytes(
         args=[
             create_deploy_arg(
                 "amount",
@@ -243,18 +241,6 @@ def create_standard_payment(
                 ),
         ],
         module_bytes=bytes([])
-        )
-
-
-def create_uref_from_string(as_string: str):
-    """Returns an unforgeable reference from it's string representation.
-
-    """
-    _, address_hex, access_rights = as_string.split("-")
-
-    return UnforgeableReference(
-        bytes.fromhex(address_hex),
-        CLAccessRights(int(access_rights))
         )
 
 
@@ -276,7 +262,7 @@ def create_validator_auction_bid(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
-    session = ExecutableDeployItem_ModuleBytes(
+    session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
             create_deploy_arg(
@@ -315,7 +301,7 @@ def create_validator_auction_bid_withdrawal(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
-    session = ExecutableDeployItem_ModuleBytes(
+    session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
             create_deploy_arg(
@@ -354,7 +340,7 @@ def create_validator_delegation(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
-    session = ExecutableDeployItem_ModuleBytes(
+    session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
             create_deploy_arg(
@@ -393,7 +379,7 @@ def create_validator_delegation_withdrawal(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
-    session = ExecutableDeployItem_ModuleBytes(
+    session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
             create_deploy_arg(

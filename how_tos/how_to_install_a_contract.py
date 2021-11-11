@@ -8,7 +8,7 @@ from pycspr import NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
-from pycspr.types import ExecutableDeployItem_ModuleBytes
+from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
 
 
@@ -178,11 +178,11 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
             )
 
     # Set payment logic.
-    payment: ExecutableDeployItem_ModuleBytes = \
+    payment: ModuleBytes = \
         pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
-    session: ExecutableDeployItem_ModuleBytes = ExecutableDeployItem_ModuleBytes(
+    session: ModuleBytes = ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args=[
             pycspr.create_deploy_arg(

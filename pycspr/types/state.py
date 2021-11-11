@@ -1,18 +1,19 @@
 import dataclasses
 import enum
-from pycspr.types.cl import CLAccessRights
+import typing
+from pycspr.types.cl_enums import CLAccessRights
 
 
 @dataclasses.dataclass
 class UnforgeableReference():
-    """An unforgeable reference storage key.
+    """An unforgeable reference key.
 
     """
-    # Uref on-chain identifier.
-    address: bytes
-
     # Access rights granted by issuer.
     access_rights: CLAccessRights
+
+    # Uref on-chain identifier.
+    address: bytes
 
     def as_string(self):
         """Returns a string representation for over the wire dispatch.
@@ -81,8 +82,8 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     key: str
 
 
-class StorageKeyType(enum.Enum):
-    """Enumeration over set of CL storage key.
+class KeyType(enum.Enum):
+    """Enumeration over set of CL keys.
 
     """
     ACCOUNT = 0
@@ -91,7 +92,7 @@ class StorageKeyType(enum.Enum):
 
 
 @dataclasses.dataclass
-class StorageKey():
+class Key():
     """A pointer to data within global state.
 
     """
@@ -99,16 +100,16 @@ class StorageKey():
     identifier: bytes
 
     # Key type identifier.
-    key_type: StorageKeyType
+    key_type: KeyType
 
-    def as_string(self):
-        """Returns a string representation for over the wire dispatch.
 
-        """
-        _PREFIXES = {
-            StorageKeyType.ACCOUNT: "account-hash",
-            StorageKeyType.HASH: "hash",
-            StorageKeyType.UREF: "uref"
-        }
+@dataclasses.dataclass
+class List():
+    """A pointer to a list of data.
 
-        return f"{_PREFIXES[self.key_type]}-{self.identifier.hex()}"
+    """
+    # 32 byte key identifier.
+    items: typing.List[object]
+
+    # Item type identifier.
+    item_type: KeyType

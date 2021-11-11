@@ -2,7 +2,7 @@ from pycspr import crypto
 from pycspr import serialisation
 from pycspr.factory import cl_type as cl_type_factory
 from pycspr.factory import cl_value as cl_value
-from pycspr.types import ExecutableDeployItem
+from pycspr.types import DeployExecutableItem
 from pycspr.types import DeployHeader
 
 
@@ -46,8 +46,8 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
 
 
 def create_digest_of_deploy_body(
-    payment: ExecutableDeployItem,
-    session: ExecutableDeployItem
+    payment: DeployExecutableItem,
+    session: DeployExecutableItem
 ) -> bytes:
     """Returns a deploy body's hash digest.
 
@@ -56,4 +56,6 @@ def create_digest_of_deploy_body(
     :returns: Hash digest of a deploy body.
 
     """
-    return crypto.get_hash(serialisation.to_bytes(payment) + serialisation.to_bytes(session))
+    return crypto.get_hash(
+        serialisation.to_bytes(payment) + serialisation.to_bytes(session)
+        )

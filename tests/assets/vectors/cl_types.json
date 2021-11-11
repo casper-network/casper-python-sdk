@@ -1,0 +1,12 @@
+[
+    {
+        "typeof": "BOOL",
+        "value": "True",
+        "hex": "01"
+    },
+    {
+        "typeof": "BOOL",
+        "value": "False",
+        "hex": "00"
+    }
+]

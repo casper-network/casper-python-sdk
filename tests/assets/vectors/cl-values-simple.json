@@ -1,0 +1,97 @@
+[
+    {
+        "cl_type": "BOOL",
+        "value": true,
+        "hex": "01"
+    },
+    {
+        "cl_type": "BOOL",
+        "value": false,
+        "hex": "00"
+    },
+    {
+        "cl_type": "BYTE_ARRAY",
+        "value": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e",
+        "hex": "d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
+    },
+    {
+        "cl_type": "I32",
+        "value": 1896687901,
+        "hex": "1d290d71"
+    },
+    {
+        "cl_type": "I64",
+        "value": 192249568872182655,
+        "hex": "7f33d9dcf601ab02"
+    }, 
+    {
+        "cl_type": "KEY",
+        "value": "account-hash-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    },
+    {
+        "cl_type": "KEY",
+        "value": "hash-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    },    
+    {
+        "cl_type": "KEY",
+        "value": "uref-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    }, 
+    {
+        "cl_type": "PUBLIC_KEY",
+        "value": "01974537e2aa9794a1e117b1407769d1ae64819c2f3ab24e1ac0adea94ccb18b7f",
+        "hex": "01974537e2aa9794a1e117b1407769d1ae64819c2f3ab24e1ac0adea94ccb18b7f"
+    },
+    {
+        "cl_type": "STRING",
+        "value": "أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎",
+        "hex": "49000000d8a3d8a8d98820d98ad988d8b3d98120d98ad8b9d982d988d8a820d8a8d98620d8a5d8b3d8add8a7d98220d8a7d984d8b5d8a8d991d8a7d8ad20d8a7d984d983d986d8afd98ae2808e"
+    },
+    {
+        "cl_type": "U8",
+        "value": 38,
+        "hex": "26"
+    },
+    {
+        "cl_type": "U32",
+        "value": 3316244803,
+        "hex": "43e1a9c5"
+    },
+    {
+        "cl_type": "U64",
+        "value": 1,
+        "hex": "0100000000000000"
+    },
+    {
+        "cl_type": "U64",
+        "value": 17872713829529530073,
+        "hex": "d9ae51c588a208f8"
+    },
+    {
+        "cl_type": "U128",
+        "value": 217021024364351886430112374790508812932,
+        "hex": "10849ab4149c73ef130c237eb69bba44a3"
+    },
+    {
+        "cl_type": "U256",
+        "value": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
+        "hex": "20ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    {
+        "cl_type": "U512",
+        "value": 3618733144750325837958790227950415868742292184814728655972723411435898710232007994755759630545001033316379250637667110010115434549409256374699329574956472,
+        "hex": "40b86d847bb0238a152a9b35783aea6b12f3f2a65fb6a4609b73bbd550539c1039a2912712f8b2f5c9933a6a77a456e807dcf5d8e5f54d93786e6737d0c8ff1745"
+    },
+    {
+        "cl_type": "UNIT",
+        "value": null,
+        "hex": ""
+    },    
+    {
+        "cl_type": "UREF",
+        "value": "uref-80618a0a3d32de9a9328773c22f12595694718b05954ae563b3be3b4e89115fe-007",
+        "hex": "80618a0a3d32de9a9328773c22f12595694718b05954ae563b3be3b4e89115fe07"
+    }
+]

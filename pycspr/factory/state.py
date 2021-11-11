@@ -1,23 +1,16 @@
+import typing
+
+from pycspr.serialisation import cl_key as cl_key_serialiser
 from pycspr.types import CLAccessRights
+from pycspr.types import CLTypeKey
 from pycspr.types import UnforgeableReference
 from pycspr.types import DictionaryIdentifier_AccountNamedKey
 from pycspr.types import DictionaryIdentifier_ContractNamedKey
 from pycspr.types import DictionaryIdentifier_SeedURef
 from pycspr.types import DictionaryIdentifier_UniqueKey
-from pycspr.types import StorageKey
-from pycspr.types import StorageKeyType
-
-
-def create_uref_from_string(as_string: str):
-    """Returns an unforgeable reference from it's string representation.
-
-    """
-    _, address_hex, access_rights = as_string.split("-")
-
-    return UnforgeableReference(
-        bytes.fromhex(address_hex),
-        CLAccessRights(int(access_rights))
-        )
+from pycspr.types import Key
+from pycspr.types import KeyType
+from pycspr.types import List
 
 
 def create_dictionary_identifier_for_an_account_named_key(
@@ -58,5 +51,34 @@ def create_dictionary_identifier_for_a_unique_key(key: str) -> DictionaryIdentif
     return DictionaryIdentifier_UniqueKey(key=key)
 
 
-def create_storage_key(identifier: bytes, typeof: StorageKeyType) -> StorageKey:
-    return StorageKey(identifier, typeof)
+def create_key(identifier: bytes, typeof: KeyType) -> Key:
+    """Returns a global state value key.
+
+    """    
+    return Key(identifier, typeof)
+
+
+def create_key_from_string(as_string: str) -> Key:
+    """Returns a global state value key derived froma string representation.
+
+    """
+    return cl_key_serialiser.from_json(as_string)
+
+
+def create_list(items: typing.List, item_type: CLTypeKey) -> List:
+    """Returns a list of items.
+
+    """
+    return List(items, item_type)
+
+
+def create_uref_from_string(as_string: str) -> UnforgeableReference:
+    """Returns an unforgeable reference from it's string representation.
+
+    """
+    _, address_hex, access_rights = as_string.split("-")
+
+    return UnforgeableReference(
+        CLAccessRights(int(access_rights)),
+        bytes.fromhex(address_hex)
+        )

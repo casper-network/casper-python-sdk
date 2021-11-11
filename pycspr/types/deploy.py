@@ -5,7 +5,7 @@ import typing
 from pycspr import crypto
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
-from pycspr.types.cl import CLValue
+from pycspr.types.cl_value import CLValue
 
 
 # On chain contract identifier.
@@ -19,7 +19,7 @@ Timestamp = typing.NewType("POSIX timestamp", datetime.datetime)
 
 
 @dataclasses.dataclass
-class ExecutionArgument():
+class DeployArgument():
     """An argument to be passed to vm for execution.
 
     """
@@ -31,16 +31,16 @@ class ExecutionArgument():
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem():
+class DeployExecutableItem():
     """Encapsulates vm execution information.
 
     """
     # Set of arguments mapped to endpoint parameters.
-    args: typing.List[ExecutionArgument]
+    args: typing.List[DeployArgument]
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_ModuleBytes(ExecutableDeployItem):
+class ModuleBytes(DeployExecutableItem):
     """Encapsulates information required to execute an in-line wasm binary.
 
     """
@@ -49,7 +49,7 @@ class ExecutableDeployItem_ModuleBytes(ExecutableDeployItem):
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_StoredContract(ExecutableDeployItem):
+class StoredContract(DeployExecutableItem):
     """Encapsulates information required to execute an on-chain smart contract.
 
     """
@@ -58,7 +58,7 @@ class ExecutableDeployItem_StoredContract(ExecutableDeployItem):
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_StoredContractByHash(ExecutableDeployItem_StoredContract):
+class StoredContractByHash(StoredContract):
     """Encapsulates information required to execute an on-chain smart contract referenced by hash.
 
     """
@@ -67,8 +67,8 @@ class ExecutableDeployItem_StoredContractByHash(ExecutableDeployItem_StoredContr
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_StoredContractByHashVersioned(
-    ExecutableDeployItem_StoredContractByHash
+class StoredContractByHashVersioned(
+    StoredContractByHash
 ):
     """Encapsulates information required to execute a versioned on-chain smart
     contract referenced by hash.
@@ -79,7 +79,7 @@ class ExecutableDeployItem_StoredContractByHashVersioned(
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_StoredContractByName(ExecutableDeployItem_StoredContract):
+class StoredContractByName(StoredContract):
     """Encapsulates information required to execute an on-chain
        smart contract referenced by name.
 
@@ -89,8 +89,8 @@ class ExecutableDeployItem_StoredContractByName(ExecutableDeployItem_StoredContr
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_StoredContractByNameVersioned(
-    ExecutableDeployItem_StoredContractByName
+class StoredContractByNameVersioned(
+    StoredContractByName
 ):
     """Encapsulates information required to execute a versioned
        on-chain smart contract referenced by name.
@@ -101,7 +101,7 @@ class ExecutableDeployItem_StoredContractByNameVersioned(
 
 
 @dataclasses.dataclass
-class ExecutableDeployItem_Transfer(ExecutableDeployItem):
+class Transfer(DeployExecutableItem):
     """Encapsulates information required to execute a host-side balance transfer.
 
     """
@@ -127,10 +127,10 @@ class DeployBody():
     """
     # Executable information passed to chain's VM for taking
     # payment required to process session logic.
-    payment: ExecutableDeployItem
+    payment: DeployExecutableItem
 
     # Executable information passed to chain's VM.
-    session: ExecutableDeployItem
+    session: DeployExecutableItem
 
     # Hash of payload.
     hash: bytes
@@ -191,10 +191,10 @@ class Deploy():
 
     # Executable information passed to chain's VM for taking
     # payment required to process session logic.
-    payment: ExecutableDeployItem
+    payment: DeployExecutableItem
 
     # Executable information passed to chain's VM.
-    session: ExecutableDeployItem
+    session: DeployExecutableItem
 
     def approve(self, approver: PrivateKey):
         """Creates a deploy approval & appends it to associated set.

@@ -1,0 +1,83 @@
+[
+    {
+        "cl_type": "KEY",
+        "value": "account-hash-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    },
+    {
+        "cl_type": "KEY",
+        "value": "hash-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    },    
+    {
+        "cl_type": "KEY",
+        "value": "uref-f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685",
+        "hex": "f6e487b6d386f1221bd3b7c2a0319124bff80b2243d3dac3180a1195cec29685"
+    },    
+    {
+        "cl_type": "LIST",
+        "cl_type_item": "U64",
+        "value": [
+            10222542040955046838,
+            10276207219237930607,
+            15939564377751427208
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "MAP",
+        "cl_type_key": "STRING",
+        "cl_type_value": "U64",
+        "value": {
+            "a": 10222542040955046838,
+            "b": 10276207219237930607,
+            "c": 15939564377751427208
+        },
+        "hex": ""
+    },
+    {
+        "cl_type": "PUBLIC_KEY",
+        "value": "012fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1",
+        "hex": "012fa788bfd72abbad5272e478e16dda3cf04f171f1368cca3a6517471475e42a1"
+    },
+    {
+        "cl_type": "TUPLE_1",
+        "cl_type_t0": "U64",
+        "value": [
+            10222542040955046838
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "TUPLE_2",
+        "cl_type_t0": "U64",
+        "cl_type_t1": "STRING",
+        "value": [
+            10222542040955046838,
+            "al-kindi"
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "TUPLE_3",
+        "cl_type_t0": "U64",
+        "cl_type_t1": "STRING",
+        "cl_type_t2": "BOOL",
+        "value": [
+            10222542040955046838,
+            "al-kindi",
+            false
+        ],
+        "hex": ""
+    },
+    {
+        "cl_type": "UNIT",
+        "value": null,
+        "hex": ""
+    },
+    {
+        "cl_type": "UREF",
+        "value": "uref-80618a0a3d32de9a9328773c22f12595694718b05954ae563b3be3b4e89115fe-007",
+        "hex": "80618a0a3d32de9a9328773c22f12595694718b05954ae563b3be3b4e89115fe07"
+    }
+]

@@ -1,7 +1,7 @@
 import typing
 
+from pycspr import serialisation
 from pycspr import types
-from pycspr.serialisation.json.encoder.deploy import encode_deploy as encode_deploy_as_json
 
 
 def get_account_balance_params(
@@ -16,7 +16,7 @@ def get_account_balance_params(
 
     """
     if isinstance(purse_uref, types.UnforgeableReference):
-        purse_uref = purse_uref.as_string()
+        purse_uref = serialisation.to_json(purse_uref)
     if isinstance(state_root_hash, bytes):
         state_root_hash = state_root_hash.hex()
 
@@ -236,7 +236,7 @@ def get_state_item_params(
 ) -> dict:
     """Returns JSON-RPC API request parameters.
 
-    :param item_key: A global state storage item key.
+    :param item_key: A global state item key.
     :param item_path: Path(s) to a data held beneath the key.
     :param state_root_hash: A node's root state hash at some point in chain time.
     :returns: Parameters to be passed to JSON-RPC API.
@@ -283,5 +283,5 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
 
     """
     return {
-        "deploy": encode_deploy_as_json(deploy)
+        "deploy": serialisation.to_json(deploy)
     }

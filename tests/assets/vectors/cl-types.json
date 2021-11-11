@@ -1,0 +1,67 @@
+[
+    {
+        "cl_type": "BOOL",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "BYTE_ARRAY",
+        "cl_type_size": 74,
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "I32",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "I64",
+        "hex": "XXX"
+    }, 
+    {
+        "cl_type": "KEY",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "PUBLIC_KEY",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "STRING",
+    },
+    {
+        "cl_type": "U8",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U32",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U64",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U64",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U128",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U256",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "U512",
+        "hex": "XXX"
+    },
+    {
+        "cl_type": "UNIT",
+        "hex": "XXX"
+    },    
+    {
+        "cl_type": "UREF",
+        "cl_type_access_right": 7,
+        "hex": "XXX"
+    }
+]

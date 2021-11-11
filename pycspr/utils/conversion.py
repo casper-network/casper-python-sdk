@@ -32,7 +32,7 @@ def int_to_le_bytes_trimmed(x: int, length: int, signed: bool) -> bytes:
 
     """
     value = int_to_le_bytes(x, length, signed)
-    while value[-1] == 0:
+    while value and value[-1] == 0:
         value = value[0:-1]
 
     return value or bytes([0])

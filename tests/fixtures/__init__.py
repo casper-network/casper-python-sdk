@@ -29,6 +29,7 @@ from tests.fixtures.node import NODE_PORT_SSE
 from tests.fixtures.misc import a_test_timestamp
 
 from tests.fixtures.vectors import cl_types as vector_cl_types
+from tests.fixtures.vectors import cl_values as vector_cl_values
 from tests.fixtures.vectors import crypto_1 as vector_crypto_1
 from tests.fixtures.vectors import crypto_2 as vector_crypto_2
 from tests.fixtures.vectors import crypto_3 as vector_crypto_3

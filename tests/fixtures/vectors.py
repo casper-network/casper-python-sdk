@@ -6,7 +6,8 @@ import typing
 import pytest
 
 import pycspr
-
+from pycspr.types import CLTypeKey
+from pycspr.serialisation import CL_VALUE_SERIALISERS
 
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
@@ -21,10 +22,27 @@ def cl_types() -> list:
                              _read_vector("cl_types_simple_numeric.json") + \
                              _read_vector("cl_types_simple_other.json")
             self._parse_fixtures()
+            self.SIMPLE_TYPES = {
+                CLTypeKey.I32,
+                CLTypeKey.I64,
+                CLTypeKey.U8,
+                CLTypeKey.U32,
+                CLTypeKey.U64,
+                CLTypeKey.U128,
+                CLTypeKey.U256,
+                CLTypeKey.U512,
+                CLTypeKey.BOOL,
+                CLTypeKey.PUBLIC_KEY,
+                CLTypeKey.STRING,
+                CLTypeKey.UNIT,
+            }
 
-        def get_vectors(self, typeof: str) -> list:
+        def get_fixtures(self, typeof: str = None) -> list:
+            if typeof is None:
+                return self._fixtures
             typeof = typeof if isinstance(typeof, str) else typeof.name
             return [i for i in self._fixtures if i["typeof"] == typeof.upper()]
+
 
         def _parse_fixtures(self):
             for obj in self._fixtures:
@@ -32,6 +50,35 @@ def cl_types() -> list:
                     obj["value"] = pycspr.factory.create_uref_from_string(obj["value"])
                 elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:     
                     obj["value"] = pycspr.factory.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
+    
+    return _Accessor()
+
+
+@pytest.fixture(scope="session")
+def cl_values() -> list:
+    class _Accessor():
+        """Streamlines access to cl values vector.
+        
+        """
+        def __init__(self):            
+            self.fixtures = _read_vector("cl-values-simple.json")
+            self._parse_fixtures()
+
+
+        def _parse_fixtures(self):
+            """Map input values to higher order domain types where appropriate.
+            
+            """
+            for obj in self.fixtures:
+                obj["cl_type"] = CLTypeKey[obj["cl_type"]]
+            for obj in self.fixtures:
+                    # if obj["cl_type"] == CLTypeKey.KEY:
+                    #     obj["value"] = pycspr.factory.create_key_from_string(obj["value"])
+                if obj["cl_type"] == CLTypeKey.LIST:
+                    obj["value"] = pycspr.factory.create_list(
+                        obj["value"], CLTypeKey[obj["cl_type_item"]]
+                        )
+                    print(obj["value"])
     
     return _Accessor()
 

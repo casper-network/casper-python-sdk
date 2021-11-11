@@ -28,7 +28,7 @@ def test_create_standard_payment():
         pycspr.factory.create_standard_payment(
             amount = random.randint(0, 1e5),
         ),
-        pycspr.types.ExecutableDeployItem_ModuleBytes
+        pycspr.types.ModuleBytes
         )
 
 
@@ -39,7 +39,7 @@ def test_create_native_transfer_session():
             correlation_id = random.randint(0, 1e9),
             target = bytes([]),
             ),
-        pycspr.types.ExecutableDeployItem_Transfer
+        pycspr.types.Transfer
         )
 
 

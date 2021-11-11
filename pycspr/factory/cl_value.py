@@ -6,19 +6,18 @@ from pycspr.types import CLAccessRights
 from pycspr.types import CLType
 from pycspr.types import CLValue
 from pycspr.types import PublicKey
-from pycspr.types import StorageKey
-from pycspr.types import StorageKeyType
+from pycspr.types import Key
+from pycspr.types import KeyType
 from pycspr.types import UnforgeableReference
 
 
 # TODO
-# OPTION = 13
-# RESULT = 16
+# ANY = 21
 # MAP = 17
+# RESULT = 16
 # TUPLE_1 = 18
 # TUPLE_2 = 19
 # TUPLE_3 = 20
-# ANY = 21
 
 
 def boolean(value: bool) -> CLValue:
@@ -49,6 +48,31 @@ def i64(value: int) -> CLValue:
         )
 
 
+def key(value: bytes, key_type: typing.Union[KeyType, int]) -> CLValue:
+    return CLValue(
+        cl_type_factory.key(),
+        Key(value, key_type)
+        )
+
+
+def key_from_string(value: str) -> CLValue:
+    identifier = bytes.fromhex(value.split("-")[-1])
+    if value.startswith("account-hash-"):        
+        return key(identifier, KeyType.ACCOUNT)
+    elif value.startswith("hash-"):
+        return key(identifier, KeyType.HASH)
+    elif value.startswith("uref-"):
+        return key(identifier, KeyType.UREF)
+    else:
+        raise ValueError(f"Invalid key: {value}")
+
+
+    return CLValue(
+        cl_type_factory.key(key_type),
+        Key(value, key_type)
+        )
+
+
 def list(inner_type: CLType, value: list) -> CLValue:
     return CLValue(
         cl_type_factory.list(inner_type),
@@ -70,13 +94,6 @@ def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
     return CLValue(
         cl_type_factory.public_key(),
         value
-        )
-
-
-def storage_key(value: bytes, key_type: StorageKeyType) -> CLValue:
-    return CLValue(
-        cl_type_factory.key(key_type),
-        StorageKey(value, key_type)
         )
 
 
@@ -139,9 +156,15 @@ def unit() -> CLValue:
 def uref(address: bytes, access_rights: CLAccessRights) -> CLValue:
     return CLValue(
         cl_type_factory.uref(),
-        UnforgeableReference(address, access_rights)
+        UnforgeableReference(access_rights, address)
         )
 
 
-def create(value: object, cl_type: CLType) -> CLValue:
-    return CLValue(cl_type, value)
+def uref_from_string(value: str) -> CLValue:
+    _, address, access_rights = value.split("-")
+
+    return uref(bytes.fromhex(address), CLAccessRights(int(access_rights)))
+
+
+def create(cl_type: CLType, parsed: object) -> CLValue:
+    return CLValue(cl_type, parsed)

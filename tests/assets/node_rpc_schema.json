@@ -1408,10 +1408,10 @@ $nctl-view-node-rpc-schema
             "$ref": "#/components/schemas/DeployHeader"
           },
           "payment": {
-            "$ref": "#/components/schemas/ExecutableDeployItem"
+            "$ref": "#/components/schemas/DeployExecutableItem"
           },
           "session": {
-            "$ref": "#/components/schemas/ExecutableDeployItem"
+            "$ref": "#/components/schemas/DeployExecutableItem"
           },
           "approvals": {
             "type": "array",
@@ -1492,7 +1492,7 @@ $nctl-view-node-rpc-schema
         "format": "uint64",
         "minimum": 0
       },
-      "ExecutableDeployItem": {
+      "DeployExecutableItem": {
         "anyOf": [
           {
             "type": "object",
