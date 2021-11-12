@@ -1,21 +1,13 @@
 import dataclasses
-import datetime
 import typing
 
 from pycspr import crypto
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
+from pycspr.types.chain import ContractHash
+from pycspr.types.chain import ContractVersion
+from pycspr.types.chain import Timestamp
 from pycspr.types.cl_value import CLValue
-
-
-# On chain contract identifier.
-ContractHash = typing.NewType("Static contract pointer", bytes)
-
-# On chain contract version.
-ContractVersion = typing.NewType("U32 integer representing", int)
-
-# A timestamp encodeable as millisecond precise seconds since epoch.
-Timestamp = typing.NewType("POSIX timestamp", datetime.datetime)
 
 
 @dataclasses.dataclass

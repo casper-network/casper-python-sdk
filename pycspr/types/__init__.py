@@ -1,11 +1,24 @@
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
+
+from pycspr.types.chain import AccountIdentifer
 from pycspr.types.chain import BlockIdentifer
-from pycspr.types.chain import OptionalBlockIdentifer
+from pycspr.types.chain import DeployIdentifer
+from pycspr.types.chain import DictionaryIdentifier
+from pycspr.types.chain import DictionaryIdentifier_AccountNamedKey
+from pycspr.types.chain import DictionaryIdentifier_ContractNamedKey
+from pycspr.types.chain import DictionaryIdentifier_SeedURef
+from pycspr.types.chain import DictionaryIdentifier_UniqueKey
+from pycspr.types.chain import StateKey
+from pycspr.types.chain import StateKeyType
+from pycspr.types.chain import StateRootIdentifier
+from pycspr.types.chain import List
+from pycspr.types.chain import UnforgeableReference
 
 from pycspr.types.cl_enums import CLAccessRights
 from pycspr.types.cl_enums import CLKeyType
 from pycspr.types.cl_enums import CLTypeKey
+
 from pycspr.types.cl_type import CLType
 from pycspr.types.cl_type import CLType_Any
 from pycspr.types.cl_type import CLType_Boolean
@@ -48,13 +61,3 @@ from pycspr.types.deploy import StoredContractByName
 from pycspr.types.deploy import StoredContractByNameVersioned
 from pycspr.types.deploy import Timestamp
 from pycspr.types.deploy import Transfer
-
-from pycspr.types.state import DictionaryIdentifier
-from pycspr.types.state import DictionaryIdentifier_AccountNamedKey
-from pycspr.types.state import DictionaryIdentifier_ContractNamedKey
-from pycspr.types.state import DictionaryIdentifier_SeedURef
-from pycspr.types.state import DictionaryIdentifier_UniqueKey
-from pycspr.types.state import StateKey
-from pycspr.types.state import StateKeyType
-from pycspr.types.state import List
-from pycspr.types.state import UnforgeableReference

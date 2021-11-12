@@ -3,11 +3,11 @@ from pycspr.serialisation import cl_bool
 from pycspr.serialisation import cl_byte_array
 from pycspr.serialisation import cl_i32
 from pycspr.serialisation import cl_i64
-from pycspr.serialisation import cl_key
 from pycspr.serialisation import cl_map
 from pycspr.serialisation import cl_option
 from pycspr.serialisation import cl_public_key
 from pycspr.serialisation import cl_result
+from pycspr.serialisation import cl_key
 from pycspr.serialisation import cl_string
 from pycspr.serialisation import cl_tuple_1
 from pycspr.serialisation import cl_tuple_2

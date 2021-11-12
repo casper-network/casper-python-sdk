@@ -28,8 +28,8 @@ class NodeClient():
 
     def get_account_balance(
         self,
-        purse_uref: typing.Union[str, types.UnforgeableReference],
-        state_root_hash: typing.Union[bytes, None] = None
+        purse_uref: types.UnforgeableReference,
+        state_root_hash: types.StateRootIdentifier = None
     ) -> int:
         """Returns account balance at a certain global state root hash.
 
@@ -49,8 +49,8 @@ class NodeClient():
 
     def get_account_info(
         self,
-        account_key: typing.Union[bytes, str],
-        block_id: types.OptionalBlockIdentifer = None
+        account_key: types.AccountIdentifer,
+        block_id: types.BlockIdentifer = None
     ) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -69,8 +69,8 @@ class NodeClient():
 
     def get_account_main_purse_uref(
         self,
-        account_key: typing.Union[bytes, str],
-        block_id: types.OptionalBlockIdentifer = None
+        account_key: types.AccountIdentifer,
+        block_id: types.BlockIdentifer = None
     ) -> types.UnforgeableReference:
         """Returns an on-chain account's main purse unforgeable reference.
 
@@ -86,9 +86,9 @@ class NodeClient():
 
     def get_account_named_key(
         self,
-        account_key: typing.Union[bytes, str],
+        account_key: types.AccountIdentifer,
         key_name: str,
-        block_id: types.OptionalBlockIdentifer = None
+        block_id: types.BlockIdentifer = None
     ) -> str:
         """Returns a named key stored under an account.
 
@@ -104,10 +104,7 @@ class NodeClient():
         return None if len(named_keys) == 0 else named_keys[0]["key"]
 
 
-    def get_auction_info(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
-    ) -> dict:
+    def get_auction_info(self, block_id: types.BlockIdentifer = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -121,7 +118,7 @@ class NodeClient():
         return response
 
 
-    def get_block(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
+    def get_block(self, block_id: types.BlockIdentifer = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -160,10 +157,7 @@ class NodeClient():
             time.sleep(polling_interval_seconds)
 
 
-    def get_block_transfers(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
-    ) -> typing.Tuple[str, list]:
+    def get_block_transfers(self, block_id: types.BlockIdentifer = None) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -178,7 +172,7 @@ class NodeClient():
         return (response["block_hash"], response["transfers"])
 
 
-    def get_deploy(self, deploy_id: typing.Union[bytes, str]) -> dict:
+    def get_deploy(self, deploy_id: types.DeployIdentifer) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_id: Identifier of a finalised block.
@@ -204,7 +198,7 @@ class NodeClient():
             )
 
 
-    def get_era_info(self, block_id: types.OptionalBlockIdentifer = None) -> dict:
+    def get_era_info(self, block_id: types.BlockIdentifer = None) -> dict:
         """Returns current era information.
 
         :param block_id: Identifier of a finalised block.
@@ -322,7 +316,7 @@ class NodeClient():
         self,
         item_key: str,
         item_path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: typing.Union[bytes, None] = None
+        state_root_hash: types.StateRootIdentifier = None
     ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
@@ -342,10 +336,7 @@ class NodeClient():
         return response["stored_value"]
 
 
-    def get_state_root_hash(
-        self,
-        block_id: types.OptionalBlockIdentifer = None
-    ) -> bytes:
+    def get_state_root_hash(self, block_id: types.BlockIdentifer = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
