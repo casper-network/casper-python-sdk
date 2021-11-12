@@ -15,12 +15,12 @@ class PublicKey:
     pbk: bytes
 
     @property
-    def account_hash(self):
+    def account_hash(self) -> bytes:
         """Returns on-chain account hash."""
         return crypto.get_account_hash(self.account_key)
 
     @property
-    def account_key(self):
+    def account_key(self) -> bytes:
         """Returns on-chain account key."""
         return crypto.get_account_key(self.algo, self.pbk)
 
@@ -66,14 +66,14 @@ class PrivateKey:
         return self.algo
 
     @property
-    def account_hash(self):
+    def account_hash(self) -> bytes:
         """Returns on-chain account hash.
 
         """
         return crypto.get_account_hash(self.account_key)
 
     @property
-    def account_key(self):
+    def account_key(self) -> bytes:
         """Returns on-chain account key.
 
         """

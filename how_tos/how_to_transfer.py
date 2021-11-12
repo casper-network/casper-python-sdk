@@ -134,7 +134,7 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
         )
 
     # Set deploy.
-    deploy = pycspr.create_native_transfer(
+    deploy = pycspr.create_transfer(
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_hash,

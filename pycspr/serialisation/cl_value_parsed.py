@@ -62,7 +62,7 @@ def from_bytes(value: bytes) -> object:
 
 def to_bytes(value: CLValue) -> bytes:
     serialiser = CL_VALUE_SERIALISERS[value.cl_type.type_key]
-    if value.cl_type.type_key in {CLTypeKey.LIST, CLTypeKey.OPTION}:
+    if value.cl_type.type_key in {CLTypeKey.OPTION, }:
         inner_serialiser = CL_VALUE_SERIALISERS[value.cl_type.inner_type.type_key]
         return serialiser.to_bytes(value.parsed, inner_serialiser)
     else:

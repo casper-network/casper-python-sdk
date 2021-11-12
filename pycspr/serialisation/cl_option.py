@@ -10,7 +10,6 @@ def to_bytes(value: object, inner_serialiser: typing.Callable) -> bytes:
 
 
 def from_json(value: dict) -> object:
-    print(444, value)
     raise NotImplementedError()
 
 

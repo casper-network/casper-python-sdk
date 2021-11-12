@@ -1,87 +1,52 @@
-import datetime
 import random
 
 import pycspr
+from pycspr.types import Deploy
 
 
-def test_create_deploy_parameters(a_test_account, a_test_chain_id):
-    assert isinstance(
-        pycspr.factory.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
-                a_test_account.algo,
-                a_test_account.pbk
-            ),
-            chain_name=a_test_chain_id,
-            dependencies=[],
-            gas_price=random.randint(0, 65),
-            timestamp=datetime.datetime.now(tz=datetime.timezone.utc).timestamp(),
-            ttl="1day",
+def test_create_validator_auction_bid(deploy_params, a_test_account, path_to_wasm_auction_bid):
+    assert isinstance(pycspr.create_validator_auction_bid(
+        params=deploy_params,
+        amount=random.randint(0, 1e9),
+        delegation_rate=random.randint(0, 20),
+        public_key=a_test_account.as_public_key(),
+        path_to_wasm=path_to_wasm_auction_bid
         ),
-        pycspr.types.DeployParameters
+        Deploy
         )
 
 
-def test_create_standard_payment():
-    assert isinstance(
-        pycspr.factory.create_standard_payment(
-            amount=random.randint(0, 1e5),
+def test_create_validator_auction_bid_withdrawal(deploy_params, a_test_account, a_test_uref, path_to_wasm_auction_bid_withdrawal):
+    assert isinstance(pycspr.create_validator_auction_bid_withdrawal(
+        params=deploy_params,
+        amount=random.randint(0, 1e9),
+        public_key=a_test_account.as_public_key(),
+        path_to_wasm=path_to_wasm_auction_bid_withdrawal,
+        unbond_purse=a_test_uref
         ),
-        pycspr.types.ModuleBytes
+        Deploy
         )
 
 
-def test_create_native_transfer_session():
-    assert isinstance(
-        pycspr.factory.create_native_transfer_session(
-            amount=random.randint(0, 1e9),
-            correlation_id=random.randint(0, 1e9),
-            target=bytes([]),
-            ),
-        pycspr.types.Transfer
-        )
-
-
-def test_create_native_transfer_body(deploy_params):
-    payment = pycspr.factory.create_standard_payment(
-        amount=random.randint(0, 1e5),
-        )
-    session = pycspr.factory.create_native_transfer_session(
+def test_create_validator_delegate(deploy_params, a_test_account, path_to_wasm_delegate):
+    assert isinstance(pycspr.create_validator_delegation(
+        params=deploy_params,
         amount=random.randint(0, 1e9),
-        correlation_id=random.randint(0, 1e9),
-        target=bytes([]),
+        public_key_of_delegator=a_test_account.as_public_key(),
+        public_key_of_validator=a_test_account.as_public_key(),
+        path_to_wasm=path_to_wasm_delegate
+        ),
+        Deploy
         )
-    body = pycspr.factory.create_deploy_body(payment, session)
-    assert isinstance(body, pycspr.types.DeployBody)
-    assert isinstance(body.hash, bytes)
-    assert len(body.hash) == 32
 
 
-def test_create_native_transfer_header(deploy_params):
-    payment = pycspr.factory.create_standard_payment(
-        amount=random.randint(0, 1e5),
-        )
-    session = pycspr.factory.create_native_transfer_session(
+def test_create_validator_delegate_withdrawal(deploy_params, a_test_account, path_to_wasm_delegate_withdrawal):
+    assert isinstance(pycspr.create_validator_delegation_withdrawal(
+        params=deploy_params,
         amount=random.randint(0, 1e9),
-        correlation_id=random.randint(0, 1e9),
-        target=bytes([]),
+        public_key_of_delegator=a_test_account.as_public_key(),
+        public_key_of_validator=a_test_account.as_public_key(),
+        path_to_wasm=path_to_wasm_delegate_withdrawal
+        ),
+        Deploy
         )
-    body = pycspr.factory.create_deploy_body(payment, session)
-    header = pycspr.factory.create_deploy_header(body, deploy_params)
-    assert isinstance(header, pycspr.types.DeployHeader)
-    assert isinstance(header.body_hash, bytes)
-    assert len(header.body_hash) == 32
-
-
-def test_create_native_transfer_deploy(deploy_params, cp2):
-    session = pycspr.factory.create_native_transfer_session(
-        amount=random.randint(0, 1e9),
-        correlation_id=random.randint(0, 1e9),
-        target=cp2.account_hash,
-        )
-    payment = pycspr.factory.create_standard_payment(
-        amount=random.randint(0, 1e5),
-        )
-    deploy = pycspr.factory.create_deploy(deploy_params, payment, session)
-    assert isinstance(deploy, pycspr.types.Deploy)
-    assert isinstance(deploy.hash, bytes)
-    assert len(deploy.hash) == 32

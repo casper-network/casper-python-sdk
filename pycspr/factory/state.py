@@ -50,33 +50,33 @@ def create_dictionary_identifier_for_a_unique_key(key: str) -> DictionaryIdentif
     return DictionaryIdentifier_UniqueKey(key=key)
 
 
-def create_key(identifier: bytes, typeof: StateKeyType) -> StateKey:
+def create_list(items: typing.List, item_type: CLTypeKey) -> List:
+    """Returns a list of items.
+
+    """
+    return List(items, item_type)
+
+
+def create_state_key(identifier: bytes, typeof: StateKeyType) -> StateKey:
     """Returns a global state value key.
 
     """
     return StateKey(identifier, typeof)
 
 
-def create_key_from_string(as_string: str) -> StateKey:
+def create_state_key_from_string(as_string: str) -> StateKey:
     """Returns a global state value key derived froma string representation.
 
     """
     identifier = bytes.fromhex(as_string.split("-")[-1])
     if as_string.startswith("account-hash-"):
-        return create_key(identifier, StateKeyType.ACCOUNT)
+        return create_state_key(identifier, StateKeyType.ACCOUNT)
     elif as_string.startswith("hash-"):
-        return create_key(identifier, StateKeyType.HASH)
+        return create_state_key(identifier, StateKeyType.HASH)
     elif as_string.startswith("uref-"):
-        return create_key(identifier, StateKeyType.UREF)
+        return create_state_key(identifier, StateKeyType.UREF)
     else:
         raise ValueError(f"Invalid key: {as_string}")
-
-
-def create_list(items: typing.List, item_type: CLTypeKey) -> List:
-    """Returns a list of items.
-
-    """
-    return List(items, item_type)
 
 
 def create_uref_from_string(as_string: str) -> UnforgeableReference:

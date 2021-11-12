@@ -170,7 +170,26 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     )
 
 
-def create_native_transfer(
+def create_standard_payment(
+    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
+) -> ModuleBytes:
+    """Returns standard payment execution information.
+
+    :param amount: Maximum amount in motes to be used for standard payment.
+
+    """
+    return ModuleBytes(
+        args=[
+            create_deploy_arg(
+                "amount",
+                create_cl_value.u512(amount)
+                ),
+        ],
+        module_bytes=bytes([])
+        )
+
+
+def create_transfer(
     params: DeployParameters,
     amount: int,
     target: bytes,
@@ -186,12 +205,12 @@ def create_native_transfer(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS)
-    session = create_native_transfer_session(amount, target, correlation_id)
+    session = create_transfer_session(amount, target, correlation_id)
 
     return create_deploy(params, payment, session)
 
 
-def create_native_transfer_session(
+def create_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int = None,
@@ -223,25 +242,6 @@ def create_native_transfer_session(
                 ),
         ]
     )
-
-
-def create_standard_payment(
-    amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-) -> ModuleBytes:
-    """Returns standard payment execution information.
-
-    :param amount: Maximum amount in motes to be used for standard payment.
-
-    """
-    return ModuleBytes(
-        args=[
-            create_deploy_arg(
-                "amount",
-                create_cl_value.u512(amount)
-                ),
-        ],
-        module_bytes=bytes([])
-        )
 
 
 def create_validator_auction_bid(
@@ -314,7 +314,7 @@ def create_validator_auction_bid_withdrawal(
                 ),
             create_deploy_arg(
                 "unbond_purse",
-                create_cl_value.uref(unbond_purse)
+                create_cl_value.uref_from_string(unbond_purse)
                 ),
             ]
         )

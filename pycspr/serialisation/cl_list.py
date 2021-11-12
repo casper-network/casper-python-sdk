@@ -57,7 +57,7 @@ def from_bytes(value: bytes) -> List:
 
 
 def to_bytes(value: List) -> bytes:
-    item_serialiser = _ITEM_SERIALISERS[value.item_type]
+    item_serialiser = _ITEM_SERIALISERS[value.item_type.type_key]
 
     return cl_vector.to_bytes([item_serialiser.to_bytes(i) for i in value.items])
 

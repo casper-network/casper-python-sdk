@@ -13,7 +13,7 @@ _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 
 @pytest.fixture(scope="session")
-def a_test_account(crypto_key_pairs):
+def a_test_account(crypto_key_pairs) -> pycspr.types.PrivateKey:
     """Returns a test account key.
 
     """

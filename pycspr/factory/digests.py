@@ -29,7 +29,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     body_hash = create_cl_value.byte_array(header.body_hash)
 
     # Element 6: dependencies.
-    dependencies = create_cl_value.list(create_cl_type.string(), header.dependencies)
+    dependencies = create_cl_value.list(header.dependencies, create_cl_type.string())
 
     # Element 7: chain-name.
     chain_name = create_cl_value.string(header.chain_name)

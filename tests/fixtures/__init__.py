@@ -10,9 +10,14 @@ from tests.fixtures.chain import block_hash
 from tests.fixtures.chain import state_root_hash
 from tests.fixtures.chain import switch_block
 from tests.fixtures.chain import switch_block_hash
+from tests.fixtures.contracts import path_to_wasm_auction_bid
+from tests.fixtures.contracts import path_to_wasm_auction_bid_withdrawal
+from tests.fixtures.contracts import path_to_wasm_delegate
+from tests.fixtures.contracts import path_to_wasm_delegate_withdrawal
 from tests.fixtures.deploys import a_test_chain_id
 from tests.fixtures.deploys import a_test_timestamp
 from tests.fixtures.deploys import a_test_ttl_humanized
+from tests.fixtures.deploys import a_test_uref
 from tests.fixtures.deploys import deploy_params
 from tests.fixtures.deploys import deploy_params_static
 from tests.fixtures.deploys import a_deploy

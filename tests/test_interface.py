@@ -75,7 +75,7 @@ _INTERFACE_OF_LIBRARY = {
         "create_deploy_parameters",
         "create_deploy_ttl",
         "create_key",
-        "create_native_transfer",
+        "create_transfer",
         "create_standard_payment",
         "create_uref_from_string",
         "create_validator_auction_bid",

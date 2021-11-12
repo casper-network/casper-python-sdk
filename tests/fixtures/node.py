@@ -1,8 +1,11 @@
 import os
+import pathlib
 
 import pytest
 
 import pycspr
+
+_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 
 @pytest.fixture(scope="session")

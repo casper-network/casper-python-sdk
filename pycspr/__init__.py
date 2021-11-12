@@ -35,8 +35,8 @@ from pycspr.factory import create_deploy_approval
 from pycspr.factory import create_deploy_arg
 from pycspr.factory import create_deploy_parameters
 from pycspr.factory import create_deploy_ttl
-from pycspr.factory import create_key
-from pycspr.factory import create_native_transfer
+from pycspr.factory import create_state_key
+from pycspr.factory import create_transfer
 from pycspr.factory import create_standard_payment
 from pycspr.factory import create_uref_from_string
 from pycspr.factory import create_validator_auction_bid

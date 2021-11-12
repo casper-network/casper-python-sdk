@@ -6,6 +6,7 @@ from pycspr.factory.accounts import create_public_key_from_account_key
 from pycspr.types import CLAccessRights
 from pycspr.types import CLType
 from pycspr.types import CLValue
+from pycspr.types import List
 from pycspr.types import StateKey
 from pycspr.types import StateKeyType
 from pycspr.types import PublicKey
@@ -21,6 +22,7 @@ def boolean(value: bool) -> CLValue:
         create_cl_type.boolean(),
         value
         )
+
 
 def byte_array(value: bytes) -> CLValue:
     return CLValue(
@@ -62,10 +64,10 @@ def key_from_string(value: str) -> CLValue:
         raise ValueError(f"Invalid key: {value}")
 
 
-def list(inner_type: CLType, value: list) -> CLValue:
+def list(value: list, inner_type: CLType) -> CLValue:
     return CLValue(
         create_cl_type.list(inner_type),
-        value
+        List(value, inner_type)
         )
 
 
@@ -83,7 +85,6 @@ def option(inner_type: CLType, value: object = None) -> CLValue:
 def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
     if isinstance(value, bytes):
         value = create_public_key_from_account_key(value)
-        value = PublicKey(KeyAlgorithm(value[0]), value[1:])
 
     return CLValue(
         create_cl_type.public_key(),

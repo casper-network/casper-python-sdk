@@ -14,8 +14,8 @@ from pycspr.factory.deploys import create_deploy_body
 from pycspr.factory.deploys import create_deploy_header
 from pycspr.factory.deploys import create_deploy_parameters
 from pycspr.factory.deploys import create_deploy_ttl
-from pycspr.factory.deploys import create_native_transfer
-from pycspr.factory.deploys import create_native_transfer_session
+from pycspr.factory.deploys import create_transfer
+from pycspr.factory.deploys import create_transfer_session
 from pycspr.factory.deploys import create_standard_payment
 from pycspr.factory.deploys import create_validator_auction_bid
 from pycspr.factory.deploys import create_validator_auction_bid_withdrawal
@@ -23,7 +23,7 @@ from pycspr.factory.deploys import create_validator_delegation
 from pycspr.factory.deploys import create_validator_delegation_withdrawal
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.factory.state import create_key
-from pycspr.factory.state import create_key_from_string
-from pycspr.factory.state import create_uref_from_string
 from pycspr.factory.state import create_list
+from pycspr.factory.state import create_state_key
+from pycspr.factory.state import create_state_key_from_string
+from pycspr.factory.state import create_uref_from_string

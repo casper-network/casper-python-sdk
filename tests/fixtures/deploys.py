@@ -12,25 +12,16 @@ _A_KNOWN_DEPLOY_HUMANIZED_TTL = "1day"
 
 @pytest.fixture(scope="session")
 def a_test_chain_id() -> str:
-    """Returns name of a test chain.
-
-    """
     return "casper-net-1"
 
 
 @pytest.fixture(scope="session")
 def a_test_timestamp() -> int:
-    """Returns a test timestamp.
-
-    """
     return datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
 
 
 @pytest.fixture(scope="session")
 def a_test_ttl_humanized() -> str:
-    """Returns a humanized time interval.
-
-    """
     (unit, quantity) = random.choice((
         ("ms", random.randint(1, 1000 * 60 * 60 * 24)),
         ("s", random.randint(1, 60)),
@@ -42,11 +33,13 @@ def a_test_ttl_humanized() -> str:
     return f"{quantity}{unit}"
 
 
+@pytest.fixture(scope="session")
+def a_test_uref() -> str:
+    return "uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007"
+
+
 @pytest.fixture(scope="function")
 def deploy_params(a_test_chain_id, a_test_ttl_humanized, cp1):
-    """Returns standard deploy parameters with current timestamp.
-
-    """
     return pycspr.factory.create_deploy_parameters(
             account=pycspr.factory.create_public_key(
                 cp1.algo,
@@ -62,9 +55,6 @@ def deploy_params(a_test_chain_id, a_test_ttl_humanized, cp1):
 
 @pytest.fixture(scope="function")
 def deploy_params_static(a_test_chain_id, test_account_1):
-    """Returns standard deploy parameters with known timestamp.
-
-    """
     return pycspr.factory.create_deploy_parameters(
             account=pycspr.factory.create_public_key(
                 test_account_1.algo,
@@ -80,10 +70,7 @@ def deploy_params_static(a_test_chain_id, test_account_1):
 
 @pytest.fixture(scope="function")
 def a_deploy(deploy_params, cp1, cp2):
-    """Returns hash of most next switch.
-
-    """
-    deploy = pycspr.factory.create_native_transfer(
+    deploy = pycspr.factory.create_transfer(
         deploy_params,
         amount=2500000000,
         correlation_id=1,
