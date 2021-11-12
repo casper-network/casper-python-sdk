@@ -1,17 +1,18 @@
 import pycspr
+from pycspr import create_cl_type
 
 
 def test_create_deploy_arg_simple(vector_cl_types):
     for type_key in vector_cl_types.SIMPLE_TYPES:
         for vector in vector_cl_types.get_vectors(type_key):
-            cl_type = pycspr.cl_type_factory.simple(type_key)
+            cl_type = create_cl_type.simple(type_key)
             _assert_arg(vector["value"], cl_type)
 
 
 def test_create_deploy_arg_byte_array(vector_cl_types):
     for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.BYTE_ARRAY):
         value = bytes.fromhex(vector["value"])
-        cl_type = pycspr.cl_type_factory.byte_array(len(value))
+        cl_type = create_cl_type.byte_array(len(value))
         _assert_arg(value, cl_type)
 
 
@@ -19,8 +20,8 @@ def test_create_deploy_arg_list(vector_cl_types):
     for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.LIST):
         type_key_item = pycspr.types.CLTypeKey[vector["typeof_item"]]
         if type_key_item in vector_cl_types.SIMPLE_TYPES:
-            cl_type_item = pycspr.cl_type_factory.simple(type_key_item)
-            cl_type = pycspr.cl_type_factory.list(cl_type_item)
+            cl_type_item = create_cl_type.simple(type_key_item)
+            cl_type = create_cl_type.list(cl_type_item)
             _assert_arg(vector["value"], cl_type)
 
 
@@ -30,9 +31,9 @@ def test_create_deploy_arg_map(vector_cl_types):
         type_key_of_map_value = pycspr.types.CLTypeKey[vector["typeof_value"]]
         if type_key_of_map_key in vector_cl_types.SIMPLE_TYPES and \
            type_key_of_map_value in vector_cl_types.SIMPLE_TYPES:
-            cl_type_map_key = pycspr.cl_type_factory.simple(type_key_of_map_key)
-            cl_type_map_value = pycspr.cl_type_factory.simple(type_key_of_map_value)
-            cl_type = pycspr.cl_type_factory.map(cl_type_map_key, cl_type_map_value)
+            cl_type_map_key = create_cl_type.simple(type_key_of_map_key)
+            cl_type_map_value = create_cl_type.simple(type_key_of_map_value)
+            cl_type = create_cl_type.map(cl_type_map_key, cl_type_map_value)
             _assert_arg(vector["value"], cl_type)
 
 
@@ -40,8 +41,8 @@ def test_create_deploy_arg_tuple_1(vector_cl_types):
     for vector in vector_cl_types.get_vectors(pycspr.types.CLTypeKey.TUPLE_1):
         type_key_t0 = pycspr.types.CLTypeKey[vector["typeof_t0"]]
         if type_key_t0 in vector_cl_types.SIMPLE_TYPES:
-            cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
-            cl_type = pycspr.cl_type_factory.tuple_1(cl_type_t0)
+            cl_type_t0 = create_cl_type.simple(type_key_t0)
+            cl_type = create_cl_type.tuple_1(cl_type_t0)
             _assert_arg(vector["value"], cl_type)
 
 
@@ -51,9 +52,9 @@ def test_create_deploy_arg_tuple_2(vector_cl_types):
         type_key_t1 = pycspr.types.CLTypeKey[vector["typeof_t1"]]
         if type_key_t0 in vector_cl_types.SIMPLE_TYPES and \
            type_key_t1 in vector_cl_types.SIMPLE_TYPES:
-            cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
-            cl_type_t1 = pycspr.cl_type_factory.simple(type_key_t1)
-            cl_type = pycspr.cl_type_factory.tuple_2(cl_type_t0, cl_type_t1)
+            cl_type_t0 = create_cl_type.simple(type_key_t0)
+            cl_type_t1 = create_cl_type.simple(type_key_t1)
+            cl_type = create_cl_type.tuple_2(cl_type_t0, cl_type_t1)
             _assert_arg(vector["value"], cl_type)
 
 
@@ -65,15 +66,15 @@ def test_create_deploy_arg_tuple_3(vector_cl_types):
         if type_key_t0 in vector_cl_types.SIMPLE_TYPES and \
            type_key_t1 in vector_cl_types.SIMPLE_TYPES and \
            type_key_t2 in vector_cl_types.SIMPLE_TYPES:
-            cl_type_t0 = pycspr.cl_type_factory.simple(type_key_t0)
-            cl_type_t1 = pycspr.cl_type_factory.simple(type_key_t1)
-            cl_type_t2 = pycspr.cl_type_factory.simple(type_key_t2)
-            cl_type = pycspr.cl_type_factory.tuple_3(cl_type_t0, cl_type_t1, cl_type_t2)
+            cl_type_t0 = create_cl_type.simple(type_key_t0)
+            cl_type_t1 = create_cl_type.simple(type_key_t1)
+            cl_type_t2 = create_cl_type.simple(type_key_t2)
+            cl_type = create_cl_type.tuple_3(cl_type_t0, cl_type_t1, cl_type_t2)
             _assert_arg(vector["value"], cl_type)
 
 
 def _assert_arg(value, cl_type):
-    cl_value = pycspr.cl_value.create(cl_type, value)
+    cl_value = pycspr.create_cl_value.create(cl_type, value)
     arg_name = f"a-{cl_type.type_key.name.lower()}-arg"
     arg = pycspr.create_deploy_arg(arg_name, cl_value)
     assert isinstance(arg, pycspr.types.DeployArgument)

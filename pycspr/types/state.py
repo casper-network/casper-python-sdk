@@ -22,6 +22,13 @@ class UnforgeableReference():
         return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
 
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.access_rights == other.access_rights and \
+               self.address == other.address
+
+
 @dataclasses.dataclass
 class DictionaryIdentifier():
     """A set of variants for performation dictionary item state queries.
@@ -44,6 +51,13 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
     # The account key as a formatted string whose named keys contains dictionary_name.
     key: str
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.dictionary_item_key == other.dictionary_item_key and \
+               self.dictionary_name == other.dictionary_name and \
+               self.key == other.key
+
 
 @dataclasses.dataclass
 class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
@@ -59,6 +73,13 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     # The contract key as a formatted string whose named keys contains dictionary_name.
     key: str
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.dictionary_item_key == other.dictionary_item_key and \
+               self.dictionary_name == other.dictionary_name and \
+               self.key == other.key
+
 
 @dataclasses.dataclass
 class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
@@ -72,6 +93,12 @@ class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
     # The dictionary's seed URef.
     seed_uref: UnforgeableReference
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.dictionary_item_key == other.dictionary_item_key and \
+               self.seed_uref == other.seed_uref
+
 
 @dataclasses.dataclass
 class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
@@ -80,6 +107,10 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     """
     # The globally unique dictionary key.
     key: str
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.key == other.key
 
 
 class KeyType(enum.Enum):
@@ -102,14 +133,26 @@ class Key():
     # Key type identifier.
     key_type: KeyType
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.identifier == other.identifier and \
+               self.key_type == other.key_type
+
 
 @dataclasses.dataclass
 class List():
     """A pointer to a list of data.
 
     """
-    # 32 byte key identifier.
+    # Set of associated items.
     items: typing.List[object]
 
     # Item type identifier.
     item_type: KeyType
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.items == other.items and \
+               self.item_type == other.item_type

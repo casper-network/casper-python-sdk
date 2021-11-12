@@ -3,14 +3,12 @@ import typing
 
 from pycspr.serialisation import cl_type
 from pycspr.serialisation import cl_value
-from pycspr.serialisation import cl_value_parsed
 from pycspr.serialisation import deploy
 from pycspr.serialisation import deploy_approval
 from pycspr.serialisation import deploy_argument
 from pycspr.serialisation import deploy_executable_item
 from pycspr.serialisation import deploy_header
 from pycspr.serialisation import deploy_ttl
-from pycspr.serialisation.cl_value_parsed import CL_VALUE_SERIALISERS
 from pycspr.types import CLType
 from pycspr.types import CLValue
 from pycspr.types import Deploy
@@ -64,7 +62,6 @@ def from_json(entity_type: typing.Type, entity_as_json: str) -> object:
     :returns: Deserialised domain entity.
 
     """
-    print(entity_type, entity_as_json)
     serialiser = _get_serialiser(entity_type)
 
     return serialiser.from_json(json.loads(entity_as_json))

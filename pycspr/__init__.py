@@ -28,10 +28,8 @@ from pycspr.crypto import get_account_key_algo
 from pycspr.crypto import HashAlgorithm
 from pycspr.crypto import KeyAlgorithm
 
-from pycspr.factory import cl_type_factory
-from pycspr.factory import cl_value_factory
-from pycspr.factory import cl_value
-
+from pycspr.factory import create_cl_type
+from pycspr.factory import create_cl_value
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
 from pycspr.factory import create_deploy_arg

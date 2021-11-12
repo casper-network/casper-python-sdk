@@ -102,8 +102,8 @@ _INTERFACE_OF_LIBRARY = {
         "factory",
         "serialisation",
         "types",
-        "cl_type_factory",
-        "cl_value",
+        "create_cl_type",
+        "create_cl_value",
     }
 }
 

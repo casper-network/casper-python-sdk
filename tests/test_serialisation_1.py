@@ -6,20 +6,18 @@ from pycspr.types import CLType
 from pycspr.types import CLTypeKey
 
 
-def test_that_cl_types_serialise_as_bytes_correctly(vector_cl_types_1):
+def test_that_cl_types_serialise_to_bytes(vector_cl_types_1):
     for value in _yield_cl_types(vector_cl_types_1.fixtures):
         if not value:
             continue
         assert value == serialisation.from_bytes(serialisation.to_bytes(value))
 
 
-def test_that_cl_types_serialise_as_json_correctly(vector_cl_types_1):
+def test_that_cl_types_serialise_to_json(vector_cl_types_1):
     for value in _yield_cl_types(vector_cl_types_1.fixtures):
         if not value:
             continue
         assert value == serialisation.from_json(CLType, serialisation.to_json(value))
-    
-    # raise ValueError()
 
 
 def _yield_cl_types(fixtures: list) -> typing.Iterator[CLType]:

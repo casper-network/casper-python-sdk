@@ -29,6 +29,10 @@ class DeployArgument():
     # Argument cl type system value.
     value: CLValue
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.name == other.name and self.value == other.value
+
 
 @dataclasses.dataclass
 class DeployExecutableItem():
@@ -37,6 +41,10 @@ class DeployExecutableItem():
     """
     # Set of arguments mapped to endpoint parameters.
     args: typing.List[DeployArgument]
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.args == other.args
 
 
 @dataclasses.dataclass
@@ -47,6 +55,10 @@ class ModuleBytes(DeployExecutableItem):
     # Raw WASM payload.
     module_bytes: bytes
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.module_bytes == other.module_bytes
+
 
 @dataclasses.dataclass
 class StoredContract(DeployExecutableItem):
@@ -56,6 +68,10 @@ class StoredContract(DeployExecutableItem):
     # Name of a smart contract entry point to be executed.
     entry_point: str
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.entry_point == other.entry_point
+
 
 @dataclasses.dataclass
 class StoredContractByHash(StoredContract):
@@ -64,6 +80,10 @@ class StoredContractByHash(StoredContract):
     """
     # On-chain smart contract address.
     hash: ContractHash
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.hash == other.hash
 
 
 @dataclasses.dataclass
@@ -77,6 +97,10 @@ class StoredContractByHashVersioned(
     # Smart contract version identifier.
     version: ContractVersion
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.version == other.version
+
 
 @dataclasses.dataclass
 class StoredContractByName(StoredContract):
@@ -86,6 +110,10 @@ class StoredContractByName(StoredContract):
     """
     # On-chain smart contract name - in scope when dispatch & contract accounts are synonmous.
     name: str
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.name == other.name
 
 
 @dataclasses.dataclass
@@ -98,6 +126,10 @@ class StoredContractByNameVersioned(
     """
     # Smart contract version identifier.
     version: ContractVersion
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.version == other.version
 
 
 @dataclasses.dataclass
@@ -119,6 +151,12 @@ class DeployApproval:
     # The digital signatutre signalling approval of deploy processing.
     signature: bytes
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.signer == other.signer and \
+               self.signature == other.signature
+
 
 @dataclasses.dataclass
 class DeployBody():
@@ -135,6 +173,13 @@ class DeployBody():
     # Hash of payload.
     hash: bytes
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.payment == other.payment and \
+               self.session == other.session and \
+               self.hash == other.hash
+
 
 @dataclasses.dataclass
 class DeployTimeToLive():
@@ -146,6 +191,12 @@ class DeployTimeToLive():
 
     # Humanized representation of the ttl.
     humanized: str
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.as_milliseconds == other.as_milliseconds and \
+               self.humanized == other.humanized
 
 
 @dataclasses.dataclass
@@ -174,6 +225,17 @@ class DeployHeader():
     # Time interval after which the deploy will no longer be considered for processing by a node.
     ttl: DeployTimeToLive
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.account_public_key == other.account_public_key and \
+               self.body_hash == other.body_hash and \
+               self.chain_name == other.chain_name and \
+               self.dependencies == other.dependencies and \
+               self.gas_price == other.gas_price and \
+               self.timestamp == other.timestamp and \
+               self.ttl == other.ttl
+
 
 @dataclasses.dataclass
 class Deploy():
@@ -195,6 +257,16 @@ class Deploy():
 
     # Executable information passed to chain's VM.
     session: DeployExecutableItem
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.approvals == other.approvals and \
+               self.hash == other.hash and \
+               self.header == other.header and \
+               self.payment == other.payment and \
+               self.session == other.session
+
 
     def approve(self, approver: PrivateKey):
         """Creates a deploy approval & appends it to associated set.
@@ -255,3 +327,13 @@ class DeployParameters():
 
     # Time interval in milliseconds after which the deploy will no processed by a node.
     ttl: DeployTimeToLive
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.account_public_key == other.account_public_key and \
+               self.chain_name == other.chain_name and \
+               self.dependencies == other.dependencies and \
+               self.gas_price == other.gas_price and \
+               self.timestamp == other.timestamp and \
+               self.ttl == other.ttl

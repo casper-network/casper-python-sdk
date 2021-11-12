@@ -8,9 +8,9 @@ class CLType():
     """Base class encapsulating CL type information associated with a value.
 
     """
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
-        return self.type_key == other.type_key
+        return super().__eq__(other) and self.type_key == other.type_key
 
 
 @dataclasses.dataclass
@@ -42,7 +42,7 @@ class CLType_ByteArray(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.BYTE_ARRAY
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and self.size == other.size
 
@@ -85,7 +85,7 @@ class CLType_List(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.LIST
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and self.inner_type == other.inner_type
 
@@ -104,7 +104,7 @@ class CLType_Map(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.MAP
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and \
                self.key_type == other.key_type and \
@@ -122,7 +122,7 @@ class CLType_Option(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.OPTION
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and self.inner_type == other.inner_type
 
@@ -165,7 +165,7 @@ class CLType_Tuple1(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.TUPLE_1
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and self.t0_type == other.t0_type
 
@@ -184,7 +184,7 @@ class CLType_Tuple2(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.TUPLE_2
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and \
                self.t0_type == other.t0_type and \
@@ -209,7 +209,7 @@ class CLType_Tuple3(CLType):
     # CSPR type key.
     type_key: CLTypeKey = CLTypeKey.TUPLE_3
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and \
                self.t0_type == other.t0_type and \

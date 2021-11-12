@@ -1,19 +1,19 @@
 import typing
 
 from pycspr import serialisation
-from pycspr.factory import cl_value_factory
+from pycspr.factory import create_cl_value
 from pycspr.types import CLTypeKey
 from pycspr.types import CLValue
 
 
-def test_that_cl_values_serialise_as_bytes_correctly(vector_cl_values):
+def test_that_cl_values_serialise_to_bytes(vector_cl_values):
     for value in _yield_cl_values(vector_cl_values.fixtures):
         if not value:
             continue
         assert value == serialisation.from_bytes(serialisation.to_bytes(value))
 
 
-def test_that_cl_values_serialise_as_json_correctly(vector_cl_values):
+def test_that_cl_values_serialise_to_json(vector_cl_values):
     for value in _yield_cl_values(vector_cl_values.fixtures):
         if not value:
             continue
@@ -27,15 +27,15 @@ def _yield_cl_values(fixtures: list) -> typing.Iterator[CLValue]:
         if type_key == CLTypeKey.ANY:
             yield None
         elif type_key == CLTypeKey.BOOL:
-            yield cl_value_factory.boolean(value)
+            yield create_cl_value.boolean(value)
         elif type_key == CLTypeKey.BYTE_ARRAY:
-            yield cl_value_factory.byte_array(bytes.fromhex(value))
+            yield create_cl_value.byte_array(bytes.fromhex(value))
         elif type_key == CLTypeKey.I32:
-            yield cl_value_factory.i32(value)
+            yield create_cl_value.i32(value)
         elif type_key == CLTypeKey.I64:
-            yield cl_value_factory.i64(value)
+            yield create_cl_value.i64(value)
         elif type_key == CLTypeKey.KEY:
-            yield cl_value_factory.key_from_string(value)
+            yield create_cl_value.key_from_string(value)
         elif type_key == CLTypeKey.LIST:
             yield None
         elif type_key == CLTypeKey.MAP:
@@ -43,11 +43,11 @@ def _yield_cl_values(fixtures: list) -> typing.Iterator[CLValue]:
         elif type_key == CLTypeKey.OPTION:
             yield None
         elif type_key == CLTypeKey.PUBLIC_KEY:
-            yield cl_value_factory.public_key(bytes.fromhex(value))
+            yield create_cl_value.public_key(bytes.fromhex(value))
         elif type_key == CLTypeKey.RESULT:
             yield None
         elif type_key == CLTypeKey.STRING:
-            yield cl_value_factory.string(value)
+            yield create_cl_value.string(value)
         elif type_key == CLTypeKey.TUPLE_1:
             yield None
         elif type_key == CLTypeKey.TUPLE_2:
@@ -55,18 +55,18 @@ def _yield_cl_values(fixtures: list) -> typing.Iterator[CLValue]:
         elif type_key == CLTypeKey.TUPLE_3:
             yield None
         elif type_key == CLTypeKey.U8:
-            yield cl_value_factory.u8(value)
+            yield create_cl_value.u8(value)
         elif type_key == CLTypeKey.U32:
-            yield cl_value_factory.u32(value)
+            yield create_cl_value.u32(value)
         elif type_key == CLTypeKey.U64:
-            yield cl_value_factory.u64(value)
+            yield create_cl_value.u64(value)
         elif type_key == CLTypeKey.U128:
-            yield cl_value_factory.u128(value)
+            yield create_cl_value.u128(value)
         elif type_key == CLTypeKey.U256:
-            yield cl_value_factory.u256(value)
+            yield create_cl_value.u256(value)
         elif type_key == CLTypeKey.U512:
-            yield cl_value_factory.u512(value)
+            yield create_cl_value.u512(value)
         elif type_key == CLTypeKey.UNIT:
-            yield cl_value_factory.unit()
+            yield create_cl_value.unit()
         elif type_key == CLTypeKey.UREF:
-            yield cl_value_factory.uref_from_string(value)
+            yield create_cl_value.uref_from_string(value)

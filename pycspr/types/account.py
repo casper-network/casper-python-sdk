@@ -24,6 +24,10 @@ class PublicKey:
         """Returns on-chain account key."""
         return crypto.get_account_key(self.algo, self.pbk)
 
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and self.algo == other.algo and self.pbk == other.pbk
+
 
 @dataclasses.dataclass
 class PrivateKey:
@@ -38,6 +42,13 @@ class PrivateKey:
 
     # Algorithm used to generate ECC key pair.
     algo: crypto.KeyAlgorithm = crypto.KeyAlgorithm.ED25519
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.algo == other.algo and \
+               self.pvk == other.pvk and \
+               self.pbk == other.pbk
 
     @property
     def private_key(self) -> bytes:

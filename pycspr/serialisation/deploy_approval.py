@@ -7,7 +7,7 @@ def from_bytes(value: bytes) -> DeployApproval:
 
 
 def to_bytes(entity: DeployApproval) -> bytes:
-    raise NotImplementedError()
+    return entity.signer + entity.signature 
 
 
 def from_json(obj: dict) -> DeployApproval:

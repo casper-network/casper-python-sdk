@@ -125,7 +125,7 @@ def crypto_signatures() -> list:
 
 
 @pytest.fixture(scope="session")
-def deploy_1() -> list:
+def deploys_1() -> list:
     data = _read_vector("deploys-1.json")
     for i in data:
         i["bytes"]["payment"] = bytes.fromhex(i["bytes"]["payment"])

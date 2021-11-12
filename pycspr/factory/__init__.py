@@ -1,3 +1,5 @@
+from pycspr.factory import cl_type as create_cl_type
+from pycspr.factory import cl_value as create_cl_value
 from pycspr.factory.accounts import create_private_key
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.accounts import create_public_key_from_account_key
@@ -5,12 +7,6 @@ from pycspr.factory.accounts import parse_private_key
 from pycspr.factory.accounts import parse_private_key_bytes
 from pycspr.factory.accounts import parse_public_key
 from pycspr.factory.accounts import parse_public_key_bytes
-
-import pycspr.factory.cl_type as cl_type
-import pycspr.factory.cl_type as cl_type_factory
-import pycspr.factory.cl_value as cl_value
-import pycspr.factory.cl_value as cl_value_factory
-
 from pycspr.factory.deploys import create_deploy
 from pycspr.factory.deploys import create_deploy_approval
 from pycspr.factory.deploys import create_deploy_arg

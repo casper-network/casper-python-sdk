@@ -187,19 +187,19 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
         args=[
             pycspr.create_deploy_arg(
                 "token_decimals",
-                pycspr.cl_value.u8(args.token_decimals)
+                pycspr.create_cl_value.u8(args.token_decimals)
                 ),
             pycspr.create_deploy_arg(
                 "token_name",
-                pycspr.cl_value.string(args.token_name)
+                pycspr.create_cl_value.string(args.token_name)
                 ),
             pycspr.create_deploy_arg(
                 "token_symbol",
-                pycspr.cl_value.string(args.token_symbol)
+                pycspr.create_cl_value.string(args.token_symbol)
                 ),
             pycspr.create_deploy_arg(
                 "token_total_supply",
-                pycspr.cl_value.u256(args.token_total_supply)
+                pycspr.create_cl_value.u256(args.token_total_supply)
                 ),
         ]
     )

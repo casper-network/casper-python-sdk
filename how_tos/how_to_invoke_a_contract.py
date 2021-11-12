@@ -192,11 +192,11 @@ def _get_deploy(
         args=[
             pycspr.create_deploy_arg(
                 "amount",
-                pycspr.cl_value.u256(args.amount)
+                pycspr.create_cl_value.u256(args.amount)
                 ),
             pycspr.create_deploy_arg(
                 "recipient",
-                pycspr.cl_value.byte_array(user.account_hash)
+                pycspr.create_cl_value.byte_array(user.account_hash)
                 ),
         ]
     )

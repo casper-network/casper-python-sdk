@@ -21,4 +21,4 @@ class CLValue():
         """Instance equality comparator.
 
         """
-        return self.parsed == other.parsed
+        return super().__eq__(other) and self.parsed == other.parsed

@@ -28,4 +28,4 @@ from tests.fixtures.vectors import crypto_hashes
 from tests.fixtures.vectors import crypto_key_pairs
 from tests.fixtures.vectors import crypto_key_pair_specs
 from tests.fixtures.vectors import crypto_signatures
-from tests.fixtures.vectors import deploy_1
+from tests.fixtures.vectors import deploys_1

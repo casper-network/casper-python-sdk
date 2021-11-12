@@ -61,7 +61,12 @@ def to_bytes(entity: DeployExecutableItem) -> bytes:
         Transfer: _transfer,
     }
 
-    return _ENCODERS[type(entity)]() + _deploy_args()
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError(f"Unsupported DeployExecutableItem variant: {type(entity)}")
+    else:
+        return encoder() + _deploy_args()
 
 
 def from_json(obj: dict) -> DeployExecutableItem:
@@ -74,26 +79,36 @@ def from_json(obj: dict) -> DeployExecutableItem:
     def _stored_contract_by_hash(obj) -> dict:
         return StoredContractByHash(
             args=[deploy_argument.from_json(i) for i in obj["args"]],
+            entry_point=obj["entry_point"],
+            hash=bytes.fromhex(obj["hash"])
         )
 
     def _stored_contract_by_hash_versioned(obj) -> dict:
-        return StoredContractByHash(
+        return StoredContractByHashVersioned(
             args=[deploy_argument.from_json(i) for i in obj["args"]],
+            entry_point=obj["entry_point"],
+            hash=bytes.fromhex(obj["hash"]),
+            version=obj["version"]
         )
 
     def _stored_contract_by_name(obj) -> dict:
         return StoredContractByName(
             args=[deploy_argument.from_json(i) for i in obj["args"]],
+            entry_point=obj["entry_point"],
+            name=obj["name"],
         )
 
     def _stored_contract_by_name_versioned(obj) -> dict:
         return StoredContractByNameVersioned(
-            args=[deploy_argument.from_json(i) for i in object["args"]],
+            args=[deploy_argument.from_json(i) for i in obj["args"]],
+            entry_point=obj["entry_point"],
+            name=obj["name"],
+            version=obj["version"]
         )
 
     def _transfer(obj):
         return Transfer(
-            args=[deploy_argument.from_json(i) for i in obj["Transfer"]["args"]],
+            args=[deploy_argument.from_json(i) for i in obj["args"]],
             )
 
     if "ModuleBytes" in obj:
@@ -109,7 +124,7 @@ def from_json(obj: dict) -> DeployExecutableItem:
     elif "Transfer" in obj:
         return _transfer(obj["Transfer"])
     else:
-        raise NotImplementedError("Unsupported execution information variant")
+        raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
 
 def to_json(entity: DeployExecutableItem) -> dict:
@@ -175,4 +190,9 @@ def to_json(entity: DeployExecutableItem) -> dict:
         Transfer: _transfer,
     }
 
-    return _ENCODERS[type(entity)]()
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError(f"Unsupported DeployExecutableItem variant: {type(entity)}")
+    else:
+        return encoder()
