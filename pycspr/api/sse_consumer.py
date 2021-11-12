@@ -9,7 +9,7 @@ from pycspr.api.connection import NodeConnection
 
 def get_events(
     node: NodeConnection,
-    callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict]],
+    callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict], None],
     channel_type: NodeEventChannelType,
     event_type: NodeEventType = None,
     event_id: int = 0

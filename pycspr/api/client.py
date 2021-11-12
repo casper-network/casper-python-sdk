@@ -215,7 +215,7 @@ class NodeClient():
 
     def get_events(
         self,
-        callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict]],
+        callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict], None],
         channel_type: NodeEventChannelType,
         event_type: NodeEventType = None,
         event_id: int = 0
