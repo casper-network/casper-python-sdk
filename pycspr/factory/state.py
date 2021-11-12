@@ -7,8 +7,8 @@ from pycspr.types import DictionaryIdentifier_AccountNamedKey
 from pycspr.types import DictionaryIdentifier_ContractNamedKey
 from pycspr.types import DictionaryIdentifier_SeedURef
 from pycspr.types import DictionaryIdentifier_UniqueKey
-from pycspr.types import Key
-from pycspr.types import KeyType
+from pycspr.types import StateKey
+from pycspr.types import StateKeyType
 from pycspr.types import List
 
 
@@ -50,24 +50,24 @@ def create_dictionary_identifier_for_a_unique_key(key: str) -> DictionaryIdentif
     return DictionaryIdentifier_UniqueKey(key=key)
 
 
-def create_key(identifier: bytes, typeof: KeyType) -> Key:
+def create_key(identifier: bytes, typeof: StateKeyType) -> StateKey:
     """Returns a global state value key.
 
     """
-    return Key(identifier, typeof)
+    return StateKey(identifier, typeof)
 
 
-def create_key_from_string(as_string: str) -> Key:
+def create_key_from_string(as_string: str) -> StateKey:
     """Returns a global state value key derived froma string representation.
 
     """
     identifier = bytes.fromhex(as_string.split("-")[-1])
     if as_string.startswith("account-hash-"):
-        return create_key(identifier, KeyType.ACCOUNT)
+        return create_key(identifier, StateKeyType.ACCOUNT)
     elif as_string.startswith("hash-"):
-        return create_key(identifier, KeyType.HASH)
+        return create_key(identifier, StateKeyType.HASH)
     elif as_string.startswith("uref-"):
-        return create_key(identifier, KeyType.UREF)
+        return create_key(identifier, StateKeyType.UREF)
     else:
         raise ValueError(f"Invalid key: {as_string}")
 

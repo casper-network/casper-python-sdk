@@ -2,6 +2,7 @@ import dataclasses
 import enum
 import typing
 from pycspr.types.cl_enums import CLAccessRights
+from pycspr.types.cl_type import CLType
 
 
 @dataclasses.dataclass
@@ -113,33 +114,6 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
         return super().__eq__(other) and self.key == other.key
 
 
-class KeyType(enum.Enum):
-    """Enumeration over set of CL keys.
-
-    """
-    ACCOUNT = 0
-    HASH = 1
-    UREF = 2
-
-
-@dataclasses.dataclass
-class Key():
-    """A pointer to data within global state.
-
-    """
-    # 32 byte key identifier.
-    identifier: bytes
-
-    # Key type identifier.
-    key_type: KeyType
-
-    def __eq__(self, other) -> bool:
-        """Instance equality comparator."""
-        return super().__eq__(other) and \
-               self.identifier == other.identifier and \
-               self.key_type == other.key_type
-
-
 @dataclasses.dataclass
 class List():
     """A pointer to a list of data.
@@ -149,10 +123,37 @@ class List():
     items: typing.List[object]
 
     # Item type identifier.
-    item_type: KeyType
+    item_type: CLType
 
     def __eq__(self, other) -> bool:
         """Instance equality comparator."""
         return super().__eq__(other) and \
                self.items == other.items and \
                self.item_type == other.item_type
+
+
+class StateKeyType(enum.Enum):
+    """Enumeration over set of global state key types.
+
+    """
+    ACCOUNT = 0
+    HASH = 1
+    UREF = 2
+
+
+@dataclasses.dataclass
+class StateKey():
+    """A pointer to data within global state.
+
+    """
+    # 32 byte key identifier.
+    identifier: bytes
+
+    # Key type identifier.
+    key_type: StateKeyType
+
+    def __eq__(self, other) -> bool:
+        """Instance equality comparator."""
+        return super().__eq__(other) and \
+               self.identifier == other.identifier and \
+               self.key_type == other.key_type

@@ -47,7 +47,7 @@ def cl_types() -> list:
                     obj["value"] = pycspr.create_uref_from_string(obj["value"])
                 elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:
                     obj["value"] = \
-                        pycspr.create_public_key_from_account_key(bytes.fromhex(obj["value"]))
+                        pycspr.parse_public_key_bytes(bytes.fromhex(obj["value"]))
 
     return _Accessor()
 

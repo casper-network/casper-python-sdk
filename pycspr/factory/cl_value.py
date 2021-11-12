@@ -1,12 +1,13 @@
 import typing
 
-import pycspr.factory.cl_type as create_cl_type
 from pycspr.crypto import KeyAlgorithm
+from pycspr.factory import cl_type as create_cl_type
+from pycspr.factory.accounts import create_public_key_from_account_key
 from pycspr.types import CLAccessRights
 from pycspr.types import CLType
 from pycspr.types import CLValue
-from pycspr.types import Key
-from pycspr.types import KeyType
+from pycspr.types import StateKey
+from pycspr.types import StateKeyType
 from pycspr.types import PublicKey
 from pycspr.types import UnforgeableReference
 
@@ -42,21 +43,21 @@ def i64(value: int) -> CLValue:
         )
 
 
-def key(value: bytes, key_type: typing.Union[KeyType, int]) -> CLValue:
+def key(value: bytes, key_type: typing.Union[StateKeyType, int]) -> CLValue:
     return CLValue(
         create_cl_type.key(),
-        Key(value, key_type)
+        StateKey(value, key_type)
         )
 
 
 def key_from_string(value: str) -> CLValue:
     identifier = bytes.fromhex(value.split("-")[-1])
     if value.startswith("account-hash-"):
-        return key(identifier, KeyType.ACCOUNT)
+        return key(identifier, StateKeyType.ACCOUNT)
     elif value.startswith("hash-"):
-        return key(identifier, KeyType.HASH)
+        return key(identifier, StateKeyType.HASH)
     elif value.startswith("uref-"):
-        return key(identifier, KeyType.UREF)
+        return key(identifier, StateKeyType.UREF)
     else:
         raise ValueError(f"Invalid key: {value}")
 
@@ -81,6 +82,7 @@ def option(inner_type: CLType, value: object = None) -> CLValue:
 
 def public_key(value: typing.Union[bytes, PublicKey]) -> CLValue:
     if isinstance(value, bytes):
+        value = create_public_key_from_account_key(value)
         value = PublicKey(KeyAlgorithm(value[0]), value[1:])
 
     return CLValue(
