@@ -7,6 +7,8 @@ import pytest
 
 import pycspr
 from pycspr.types import CLTypeKey
+from tests.fixtures.iterators import yield_cl_types
+from tests.fixtures.iterators import yield_cl_values
 
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
@@ -16,38 +18,16 @@ _PATH_TO_VECTORS = _PATH_TO_ASSETS / "vectors"
 @pytest.fixture(scope="session")
 def cl_types() -> list:
     class _Accessor():
+        """Streamlines access to cl types vector.
+
+        """
         def __init__(self):
-            self._fixtures = _read_vector("cl-types.json")
-            self._parse_fixtures()
-            self.SIMPLE_TYPES = {
-                CLTypeKey.I32,
-                CLTypeKey.I64,
-                CLTypeKey.U8,
-                CLTypeKey.U32,
-                CLTypeKey.U64,
-                CLTypeKey.U128,
-                CLTypeKey.U256,
-                CLTypeKey.U512,
-                CLTypeKey.BOOL,
-                CLTypeKey.PUBLIC_KEY,
-                CLTypeKey.STRING,
-                CLTypeKey.UNIT,
-            }
+            self.fixtures = _read_vector("cl-types.json")
+            for obj in self.fixtures:
+                obj["cl_type"] = CLTypeKey[obj["cl_type"]]
 
-        def get_fixtures(self, typeof: str = None) -> list:
-            if typeof is None:
-                return self._fixtures
-            typeof = typeof if isinstance(typeof, str) else typeof.name
-            return [i for i in self._fixtures if i["typeof"] == typeof.upper()]
-
-
-        def _parse_fixtures(self):
-            for obj in self._fixtures:
-                if obj["typeof"] == pycspr.types.CLTypeKey.UREF.name:
-                    obj["value"] = pycspr.create_uref_from_string(obj["value"])
-                elif obj["typeof"] == pycspr.types.CLTypeKey.PUBLIC_KEY.name:
-                    obj["value"] = \
-                        pycspr.parse_public_key_bytes(bytes.fromhex(obj["value"]))
+        def __iter__(self):
+            return yield_cl_types(self.fixtures)
 
     return _Accessor()
 
@@ -63,19 +43,8 @@ def cl_values() -> list:
             for obj in self.fixtures:
                 obj["cl_type"] = CLTypeKey[obj["cl_type"]]
 
-    return _Accessor()
-
-
-@pytest.fixture(scope="session")
-def cl_types_1() -> list:
-    class _Accessor():
-        """Streamlines access to cl types vector.
-
-        """
-        def __init__(self):
-            self.fixtures = _read_vector("cl-types.json")
-            for obj in self.fixtures:
-                obj["cl_type"] = CLTypeKey[obj["cl_type"]]
+        def __iter__(self):
+            return yield_cl_values(self.fixtures)
 
     return _Accessor()
 

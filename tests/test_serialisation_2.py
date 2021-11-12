@@ -6,15 +6,15 @@ from pycspr.types import CLTypeKey
 from pycspr.types import CLValue
 
 
-def test_that_cl_values_serialise_to_bytes(vector_cl_values):
-    for value in _yield_cl_values(vector_cl_values.fixtures):
+def test_that_cl_values_serialise_to_bytes(cl_values_vector):
+    for value in _yield_cl_values(cl_values_vector.fixtures):
         if not value:
             continue
         assert value == serialisation.from_bytes(serialisation.to_bytes(value))
 
 
-def test_that_cl_values_serialise_to_json(vector_cl_values):
-    for value in _yield_cl_values(vector_cl_values.fixtures):
+def test_that_cl_values_serialise_to_json(cl_values_vector):
+    for value in _yield_cl_values(cl_values_vector.fixtures):
         if not value:
             continue
         assert value == serialisation.from_json(CLValue, serialisation.to_json(value))
