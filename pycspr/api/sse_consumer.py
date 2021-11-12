@@ -9,7 +9,7 @@ from pycspr.api.connection import NodeConnection
 
 def get_events(
     node: NodeConnection,
-    callback: typing.Callable,
+    callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict]],
     channel_type: NodeEventChannelType,
     event_type: NodeEventType = None,
     event_id: int = 0
@@ -92,7 +92,7 @@ def _validate_that_channel_supports_event_type(
         raise ValueError(f"Unsupported channel/event: {channel_type.name}:{event_type.name}.")
 
 
-def _yield_events(sse_client) -> typing.Generator:
+def _yield_events(sse_client) -> typing.Iterator[typing.Tuple[NodeEventType, int, dict]]:
     """Yields events streaming from node.
 
     """

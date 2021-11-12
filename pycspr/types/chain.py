@@ -15,7 +15,7 @@ AccountIdentifer = typing.Union[bytes, str]
 BlockIdentifer = typing.Union[bytes, str, int]
 
 # On chain contract identifier.
-ContractHash = typing.NewType("Static contract pointer", bytes)
+ContractIdentifer = typing.NewType("Static contract pointer", bytes)
 
 # On chain contract version.
 ContractVersion = typing.NewType("U32 integer representing", int)

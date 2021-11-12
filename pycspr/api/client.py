@@ -215,7 +215,7 @@ class NodeClient():
 
     def get_events(
         self,
-        callback: typing.Callable,
+        callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict]],
         channel_type: NodeEventChannelType,
         event_type: NodeEventType = None,
         event_id: int = 0
@@ -230,6 +230,13 @@ class NodeClient():
         """
         sse_consumer.get_events(self.connection, callback, channel_type, event_type, event_id)
 
+
+def _on_event(
+    channel_type: NodeEventChannelType,
+    event_type: NodeEventType,
+    event_id: int,
+    event_data: dict
+):
 
     def get_node_metric(self, metric_id: str) -> list:
         """Returns node metrics information filtered by a particular metric.

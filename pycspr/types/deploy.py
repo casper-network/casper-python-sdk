@@ -4,7 +4,7 @@ import typing
 from pycspr import crypto
 from pycspr.types.account import PrivateKey
 from pycspr.types.account import PublicKey
-from pycspr.types.chain import ContractHash
+from pycspr.types.chain import ContractIdentifer
 from pycspr.types.chain import ContractVersion
 from pycspr.types.chain import Timestamp
 from pycspr.types.cl_value import CLValue
@@ -71,7 +71,7 @@ class StoredContractByHash(StoredContract):
 
     """
     # On-chain smart contract address.
-    hash: ContractHash
+    hash: ContractIdentifer
 
     def __eq__(self, other) -> bool:
         """Instance equality comparator."""
