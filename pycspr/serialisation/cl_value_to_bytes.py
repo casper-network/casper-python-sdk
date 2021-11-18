@@ -1,10 +1,8 @@
-from pycspr.types import cl_types
 from pycspr.types import cl_values
 from pycspr.utils.conversion import int_to_le_bytes
-from pycspr.utils.conversion import le_bytes_to_int
 
 
-def encode(entity: cl_values.CL_Value):
+def encode(entity: cl_values.CL_Value) -> bytes:
     if isinstance(entity, cl_values.CL_Any):
         raise NotImplementedError()
 
@@ -39,7 +37,8 @@ def encode(entity: cl_values.CL_Value):
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_String):
-        return entity.as_bytes()
+        encoded: bytes = (entity.value or "").encode("utf-8")
+        return encode(cl_values.CL_U32(len(encoded))) + encoded
 
     elif isinstance(entity, cl_values.CL_Tuple1):
         raise NotImplementedError()

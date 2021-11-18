@@ -81,3 +81,56 @@ from pycspr.types.other import StateRootIdentifier
 from pycspr.types.other import Timestamp
 from pycspr.types.other import U8Array
 from pycspr.types.other import Vector
+
+
+CL_TYPEKEY_TO_CL_VALUE_TYPE = {
+    CL_TypeKey.ANY: CL_Any,
+    CL_TypeKey.BOOL: CL_Bool,
+    CL_TypeKey.BYTE_ARRAY: CL_ByteArray,
+    CL_TypeKey.I32: CL_I32,
+    CL_TypeKey.I64: CL_I64,
+    CL_TypeKey.KEY: CL_Key,
+    CL_TypeKey.LIST: CL_List,
+    CL_TypeKey.MAP: CL_Map,
+    CL_TypeKey.OPTION: CL_Option,
+    CL_TypeKey.PUBLIC_KEY: CL_PublicKey,
+    CL_TypeKey.RESULT: CL_Result,
+    CL_TypeKey.STRING: CL_String,
+    CL_TypeKey.TUPLE_1: CL_Tuple1,
+    CL_TypeKey.TUPLE_2: CL_Tuple2,
+    CL_TypeKey.TUPLE_3: CL_Tuple3,
+    CL_TypeKey.U8: CL_U8,
+    CL_TypeKey.U32: CL_U32,
+    CL_TypeKey.U64: CL_U64,
+    CL_TypeKey.U128: CL_U128,
+    CL_TypeKey.U256: CL_U256,
+    CL_TypeKey.U512: CL_U512,
+    CL_TypeKey.UNIT: CL_Unit,
+    CL_TypeKey.UREF: CL_URef,
+}
+
+CL_TYPEKEY_TO_CL_TYPE = {
+    CL_TypeKey.ANY: CL_Type_Any,
+    CL_TypeKey.BOOL: CL_Type_Bool,
+    CL_TypeKey.BYTE_ARRAY: CL_Type_ByteArray,
+    CL_TypeKey.I32: CL_Type_I32,
+    CL_TypeKey.I64: CL_Type_I64,
+    CL_TypeKey.KEY: CL_Type_Key,
+    CL_TypeKey.LIST: CL_Type_List,
+    CL_TypeKey.MAP: CL_Type_Map,
+    CL_TypeKey.OPTION: CL_Type_Option,
+    CL_TypeKey.PUBLIC_KEY: CL_Type_PublicKey,
+    CL_TypeKey.RESULT: CL_Type_Result,
+    CL_TypeKey.STRING: CL_Type_String,
+    CL_TypeKey.TUPLE_1: CL_Type_Tuple1,
+    CL_TypeKey.TUPLE_2: CL_Type_Tuple2,
+    CL_TypeKey.TUPLE_3: CL_Type_Tuple3,
+    CL_TypeKey.U8: CL_Type_U8,
+    CL_TypeKey.U32: CL_Type_U32,
+    CL_TypeKey.U64: CL_Type_U64,
+    CL_TypeKey.U128: CL_Type_U128,
+    CL_TypeKey.U256: CL_Type_U256,
+    CL_TypeKey.U512: CL_Type_U512,
+    CL_TypeKey.UNIT: CL_Type_Unit,
+    CL_TypeKey.UREF: CL_Type_URef,
+}

@@ -20,14 +20,4 @@ class CL_ByteArray(CL_Value):
     def as_bytes(self) -> bytes:
         return self.value
 
-    def as_cl_type(self) -> CL_Type_ByteArray:
-        return CL_Type_ByteArray(len(self.value))
-
-    def as_parsed(self) -> str:
-        return self.value.hex()
-
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "CL_ByteArray":
-        return CL_ByteArray(as_bytes)
-
     #endregion

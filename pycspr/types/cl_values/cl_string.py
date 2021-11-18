@@ -14,26 +14,5 @@ class CL_String(CL_Value):
     # Associated value.
     value: str
 
-    #region Equality & serialisation
-
     def __eq__(self, other) -> bool:
         return self.value == other.value
-
-    def as_bytes(self) -> bytes:
-        encoded: bytes = (self.value or "").encode("utf-8")
-        encoded: bytes = CL_ByteArray(encoded).as_bytes()
-        size: bytes = CL_U32(len(encoded)).as_bytes()
-
-        return size + encoded
-
-    def as_cl_type(self) -> CL_Type_String:
-        return CL_Type_String()
-
-    def as_parsed(self) -> str:
-        return self.value
-
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "CL_String":
-        return CL_String(as_bytes[4:].decode("utf-8"))
-
-    #endregion

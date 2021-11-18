@@ -1,0 +1,84 @@
+from pycspr.types import cl_types
+from pycspr.types import cl_values
+from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
+
+
+def encode(entity: cl_values.CL_Value) -> dict:
+    return {
+        "cl_type": _get_cl_type(entity).as_json(),
+        "bytes": cl_value_to_bytes(entity),
+        "parsed": entity.as_parsed()
+    }
+
+
+def _get_cl_type(entity: cl_types.CL_Type) -> cl_types.CL_Type:
+    if isinstance(entity, cl_values.CL_Any):
+        pass
+
+    elif isinstance(entity, cl_values.CL_Bool):
+        return cl_types.CL_Type_Bool()
+
+    elif isinstance(entity, cl_values.CL_ByteArray):
+        return cl_types.CL_Type_ByteArray(len(entity.value))
+
+    elif isinstance(entity, cl_values.CL_I32):
+        return cl_types.CL_Type_I32()
+
+    elif isinstance(entity, cl_values.CL_I64):
+        return cl_types.CL_Type_I64()
+
+    elif isinstance(entity, cl_values.CL_Key):
+        return cl_types.CL_Type_Key()
+
+    elif isinstance(entity, cl_values.CL_List):
+        return cl_types.CL_Type_List(entity.item_type)
+
+    elif isinstance(entity, cl_values.CL_Map):
+        pass
+
+    elif isinstance(entity, cl_values.CL_Option):
+        return cl_types.CL_Type_Option(entity.option_type)
+
+    elif isinstance(entity, cl_values.CL_PublicKey):
+        return cl_types.CL_Type_PublicKey()
+
+    elif isinstance(entity, cl_values.CL_Result):
+        return cl_types.CL_Type_Result()
+
+    elif isinstance(entity, cl_values.CL_String):
+        return cl_types.CL_Type_String()
+
+    elif isinstance(entity, cl_values.CL_Tuple1):
+        pass
+
+    elif isinstance(entity, cl_values.CL_Tuple2):
+        pass
+
+    elif isinstance(entity, cl_values.CL_Tuple3):
+        pass
+
+    elif isinstance(entity, cl_values.CL_U8):
+        return cl_types.CL_Type_U8()
+
+    elif isinstance(entity, cl_values.CL_U32):
+        return cl_types.CL_Type_U32()
+
+    elif isinstance(entity, cl_values.CL_U64):
+        return cl_types.CL_Type_U64()
+
+    elif isinstance(entity, cl_values.CL_U128):
+        return cl_types.CL_Type_U128()
+
+    elif isinstance(entity, cl_values.CL_U256):
+        return cl_types.CL_Type_U256()
+
+    elif isinstance(entity, cl_values.CL_U512):
+        return cl_types.CL_Type_U512()
+
+    elif isinstance(entity, cl_values.CL_Unit):
+        return cl_types.CL_Type_Unit()
+
+    elif isinstance(entity, cl_values.CL_URef):
+        return cl_types.CL_Type_URef()
+
+    raise ValueError(f"CL value cannot be mapped to a CL type: {entity}")

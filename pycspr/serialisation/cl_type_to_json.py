@@ -1,50 +1,35 @@
 import typing
+
 from pycspr.types import cl_types
 
 
 def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
-    if isinstance(entity, cl_types.CL_Type_Any):
-        return "Any"
-    elif isinstance(entity, cl_types.CL_Type_Bool):
-        return "Bool"
-    elif isinstance(entity, cl_types.CL_Type_ByteArray):
+    # Simple types are mapped to a string.
+    try:
+        return _SIMPLE_TYPES[type(entity)]
+    except KeyError:
+        pass
+
+    # Complex types are mapped to a dict.
+    if isinstance(entity, cl_types.CL_Type_ByteArray):
         return {
             "ByteArray": entity.size
         }
-    elif isinstance(entity, cl_types.CL_Type_I32):
-        return "I32"
-    elif isinstance(entity, cl_types.CL_Type_I64):
-        return "I64"
-    elif isinstance(entity, cl_types.CL_Type_Key):
-        return "Key"
     elif isinstance(entity, cl_types.CL_Type_List):
         return {
             "List": encode(entity.inner_type)
         }
     elif isinstance(entity, cl_types.CL_Type_Map):
-        raise NotImplementedError()
+        return {
+            "Map": {
+                "key": encode(entity.key_type),
+                "value": encode(entity.value_type)
+            }
+        }        
     elif isinstance(entity, cl_types.CL_Type_Option):
         return {
             "Option": encode(entity.inner_type)
         }
-    elif isinstance(entity, cl_types.CL_Type_PublicKey):
-        return "PublicKey"
-    elif isinstance(entity, cl_types.CL_Type_Result):
-        return "Result"
-    elif isinstance(entity, cl_types.CL_Type_String):
-        return "String"
-    elif isinstance(entity, cl_types.CL_Type_U8):
-        return "U8"
-    elif isinstance(entity, cl_types.CL_Type_U32):
-        return "U32"
-    elif isinstance(entity, cl_types.CL_Type_U64):
-        return "U64"
-    elif isinstance(entity, cl_types.CL_Type_U128):
-        return "U128"
-    elif isinstance(entity, cl_types.CL_Type_U256):
-        return "U256"
-    elif isinstance(entity, cl_types.CL_Type_U512):
-        return "U512"
     elif isinstance(entity, cl_types.CL_Type_Tuple1):
         return {
             "Tuple1": encode(entity.t0_type)
@@ -64,7 +49,23 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
                 encode(entity.t2_type)
             ]
         }
-    elif isinstance(entity, cl_types.CL_Type_Unit):
-        return "Unit"
-    elif isinstance(entity, cl_types.CL_Type_URef):
-        return "URef"
+
+
+_SIMPLE_TYPES = {
+    cl_types.CL_Type_Any: "Any",
+    cl_types.CL_Type_Bool: "Bool",
+    cl_types.CL_Type_I32: "I32",
+    cl_types.CL_Type_I64: "I64",
+    cl_types.CL_Type_Key: "Key",
+    cl_types.CL_Type_PublicKey: "PublicKey",
+    cl_types.CL_Type_Result: "Result",
+    cl_types.CL_Type_String: "String",
+    cl_types.CL_Type_U8: "U8",
+    cl_types.CL_Type_U32: "U32",
+    cl_types.CL_Type_U64: "U64",
+    cl_types.CL_Type_U128: "U128",
+    cl_types.CL_Type_U256: "U256",
+    cl_types.CL_Type_U512: "U512",
+    cl_types.CL_Type_Unit: "Unit",
+    cl_types.CL_Type_URef: "URef"
+}

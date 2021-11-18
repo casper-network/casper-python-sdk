@@ -1,53 +1,67 @@
 import typing
+
 from pycspr.types import cl_types
 
 
 def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
-    if "Any" == encoded:
-        return cl_types.CL_Type_Any()
-    elif "Bool" == encoded:
-        return cl_types.CL_Type_Bool()
-    elif "ByteArray" in encoded:
+    # Simple types.
+    if isinstance(encoded, str):
+        try:
+            return _SIMPLE_TYPES[encoded]()
+        except KeyError:
+            pass
+
+    # Complex types.
+    if "ByteArray" in encoded:
         return cl_types.CL_Type_ByteArray(encoded["ByteArray"])
-    elif "I32" == encoded:
-        return cl_types.CL_Type_I32()
-    elif "I64" == encoded:
-        return cl_types.CL_Type_I64()
-    elif "Key" == encoded:
-        return cl_types.CL_Type_Key()
+
     elif "List" in encoded:
         return cl_types.CL_Type_List(decode(encoded["List"]))
+
     elif "Map" in encoded:
-        raise NotImplementedError()
+        return cl_types.CL_Type_Map(
+            decode(encoded["Map"]["key"]),
+            decode(encoded["Map"]["value"])
+            )
+
     elif "Option" in encoded:
         return cl_types.CL_Type_Option(decode(encoded["Option"]))
-    elif "PublicKey" == encoded:
-        return cl_types.CL_Type_PublicKey()
-    elif "Result" in encoded:
-        return cl_types.CL_Type_Result()
-    elif "String" == encoded:
-        return cl_types.CL_Type_String()
+
     elif "Tuple1" in encoded:
         return cl_types.CL_Type_Tuple1(decode(encoded["Tuple1"]))
-    elif "Tuple2" in encoded:
-        return cl_types.CL_Type_Tuple2(decode(encoded["Tuple2"][0]), decode(encoded["Tuple2"][1]))
-    elif "Tuple3" in encoded:
-        return cl_types.CL_Type_Tuple3(decode(encoded["Tuple3"][0]), decode(encoded["Tuple3"][1]), decode(encoded["Tuple3"][2]))
-    elif "U8" == encoded:
-        return cl_types.CL_Type_U8()
-    elif "U32" == encoded:
-        return cl_types.CL_Type_U32()
-    elif "U64" == encoded:
-        return cl_types.CL_Type_U64()
-    elif "U128" == encoded:
-        return cl_types.CL_Type_U128()
-    elif "U256" == encoded:
-        return cl_types.CL_Type_U256()
-    elif "U512" == encoded:
-        return cl_types.CL_Type_U512()
-    elif "Unit" == encoded:
-        return cl_types.CL_Type_Unit()
-    elif "URef" == encoded:
-        return cl_types.CL_Type_URef()
 
-    raise ValueError("Invalid CL type JSON representation")
+    elif "Tuple2" in encoded:
+        return cl_types.CL_Type_Tuple2(
+            decode(encoded["Tuple2"][0]),
+            decode(encoded["Tuple2"][1])
+            )
+
+    elif "Tuple3" in encoded:
+        return cl_types.CL_Type_Tuple3(
+            decode(encoded["Tuple3"][0]),
+            decode(encoded["Tuple3"][1]),
+            decode(encoded["Tuple3"][2])
+            )
+
+    else:
+        raise ValueError("Invalid CL type JSON representation")
+
+
+_SIMPLE_TYPES = {
+    "Any": cl_types.CL_Type_Any,
+    "Bool": cl_types.CL_Type_Bool,
+    "I32": cl_types.CL_Type_I32,
+    "I64": cl_types.CL_Type_I64,
+    "Key": cl_types.CL_Type_Key,
+    "PublicKey": cl_types.CL_Type_PublicKey,
+    "Result": cl_types.CL_Type_Result,
+    "String": cl_types.CL_Type_String,
+    "U8": cl_types.CL_Type_U8,
+    "U32": cl_types.CL_Type_U32,
+    "U64": cl_types.CL_Type_U64,
+    "U128": cl_types.CL_Type_U128,
+    "U256": cl_types.CL_Type_U256,
+    "U512": cl_types.CL_Type_U512,
+    "Unit": cl_types.CL_Type_Unit,
+    "URef": cl_types.CL_Type_URef,
+}

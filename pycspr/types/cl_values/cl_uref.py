@@ -28,30 +28,10 @@ class CL_URef(CL_Value):
     # Uref on-chain identifier.
     address: bytes
 
-    #region Equality & serialisation
-
     def __eq__(self, other) -> bool:
         return self.access_rights == other.access_rights and \
                self.address == other.address
 
-    def as_bytes(self) -> bytes:
-        as_bytes = self.address + bytes([self.access_rights.value])
-
-        return CL_ByteArray(as_bytes).as_bytes()
-
-    def as_cl_type(self) -> CL_Type_URef:
-        return CL_Type_URef()
-
-    def as_parsed(self) -> str:
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
-
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "CL_URef":
-        return CL_URef(
-            CL_AccessRights(as_bytes[-1]),
-            as_bytes[:-1]
-        )
-    
     @staticmethod
     def from_string(as_string: str) -> "CL_URef":
         _, address, access_rights = as_string.split("-")
@@ -59,5 +39,3 @@ class CL_URef(CL_Value):
             CL_AccessRights(int(access_rights)),
             bytes.fromhex(address)
             )
-    
-    #endregion
