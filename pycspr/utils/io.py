@@ -1,8 +1,7 @@
 import pathlib
 import typing
 
-from pycspr import serialisation
-from pycspr.types.deploy import Deploy
+from pycspr.types.deploys.deploy import Deploy
 
 
 def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
@@ -13,7 +12,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
-        return serialisation.from_json(fstream.read())
+        return Deploy.from_json(fstream.read())
 
 
 def read_wasm(fpath: typing.Union[pathlib.Path, str]) -> bytes:
@@ -48,6 +47,6 @@ def write_deploy(
         raise IOError("Deploy has already been written to file system")
 
     with open(str(fpath), "w") as fstream:
-        fstream.writelines(serialisation.to_json(deploy))
-
+        fstream.writelines(deploy.to_json())
+        
     return str(fpath)

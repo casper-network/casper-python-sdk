@@ -5,7 +5,11 @@ import pathlib
 import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
+from pycspr.factory.cl_type import u256
+from pycspr.types import CL_U256
+from pycspr.types import CL_PublicKey
 from pycspr.types import Deploy
+from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
@@ -147,22 +151,15 @@ def _get_deploy(
             )
 
     # Set payment logic.
-    payment: ModuleBytes = \
-        pycspr.create_standard_payment(args.deploy_payment)
+    payment: ModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
     session: StoredContractByHash = StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
         args=[
-            pycspr.create_deploy_arg(
-                "amount",
-                pycspr.create_cl_value.u256(args.amount)
-                ),
-            pycspr.create_deploy_arg(
-                "recipient",
-                pycspr.create_cl_value.public_key(user)
-                ),
+            DeployArgument("amount", CL_U256(args.amount)),
+            DeployArgument("recipient", CL_PublicKey.from_key(user)),
         ]
     )
 

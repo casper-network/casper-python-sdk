@@ -1,7 +1,6 @@
 import time
 import typing
 
-from pycspr import factory
 from pycspr import types
 from pycspr.api import constants
 from pycspr.api import params as params_factory
@@ -28,7 +27,7 @@ class NodeClient():
 
     def get_account_balance(
         self,
-        purse_uref: types.UnforgeableReference,
+        purse_uref: types.CL_URef,
         state_root_hash: types.StateRootIdentifier = None
     ) -> int:
         """Returns account balance at a certain global state root hash.
@@ -71,7 +70,7 @@ class NodeClient():
         self,
         account_key: types.AccountIdentifer,
         block_id: types.BlockIdentifer = None
-    ) -> types.UnforgeableReference:
+    ) -> types.CL_URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_key: Key of an on-chain account.
@@ -81,7 +80,7 @@ class NodeClient():
         """
         account_info = self.get_account_info(account_key, block_id)
 
-        return factory.create_uref_from_string(account_info["main_purse"])
+        return types.CL_URef.from_string(account_info["main_purse"])
 
 
     def get_account_named_key(
@@ -185,7 +184,7 @@ class NodeClient():
             )
 
 
-    def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
+    def get_dictionary_item(self, identifier: types.CL_DictionaryIdentifier) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
         :param identifier: Identifier required to query a dictionary item.

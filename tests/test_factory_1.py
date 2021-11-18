@@ -9,7 +9,7 @@ from pycspr.types import DeployParameters
 def test_create_deploy_arguments(cl_values_vector):
     for cl_value in cl_values_vector:
         arg_name = f"a-{cl_value.cl_type.type_key.name.lower()}-arg"
-        arg = pycspr.create_deploy_arg(arg_name, cl_value)
+        arg = DeployArgument(arg_name, cl_value)
         assert isinstance(arg, DeployArgument)        
 
 

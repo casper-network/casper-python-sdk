@@ -1,11 +1,10 @@
 import typing
 
-from pycspr import serialisation
 from pycspr import types
 
 
 def get_account_balance_params(
-    purse_uref: typing.Union[str, types.UnforgeableReference],
+    purse_uref: typing.Union[str, types.CL_URef],
     state_root_hash: types.StateRootIdentifier = None
 ) -> dict:
     """Returns JSON-RPC API request parameters.
@@ -15,8 +14,8 @@ def get_account_balance_params(
     :returns: JSON-RPC API parameter set.
 
     """
-    if isinstance(purse_uref, types.UnforgeableReference):
-        purse_uref = serialisation.to_json(purse_uref)
+    if isinstance(purse_uref, types.CL_URef):
+        purse_uref = purse_uref.to_string()
     if isinstance(state_root_hash, bytes):
         state_root_hash = state_root_hash.hex()
 
@@ -161,14 +160,14 @@ def get_deploy_params(deploy_id: types.DeployIdentifer) -> dict:
     }
 
 
-def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
+def get_dictionary_item_params(identifier: types.CL_DictionaryIdentifier) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param identifier: Identifier of a state dictionary.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    if isinstance(identifier, type.DictionaryIdentifier_AccountNamedKey):
+    if isinstance(identifier, type.CL_DictionaryIdentifier_AccountNamedKey):
         return {
             "AccountNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -177,7 +176,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, type.DictionaryIdentifier_ContractNamedKey):
+    elif isinstance(identifier, type.CL_DictionaryIdentifier_ContractNamedKey):
         return {
             "ContractNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -186,7 +185,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, type.DictionaryIdentifier_SeedURef):
+    elif isinstance(identifier, type.CL_DictionaryIdentifier_SeedURef):
         return {
             "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -194,7 +193,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, type.DictionaryIdentifier_UniqueKey):
+    elif isinstance(identifier, type.CL_DictionaryIdentifier_UniqueKey):
         return {
             "Dictionary": identifier.seed_uref.as_string()
         }
@@ -283,5 +282,5 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
 
     """
     return {
-        "deploy": serialisation.to_json(deploy)
+        "deploy": deploy.to_json()
     }

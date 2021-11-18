@@ -6,10 +6,15 @@ import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
 from pycspr.crypto import KeyAlgorithm
+from pycspr.types import CL_String
+from pycspr.types import CL_U8
+from pycspr.types import CL_U256
 from pycspr.types import Deploy
+from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
+
 
 
 # Path to NCTL assets.
@@ -185,21 +190,21 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
     session: ModuleBytes = ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args=[
-            pycspr.create_deploy_arg(
+            DeployArgument(
                 "token_decimals",
-                pycspr.create_cl_value.u8(args.token_decimals)
+                CL_U8(args.token_decimals)
                 ),
-            pycspr.create_deploy_arg(
+            DeployArgument(
                 "token_name",
-                pycspr.create_cl_value.string(args.token_name)
+                CL_String(args.token_name)
                 ),
-            pycspr.create_deploy_arg(
+            DeployArgument(
                 "token_symbol",
-                pycspr.create_cl_value.string(args.token_symbol)
+                CL_String(args.token_symbol)
                 ),
-            pycspr.create_deploy_arg(
+            DeployArgument(
                 "token_total_supply",
-                pycspr.create_cl_value.u256(args.token_total_supply)
+                CL_U256(args.token_total_supply)
                 ),
         ]
     )

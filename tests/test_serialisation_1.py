@@ -1,23 +1,29 @@
 from pycspr import serialisation
-from pycspr.types import CLType
-from pycspr.types import CLValue
 
 
 def test_serialisation_of_cl_types_to_bytes(cl_types_vector):
     for cl_type in cl_types_vector:
-        assert cl_type == serialisation.from_bytes(serialisation.to_bytes(cl_type))
+        as_bytes = cl_type.as_bytes()
+        assert isinstance(as_bytes, bytes)
+        assert cl_type == cl_type.from_bytes(as_bytes)
 
 
 def test_serialisation_of_cl_types_to_json(cl_types_vector):
     for cl_type in cl_types_vector:
-        assert cl_type == serialisation.from_json(CLType, serialisation.to_json(cl_type))
+        as_json = serialisation.cl_type_to_json(cl_type)
+        assert isinstance(as_json, (str, dict))
+        assert cl_type == serialisation.cl_type_from_json(as_json)
 
 
 def test_serialisation_of_cl_values_to_bytes(cl_values_vector):
     for cl_value in cl_values_vector:
-        assert cl_value == serialisation.from_bytes(serialisation.to_bytes(cl_value))
+        as_bytes = serialisation.cl_value_to_bytes(cl_value)
+        assert isinstance(as_bytes, bytes)
+        assert cl_value == cl_value.from_bytes(as_bytes)
 
 
 def test_serialisation_of_cl_values_to_json(cl_values_vector):
     for cl_value in cl_values_vector:
-        assert cl_value == serialisation.from_json(CLValue, serialisation.to_json(cl_value))
+        as_json = cl_value.as_json()
+        assert isinstance(as_json, dict)
+        assert cl_value == serialisation.cl_value_from_json(as_json)

@@ -34,15 +34,15 @@ def test_get_account_info(CLIENT, account_key: bytes):
 def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
-        assert isinstance(response, pycspr.types.UnforgeableReference)
+        assert isinstance(response, pycspr.types.CL_URef)
         assert len(response.address) == 32
-        assert response.access_rights == pycspr.types.CLAccessRights.READ_ADD_WRITE
+        assert response.access_rights == pycspr.types.CL_AccessRights.READ_ADD_WRITE
 
     _assert(CLIENT.get_account_main_purse_uref(account_key))
 
 
 def test_get_account_balance(CLIENT, account_main_purse_uref: object, state_root_hash: bytes):
-    assert isinstance(account_main_purse_uref, pycspr.types.UnforgeableReference)
+    assert isinstance(account_main_purse_uref, pycspr.types.CL_URef)
 
     def _assert(response):
         assert isinstance(response, int)

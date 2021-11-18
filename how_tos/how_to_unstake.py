@@ -8,7 +8,7 @@ from pycspr import NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
-from pycspr.types import UnforgeableReference
+from pycspr.types import CL_URef
 
 
 # Path to NCTL assets.
@@ -97,7 +97,7 @@ def _main(args: argparse.Namespace):
         )
 
     # Set validator unbond purse.
-    validator_purse: UnforgeableReference = \
+    validator_purse: CL_URef = \
         client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
@@ -125,7 +125,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
 def _get_deploy(
     args: argparse.Namespace,
     validator: PrivateKey,
-    validator_purse: UnforgeableReference
+    validator_purse: CL_URef
 ) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 

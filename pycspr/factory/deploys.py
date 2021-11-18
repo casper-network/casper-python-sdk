@@ -3,24 +3,28 @@ import random
 import typing
 
 from pycspr import crypto
-from pycspr.factory import create_cl_value
-from pycspr.factory import create_cl_type
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types import PrivateKey
-from pycspr.types import CLValue
+from pycspr.types import CL_ByteArray
+from pycspr.types import CL_Option
+from pycspr.types import CL_PublicKey
+from pycspr.types import CL_U8
+from pycspr.types import CL_U64
+from pycspr.types import CL_U512
+from pycspr.types import CL_URef
 from pycspr.types import Deploy
+from pycspr.types import DeployArgument
 from pycspr.types import DeployApproval
 from pycspr.types import DeployBody
 from pycspr.types import DeployHeader
 from pycspr.types import DeployParameters
 from pycspr.types import DeployTimeToLive
-from pycspr.types import DeployArgument
 from pycspr.types import DeployExecutableItem
 from pycspr.types import ModuleBytes
-from pycspr.types import Transfer
+from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
+from pycspr.types import Transfer
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
@@ -71,17 +75,6 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
             deploy_hash, approver.private_key, approver.key_algo
             )
     )
-
-
-def create_deploy_arg(name: str, value: CLValue) -> DeployArgument:
-    """Returns an argument associated with deploy execution information (session|payment).
-
-    :param name: Deploy argument name.
-    :param value: Deploy argument CL value.
-    :returns: A deploy argument.
-
-    """
-    return DeployArgument(name=name, value=value)
 
 
 def create_deploy_body(
@@ -180,10 +173,7 @@ def create_standard_payment(
     """
     return ModuleBytes(
         args=[
-            create_deploy_arg(
-                "amount",
-                create_cl_value.u512(amount)
-                ),
+            DeployArgument("amount", CL_U512(amount)),
         ],
         module_bytes=bytes([])
         )
@@ -228,17 +218,17 @@ def create_transfer_session(
 
     return Transfer(
         args=[
-            create_deploy_arg(
+            DeployArgument(
                 "amount",
-                create_cl_value.u512(amount)
+                CL_U512(amount)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "target",
-                create_cl_value.byte_array(target)
+                CL_ByteArray(target)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "id",
-                create_cl_value.option(create_cl_type.u64(), correlation_id)
+                CL_Option(CL_U64(correlation_id))
                 ),
         ]
     )
@@ -265,17 +255,17 @@ def create_validator_auction_bid(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
+            DeployArgument(
                 "amount",
-                create_cl_value.u512(amount)
+                CL_U512(amount)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "delegation_rate",
-                create_cl_value.u8(delegation_rate)
+                CL_U8(delegation_rate)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "public_key",
-                create_cl_value.public_key(public_key)
+                CL_PublicKey.from_key(public_key)
                 ),
             ]
         )
@@ -304,17 +294,17 @@ def create_validator_auction_bid_withdrawal(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
+            DeployArgument(
                 "amount",
-                create_cl_value.u512(amount)
+                CL_U512(amount)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "public_key",
-                create_cl_value.public_key(public_key)
+                CL_PublicKey.from_key(public_key)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "unbond_purse",
-                create_cl_value.uref_from_string(unbond_purse)
+                CL_URef.from_string(unbond_purse)
                 ),
             ]
         )
@@ -343,17 +333,17 @@ def create_validator_delegation(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
+            DeployArgument(
                 "amount",
-                create_cl_value.u512(amount)
+                CL_U512(amount)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "delegator",
-                create_cl_value.public_key(public_key_of_delegator)
+                CL_PublicKey.from_key(public_key_of_delegator)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "validator",
-                create_cl_value.public_key(public_key_of_validator)
+                CL_PublicKey.from_key(public_key_of_validator)
                 ),
         ]
     )
@@ -382,17 +372,17 @@ def create_validator_delegation_withdrawal(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
-            create_deploy_arg(
+            DeployArgument(
                 "amount",
-                create_cl_value.u512(amount)
+                CL_U512(amount)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "delegator",
-                create_cl_value.public_key(public_key_of_delegator)
+                CL_PublicKey.from_key(public_key_of_delegator)
                 ),
-            create_deploy_arg(
+            DeployArgument(
                 "validator",
-                create_cl_value.public_key(public_key_of_validator)
+                CL_PublicKey.from_key(public_key_of_validator)
                 ),
         ]
     )

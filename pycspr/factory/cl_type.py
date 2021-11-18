@@ -1,116 +1,116 @@
-from pycspr.types import CLType
-from pycspr.types import CLType_Any
-from pycspr.types import CLType_Boolean
-from pycspr.types import CLType_ByteArray
-from pycspr.types import CLType_I32
-from pycspr.types import CLType_I64
-from pycspr.types import CLType_Key
-from pycspr.types import CLType_List
-from pycspr.types import CLType_Map
-from pycspr.types import CLType_Option
-from pycspr.types import CLType_PublicKey
-from pycspr.types import CLType_Result
-from pycspr.types import CLType_String
-from pycspr.types import CLType_Tuple1
-from pycspr.types import CLType_Tuple2
-from pycspr.types import CLType_Tuple3
-from pycspr.types import CLType_U8
-from pycspr.types import CLType_U32
-from pycspr.types import CLType_U64
-from pycspr.types import CLType_U128
-from pycspr.types import CLType_U256
-from pycspr.types import CLType_U512
-from pycspr.types import CLType_Unit
-from pycspr.types import CLType_URef
+from pycspr.types import CL_Type
+from pycspr.types import CL_Type_Any
+from pycspr.types import CL_Type_Bool
+from pycspr.types import CL_Type_ByteArray
+from pycspr.types import CL_Type_I32
+from pycspr.types import CL_Type_I64
+from pycspr.types import CL_Type_Key
+from pycspr.types import CL_Type_List
+from pycspr.types import CL_Type_Map
+from pycspr.types import CL_Type_Option
+from pycspr.types import CL_Type_PublicKey
+from pycspr.types import CL_Type_Result
+from pycspr.types import CL_Type_String
+from pycspr.types import CL_Type_Tuple1
+from pycspr.types import CL_Type_Tuple2
+from pycspr.types import CL_Type_Tuple3
+from pycspr.types import CL_Type_U8
+from pycspr.types import CL_Type_U32
+from pycspr.types import CL_Type_U64
+from pycspr.types import CL_Type_U128
+from pycspr.types import CL_Type_U256
+from pycspr.types import CL_Type_U512
+from pycspr.types import CL_Type_Unit
+from pycspr.types import CL_Type_URef
 
 
-def any() -> CLType_Any:
-    return CLType_Any()
+def any() -> CL_Type_Any:
+    return CL_Type_Any()
 
 
-def boolean() -> CLType_Boolean:
-    return CLType_Boolean()
+def boolean() -> CL_Type_Bool:
+    return CL_Type_Bool()
 
 
-def byte_array(size: int) -> CLType_ByteArray:
-    return CLType_ByteArray(size=size)
+def byte_array(size: int) -> CL_Type_ByteArray:
+    return CL_Type_ByteArray(size=size)
 
 
-def i32() -> CLType_I32:
-    return CLType_I32()
+def i32() -> CL_Type_I32:
+    return CL_Type_I32()
 
 
-def i64() -> CLType_I64:
-    return CLType_I64()
+def i64() -> CL_Type_I64:
+    return CL_Type_I64()
 
 
-def key() -> CLType_Key:
-    return CLType_Key()
+def key() -> CL_Type_Key:
+    return CL_Type_Key()
 
 
-def list(inner_type: CLType) -> CLType_List:
-    return CLType_List(inner_type=inner_type)
+def list(inner_type: CL_Type) -> CL_Type_List:
+    return CL_Type_List(inner_type=inner_type)
 
 
-def map(key_type: CLType, value_type: CLType) -> CLType_Map:
-    return CLType_Map(key_type=key_type, value_type=value_type)
+def map(key_type: CL_Type, value_type: CL_Type) -> CL_Type_Map:
+    return CL_Type_Map(key_type=key_type, value_type=value_type)
 
 
-def option(inner_type: CLType) -> CLType_Option:
-    return CLType_Option(inner_type=inner_type)
+def option(inner_type: CL_Type) -> CL_Type_Option:
+    return CL_Type_Option(inner_type=inner_type)
 
 
-def public_key() -> CLType_PublicKey:
-    return CLType_PublicKey()
+def public_key() -> CL_Type_PublicKey:
+    return CL_Type_PublicKey()
 
 
-def result() -> CLType_Result:
-    return CLType_Result()
+def result() -> CL_Type_Result:
+    return CL_Type_Result()
 
 
-def string() -> CLType_String:
-    return CLType_String()
+def string() -> CL_Type_String:
+    return CL_Type_String()
 
 
-def tuple_1(t0_type: CLType) -> CLType_Tuple1:
-    return CLType_Tuple1(t0_type=t0_type)
+def tuple_1(t0_type: CL_Type) -> CL_Type_Tuple1:
+    return CL_Type_Tuple1(t0_type=t0_type)
 
 
-def tuple_2(t0_type: CLType, t1_type: CLType) -> CLType_Tuple2:
-    return CLType_Tuple2(t0_type=t0_type, t1_type=t1_type)
+def tuple_2(t0_type: CL_Type, t1_type: CL_Type) -> CL_Type_Tuple2:
+    return CL_Type_Tuple2(t0_type=t0_type, t1_type=t1_type)
 
 
-def tuple_3(t0_type: CLType, t1_type: CLType, t2_type: CLType) -> CLType_Tuple3:
-    return CLType_Tuple3(t0_type=t0_type, t1_type=t1_type, t2_type=t2_type)
+def tuple_3(t0_type: CL_Type, t1_type: CL_Type, t2_type: CL_Type) -> CL_Type_Tuple3:
+    return CL_Type_Tuple3(t0_type=t0_type, t1_type=t1_type, t2_type=t2_type)
 
 
-def u8() -> CLType_U8:
-    return CLType_U8()
+def u8() -> CL_Type_U8:
+    return CL_Type_U8()
 
 
-def u32() -> CLType_U32:
-    return CLType_U32()
+def u32() -> CL_Type_U32:
+    return CL_Type_U32()
 
 
-def u64() -> CLType_U64:
-    return CLType_U64()
+def u64() -> CL_Type_U64:
+    return CL_Type_U64()
 
 
-def u128() -> CLType_U128:
-    return CLType_U128()
+def u128() -> CL_Type_U128:
+    return CL_Type_U128()
 
 
-def u256() -> CLType_U256:
-    return CLType_U256()
+def u256() -> CL_Type_U256:
+    return CL_Type_U256()
 
 
-def u512() -> CLType_U512:
-    return CLType_U512()
+def u512() -> CL_Type_U512:
+    return CL_Type_U512()
 
 
-def unit() -> CLType_Unit:
-    return CLType_Unit()
+def unit() -> CL_Type_Unit:
+    return CL_Type_Unit()
 
 
-def uref() -> CLType_URef:
-    return CLType_URef()
+def uref() -> CL_Type_URef:
+    return CL_Type_URef()

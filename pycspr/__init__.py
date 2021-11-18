@@ -7,7 +7,7 @@
 #  88              d8'                              88
 
 __title__ = "pycspr"
-__version__ = "0.10.0"
+__version__ = "0.10.1"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
@@ -28,17 +28,12 @@ from pycspr.crypto import get_account_key_algo
 from pycspr.crypto import HashAlgorithm
 from pycspr.crypto import KeyAlgorithm
 
-from pycspr.factory import create_cl_type
-from pycspr.factory import create_cl_value
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
-from pycspr.factory import create_deploy_arg
 from pycspr.factory import create_deploy_parameters
 from pycspr.factory import create_deploy_ttl
-from pycspr.factory import create_state_key
 from pycspr.factory import create_transfer
 from pycspr.factory import create_standard_payment
-from pycspr.factory import create_uref_from_string
 from pycspr.factory import create_validator_auction_bid
 from pycspr.factory import create_validator_auction_bid_withdrawal
 from pycspr.factory import create_validator_delegation
@@ -47,11 +42,6 @@ from pycspr.factory import parse_private_key
 from pycspr.factory import parse_private_key_bytes
 from pycspr.factory import parse_public_key
 from pycspr.factory import parse_public_key_bytes
-
-from pycspr.serialisation import from_bytes
-from pycspr.serialisation import from_json
-from pycspr.serialisation import to_bytes
-from pycspr.serialisation import to_json
 
 from pycspr.utils.io import read_deploy
 from pycspr.utils.io import read_wasm

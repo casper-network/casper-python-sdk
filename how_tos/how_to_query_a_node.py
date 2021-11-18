@@ -6,7 +6,7 @@ import typing
 import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
-from pycspr.types import UnforgeableReference
+from pycspr.types import CL_URef
 
 
 # Path to NCTL assets.
@@ -124,9 +124,9 @@ def _main(args: argparse.Namespace):
     print("SUCCESS :: Query 2.2: get_account_info")
 
     # Query 2.3: get_account_main_purse_uref.
-    account_main_purse: UnforgeableReference = \
+    account_main_purse: CL_URef = \
         client.get_account_main_purse_uref(user_public_key.account_key)
-    assert isinstance(account_main_purse, UnforgeableReference)
+    assert isinstance(account_main_purse, CL_URef)
     print("SUCCESS :: Query 2.3: get_account_main_purse_uref")
 
     # Query 2.4: get_account_balance.

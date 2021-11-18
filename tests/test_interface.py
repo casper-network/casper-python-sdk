@@ -71,13 +71,10 @@ _INTERFACE_OF_LIBRARY = {
     _has_function: {
         "create_deploy",
         "create_deploy_approval",
-        "create_deploy_arg",
         "create_deploy_parameters",
         "create_deploy_ttl",
-        "create_key",
         "create_transfer",
         "create_standard_payment",
-        "create_uref_from_string",
         "create_validator_auction_bid",
         "create_validator_auction_bid_withdrawal",
         "create_validator_delegation",
@@ -89,10 +86,6 @@ _INTERFACE_OF_LIBRARY = {
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
-        "from_bytes",
-        "from_json",
-        "to_bytes",
-        "to_json",
         "read_deploy",
         "read_wasm",
         "write_deploy",
@@ -100,16 +93,13 @@ _INTERFACE_OF_LIBRARY = {
     _has_member: {
         "crypto",
         "factory",
-        "serialisation",
         "types",
-        "create_cl_type",
-        "create_cl_value",
     }
 }
 
 
 def test_version_of_library():
-    assert pycspr.__version__ == "0.10.0"
+    assert pycspr.__version__ == "0.10.1"
 
 
 def test_exports_of_library():

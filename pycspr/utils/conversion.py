@@ -1,3 +1,5 @@
+import datetime
+
 
 def le_bytes_to_int(as_bytes: bytes, signed: bool) -> int:
     """Converts a little endian byte array to an integer.
@@ -77,3 +79,36 @@ def milliseconds_to_humanized_time_interval(interval: int):
 
     """
     pass
+
+
+def timestamp_from_string(ts_iso: str) -> float:
+    """Converts an ISO encoded timestamp to a float.
+
+    :param ts_iso: ISO encoded timestamp.
+    :returns: Number of milliseconds since the epoch.
+
+    """
+    # Strip trailing TZ offset - TODO review.
+    if ts_iso.endswith("Z"):
+        ts_iso = ts_iso[:-1]
+        ts_iso = f"{ts_iso}+00:00"
+
+    return datetime.datetime.fromisoformat(ts_iso).timestamp()
+
+
+def timestamp_to_string(ts: float) -> str:
+    """Converts a timestamp to an ISO compliant string.
+
+    :param ts: A timestamp.
+    :returns: ISO compliant string representation.
+
+    """
+    # Node accepts ISO millisecond precise UTC timestamps.
+    ts_3_decimal_places = round(ts, 3)
+    ts_datetime = datetime.datetime.fromtimestamp(
+        ts_3_decimal_places,
+        tz=datetime.timezone.utc
+        )
+    ts_iso = ts_datetime.isoformat()
+
+    return f"{ts_iso[:-9]}Z"
