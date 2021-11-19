@@ -27,4 +27,5 @@ def test_serialisation_of_cl_values_to_json(cl_values_vector):
     for cl_value in cl_values_vector:
         as_json = serialisation.cl_value_to_json(cl_value)
         assert isinstance(as_json, dict)
+        print(as_json)
         assert cl_value == serialisation.cl_value_from_json(as_json)

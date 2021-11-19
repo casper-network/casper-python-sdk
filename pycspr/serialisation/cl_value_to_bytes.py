@@ -7,7 +7,7 @@ def encode(entity: cl_values.CL_Value) -> bytes:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Bool):
-        return bytes([int(entity.value)])
+        return bytes([entity.value])
 
     elif isinstance(entity, cl_values.CL_ByteArray):
         return entity.value
