@@ -2,6 +2,7 @@ import typing
 
 from pycspr import factory
 from pycspr import types
+from pycspr. serialisation import cl_value_from_bytes
 from pycspr.types import CL_Type
 from pycspr.types import CL_TypeKey
 from pycspr.types import CL_Value
@@ -127,7 +128,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CL_Value]:
         elif type_key == CL_TypeKey.OPTION:
             continue
         elif type_key == CL_TypeKey.PUBLIC_KEY:
-            yield types.CL_PublicKey.from_bytes(bytes.fromhex(value))
+            yield cl_value_from_bytes(bytes.fromhex(value), types.CL_PublicKey)
         elif type_key == CL_TypeKey.RESULT:
             continue
         elif type_key == CL_TypeKey.STRING:

@@ -26,3 +26,6 @@ DEFAULT_GAS_PRICE = 1
 
 # Maximum deploy time to live = 1 day.
 DEPLOY_TTL_MS_MAX = 1000 * 60 * 60 * 24
+
+# Maximum value of a transfer ID.
+MAX_TRANSFER_ID = (2 ** 63) - 1

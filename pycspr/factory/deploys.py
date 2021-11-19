@@ -9,6 +9,7 @@ from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types import CL_ByteArray
 from pycspr.types import CL_Option
 from pycspr.types import CL_PublicKey
+from pycspr.types import CL_Type_U64
 from pycspr.types import CL_U8
 from pycspr.types import CL_U64
 from pycspr.types import CL_U512
@@ -28,10 +29,6 @@ from pycspr.types import Transfer
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
-
-
-# Maximum value of a transfer ID.
-_MAX_TRANSFER_ID = (2 ** 63) - 1
 
 
 def create_deploy(
@@ -213,8 +210,7 @@ def create_transfer_session(
     :returns: A native transfer session logic.
 
     """
-    correlation_id = correlation_id or random.randint(1, _MAX_TRANSFER_ID)
-    correlation_id = 123
+    correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
 
     return Transfer(
         args=[
@@ -228,7 +224,7 @@ def create_transfer_session(
                 ),
             DeployArgument(
                 "id",
-                CL_Option(CL_U64(correlation_id))
+                CL_Option(CL_U64(correlation_id), CL_Type_U64())
                 ),
         ]
     )

@@ -1,5 +1,5 @@
 from pycspr import crypto
-from pycspr.types import cl_values
+from pycspr.types.cl import cl_values
 from pycspr.utils.conversion import le_bytes_to_int
 
 
@@ -23,31 +23,31 @@ def decode(encoded: bytes, cl_value_type: cl_values.CL_Value) -> cl_values.CL_Va
         return cl_values.CL_Key(encoded[1:], cl_values.CL_KeyType(encoded[0]))
 
     elif cl_value_type is cl_values.CL_List:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_Map:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_Option:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_PublicKey:
         return cl_values.CL_PublicKey(crypto.KeyAlgorithm(encoded[0]), encoded[1:])
 
     elif cl_value_type is cl_values.CL_Result:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_String:
         return cl_values.CL_String(encoded[4:].decode("utf-8"))
 
     elif cl_value_type is cl_values.CL_Tuple1:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_Tuple2:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_Tuple3:
-        pass
+        raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_U8:
         return cl_values.CL_U8(le_bytes_to_int(encoded, False))
@@ -71,7 +71,7 @@ def decode(encoded: bytes, cl_value_type: cl_values.CL_Value) -> cl_values.CL_Va
         return cl_values.CL_Unit()
 
     elif cl_value_type is cl_values.CL_URef:
-        return cl_values.CL_URef(cl_values.CL_AccessRights(encoded[-1]), encoded[:-1])
+        return cl_values.CL_URef(cl_values.CL_URefAccessRights(encoded[-1]), encoded[:-1])
 
     else:
         raise ValueError(f"Unsupported CL value type: {cl_value_type}")

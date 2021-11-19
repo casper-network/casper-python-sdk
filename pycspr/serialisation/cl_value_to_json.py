@@ -1,13 +1,14 @@
-from pycspr.types import cl_types
-from pycspr.types import cl_values
+from pycspr.types.cl import cl_types
+from pycspr.types.cl import cl_values
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
+from pycspr.serialisation.cl_type_to_json import encode as cl_type_to_json
 
 
 def encode(entity: cl_values.CL_Value) -> dict:
     return {
-        "cl_type": _get_cl_type(entity).as_json(),
-        "bytes": cl_value_to_bytes(entity),
-        "parsed": entity.as_parsed()
+        "cl_type": cl_type_to_json(_get_cl_type(entity)),
+        "bytes": cl_value_to_bytes(entity).hex(),
+        "parsed": str(entity)
     }
 
 

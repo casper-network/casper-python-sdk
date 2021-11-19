@@ -36,7 +36,7 @@ def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
         assert isinstance(response, pycspr.types.CL_URef)
         assert len(response.address) == 32
-        assert response.access_rights == pycspr.types.CL_AccessRights.READ_ADD_WRITE
+        assert response.access_rights == pycspr.types.CL_URefAccessRights.READ_ADD_WRITE
 
     _assert(CLIENT.get_account_main_purse_uref(account_key))
 

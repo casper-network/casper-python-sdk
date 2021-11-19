@@ -1,4 +1,4 @@
-from pycspr.types import cl_values
+from pycspr.types.cl import cl_values
 from pycspr.utils.conversion import int_to_le_bytes
 
 
@@ -28,7 +28,10 @@ def encode(entity: cl_values.CL_Value) -> bytes:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Option):
-        raise NotImplementedError()
+        if entity.value:
+            return bytes([1]) + encode(entity.value)
+        else:
+            return bytes([0])
 
     elif isinstance(entity, cl_values.CL_PublicKey):
         return bytes([entity.algo.value]) + entity.pbk

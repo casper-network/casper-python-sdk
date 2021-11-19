@@ -1,9 +1,9 @@
 import dataclasses
 import typing
 
-from pycspr.types.cl_values.cl_byte_array import CL_ByteArray
-from pycspr.types.cl_values.cl_string import CL_String
-from pycspr.types.cl_values.cl_int import CL_U32
+from pycspr.types.cl.cl_values import CL_ByteArray
+from pycspr.types.cl.cl_values import CL_String
+from pycspr.types.cl.cl_values import CL_U32
 from pycspr.types.deploys.deploy_argument import DeployArgument
 from pycspr.types.other.identifiers import ContractIdentifer
 from pycspr.types.other.identifiers import ContractVersion

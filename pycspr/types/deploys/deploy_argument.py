@@ -1,7 +1,7 @@
 import dataclasses
 
-from pycspr.types.cl_values.base import CL_Value
-from pycspr.types.cl_values.cl_string import CL_String
+from pycspr.types.cl.cl_values import CL_Value
+from pycspr.types.cl.cl_values import CL_String
 from pycspr.types.other.u8_array import U8Array
 
 

@@ -33,7 +33,6 @@ class Timestamp():
 
         return Timestamp(dt.datetime.fromisoformat(as_string).timestamp())
 
-
     def to_string(self) -> str:
         ts_3_decimal_places = round(self.ts, 3)
         ts_datetime = dt.datetime.fromtimestamp(

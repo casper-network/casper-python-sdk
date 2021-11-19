@@ -1,10 +1,8 @@
 import dataclasses
 
-from pycspr.types.cl_values.base import CL_Value
-
 
 @dataclasses.dataclass
-class U8Array(CL_Value):
+class U8Array():
     # Associated value.
     value: bytes
 
