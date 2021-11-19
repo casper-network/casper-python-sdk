@@ -14,7 +14,7 @@ def decode(encoded: bytes) -> cl_types.CL_Type:
         pass
 
     if typekey == cl_types.CL_TypeKey.BYTE_ARRAY:
-        size: cl_values.CL_U32 = cl_value_from_bytes(encoded[1:], cl_values.CL_U32)
+        size: cl_values.CL_U32 = cl_value_from_bytes(encoded[1:], cl_types.CL_Type_U32())
         return cl_types.CL_Type_ByteArray(size.value)
 
     elif typekey == cl_types.CL_TypeKey.LIST:
