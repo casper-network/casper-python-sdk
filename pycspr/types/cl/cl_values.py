@@ -26,9 +26,6 @@ class CL_Any(CL_Value):
     def __eq__(self, other) -> bool:
         return self.value == other.value
 
-    def __str__(self, other) -> str:
-        return str(self.value)
-
 
 @dataclasses.dataclass
 class CL_Bool(CL_Value):
@@ -40,9 +37,6 @@ class CL_Bool(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.value == other.value
-
-    def __str__(self) -> str:
-        return str(self.value)
 
 
 @dataclasses.dataclass
@@ -59,9 +53,6 @@ class CL_ByteArray(CL_Value):
     def __len__(self) -> int:
         return len(self.value)
 
-    def __str__(self) -> str:
-        return self.value.hex()
-
 
 @dataclasses.dataclass
 class CL_Int(CL_Value):
@@ -73,9 +64,6 @@ class CL_Int(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.value == other.value
-
-    def __str__(self) -> str:
-        return str(self.value)
 
 
 @dataclasses.dataclass
@@ -117,9 +105,6 @@ class CL_Key(CL_Value):
     def __eq__(self, other) -> bool:
         return self.identifier == other.identifier and self.key_type == other.key_type
 
-    def __str__(self) -> str:
-        return self.to_string()
-
     def to_string(self) -> str:
         if self.key_type == CL_KeyType.ACCOUNT:
             prefix = "account-hash"
@@ -158,9 +143,6 @@ class CL_List(CL_Value):
     def __eq__(self, other) -> bool:
         return self.vector == other.vector and self.item_type == other.item_type
 
-    def __str__(self, other) -> str:
-        return str([str(i) for i in self.vector])
-
 
 @dataclasses.dataclass
 class CL_Map(CL_Value):
@@ -184,12 +166,6 @@ class CL_Option(CL_Value):
     def __eq__(self, other) -> bool:
         return self.value == other.value and self.option_type == other.option_type
 
-    def __str__(self) -> str:
-        if self.value:
-            return str(self.value)
-        else:
-            return ""
-
 
 @dataclasses.dataclass
 class CL_PublicKey(PublicKey, CL_Value):
@@ -198,9 +174,6 @@ class CL_PublicKey(PublicKey, CL_Value):
     """
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
-
-    def __str__(self) -> str:
-        return self.account_key.hex()
 
     @staticmethod
     def from_account_key(account_key: bytes) -> "CL_PublicKey":
@@ -229,9 +202,6 @@ class CL_Result(CL_Value):
     def __eq__(self, other) -> bool:
         return self.value == other.value
 
-    def __str__(self) -> str:
-        return f"Result:{self.value}"
-
 
 @dataclasses.dataclass
 class CL_String(CL_Value):
@@ -244,9 +214,6 @@ class CL_String(CL_Value):
     def __eq__(self, other) -> bool:
         return self.value == other.value
 
-    def __str__(self) -> str:
-        return str(self.value)
-
 
 @dataclasses.dataclass
 class CL_Tuple1(CL_Value):
@@ -258,9 +225,6 @@ class CL_Tuple1(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0
-
-    def __str__(self) -> str:
-        return f"Tuple1:{self.v0}"
 
 
 @dataclasses.dataclass
@@ -276,9 +240,6 @@ class CL_Tuple2(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0 and self.v1 == other.v1
-
-    def __str__(self) -> str:
-        return f"Tuple1:{self.v0}, {self.v1}"
 
 
 @dataclasses.dataclass
@@ -297,9 +258,6 @@ class CL_Tuple3(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0 and self.v1 == other.v1 and self.v2 == other.v2
-
-    def __str__(self) -> str:
-        return f"Tuple3:{self.v0}, {self.v1}, {self.v2}"
 
 
 @dataclasses.dataclass
@@ -370,9 +328,6 @@ class CL_Unit(CL_Value):
     def __eq__(self, other) -> bool:
         return True
 
-    def __str__(self) -> str:
-        return ""
-
 
 class CL_URefAccessRights(enum.Enum):
     """Enumeration over set of CL item access rights.
@@ -413,6 +368,3 @@ class CL_URef(CL_Value):
             CL_URefAccessRights(int(access_rights)),
             bytes.fromhex(address)
             )
-
-    def __str__(self) -> str:
-        return self.to_string()
