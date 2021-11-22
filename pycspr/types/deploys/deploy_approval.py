@@ -1,4 +1,4 @@
-import  dataclasses
+import dataclasses
 
 from pycspr.types.other.keys import PublicKey
 
@@ -15,5 +15,4 @@ class DeployApproval:
     signature: bytes
 
     def __eq__(self, other) -> bool:
-        return self.signer == other.signer and \
-               self.signature == other.signature
+        return self.signer == other.signer and self.signature == other.signature

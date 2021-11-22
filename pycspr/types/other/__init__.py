@@ -10,5 +10,3 @@ from pycspr.types.other.identifiers import StateRootIdentifier
 from pycspr.types.other.keys import PrivateKey
 from pycspr.types.other.keys import PublicKey
 from pycspr.types.other.timestamp import Timestamp
-from pycspr.types.other.u8_array import U8Array
-from pycspr.types.other.vector import Vector

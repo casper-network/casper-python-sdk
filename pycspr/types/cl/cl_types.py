@@ -1,6 +1,5 @@
 import dataclasses
 import enum
-import typing
 
 
 class CL_TypeKey(enum.Enum):
@@ -211,7 +210,7 @@ class CL_Type_Tuple2(CL_Type):
         return super().__eq__(other) and \
                self.t0_type == other.t0_type and \
                self.t1_type == other.t1_type
-            
+
 
 @dataclasses.dataclass
 class CL_Type_Tuple3(CL_Type):

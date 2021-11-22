@@ -79,8 +79,6 @@ from pycspr.types.other import PrivateKey
 from pycspr.types.other import PublicKey
 from pycspr.types.other import StateRootIdentifier
 from pycspr.types.other import Timestamp
-from pycspr.types.other import U8Array
-from pycspr.types.other import Vector
 
 
 CL_TYPEKEY_TO_CL_VALUE_TYPE = {

@@ -11,7 +11,7 @@ from pycspr.types.deploys import StoredContractByNameVersioned
 from pycspr.types.deploys import Transfer
 
 
-def encode(entity: object) -> dict:    
+def encode(entity: object) -> dict:
     if isinstance(entity, Deploy):
         return {
             "approvals": [encode(i) for i in entity.approvals],
@@ -50,7 +50,7 @@ def encode(entity: object) -> dict:
                 "args": [encode(i) for i in entity.args],
                 "module_bytes": entity.module_bytes.hex()
             }
-        }        
+        }
 
     if isinstance(entity, StoredContractByHash):
         return {

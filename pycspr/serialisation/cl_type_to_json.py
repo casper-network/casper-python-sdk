@@ -25,7 +25,7 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
                 "key": encode(entity.key_type),
                 "value": encode(entity.value_type)
             }
-        }        
+        }
     elif isinstance(entity, cl_types.CL_Type_Option):
         return {
             "Option": encode(entity.inner_type)

@@ -121,7 +121,7 @@ def _parse_json(typedef: object, obj: dict):
 
     if typedef is StoredContractByHashVersioned:
         return obj["StoredContractByHashVersioned"]
-   
+
     if typedef is StoredContractByName:
         return obj["StoredContractByName"]
 

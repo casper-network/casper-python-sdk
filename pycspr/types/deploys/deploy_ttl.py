@@ -23,7 +23,7 @@ class DeployTimeToLive():
     def from_string(as_string: str) -> "DeployTimeToLive":
         as_milliseconds = conversion.humanized_time_interval_to_milliseconds(as_string)
         if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-            raise ValueError(f"Invalid deploy ttl.  Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+            raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
 
         return DeployTimeToLive(
             as_milliseconds=as_milliseconds,

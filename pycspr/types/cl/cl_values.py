@@ -211,7 +211,7 @@ class CL_PublicKey(PublicKey, CL_Value):
 @dataclasses.dataclass
 class CL_Result(CL_Value):
     """Represents a CL type value: function invocation result.
-    
+
     """
     # Associated value.
     value: object
@@ -226,7 +226,7 @@ class CL_Result(CL_Value):
 @dataclasses.dataclass
 class CL_String(CL_Value):
     """Represents a CL type value: string.
-    
+
     """
     # Associated value.
     value: str
@@ -241,7 +241,7 @@ class CL_String(CL_Value):
 @dataclasses.dataclass
 class CL_Tuple1(CL_Value):
     """Represents a CL type value: a 1-ary tuple.
-    
+
     """
     # 1st value within 1-ary tuple value.
     v0: CL_Value
@@ -256,7 +256,7 @@ class CL_Tuple1(CL_Value):
 @dataclasses.dataclass
 class CL_Tuple2(CL_Value):
     """Represents a CL type value: a 2-ary tuple.
-    
+
     """
     # 1st value within 2-ary tuple value.
     v0: CL_Value
@@ -274,7 +274,7 @@ class CL_Tuple2(CL_Value):
 @dataclasses.dataclass
 class CL_Tuple3(CL_Value):
     """Represents a CL type value: a 3-ary tuple.
-    
+
     """
     # 1st value within 3-ary tuple value.
     v0: CL_Value
@@ -355,7 +355,7 @@ class CL_U512(CL_Int):
 @dataclasses.dataclass
 class CL_Unit(CL_Value):
     """Represents a CL type value: unit, i.e. a null value.
-    
+
     """
     def __eq__(self, other) -> bool:
         return True

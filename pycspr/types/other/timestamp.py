@@ -1,9 +1,6 @@
 import dataclasses
 import datetime as dt
 
-from pycspr.utils import constants
-from pycspr.utils import conversion
-
 
 @dataclasses.dataclass
 class Timestamp():

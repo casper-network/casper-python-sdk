@@ -7,6 +7,7 @@ from pycspr.serialisation.cl_value_from_json import decode as cl_value_from_json
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
 from pycspr.serialisation.cl_value_to_cl_type import encode as cl_value_to_cl_type
 from pycspr.serialisation.cl_value_to_json import encode as cl_value_to_json
+from pycspr.serialisation.deploy_from_bytes import decode as deploy_from_bytes
 from pycspr.serialisation.deploy_from_json import decode as deploy_from_json
 from pycspr.serialisation.deploy_to_bytes import encode as deploy_to_bytes
 from pycspr.serialisation.deploy_to_json import encode as deploy_to_json

@@ -1,5 +1,5 @@
 import dataclasses
-
+from pycspr.types import CL_URef
 
 
 @dataclasses.dataclass
@@ -80,4 +80,3 @@ class CL_DictionaryIdentifier_UniqueKey(CL_DictionaryIdentifier):
 
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and self.key == other.key
-

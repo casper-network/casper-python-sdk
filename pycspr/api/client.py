@@ -156,7 +156,11 @@ class NodeClient():
             time.sleep(polling_interval_seconds)
 
 
-    def get_block_transfers(self, block_id: types.BlockIdentifer = None) -> typing.Tuple[str, list]:
+    def get_block_transfers(
+        self,
+        block_id:
+        types.BlockIdentifer = None
+    ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.

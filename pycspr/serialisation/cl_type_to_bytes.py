@@ -14,7 +14,10 @@ def encode(entity: cl_types.CL_Type) -> bytes:
         return bytes([entity.type_key.value]) + encode(entity.inner_type)
 
     elif isinstance(entity, cl_types.CL_Type_Map):
-        return bytes([entity.type_key.value]) + encode(entity.key_type) + encode(entity.value_type)
+        return \
+            bytes([entity.type_key.value]) + \
+            encode(entity.key_type) + \
+            encode(entity.value_type)
 
     elif isinstance(entity, cl_types.CL_Type_Option):
         return bytes([entity.type_key.value]) + encode(entity.inner_type)
@@ -26,7 +29,11 @@ def encode(entity: cl_types.CL_Type) -> bytes:
         return bytes([entity.type_key.value]) + encode(entity.t0_type) + encode(entity.t1_type)
 
     elif isinstance(entity, cl_types.CL_Type_Tuple3):
-        return bytes([entity.type_key.value]) + encode(entity.t0_type) + encode(entity.t1_type) + encode(entity.t2_type)
+        return \
+            bytes([entity.type_key.value]) + \
+            encode(entity.t0_type) + \
+            encode(entity.t1_type) + \
+            encode(entity.t2_type)
 
 
 _SIMPLE_TYPES = {

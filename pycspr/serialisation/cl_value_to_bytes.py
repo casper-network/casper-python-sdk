@@ -71,7 +71,7 @@ def encode(entity: cl_values.CL_Value) -> bytes:
         elif cl_values.CL_U128.is_in_range(entity.value):
             byte_length = 16
         else:
-            raise ValueError("Invalid U128: max size exceeded")        
+            raise ValueError("Invalid U128: max size exceeded")
         return int_to_le_bytes_trimmed(entity.value, byte_length, False)
 
     elif isinstance(entity, cl_values.CL_U256):

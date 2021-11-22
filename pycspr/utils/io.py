@@ -50,5 +50,5 @@ def write_deploy(
 
     with open(str(fpath), "w") as fstream:
         fstream.writelines(json.dumps(serialisation.deploy_to_json(deploy), indent=4))
-        
+
     return str(fpath)

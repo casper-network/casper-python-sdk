@@ -33,13 +33,13 @@ def decode(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Value:
         raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_Option:
-        if bool(encoded[0]) == True:
+        if bool(encoded[0]):
             return cl_values.CL_Option(
                 decode(encoded[1:], cl_type.inner_type),
                 cl_type.inner_type
             )
         else:
-            print(456, encoded) 
+            print(456, encoded)
         raise NotImplementedError()
 
     elif cl_value_type is cl_values.CL_PublicKey:
