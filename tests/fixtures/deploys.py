@@ -74,7 +74,7 @@ def a_deploy(deploy_params, cp1, cp2):
         deploy_params,
         amount=2500000000,
         correlation_id=1,
-        target=cp2.account_hash,
+        target=cp2.account_key,
         )
     deploy.set_approval(pycspr.factory.create_deploy_approval(deploy, cp1))
 

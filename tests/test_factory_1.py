@@ -8,8 +8,7 @@ from pycspr.types import DeployParameters
 
 def test_create_deploy_arguments(cl_values_vector):
     for cl_value in cl_values_vector:
-        arg_name = f"a-{cl_value.cl_type.type_key.name.lower()}-arg"
-        arg = DeployArgument(arg_name, cl_value)
+        arg = DeployArgument("an-argument", cl_value)
         assert isinstance(arg, DeployArgument)
 
 
@@ -58,7 +57,7 @@ def test_create_transfer_session(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, 1e9),
             correlation_id=random.randint(0, 1e9),
-            target=a_test_account.account_hash,
+            target=a_test_account.account_key,
             ),
         pycspr.types.Transfer
         )
@@ -72,7 +71,7 @@ def test_create_transfer_body(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, 1e9),
             correlation_id=random.randint(0, 1e9),
-            target=a_test_account.account_hash,
+            target=a_test_account.account_key,
         )
     )
     assert isinstance(body, pycspr.types.DeployBody)
@@ -88,7 +87,7 @@ def test_create_transfer_header(deploy_params, a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, 1e9),
             correlation_id=random.randint(0, 1e9),
-            target=a_test_account.account_hash,
+            target=a_test_account.account_key,
         )
     )
     header = pycspr.factory.create_deploy_header(
@@ -104,7 +103,7 @@ def test_create_transfer(deploy_params, a_test_account):
     deploy = pycspr.create_transfer(
         params=deploy_params,
         amount=random.randint(0, 1e5),
-        target=a_test_account.account_hash,
+        target=a_test_account.account_key,
         correlation_id=random.randint(0, 1e9)
     )
     assert isinstance(deploy, pycspr.types.Deploy)
