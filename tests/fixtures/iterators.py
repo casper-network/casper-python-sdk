@@ -128,7 +128,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CL_Value]:
         elif type_key == CL_TypeKey.OPTION:
             continue
         elif type_key == CL_TypeKey.PUBLIC_KEY:
-            yield cl_value_from_bytes(bytes.fromhex(value), types.CL_PublicKey)
+            yield types.CL_PublicKey.from_string(value)
         elif type_key == CL_TypeKey.RESULT:
             continue
         elif type_key == CL_TypeKey.STRING:

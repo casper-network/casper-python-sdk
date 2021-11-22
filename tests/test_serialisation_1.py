@@ -20,7 +20,8 @@ def test_serialisation_of_cl_values_to_bytes(cl_values_vector):
     for cl_value in cl_values_vector:
         as_bytes = serialisation.cl_value_to_bytes(cl_value)
         assert isinstance(as_bytes, bytes)
-        assert cl_value == serialisation.cl_value_from_bytes(as_bytes, type(cl_value))
+        cl_type = serialisation.cl_value_to_cl_type(cl_value)
+        assert cl_value == serialisation.cl_value_from_bytes(as_bytes, cl_type)
 
 
 def test_serialisation_of_cl_values_to_json(cl_values_vector):

@@ -2,6 +2,7 @@ import dataclasses
 import enum
 import typing
 
+from pycspr import crypto
 from pycspr.types.cl.cl_types import CL_Type
 from pycspr.types.other import PublicKey
 
@@ -54,6 +55,9 @@ class CL_ByteArray(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.value == other.value
+
+    def __len__(self) -> int:
+        return len(self.value)
 
     def __str__(self) -> str:
         return self.value.hex()
@@ -195,6 +199,13 @@ class CL_PublicKey(PublicKey, CL_Value):
     @staticmethod
     def from_key(as_key: PublicKey) -> "CL_PublicKey":
         return CL_PublicKey(as_key.algo, as_key.pbk)
+
+    @staticmethod
+    def from_string(as_string: str) -> "CL_PublicKey":
+        return CL_PublicKey(
+            crypto.KeyAlgorithm(bytes.fromhex(as_string)[0]),
+            bytes.fromhex(as_string)[1:]
+        )
 
 
 @dataclasses.dataclass
