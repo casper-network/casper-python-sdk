@@ -45,7 +45,8 @@ def test_can_write_to_and_read_from_fs(deploy_params, cp1, cp2):
         fpath = pycspr.write_deploy(deploy_1, str(fp))
         deploy_2 = pycspr.read_deploy(fp)
         assert isinstance(deploy_2, type(deploy_1))
-        assert pycspr.to_json(deploy_1) == pycspr.to_json(deploy_2)
+        assert pycspr.serialisation.deploy_to_json(deploy_1) == \
+               pycspr.serialisation.deploy_to_json(deploy_2)
         os.remove(fpath)
 
 
@@ -53,6 +54,6 @@ def _create_deploy(deploy_params, cp2):
     return pycspr.factory.create_transfer(
         deploy_params,
         amount=123456789,
-        correlation_id=1,
-        target=cp2.account_hash,
+        target=cp2.account_key,
+        correlation_id=1
         )

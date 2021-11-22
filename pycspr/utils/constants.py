@@ -1,5 +1,6 @@
 import collections
 
+
 # Data structure representing numerical constraints.
 NumericConstraints = collections.namedtuple("NumericConstraints", ["LENGTH", "MIN", "MAX"])
 

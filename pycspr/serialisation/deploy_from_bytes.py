@@ -1,2 +1,2 @@
 def decode(typedef: object, obj: dict) -> object:
-    raise NotImplementedError()
+    raise NotImplementedError(typedef)

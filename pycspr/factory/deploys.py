@@ -213,7 +213,6 @@ def create_transfer_session(
 
     """
     correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
-
     return Transfer(
         args=[
             DeployArgument(

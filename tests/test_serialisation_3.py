@@ -1,5 +1,5 @@
 import pycspr
-from pycspr.types import Deploy
+from pycspr import serialisation
 
 
 def test_serialisation_of_transfer_to_json(deploy_params_static, deploys_1):
@@ -10,8 +10,6 @@ def test_serialisation_of_transfer_to_json(deploy_params_static, deploys_1):
             target=vector["session"]["target"],
             correlation_id=vector["session"]["correlation_id"]
         )
-        assert isinstance(pycspr.to_json(entity), str)
-        assert isinstance(
-            pycspr.from_json(Deploy, pycspr.to_json(entity)),
-            Deploy
-            )
+        as_dict: dict = serialisation.deploy_to_json(entity)
+        assert isinstance(as_dict, dict)
+        assert entity == serialisation.deploy_from_json(type(entity), as_dict)
