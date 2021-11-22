@@ -30,6 +30,14 @@ class Deploy():
     session: DeployExecutableItem
 
 
+    def __eq__(self, other) -> bool:
+        return self.approvals == other.approvals and \
+               self.hash == other.hash and \
+               self.header == other.header and \
+               self.payment == other.payment and \
+               self.session == other.session
+
+
     def approve(self, approver: PrivateKey):
         """Creates a deploy approval & appends it to associated set.
 
@@ -65,40 +73,3 @@ class Deploy():
         self.approvals = [
             uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques
             ]
-
-    #region Equality & serialisation
-
-    def __eq__(self, other) -> bool:
-        return self.approvals == other.approvals and \
-               self.hash == other.hash and \
-               self.header == other.header and \
-               self.payment == other.payment and \
-               self.session == other.session
-
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "Deploy":
-        raise NotImplementedError()
-
-    def to_bytes(self) -> bytes:
-        raise NotImplementedError()
-
-    @staticmethod
-    def from_json(obj: dict) -> "Deploy":
-        return Deploy(
-            approvals=[DeployApproval.from_json(i) for i in obj["approvals"]],
-            hash=bytes.fromhex(obj["hash"]),
-            header=DeployHeader.from_json(obj["header"]),
-            payment=DeployExecutableItem.from_json(obj["payment"]),
-            session=DeployExecutableItem.from_json(obj["session"])
-        )
-
-    def to_json(self) -> dict:
-        return {
-            "approvals": [i.to_json(i) for i in self.approvals],
-            "hash": self.hash.hex(),
-            "header": self.header.to_json(),
-            "payment": self.payment.to_json(),
-            "session": self.session.to_json()
-        }
-
-    #endregion

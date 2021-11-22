@@ -15,18 +15,9 @@ class DeployTimeToLive():
     # Humanized representation of the ttl.
     humanized: str
 
-    #region Equality & serialisation
-
     def __eq__(self, other) -> bool:
         return self.as_milliseconds == other.as_milliseconds and \
                self.humanized == other.humanized
-
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "DeployTimeToLive":
-        raise NotImplementedError()
-
-    def to_bytes(self) -> bytes:
-        raise NotImplementedError()
 
     @staticmethod
     def from_string(as_string: str) -> "DeployTimeToLive":
@@ -41,5 +32,3 @@ class DeployTimeToLive():
 
     def to_string(self) -> str:
         return self.humanized
-
-    #endregion

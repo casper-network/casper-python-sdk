@@ -28,7 +28,7 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Option):
-        raise NotImplementedError()
+        return cl_types.CL_Type_Option(entity.option_type)
 
     elif isinstance(entity, cl_values.CL_PublicKey):
         return cl_types.CL_Type_PublicKey()

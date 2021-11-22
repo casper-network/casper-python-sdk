@@ -1,5 +1,6 @@
 import typing
 
+from pycspr import serialisation
 from pycspr import types
 
 
@@ -282,5 +283,5 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
 
     """
     return {
-        "deploy": deploy.to_json()
+        "deploy": serialisation.deploy_to_json()
     }

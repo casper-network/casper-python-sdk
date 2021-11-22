@@ -1,5 +1,5 @@
 from pycspr.types.cl import cl_values
-from pycspr.utils.conversion import int_to_le_bytes
+from pycspr.utils.conversion import int_to_le_bytes, int_to_le_bytes_trimmed
 
 
 def encode(entity: cl_values.CL_Value) -> bytes:
@@ -72,7 +72,7 @@ def encode(entity: cl_values.CL_Value) -> bytes:
             byte_length = 16
         else:
             raise ValueError("Invalid U128: max size exceeded")        
-        return int_to_le_bytes(entity.value, byte_length, False)
+        return int_to_le_bytes_trimmed(entity.value, byte_length, False)
 
     elif isinstance(entity, cl_values.CL_U256):
         if cl_values.CL_U8.is_in_range(entity.value):
@@ -87,7 +87,7 @@ def encode(entity: cl_values.CL_Value) -> bytes:
             byte_length = 32
         else:
             raise ValueError("Invalid U256: max size exceeded")
-        return int_to_le_bytes(entity.value, byte_length, False)
+        return int_to_le_bytes_trimmed(entity.value, byte_length, False)
 
     elif isinstance(entity, cl_values.CL_U512):
         if cl_values.CL_U8.is_in_range(entity.value):
@@ -104,7 +104,7 @@ def encode(entity: cl_values.CL_Value) -> bytes:
             byte_length = 64
         else:
             raise ValueError("Invalid U512: max size exceeded")
-        return int_to_le_bytes(entity.value, byte_length, False)
+        return int_to_le_bytes_trimmed(entity.value, byte_length, False)
 
     elif isinstance(entity, cl_values.CL_Unit):
         return bytes([])
