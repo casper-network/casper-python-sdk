@@ -1,8 +1,6 @@
 import typing
 
-from pycspr import factory
 from pycspr import types
-from pycspr. serialisation import cl_value_from_bytes
 from pycspr.types import CL_Type
 from pycspr.types import CL_TypeKey
 from pycspr.types import CL_Value
@@ -30,13 +28,21 @@ def yield_cl_types(fixtures: list) -> typing.Iterator[CL_Type]:
             yield types.CL_Type_List(types.CL_Type_I32())
             yield types.CL_Type_List(types.CL_Type_I64())
             yield types.CL_Type_List(types.CL_Type_Key())
-            # yield types.CL_Type_List(types.CL_Type_Map(types.CL_Type_String(), types.CL_Type_I32()))
+            # yield types.CL_Type_List(
+            # types.CL_Type_Map(types.CL_Type_String(), types.CL_Type_I32())
+            # )
             yield types.CL_Type_List(types.CL_Type_PublicKey())
             yield types.CL_Type_List(types.CL_Type_Result())
             yield types.CL_Type_List(types.CL_Type_String())
-            # yield types.CL_Type_List(types.CL_Type_Tuple1(types.CL_Type_Boolean()))
-            # yield types.CL_Type_List(types.CL_Type_Tuple2(types.CL_Type_Boolean(), types.CL_Type_I32()))
-            # yield types.CL_Type_List(types.CL_Type_Tuple3(types.CL_Type_Boolean(), types.CL_Type_I32(), types.CL_Type_String()))
+            # yield types.CL_Type_List(
+            # types.CL_Type_Tuple1(types.CL_Type_Boolean())
+            # )
+            # yield types.CL_Type_List(
+            # types.CL_Type_Tuple2(types.CL_Type_Boolean(), types.CL_Type_I32())
+            # )
+            # yield types.CL_Type_List(
+            # types.CL_Type_Tuple3(types.CL_Type_Boolean(),types.CL_Type_I32(), types.CL_Type_String())
+            # )
             yield types.CL_Type_List(types.CL_Type_U8())
             yield types.CL_Type_List(types.CL_Type_U32())
             yield types.CL_Type_List(types.CL_Type_U64())

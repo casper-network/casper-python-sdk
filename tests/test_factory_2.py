@@ -16,7 +16,12 @@ def test_create_validator_auction_bid(deploy_params, a_test_account, path_to_was
         )
 
 
-def test_create_validator_auction_bid_withdrawal(deploy_params, a_test_account, a_test_uref, path_to_wasm_auction_bid_withdrawal):
+def test_create_validator_auction_bid_withdrawal(
+    deploy_params,
+    a_test_account,
+    a_test_uref,
+    path_to_wasm_auction_bid_withdrawal
+):
     assert isinstance(pycspr.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=random.randint(0, 1e9),
@@ -40,7 +45,11 @@ def test_create_validator_delegate(deploy_params, a_test_account, path_to_wasm_d
         )
 
 
-def test_create_validator_delegate_withdrawal(deploy_params, a_test_account, path_to_wasm_delegate_withdrawal):
+def test_create_validator_delegate_withdrawal(
+    deploy_params,
+    a_test_account,
+    path_to_wasm_delegate_withdrawal
+):
     assert isinstance(pycspr.create_validator_delegation_withdrawal(
         params=deploy_params,
         amount=random.randint(0, 1e9),

@@ -10,7 +10,7 @@ def test_create_deploy_arguments(cl_values_vector):
     for cl_value in cl_values_vector:
         arg_name = f"a-{cl_value.cl_type.type_key.name.lower()}-arg"
         arg = DeployArgument(arg_name, cl_value)
-        assert isinstance(arg, DeployArgument)        
+        assert isinstance(arg, DeployArgument)
 
 
 def test_create_deploy_approval_1(a_deploy, a_test_account):

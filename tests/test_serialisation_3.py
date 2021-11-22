@@ -15,4 +15,3 @@ def test_serialisation_of_transfer_to_json(deploy_params_static, deploys_1):
             pycspr.from_json(Deploy, pycspr.to_json(entity)),
             Deploy
             )
-
