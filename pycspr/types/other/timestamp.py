@@ -13,17 +13,9 @@ class Timestamp():
     # Timestamp in milliseconds.
     value: float
 
-    #region Equality & serialisation
-
     def __eq__(self, other) -> bool:
         return self.value == other.value
 
-    @staticmethod
-    def from_bytes(as_bytes: bytes) -> "Timestamp":
-        raise NotImplementedError()
-
-    def to_bytes(self) -> bytes:
-        raise NotImplementedError()
 
     @staticmethod
     def from_string(as_string: str) -> "Timestamp":
@@ -32,6 +24,7 @@ class Timestamp():
             as_string = f"{as_string}+00:00"
 
         return Timestamp(dt.datetime.fromisoformat(as_string).timestamp())
+
 
     def to_string(self) -> str:
         ts_3_decimal_places = round(self.ts, 3)
@@ -42,5 +35,3 @@ class Timestamp():
         ts_iso = ts_datetime.isoformat()
 
         return f"{ts_iso[:-9]}Z"
-
-    #endregion
