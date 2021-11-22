@@ -90,10 +90,10 @@ def _get_parsed(entity: cl_types.CL_Type) -> cl_types.CL_Type:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Bool):
-        return str(entity)
+        return str(entity.value)
 
     elif isinstance(entity, cl_values.CL_ByteArray):
-        return str(entity)
+        return entity.value.hex()
 
     elif isinstance(entity, cl_values.CL_I32):
         return entity.value
@@ -102,7 +102,7 @@ def _get_parsed(entity: cl_types.CL_Type) -> cl_types.CL_Type:
         return entity.value
 
     elif isinstance(entity, cl_values.CL_Key):
-        return str(entity)
+        return entity.to_string()
 
     elif isinstance(entity, cl_values.CL_List):
         return [str(i) for i in entity.vector]
@@ -111,16 +111,13 @@ def _get_parsed(entity: cl_types.CL_Type) -> cl_types.CL_Type:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Option):
-        if entity.value:
-            return _get_parsed(entity.value)
-        else:
-            return ""
+        return _get_parsed(entity.value) if entity.value else ""
 
     elif isinstance(entity, cl_values.CL_PublicKey):
-        return str(entity)
+        return entity.account_key.hex()
 
     elif isinstance(entity, cl_values.CL_Result):
-        return str(entity)
+        raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_String):
         return entity.value
@@ -156,7 +153,4 @@ def _get_parsed(entity: cl_types.CL_Type) -> cl_types.CL_Type:
         return ""
 
     elif isinstance(entity, cl_values.CL_URef):
-        return str(entity)
-
-    raise ValueError(f"CL value cannot be mapped to a CL type: {entity}")
-
+        return entity.to_string()

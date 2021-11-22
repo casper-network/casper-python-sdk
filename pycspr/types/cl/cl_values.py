@@ -117,6 +117,18 @@ class CL_Key(CL_Value):
     def __eq__(self, other) -> bool:
         return self.identifier == other.identifier and self.key_type == other.key_type
 
+    def __str__(self) -> str:
+        return self.to_string()
+
+    def to_string(self) -> str:
+        if self.key_type == CL_KeyType.ACCOUNT:
+            prefix = "account-hash"
+        elif self.key_type == CL_KeyType.HASH:
+            prefix = "hash"
+        elif self.key_type == CL_KeyType.UREF:
+            prefix = "uref"
+        return f"{prefix}-{self.identifier.hex()}"
+
     @staticmethod
     def from_string(value: str) -> "CL_Key":
         identifier = bytes.fromhex(value.split("-")[-1])
@@ -130,15 +142,6 @@ class CL_Key(CL_Value):
             raise ValueError(f"Invalid CL key: {value}")
 
         return CL_Key(identifier, key_type)
-
-    def __str__(self) -> str:
-        if self.key_type == CL_KeyType.ACCOUNT:
-            prefix = "account-hash"
-        elif self.key_type == CL_KeyType.HASH:
-            prefix = "hash"
-        elif self.key_type == CL_KeyType.UREF:
-            prefix = "uref"
-        return f"{prefix}-{self.identifier.hex()}"
 
 
 @dataclasses.dataclass
@@ -400,6 +403,9 @@ class CL_URef(CL_Value):
         return self.access_rights == other.access_rights and \
                self.address == other.address
 
+    def to_string(self):
+        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
+
     @staticmethod
     def from_string(as_string: str) -> "CL_URef":
         _, address, access_rights = as_string.split("-")
@@ -409,4 +415,4 @@ class CL_URef(CL_Value):
             )
 
     def __str__(self) -> str:
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
+        return self.to_string()
