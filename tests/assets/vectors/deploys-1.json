@@ -5,8 +5,8 @@
             "payment": "00000000000100000006000000616d6f756e74060000000500e40b540208"
         },
         "hashes": {
-            "deploy": "23fc37f635c7140e081e106b1863916a118f7201cb48fe0d34c06f42ce25b9c8",
-            "body": "cf155c7a14da50c10a437c17ece1373489efa60fbfb43aae0bfecd5c0521946e"
+            "deploy": "200faef73fda6e8df17479a1363e16eb9467a37cf08ff0c4d243fb27ba829cc5",
+            "body": "b984d6384ddae3e84bd8a28bd79495b65bd2951673a58297b368ab6e085ec73c"
         },
         "payment": {
             "amount": 10000000000
