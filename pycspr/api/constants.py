@@ -69,6 +69,7 @@ class NodeEventType(enum.Enum):
     BlockAdded = enum.auto()
     DeployAccepted = enum.auto()
     DeployProcessed = enum.auto()
+    DeployExpired = enum.auto()
     Fault = enum.auto()
     FinalitySignature = enum.auto()
     Step = enum.auto()
@@ -83,6 +84,7 @@ SSE_CHANNEL_TO_SSE_EVENT = {
     NodeEventChannelType.main: {
         NodeEventType.ApiVersion,
         NodeEventType.BlockAdded,
+        NodeEventType.DeployExpired,
         NodeEventType.DeployProcessed,
         NodeEventType.Fault,
         NodeEventType.Step

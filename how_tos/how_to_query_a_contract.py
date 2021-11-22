@@ -5,7 +5,6 @@ import pathlib
 import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
-from pycspr.factory.cl_type import u256
 from pycspr.types import CL_U256
 from pycspr.types import CL_PublicKey
 from pycspr.types import Deploy

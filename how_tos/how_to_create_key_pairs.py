@@ -33,7 +33,7 @@ def _main(args: argparse.Namespace):
     algo = KeyAlgorithm[args.algo]
 
     # Create new key pair. 
-    key_pair: (bytes, bytes) = pycspr.crypto.get_key_pair(algo=algo)
+    key_pair: typing.Union[bytes, bytes] = pycspr.crypto.get_key_pair(algo=algo)
     assert len(key_pair) == 2
 
     # Destructure key pair.

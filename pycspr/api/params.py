@@ -282,8 +282,6 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    print(serialisation.deploy_to_json(deploy))
-
     return {
         "deploy": serialisation.deploy_to_json(deploy)
     }
