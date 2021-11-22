@@ -25,6 +25,7 @@ from pycspr.types import DeployExecutableItem
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
+from pycspr.types import Timestamp
 from pycspr.types import Transfer
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -131,7 +132,7 @@ def create_deploy_parameters(
         account if isinstance(account, PublicKey) else \
         create_public_key(account.algo, account.pbk)
     timestamp = timestamp or datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
-    timestamp = round(timestamp, 3)
+    timestamp = Timestamp(round(timestamp, 3))
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
     return DeployParameters(
@@ -181,6 +182,7 @@ def create_transfer(
     amount: int,
     target: bytes,
     correlation_id: int = None,
+    payment: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
 ) -> Deploy:
     """Returns a native transfer deploy.
 
@@ -191,7 +193,7 @@ def create_transfer(
     :returns: A native transfer deploy.
 
     """
-    payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS)
+    payment = create_standard_payment(payment)
     session = create_transfer_session(amount, target, correlation_id)
 
     return create_deploy(params, payment, session)
@@ -205,7 +207,7 @@ def create_transfer_session(
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
-    :param target: Target account hash.
+    :param target: Target account key.
     :param correlation_id: Identifier used to correlate transfer to internal systems.
     :returns: A native transfer session logic.
 
@@ -220,7 +222,7 @@ def create_transfer_session(
                 ),
             DeployArgument(
                 "target",
-                CL_ByteArray(target)
+                CL_PublicKey.from_account_key(target)
                 ),
             DeployArgument(
                 "id",

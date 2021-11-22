@@ -24,7 +24,7 @@ class Timestamp():
 
 
     def to_string(self) -> str:
-        ts_3_decimal_places = round(self.ts, 3)
+        ts_3_decimal_places = round(self.value, 3)
         ts_datetime = dt.datetime.fromtimestamp(
             ts_3_decimal_places,
             tz=dt.timezone.utc

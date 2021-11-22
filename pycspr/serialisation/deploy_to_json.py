@@ -35,7 +35,7 @@ def encode(entity: object) -> dict:
 
     if isinstance(entity, DeployHeader):
         return {
-            "account": entity.account_public_key.to_json(),
+            "account": entity.account_public_key.account_key.hex(),
             "body_hash": entity.body_hash.hex(),
             "chain_name": entity.chain_name,
             "dependencies": entity.dependencies,

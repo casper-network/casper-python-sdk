@@ -1,5 +1,4 @@
 import dataclasses
-from pycspr.types import CL_URef
 
 
 @dataclasses.dataclass

@@ -1,5 +1,8 @@
+import typing
+
 from pycspr.types.cl import cl_values
-from pycspr.utils.conversion import int_to_le_bytes, int_to_le_bytes_trimmed
+from pycspr.utils.conversion import int_to_le_bytes
+from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
 
 def encode(entity: cl_values.CL_Value) -> bytes:
@@ -22,7 +25,8 @@ def encode(entity: cl_values.CL_Value) -> bytes:
         return bytes([entity.key_type.value]) + entity.identifier
 
     elif isinstance(entity, cl_values.CL_List):
-        raise NotImplementedError()
+        return bytes([])
+        _vector_to_bytes(list(map(encode, entity.vector)))
 
     elif isinstance(entity, cl_values.CL_Map):
         raise NotImplementedError()
@@ -114,3 +118,9 @@ def encode(entity: cl_values.CL_Value) -> bytes:
 
     else:
         raise ValueError("CL value cannot be encoded as bytes")
+
+
+def _vector_to_bytes(value: typing.List) -> bytes:
+    return \
+        encode(cl_values.CL_U32(len(value))) + \
+        bytes([i for j in value for i in j])

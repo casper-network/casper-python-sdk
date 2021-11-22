@@ -4,7 +4,7 @@ import typing
 
 from pycspr import crypto
 from pycspr.types.cl.cl_types import CL_Type
-from pycspr.types.other import PublicKey
+from pycspr.types.other.keys import PublicKey
 
 
 @dataclasses.dataclass
@@ -182,7 +182,10 @@ class CL_Option(CL_Value):
         return self.value == other.value and self.option_type == other.option_type
 
     def __str__(self) -> str:
-        return "Option: {self.value}"
+        if self.value:
+            return str(self.value)
+        else:
+            return ""
 
 
 @dataclasses.dataclass
@@ -195,6 +198,10 @@ class CL_PublicKey(PublicKey, CL_Value):
 
     def __str__(self) -> str:
         return self.account_key.hex()
+
+    @staticmethod
+    def from_account_key(account_key: bytes) -> "CL_PublicKey":
+        return CL_PublicKey(crypto.KeyAlgorithm(account_key[0]), account_key[1:] )
 
     @staticmethod
     def from_key(as_key: PublicKey) -> "CL_PublicKey":

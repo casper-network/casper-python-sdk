@@ -1,4 +1,7 @@
+import operator
+
 from pycspr import crypto
+from pycspr import serialisation
 from pycspr.types import CL_PublicKey
 from pycspr.types import CL_U64
 from pycspr.types import CL_ByteArray
@@ -16,14 +19,22 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     :returns: Hash digest of a deploy.
 
     """
+    account = CL_PublicKey.from_key(header.account_public_key)
+    timestamp = CL_U64(int(header.timestamp.value * 1000))
+    ttl = CL_U64(header.ttl.as_milliseconds)
+    gas_price = CL_U64(header.gas_price)
+    body_hash = CL_ByteArray(header.body_hash)
+    dependencies = CL_List(header.dependencies, CL_Type_String())
+    chain_name = CL_String(header.chain_name)
+
     return crypto.get_hash(
-        CL_PublicKey.from_key(header.account_public_key).to_bytes() +
-        CL_U64(int(header.timestamp * 1000)).to_bytes() +
-        CL_U64(header.ttl.as_milliseconds).to_bytes() +
-        CL_U64(header.gas_price).to_bytes() +
-        CL_ByteArray(header.body_hash).to_bytes() +
-        CL_List(header.dependencies, CL_Type_String()).to_bytes() +
-        CL_String(header.chain_name).to_bytes()
+        serialisation.cl_value_to_bytes(account) +
+        serialisation.cl_value_to_bytes(timestamp) +
+        serialisation.cl_value_to_bytes(ttl) +
+        serialisation.cl_value_to_bytes(gas_price) +
+        serialisation.cl_value_to_bytes(body_hash) +
+        serialisation.cl_value_to_bytes(dependencies) +
+        serialisation.cl_value_to_bytes(chain_name)
         )
 
 
@@ -39,6 +50,6 @@ def create_digest_of_deploy_body(
 
     """
     return crypto.get_hash(
-        payment.to_bytes() +
-        session.to_bytes()
+        serialisation.deploy_to_bytes(payment) +
+        serialisation.deploy_to_bytes(session)
         )

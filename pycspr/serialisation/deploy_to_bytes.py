@@ -24,10 +24,6 @@ def encode(entity: object) -> bytes:
         return entity.signer + entity.signature
 
     if isinstance(entity, DeployArgument):
-        print(111, cl_value_to_bytes(cl_values.CL_String(entity.name)).hex())
-        print(222, _u8_array_to_bytes(cl_value_to_bytes(entity.value)).hex())
-        print(333, cl_type_to_bytes(cl_value_to_cl_type(entity.value)).hex())
-
         return \
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
             _u8_array_to_bytes(cl_value_to_bytes(entity.value)) + \
@@ -37,9 +33,6 @@ def encode(entity: object) -> bytes:
         raise NotImplementedError()
 
     if isinstance(entity, ModuleBytes):
-        for arg in entity.args:
-            print(encode(arg).hex())
-        # print(_vector_to_bytes(list(map(encode, entity.args))))
         return \
             bytes([0]) + \
             _u8_array_to_bytes(list(entity.module_bytes)) + \
