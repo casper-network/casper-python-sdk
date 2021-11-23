@@ -1,7 +1,6 @@
 import typing
 
 from pycspr.types.cl import cl_values
-from pycspr.types.cl.cl_types import CL_TypeKey
 from pycspr.utils.conversion import int_to_le_bytes
 from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
@@ -21,7 +20,7 @@ def _encode_any(entity: cl_values.CL_Any) -> bytes:
 
 def _encode_bool(entity: cl_values.CL_Bool) -> bytes:
     return bytes([entity.value])
-    
+
 
 def _encode_byte_array(entity: cl_values.CL_ByteArray) -> bytes:
     return entity.value
@@ -99,9 +98,9 @@ def _encode_u128(entity: cl_values.CL_U128) -> bytes:
         byte_length = 16
     else:
         raise ValueError("Invalid U128: max size exceeded")
-    
+
     as_bytes = int_to_le_bytes_trimmed(entity.value, byte_length, False)
-    
+
     return bytes([len(as_bytes)]) + as_bytes
 
 

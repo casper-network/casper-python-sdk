@@ -16,11 +16,8 @@ from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
 
 
-
 # Path to NCTL assets.
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
-_PATH_TO_NCTL_NODE = _PATH_TO_NCTL_ASSETS / "nodes" / "node-1"
-_PATH_TO_NCTL_USER = _PATH_TO_NCTL_ASSETS / "users" / "user-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")

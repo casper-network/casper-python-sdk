@@ -6,7 +6,6 @@ from pycspr import crypto
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types import CL_ByteArray
 from pycspr.types import CL_Option
 from pycspr.types import CL_PublicKey
 from pycspr.types import CL_Type_U64

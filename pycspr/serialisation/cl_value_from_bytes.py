@@ -41,7 +41,7 @@ def _decode_key(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_Key:
 
 def _decode_list(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_List:
     raise NotImplementedError()
-    
+
 
 def _decode_map(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Map:
     raise NotImplementedError()

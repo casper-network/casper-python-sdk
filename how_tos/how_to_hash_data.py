@@ -20,11 +20,12 @@ _ARGS.add_argument(
 # CLI argument: data to be hashed.
 _ARGS.add_argument(
     "--data",
-    default="أبو يوسف يعقوب بن إسحاق الصبّاح الكندي‎".encode("utf-8"),
+    default="أبو يوسف يعقوب بن إسحاق الصبّاح الكندي".encode("utf-8"),
     dest="data",
     help="Data to be hashed as a hexadecimal string.",
     type=str,
     )
+
 
 def _main(args: argparse.Namespace):
     """Main entry point.
@@ -33,13 +34,15 @@ def _main(args: argparse.Namespace):
 
     """
     # Parse args.
-    algo=HashAlgorithm[args.algo]
+    algo = HashAlgorithm[args.algo]
 
-    # Create a digest. 
-    digest: bytes = get_hash(args.data, size=32, algo=algo)
-
-    # Create a digest - defaults to blake2b. 
+    # Create a digest - default algo = blake2b, default size = 32.
     digest: bytes = get_hash(args.data)
+    assert isinstance(digest, bytes) and len(digest) == 32
+
+    # Create a digest of a specific size / algo.
+    digest: bytes = get_hash(args.data, algo=algo, size=32)
+    assert isinstance(digest, bytes) and len(digest) == 32
 
 
 # Entry point.

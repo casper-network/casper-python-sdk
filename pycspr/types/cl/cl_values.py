@@ -177,7 +177,7 @@ class CL_PublicKey(PublicKey, CL_Value):
 
     @staticmethod
     def from_account_key(account_key: bytes) -> "CL_PublicKey":
-        return CL_PublicKey(crypto.KeyAlgorithm(account_key[0]), account_key[1:] )
+        return CL_PublicKey(crypto.KeyAlgorithm(account_key[0]), account_key[1:])
 
     @staticmethod
     def from_key(as_key: PublicKey) -> "CL_PublicKey":

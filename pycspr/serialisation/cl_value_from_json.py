@@ -8,4 +8,4 @@ def decode(encoded: dict):
         bytes.fromhex(encoded["bytes"]) if isinstance(encoded["bytes"], str) else \
         encoded["bytes"]
 
-    return cl_value_from_bytes(as_bytes, cl_type_from_json(encoded["cl_type"]) )
+    return cl_value_from_bytes(as_bytes, cl_type_from_json(encoded["cl_type"]))

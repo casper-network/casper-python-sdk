@@ -61,7 +61,7 @@ class CL_DictionaryIdentifier_SeedURef(CL_DictionaryIdentifier):
     dictionary_item_key: str
 
     # The dictionary's seed URef.
-    seed_uref: lambda: CL_URef
+    seed_uref: lambda: object
 
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and \
