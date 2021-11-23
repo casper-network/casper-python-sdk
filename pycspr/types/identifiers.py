@@ -19,12 +19,20 @@ ContractVersion = typing.NewType("U32 integer representing", int)
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
 DeployIdentifer = typing.Union[bytes, str]
 
+# Root hash of a node's global state.
+StateRootIdentifier = typing.NewType(
+    "Cumulative hash of block execution effects over global state.",
+    bytes
+    )
+
+
 @dataclasses.dataclass
 class DictionaryIdentifier():
     """A set of variants for performation dictionary item state queries.
 
     """
     pass
+
 
 @dataclasses.dataclass
 class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
@@ -46,6 +54,7 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
                self.dictionary_name == other.dictionary_name and \
                self.key == other.key
 
+
 @dataclasses.dataclass
 class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
@@ -66,6 +75,7 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
                self.dictionary_name == other.dictionary_name and \
                self.key == other.key
 
+
 @dataclasses.dataclass
 class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item
@@ -83,6 +93,7 @@ class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
                self.dictionary_item_key == other.dictionary_item_key and \
                self.seed_uref == other.seed_uref
 
+
 @dataclasses.dataclass
 class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
     """Encapsulates information required to query a dictionary item via it's unique key.
@@ -93,9 +104,3 @@ class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
 
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and self.key == other.key
-
-# Root hash of a node's global state.
-StateRootIdentifier = typing.NewType(
-    "Cumulative hash of block execution effects over global state.",
-    bytes
-    )
