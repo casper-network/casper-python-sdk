@@ -1,5 +1,5 @@
-from pycspr.types.cl import cl_types
-from pycspr.types.cl import cl_values
+from pycspr.types import cl_types
+from pycspr.types import cl_values
 
 
 def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:

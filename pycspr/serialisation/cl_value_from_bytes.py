@@ -1,7 +1,7 @@
 from pycspr import crypto
 from pycspr.types import CL_TYPEKEY_TO_CL_VALUE_TYPE
-from pycspr.types.cl import cl_types
-from pycspr.types.cl import cl_values
+from pycspr.types import cl_types
+from pycspr.types import cl_values
 from pycspr.utils.conversion import le_bytes_to_int
 
 

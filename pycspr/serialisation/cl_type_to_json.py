@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.types.cl import cl_types
+from pycspr.types import cl_types
 
 
 def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:

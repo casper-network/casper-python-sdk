@@ -1,6 +1,6 @@
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
-from pycspr.types.cl import cl_types
-from pycspr.types.cl import cl_values
+from pycspr.types import cl_types
+from pycspr.types import cl_values
 
 
 def encode(entity: cl_types.CL_Type) -> bytes:

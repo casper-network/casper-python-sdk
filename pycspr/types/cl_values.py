@@ -3,8 +3,8 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl.cl_types import CL_Type
-from pycspr.types.other.keys import PublicKey
+from pycspr.types.cl_types import CL_Type
+from pycspr.types.keys import PublicKey
 
 
 @dataclasses.dataclass

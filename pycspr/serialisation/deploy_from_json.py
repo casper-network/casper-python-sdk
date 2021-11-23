@@ -12,7 +12,7 @@ from pycspr.types.deploys import StoredContractByHashVersioned
 from pycspr.types.deploys import StoredContractByName
 from pycspr.types.deploys import StoredContractByNameVersioned
 from pycspr.types.deploys import Transfer
-from pycspr.types.other import Timestamp
+from pycspr.types import Timestamp
 
 
 def decode(typedef: object, obj: dict) -> object:

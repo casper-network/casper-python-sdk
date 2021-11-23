@@ -3,7 +3,7 @@ import typing
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
 from pycspr.serialisation.cl_type_to_bytes import encode as cl_type_to_bytes
 from pycspr.serialisation.cl_value_to_cl_type import encode as cl_value_to_cl_type
-from pycspr.types.cl import cl_values
+from pycspr.types import cl_values
 from pycspr.types.deploys import Deploy
 from pycspr.types.deploys import DeployApproval
 from pycspr.types.deploys import DeployArgument

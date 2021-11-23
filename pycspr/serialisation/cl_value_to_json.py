@@ -1,5 +1,5 @@
-from pycspr.types.cl import cl_types
-from pycspr.types.cl import cl_values
+from pycspr.types import cl_types
+from pycspr.types import cl_values
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
 from pycspr.serialisation.cl_type_to_json import encode as cl_type_to_json
 
