@@ -38,10 +38,8 @@ class NodeClient():
 
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        response = self._get_rpc_response(
-            constants.RPC_STATE_GET_BALANCE,
-            params_factory.get_account_balance_params(purse_uref, state_root_hash)
-            )
+        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
 
         return int(response["balance_value"])
 
@@ -188,7 +186,7 @@ class NodeClient():
             )
 
 
-    def get_dictionary_item(self, identifier: types.CL_DictionaryIdentifier) -> dict:
+    def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
         :param identifier: Identifier required to query a dictionary item.

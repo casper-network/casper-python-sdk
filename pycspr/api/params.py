@@ -161,14 +161,14 @@ def get_deploy_params(deploy_id: types.DeployIdentifer) -> dict:
     }
 
 
-def get_dictionary_item_params(identifier: types.CL_DictionaryIdentifier) -> dict:
+def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param identifier: Identifier of a state dictionary.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    if isinstance(identifier, type.CL_DictionaryIdentifier_AccountNamedKey):
+    if isinstance(identifier, types.DictionaryIdentifier_AccountNamedKey):
         return {
             "AccountNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -177,7 +177,7 @@ def get_dictionary_item_params(identifier: types.CL_DictionaryIdentifier) -> dic
             }
         }
 
-    elif isinstance(identifier, type.CL_DictionaryIdentifier_ContractNamedKey):
+    elif isinstance(identifier, types.DictionaryIdentifier_ContractNamedKey):
         return {
             "ContractNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -186,7 +186,7 @@ def get_dictionary_item_params(identifier: types.CL_DictionaryIdentifier) -> dic
             }
         }
 
-    elif isinstance(identifier, type.CL_DictionaryIdentifier_SeedURef):
+    elif isinstance(identifier, types.DictionaryIdentifier_SeedURef):
         return {
             "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -194,7 +194,7 @@ def get_dictionary_item_params(identifier: types.CL_DictionaryIdentifier) -> dic
             }
         }
 
-    elif isinstance(identifier, type.CL_DictionaryIdentifier_UniqueKey):
+    elif isinstance(identifier, types.DictionaryIdentifier_UniqueKey):
         return {
             "Dictionary": identifier.seed_uref.as_string()
         }

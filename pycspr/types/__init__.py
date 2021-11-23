@@ -69,12 +69,12 @@ from pycspr.types.deploys import Transfer
 
 from pycspr.types.other import AccountIdentifer
 from pycspr.types.other import BlockIdentifer
-from pycspr.types.other import CL_DictionaryIdentifier
-from pycspr.types.other import CL_DictionaryIdentifier_AccountNamedKey
-from pycspr.types.other import CL_DictionaryIdentifier_ContractNamedKey
-from pycspr.types.other import CL_DictionaryIdentifier_SeedURef
-from pycspr.types.other import CL_DictionaryIdentifier_UniqueKey
 from pycspr.types.other import DeployIdentifer
+from pycspr.types.other import DictionaryIdentifier
+from pycspr.types.other import DictionaryIdentifier_AccountNamedKey
+from pycspr.types.other import DictionaryIdentifier_ContractNamedKey
+from pycspr.types.other import DictionaryIdentifier_SeedURef
+from pycspr.types.other import DictionaryIdentifier_UniqueKey
 from pycspr.types.other import PrivateKey
 from pycspr.types.other import PublicKey
 from pycspr.types.other import StateRootIdentifier
