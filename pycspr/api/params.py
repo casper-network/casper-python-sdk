@@ -27,8 +27,8 @@ def get_account_balance_params(
 
 
 def get_account_info_params(
-    account_key: types.AccountIdentifer,
-    block_id: types.BlockIdentifer = None
+    account_key: types.AccountIdentifier,
+    block_id: types.BlockIdentifier = None
 ) -> dict:
     """Returns JSON-RPC API request parameters.
 
@@ -62,7 +62,7 @@ def get_account_info_params(
         }
 
 
-def get_auction_info_params(block_id: types.BlockIdentifer = None) -> dict:
+def get_auction_info_params(block_id: types.BlockIdentifier = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
@@ -88,7 +88,7 @@ def get_auction_info_params(block_id: types.BlockIdentifer = None) -> dict:
         }
 
 
-def get_block_params(block_id: types.BlockIdentifer = None) -> dict:
+def get_block_params(block_id: types.BlockIdentifier = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
@@ -117,7 +117,7 @@ def get_block_params(block_id: types.BlockIdentifer = None) -> dict:
         }
 
 
-def get_block_transfers_params(block_id: types.BlockIdentifer = None) -> dict:
+def get_block_transfers_params(block_id: types.BlockIdentifier = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
@@ -146,7 +146,7 @@ def get_block_transfers_params(block_id: types.BlockIdentifer = None) -> dict:
         }
 
 
-def get_deploy_params(deploy_id: types.DeployIdentifer) -> dict:
+def get_deploy_params(deploy_id: types.DeployIdentifier) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param deploy_id: Identifier of a deploy.
@@ -203,7 +203,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
         raise ValueError("Unrecognized dictionary item type.")
 
 
-def get_era_info_params(block_id: types.BlockIdentifer = None) -> dict:
+def get_era_info_params(block_id: types.BlockIdentifier = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
@@ -249,7 +249,7 @@ def get_state_item_params(
     }
 
 
-def get_state_root_hash_params(block_id: types.BlockIdentifer = None) -> dict:
+def get_state_root_hash_params(block_id: types.BlockIdentifier = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.

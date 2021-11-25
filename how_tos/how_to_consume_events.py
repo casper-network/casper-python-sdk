@@ -49,7 +49,7 @@ _ARGS.add_argument(
     )
 
 
-def _main(args: argparse.Namespace):
+def main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -95,4 +95,4 @@ def _on_event(
 
 # Entry point.
 if __name__ == "__main__":
-    _main(_ARGS.parse_args())
+    main(_ARGS.parse_args())

@@ -67,9 +67,11 @@ from pycspr.types.deploys import StoredContractByName
 from pycspr.types.deploys import StoredContractByNameVersioned
 from pycspr.types.deploys import Transfer
 
-from pycspr.types.identifiers import AccountIdentifer
-from pycspr.types.identifiers import BlockIdentifer
-from pycspr.types.identifiers import DeployIdentifer
+from pycspr.types.identifiers import AccountIdentifier
+from pycspr.types.identifiers import BlockIdentifier
+from pycspr.types.identifiers import ContractIdentifier
+from pycspr.types.identifiers import ContractVersion
+from pycspr.types.identifiers import DeployIdentifier
 from pycspr.types.identifiers import DictionaryIdentifier
 from pycspr.types.identifiers import DictionaryIdentifier_AccountNamedKey
 from pycspr.types.identifiers import DictionaryIdentifier_ContractNamedKey

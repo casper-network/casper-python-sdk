@@ -25,6 +25,7 @@ from pycspr.api.constants import NodeEventType
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_account_key_algo
+from pycspr.crypto import get_hash
 from pycspr.crypto import HashAlgorithm
 from pycspr.crypto import KeyAlgorithm
 

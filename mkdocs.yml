@@ -1,0 +1,25 @@
+## Project information
+site_name: Casper Python SDK
+site_url: https://github.com/casper-network/casper-python-sdk
+site_description: Casper Python SDK
+
+## Repository
+repo_name: casper-python-sdk
+repo_url: https://github.com/casper-network/casper-python-sdk
+edit_uri: ''  #disables edit button
+
+# Copyright
+copyright: Casper Association 2021
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+    - Home: index.md
+    - How Tos:
+      - Consume SSE Stream: how-tos/consume-events.md
+    - Types:
+        - CL Values: types/cl_values.md

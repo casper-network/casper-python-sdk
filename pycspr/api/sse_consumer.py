@@ -20,7 +20,7 @@ def get_events(
     :param callback: Callback to invoke whenever an event of relevant type is received.
     :param channel_type: Type of event channel to which to bind.
     :param event_type: Type of event type to listen for (all if unspecified).
-    :param event_id: Identifer of event from which to start stream listening.
+    :param event_id: Identifier of event from which to start stream listening.
 
     """
     if event_type is not None:

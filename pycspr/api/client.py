@@ -46,8 +46,8 @@ class NodeClient():
 
     def get_account_info(
         self,
-        account_key: types.AccountIdentifer,
-        block_id: types.BlockIdentifer = None
+        account_key: types.AccountIdentifier,
+        block_id: types.BlockIdentifier = None
     ) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -66,8 +66,8 @@ class NodeClient():
 
     def get_account_main_purse_uref(
         self,
-        account_key: types.AccountIdentifer,
-        block_id: types.BlockIdentifer = None
+        account_key: types.AccountIdentifier,
+        block_id: types.BlockIdentifier = None
     ) -> types.CL_URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
@@ -83,9 +83,9 @@ class NodeClient():
 
     def get_account_named_key(
         self,
-        account_key: types.AccountIdentifer,
+        account_key: types.AccountIdentifier,
         key_name: str,
-        block_id: types.BlockIdentifer = None
+        block_id: types.BlockIdentifier = None
     ) -> str:
         """Returns a named key stored under an account.
 
@@ -101,7 +101,7 @@ class NodeClient():
         return None if len(named_keys) == 0 else named_keys[0]["key"]
 
 
-    def get_auction_info(self, block_id: types.BlockIdentifer = None) -> dict:
+    def get_auction_info(self, block_id: types.BlockIdentifier = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -115,7 +115,7 @@ class NodeClient():
         return response
 
 
-    def get_block(self, block_id: types.BlockIdentifer = None) -> dict:
+    def get_block(self, block_id: types.BlockIdentifier = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -157,7 +157,7 @@ class NodeClient():
     def get_block_transfers(
         self,
         block_id:
-        types.BlockIdentifer = None
+        types.BlockIdentifier = None
     ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
@@ -173,7 +173,7 @@ class NodeClient():
         return (response["block_hash"], response["transfers"])
 
 
-    def get_deploy(self, deploy_id: types.DeployIdentifer) -> dict:
+    def get_deploy(self, deploy_id: types.DeployIdentifier) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_id: Identifier of a finalised block.
@@ -199,7 +199,7 @@ class NodeClient():
             )
 
 
-    def get_era_info(self, block_id: types.BlockIdentifer = None) -> dict:
+    def get_era_info(self, block_id: types.BlockIdentifier = None) -> dict:
         """Returns current era information.
 
         :param block_id: Identifier of a finalised block.
@@ -226,7 +226,7 @@ class NodeClient():
         :param callback: Callback to invoke whenever an event of relevant type is received.
         :param channel_type: Type of event channel to which to bind.
         :param event_type: Type of event type to listen for (all if unspecified).
-        :param event_id: Identifer of event from which to start stream listening.
+        :param event_id: Identifier of event from which to start stream listening.
 
         """
         sse_consumer.get_events(self.connection, callback, channel_type, event_type, event_id)
@@ -337,7 +337,7 @@ class NodeClient():
         return response["stored_value"]
 
 
-    def get_state_root_hash(self, block_id: types.BlockIdentifer = None) -> bytes:
+    def get_state_root_hash(self, block_id: types.BlockIdentifier = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.

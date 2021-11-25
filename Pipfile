@@ -5,6 +5,9 @@ verify_ssl = true
 
 [dev-packages]
 tox = "*"
+mkdocs = "*"
+mkdocs-material = "*"
+mkdocstrings = "*"
 
 [packages]
 cryptography = "*"
