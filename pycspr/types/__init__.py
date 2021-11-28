@@ -78,8 +78,10 @@ from pycspr.types.identifiers import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.identifiers import DictionaryIdentifier_SeedURef
 from pycspr.types.identifiers import DictionaryIdentifier_UniqueKey
 from pycspr.types.identifiers import StateRootIdentifier
+
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey
+
 from pycspr.types.timestamp import Timestamp
 
 

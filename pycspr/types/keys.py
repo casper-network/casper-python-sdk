@@ -27,6 +27,9 @@ class PublicKey():
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
 
+    def __hash__(self) -> bytes:
+        return hash(self.account_key)
+
 
 @dataclasses.dataclass
 class PrivateKey:
@@ -44,6 +47,9 @@ class PrivateKey:
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pvk == other.pvk and self.pbk == other.pbk
+
+    def __hash__(self) -> bytes:
+        return hash(self.pvk)
 
     @property
     def private_key(self) -> bytes:

@@ -67,7 +67,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     assert len(deploy_hash) == 32, "Invalid deploy hash"
 
     return DeployApproval(
-        approver.account_key,
+        approver.as_public_key(),
         crypto.get_signature_for_deploy_approval(
             deploy_hash, approver.private_key, approver.key_algo
             )
@@ -187,15 +187,16 @@ def create_transfer(
 
     :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be transferred.
-    :param target: Target account hash.
+    :param target: Target account key.
     :param correlation_id: Identifier used to correlate transfer to internal systems.
     :returns: A native transfer deploy.
 
     """
-    payment = create_standard_payment(payment)
-    session = create_transfer_session(amount, target, correlation_id)
-
-    return create_deploy(params, payment, session)
+    return create_deploy(
+        params,
+        create_standard_payment(payment),
+        create_transfer_session(amount, target, correlation_id)
+        )
 
 
 def create_transfer_session(

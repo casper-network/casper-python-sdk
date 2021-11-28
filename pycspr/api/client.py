@@ -86,19 +86,19 @@ class NodeClient():
         account_key: types.AccountIdentifier,
         key_name: str,
         block_id: types.BlockIdentifier = None
-    ) -> str:
-        """Returns a named key stored under an account.
+    ) -> types.CL_Key:
+        """Returns a key stored under an account's storage under a specific name.
 
         :param account_key: An account holder's public key prefixed with a key type identifier.
         :param key_name: Name of key under which account data is stored.
         :param block_id: Identifier of a finalised block.
-        :returns: Account information in JSON format.
+        :returns: A CL key if found.
 
         """
         account_info = self.get_account_info(account_key, block_id)
-        named_keys = [i for i in account_info["named_keys"] if i["name"] == key_name]
-
-        return None if len(named_keys) == 0 else named_keys[0]["key"]
+        for named_key in account_info["named_keys"]:
+            if named_key["name"] == key_name:
+                return types.CL_Key.from_string(named_key["key"])
 
 
     def get_auction_info(self, block_id: types.BlockIdentifier = None) -> dict:

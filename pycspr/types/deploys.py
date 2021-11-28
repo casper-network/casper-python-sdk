@@ -212,7 +212,8 @@ class Deploy():
         sig = crypto.get_signature_for_deploy_approval(
             self.hash, approver.private_key, approver.key_algo
             )
-        self._append_approval(DeployApproval(approver.account_key, sig))
+        approval = DeployApproval(approver.as_public_key(), sig)
+        self._append_approval(approval)
 
 
     def set_approval(self, approval: DeployApproval):

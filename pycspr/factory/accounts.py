@@ -42,7 +42,7 @@ def create_public_key_from_account_key(account_key: bytes) -> PublicKey:
 
 def parse_private_key(
     fpath: pathlib.Path,
-    algo: typing.Union[str, crypto.KeyAlgorithm]
+    algo: typing.Union[str, crypto.KeyAlgorithm] = crypto.KeyAlgorithm.ED25519
 ) -> PrivateKey:
     """Returns on-chain account information deserialised from a secret key held on file system.
 
@@ -59,7 +59,7 @@ def parse_private_key(
 
 def parse_private_key_bytes(
     pvk: bytes,
-    algo: typing.Union[str, crypto.KeyAlgorithm]
+    algo: typing.Union[str, crypto.KeyAlgorithm] = crypto.KeyAlgorithm.ED25519
 ) -> PrivateKey:
     """Returns a user's private key deserialised from a secret key.
 

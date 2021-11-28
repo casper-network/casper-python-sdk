@@ -24,7 +24,7 @@ def encode(entity: object) -> dict:
     if isinstance(entity, DeployApproval):
         return {
             "signature": entity.signature.hex(),
-            "signer": entity.signer.hex()
+            "signer": entity.signer.account_key.hex()
         }
 
     if isinstance(entity, DeployArgument):
