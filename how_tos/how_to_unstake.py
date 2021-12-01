@@ -140,7 +140,7 @@ def _get_deploy(
     deploy = pycspr.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=args.amount,
-        public_key=validator.as_public_key(),
+        public_key=validator.as_public_key,
         path_to_wasm=args.path_to_wasm,
         unbond_purse=validator_purse,
         )

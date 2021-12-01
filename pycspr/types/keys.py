@@ -76,14 +76,15 @@ class PrivateKey:
         """Gets on-chain account key."""
         return crypto.get_account_key(self.algo, self.pbk)
 
-    def get_signature(self, data: bytes) -> bytes:
-        """Get signature over payload.
-
-        """
-        return crypto.get_signature(data, self.pvk, self.algo)
-
+    @property
     def as_public_key(self) -> PublicKey:
         """Returns public key representation.
 
         """
         return PublicKey(algo=self.algo, pbk=self.pbk)
+
+    def get_signature(self, data: bytes) -> bytes:
+        """Get signature over payload.
+
+        """
+        return crypto.get_signature(data, self.pvk, self.algo)

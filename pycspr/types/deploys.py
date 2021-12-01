@@ -212,7 +212,7 @@ class Deploy():
         sig = crypto.get_signature_for_deploy_approval(
             self.hash, approver.private_key, approver.key_algo
             )
-        approval = DeployApproval(approver.as_public_key(), sig)
+        approval = DeployApproval(approver.as_public_key, sig)
         self._append_approval(approval)
 
 
@@ -223,7 +223,7 @@ class Deploy():
 
         """
         if not crypto.verify_deploy_approval_signature(
-            self.hash, approval.signature, approval.signer
+            self.hash, approval.signature, approval.signer.account_key
         ):
             raise ValueError("Invalid signature - please review your processes.")
 

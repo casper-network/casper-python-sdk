@@ -67,7 +67,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     assert len(deploy_hash) == 32, "Invalid deploy hash"
 
     return DeployApproval(
-        approver.as_public_key(),
+        approver.as_public_key,
         crypto.get_signature_for_deploy_approval(
             deploy_hash, approver.private_key, approver.key_algo
             )

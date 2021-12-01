@@ -141,7 +141,7 @@ def _get_deploy(args: argparse.Namespace, validator: PrivateKey) -> Deploy:
         params=deploy_params,
         amount=args.amount,
         delegation_rate=args.delegation_rate,
-        public_key=validator.as_public_key(),
+        public_key=validator.as_public_key,
         path_to_wasm=args.path_to_wasm
         )
 

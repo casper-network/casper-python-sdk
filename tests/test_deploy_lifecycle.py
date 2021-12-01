@@ -13,7 +13,7 @@ def test_that_deploy_can_be_approved(deploy_params, cp1, cp2):
     deploy = _create_deploy(deploy_params, cp2)
     deploy.set_approval(pycspr.factory.create_deploy_approval(deploy, cp1))
     assert len(deploy.approvals) == 1
-    assert deploy.approvals[0].signer == cp1.account_key
+    assert deploy.approvals[0].signer == cp1.as_public_key
 
 
 def test_that_deploy_can_be_approved_by_multiple_parties(deploy_params, cp1, cp2):
