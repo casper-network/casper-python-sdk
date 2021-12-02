@@ -39,40 +39,25 @@ def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, in
         pass
 
     elif "BlockAdded" in payload:
-        return \
-            NodeEventType.BlockAdded, \
-            event_id, \
-            payload
-
-    elif "DeployProcessed" in payload:
-        return \
-            NodeEventType.DeployProcessed, \
-            event_id, \
-            payload
-
-    elif "Fault" in payload:
-        return \
-            NodeEventType.Fault, \
-            event_id, \
-            payload
-
-    elif "Step" in payload:
-        return \
-            NodeEventType.Step, \
-            event_id, \
-            payload
+        return NodeEventType.BlockAdded, event_id, payload
 
     elif "DeployAccepted" in payload:
-        return \
-            NodeEventType.DeployAccepted, \
-            event_id, \
-            payload
+        return NodeEventType.DeployAccepted, event_id, payload
+
+    elif "DeployExpired" in payload:
+        return NodeEventType.DeployExpired, event_id, payload
+
+    elif "DeployProcessed" in payload:
+        return NodeEventType.DeployProcessed, event_id, payload
+
+    elif "Fault" in payload:
+        return NodeEventType.Fault, event_id, payload
 
     elif "FinalitySignature" in payload:
-        return \
-            NodeEventType.FinalitySignature, \
-            event_id, \
-            payload
+        return NodeEventType.FinalitySignature, event_id, payload
+
+    elif "Step" in payload:
+        return NodeEventType.Step, event_id, payload
 
     else:
         print("TODO: process unknown event: {payload}")
