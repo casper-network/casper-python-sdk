@@ -116,7 +116,7 @@ class CL_Key(CL_Value):
 
     @staticmethod
     def from_string(value: str) -> "CL_Key":
-        """Factory method: parses input string & returns type instance. 
+        """Factory method: parses input string & returns type instance.
         """
         identifier = bytes.fromhex(value.split("-")[-1])
         if value.startswith("account-hash-"):
