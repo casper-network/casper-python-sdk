@@ -19,8 +19,7 @@ pip install pycspr
 How To: Query a node  ?
 ------------------------------------------------------
 
-See [here](how_tos/how_to_query_a_node.py).
-
+See [here](how_tos/how_to_query_nodes.py).
 
 How To: Transfer funds between 2 accounts  ?
 ------------------------------------------------------
@@ -56,6 +55,11 @@ How To: Invoke a smart contract  ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_invoke_a_contract.py).
+
+How To: Query a smart contract  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_query_contracts.py).
 
 How To: Hash data  ?
 ------------------------------------------------------
