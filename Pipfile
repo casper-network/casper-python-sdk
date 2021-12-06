@@ -4,21 +4,20 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-tox = "*"
+flake8 = "*"
 mkdocs = "*"
 mkdocs-material = "*"
 mkdocstrings = "*"
+pytest = "*"
+tox = "*"
 
 [packages]
 cryptography = "*"
 ecdsa = "*"
+jsonrpcclient = "*"
+pycspr = {editable = true, path = "."}
 requests = "*"
 sseclient-py = "*"
-pytest = "*"
-pycspr = {editable = true, path = "."}
-jsonrpcclient = "*"
-flake8 = "*"
-tox = "*"
 
 [requires]
 python_version = "3.9"
