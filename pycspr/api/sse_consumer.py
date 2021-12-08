@@ -1,16 +1,20 @@
 import json
 import typing
 
-from pycspr.api.constants import SSE_CHANNEL_TO_SSE_EVENT
-from pycspr.api.constants import NodeEventType
-from pycspr.api.constants import NodeEventChannelType
+import requests
+import sseclient
+
 from pycspr.api.connection import NodeConnection
+from pycspr.api.sse_types import NodeEventChannel
+from pycspr.api.sse_types import NodeEventType
+from pycspr.api.sse_types import NodeEventInfo
+from pycspr.api.sse_types import SSE_CHANNEL_TO_SSE_EVENT
 
 
 def get_events(
     node: NodeConnection,
-    callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict], None],
-    channel_type: NodeEventChannelType,
+    callback: typing.Callable[[NodeEventInfo], None],
+    event_channel: NodeEventChannel,
     event_type: NodeEventType = None,
     event_id: int = 0
 ):
@@ -18,74 +22,44 @@ def get_events(
 
     :param node: Information required to connect to a node.
     :param callback: Callback to invoke whenever an event of relevant type is received.
-    :param channel_type: Type of event channel to which to bind.
+    :param event_channel: Type of event channel to which to bind.
     :param event_type: Type of event type to listen for (all if unspecified).
     :param event_id: Identifier of event from which to start stream listening.
 
     """
-    if event_type is not None:
-        _validate_that_channel_supports_event_type(channel_type, event_type)
-
-    sse_client = node.get_sse_client(channel_type, event_id)
-    for event_type, event_id, payload in _yield_events(sse_client):
-        callback(channel_type, event_type, event_id, payload)
+    iterator = yield_events(node, event_channel, event_type, event_id)
+    for event_info in iterator:
+        callback(event_info)
 
 
-def _parse_event(event_id: int, payload: dict) -> typing.Tuple[NodeEventType, int, dict]:
-    """Parses raw event data for upstream processing.
+def yield_events(
+    node: NodeConnection,
+    event_channel: NodeEventChannel,
+    event_type: NodeEventType = None,
+    event_id: int = 0
+) -> typing.Generator[NodeEventInfo, None, None]:
+    """Yields information about event being emitted by a node's event stream.
 
-    """
-    if "ApiVersion" in payload:
-        pass
-
-    elif "BlockAdded" in payload:
-        return NodeEventType.BlockAdded, event_id, payload
-
-    elif "DeployAccepted" in payload:
-        return NodeEventType.DeployAccepted, event_id, payload
-
-    elif "DeployExpired" in payload:
-        return NodeEventType.DeployExpired, event_id, payload
-
-    elif "DeployProcessed" in payload:
-        return NodeEventType.DeployProcessed, event_id, payload
-
-    elif "Fault" in payload:
-        return NodeEventType.Fault, event_id, payload
-
-    elif "FinalitySignature" in payload:
-        return NodeEventType.FinalitySignature, event_id, payload
-
-    elif "Step" in payload:
-        return NodeEventType.Step, event_id, payload
-
-    else:
-        print("TODO: process unknown event: {payload}")
-
-
-def _validate_that_channel_supports_event_type(
-    channel_type: NodeEventChannelType,
-    event_type: NodeEventType = None
-):
-    """Validates that the channel supports the event type.
+    :param node: Information required to connect to a node.
+    :param event_channel: Type of event channel to which to bind.
+    :param event_type: Type of event type to listen for (all if unspecified).
+    :param event_id: Identifier of event from which to start stream listening.
 
     """
-    if channel_type not in SSE_CHANNEL_TO_SSE_EVENT:
-        raise ValueError(f"Unsupported SSE channel: {channel_type.name}.")
+    if event_channel not in SSE_CHANNEL_TO_SSE_EVENT:
+        raise ValueError(f"Unsupported SSE channel: {event_channel.name}.")
+    if event_type is not None and event_type not in SSE_CHANNEL_TO_SSE_EVENT[event_channel]:
+        raise ValueError(f"Unsupported channel/event: {event_channel.name}:{event_type.name}.")
 
-    if event_type not in SSE_CHANNEL_TO_SSE_EVENT[channel_type]:
-        raise ValueError(f"Unsupported channel/event: {channel_type.name}:{event_type.name}.")
-
-
-def _yield_events(sse_client) -> typing.Iterator[typing.Tuple[NodeEventType, int, dict]]:
-    """Yields events streaming from node.
-
-    """
+    sse_client = _get_sse_client(node, event_channel, event_id)
     try:
-        for event in sse_client.events():
-            parsed = _parse_event(event.id, json.loads(event.data))
-            if parsed:
-                yield parsed
+        for sse_event in sse_client.events():
+            try:
+                event_payload = json.loads(sse_event.data)
+            except json.JSONDecodeError:
+                event_payload = str(sse_event.data)
+            event_type = _get_event_type(event_payload)
+            yield NodeEventInfo(event_channel, event_type, sse_event.id, event_payload)
     except Exception as err:
         try:
             sse_client.close()
@@ -93,3 +67,26 @@ def _yield_events(sse_client) -> typing.Iterator[typing.Tuple[NodeEventType, int
             print(inner_err)
         finally:
             raise err
+
+
+def _get_sse_client(node: NodeConnection, event_channel: NodeEventChannel, event_id: int) -> sseclient.SSEClient:
+    """Returns SSE client.
+
+    """
+    url = f"{node.address_sse}/{event_channel.name.lower()}"
+    if event_id:
+        url = f"{url}?start_from={event_id}"
+    stream = requests.get(url, stream=True)
+
+    return sseclient.SSEClient(stream)
+
+
+def _get_event_type(payload: dict) -> NodeEventType:
+    """Maps incoming event payload to associated event type.
+
+    """
+    for event_type in NodeEventType:
+        if event_type.name in payload:
+            return event_type
+
+    print("TODO: process unknown event: {payload}")

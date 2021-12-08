@@ -6,8 +6,8 @@ from pycspr.api import constants
 from pycspr.api import params as params_factory
 from pycspr.api import sse_consumer
 from pycspr.api.connection import NodeConnection
-from pycspr.api.constants import NodeEventChannelType
-from pycspr.api.constants import NodeEventType
+from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
+from pycspr.api.sse_types import NodeEventType
 
 
 class NodeClient():
@@ -216,20 +216,20 @@ class NodeClient():
 
     def get_events(
         self,
-        callback: typing.Callable[[NodeEventChannelType, NodeEventType, int, dict], None],
-        channel_type: NodeEventChannelType,
+        callback: typing.Callable[[NodeEventChannel, NodeEventType, int, dict], None],
+        event_channel: NodeEventChannel,
         event_type: NodeEventType = None,
         event_id: int = 0
     ):
         """Binds to a node's event stream - events are passed to callback for processing.
 
         :param callback: Callback to invoke whenever an event of relevant type is received.
-        :param channel_type: Type of event channel to which to bind.
+        :param event_channel: Type of event channel to which to bind.
         :param event_type: Type of event type to listen for (all if unspecified).
         :param event_id: Identifier of event from which to start stream listening.
 
         """
-        sse_consumer.get_events(self.connection, callback, channel_type, event_type, event_id)
+        sse_consumer.get_events(self.connection, callback, event_channel, event_type, event_id)
 
 
     def get_node_metric(self, metric_id: str) -> list:
@@ -376,3 +376,21 @@ class NodeClient():
             )
 
         return response["deploy_hash"]
+
+
+    def yield_events(
+        self,
+        event_channel: NodeEventChannel,
+        event_type: NodeEventType = None,
+        event_id: int = 0
+    ) -> typing.Generator[NodeEventInfo, None, None]:
+        """Binds to a node's event stream - and yields consumed events.
+
+        :param event_channel: Type of event channel to which to bind.
+        :param event_type: Type of event type to listen for (all if unspecified).
+        :param event_id: Identifier of event from which to start stream listening.
+
+        """
+        iterator = sse_consumer.yield_events(self.connection, event_channel, event_type, event_id)
+        for event_info in iterator:
+            yield event_info

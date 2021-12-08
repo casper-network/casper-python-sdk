@@ -3,7 +3,8 @@ import json
 
 from pycspr import NodeClient
 from pycspr import NodeConnection
-from pycspr import NodeEventChannelType
+from pycspr import NodeEventChannel
+from pycspr import NodeEventInfo
 from pycspr import NodeEventType
 
 
@@ -31,11 +32,11 @@ _ARGS.add_argument(
 # CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
 _ARGS.add_argument(
     "--channel",
-    default=NodeEventChannelType.main.name,
+    default=NodeEventChannel.main.name,
     dest="channel",
     help="Node event channel to which to bind - defaults to main.",
     type=str,
-    choices=[i.name for i in NodeEventChannelType],
+    choices=[i.name for i in NodeEventChannel],
     )
 
 # CLI argument: Type of event to which to listen to - defaults to all.
@@ -61,7 +62,7 @@ def main(args: argparse.Namespace):
     # Bind to node events.
     client.get_events(
         callback=_on_event,
-        channel_type=NodeEventChannelType[args.channel],
+        event_channel=NodeEventChannel[args.channel],
         event_type=None if args.event == "all" else NodeEventType[args.event],
         event_id=0
     )
@@ -77,19 +78,14 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     ))
 
 
-def _on_event(
-    channel_type: NodeEventChannelType,
-    event_type: NodeEventType,
-    event_id: int,
-    event_data: dict
-):
+def _on_event(event_info: NodeEventInfo):
     """Event callback handler.
 
     """
     print("-" * 74)
-    print(f"Event #{event_id} :: {channel_type.name} :: {event_type.name}")
+    print(f"Event #{event_info.idx} :: {event_info.channel.name} :: {event_info.typeof.name}")
     print("-" * 74)
-    print(json.dumps(event_data, indent=4))
+    print(json.dumps(event_info.payload, indent=4))
     print("-" * 74)
 
 

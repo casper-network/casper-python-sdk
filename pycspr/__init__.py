@@ -19,8 +19,9 @@ from pycspr import types
 from pycspr.api.client import NodeClient
 from pycspr.api.connection import NodeAPIError
 from pycspr.api.connection import NodeConnection
-from pycspr.api.constants import NodeEventChannelType
-from pycspr.api.constants import NodeEventType
+from pycspr.api.sse_types import NodeEventChannel
+from pycspr.api.sse_types import NodeEventInfo
+from pycspr.api.sse_types import NodeEventType
 
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key

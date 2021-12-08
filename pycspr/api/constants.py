@@ -1,6 +1,3 @@
-import enum
-
-
 # Default ports.
 DEFAULT_PORT_REST = 8888
 DEFAULT_PORT_RPC = 7777
@@ -50,47 +47,3 @@ REST_ENDPOINTS: set = {
     REST_GET_METRICS,
     REST_GET_STATUS,
     }
-
-
-class NodeEventChannelType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
-
-    """
-    deploys = enum.auto()
-    main = enum.auto()
-    sigs = enum.auto()
-
-
-class NodeEventType(enum.Enum):
-    """Enumeration over set of exposed node SEE event types.
-
-    """
-    ApiVersion = enum.auto()
-    BlockAdded = enum.auto()
-    DeployAccepted = enum.auto()
-    DeployProcessed = enum.auto()
-    DeployExpired = enum.auto()
-    Fault = enum.auto()
-    FinalitySignature = enum.auto()
-    Step = enum.auto()
-
-
-# Map: SSE channel <-> SSE event.
-SSE_CHANNEL_TO_SSE_EVENT = {
-    NodeEventChannelType.deploys: {
-        NodeEventType.ApiVersion,
-        NodeEventType.DeployAccepted
-    },
-    NodeEventChannelType.main: {
-        NodeEventType.ApiVersion,
-        NodeEventType.BlockAdded,
-        NodeEventType.DeployExpired,
-        NodeEventType.DeployProcessed,
-        NodeEventType.Fault,
-        NodeEventType.Step
-    },
-    NodeEventChannelType.sigs: {
-        NodeEventType.ApiVersion,
-        NodeEventType.FinalitySignature
-    }
-}

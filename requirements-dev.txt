@@ -1,0 +1,6 @@
+flake8
+mkdocs
+mkdocs-material
+mkdocstrings
+pytest
+tox
