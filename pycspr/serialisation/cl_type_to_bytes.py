@@ -4,36 +4,31 @@ from pycspr.types import cl_values
 
 
 def encode(entity: cl_types.CL_Type) -> bytes:
+    result = bytes([entity.type_key.value])
+
     if type(entity) in _SIMPLE_TYPES:
-        return bytes([entity.type_key.value])
+        return result
 
     elif isinstance(entity, cl_types.CL_Type_ByteArray):
-        return bytes([entity.type_key.value]) + cl_value_to_bytes(cl_values.CL_U32(entity.size))
+        return result + cl_value_to_bytes(cl_values.CL_U32(entity.size))
 
     elif isinstance(entity, cl_types.CL_Type_List):
-        return bytes([entity.type_key.value]) + encode(entity.inner_type)
+        return result + encode(entity.inner_type)
 
     elif isinstance(entity, cl_types.CL_Type_Map):
-        return \
-            bytes([entity.type_key.value]) + \
-            encode(entity.key_type) + \
-            encode(entity.value_type)
+        return result + encode(entity.key_type) + encode(entity.value_type)
 
     elif isinstance(entity, cl_types.CL_Type_Option):
-        return bytes([entity.type_key.value]) + encode(entity.inner_type)
+        return result + encode(entity.inner_type)
 
     elif isinstance(entity, cl_types.CL_Type_Tuple1):
-        return bytes([entity.type_key.value]) + encode(entity.t0_type)
+        return result + encode(entity.t0_type)
 
     elif isinstance(entity, cl_types.CL_Type_Tuple2):
-        return bytes([entity.type_key.value]) + encode(entity.t0_type) + encode(entity.t1_type)
+        return result + encode(entity.t0_type) + encode(entity.t1_type)
 
     elif isinstance(entity, cl_types.CL_Type_Tuple3):
-        return \
-            bytes([entity.type_key.value]) + \
-            encode(entity.t0_type) + \
-            encode(entity.t1_type) + \
-            encode(entity.t2_type)
+        return result + encode(entity.t0_type) + encode(entity.t1_type) + encode(entity.t2_type)
 
 
 _SIMPLE_TYPES = {

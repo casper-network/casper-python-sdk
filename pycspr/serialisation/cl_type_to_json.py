@@ -15,10 +15,12 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
         return {
             "ByteArray": entity.size
         }
+
     elif isinstance(entity, cl_types.CL_Type_List):
         return {
             "List": encode(entity.inner_type)
         }
+
     elif isinstance(entity, cl_types.CL_Type_Map):
         return {
             "Map": {
@@ -26,14 +28,17 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
                 "value": encode(entity.value_type)
             }
         }
+
     elif isinstance(entity, cl_types.CL_Type_Option):
         return {
             "Option": encode(entity.inner_type)
         }
+
     elif isinstance(entity, cl_types.CL_Type_Tuple1):
         return {
             "Tuple1": encode(entity.t0_type)
         }
+
     elif isinstance(entity, cl_types.CL_Type_Tuple2):
         return {
             "Tuple2": [
@@ -41,6 +46,7 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
                 encode(entity.t1_type),
             ]
         }
+
     elif isinstance(entity, cl_types.CL_Type_Tuple3):
         return {
             "Tuple3": [

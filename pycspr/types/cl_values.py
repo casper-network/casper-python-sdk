@@ -151,7 +151,8 @@ class CL_Map(CL_Value):
     """Represents a CL type value: key-value hash map.
 
     """
-    pass
+    # A map of data represented as a vector of 2 member tuples.
+    value: typing.List[typing.Tuple[CL_Value, CL_Value]]
 
 
 @dataclasses.dataclass

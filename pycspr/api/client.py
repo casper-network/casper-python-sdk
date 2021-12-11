@@ -46,19 +46,19 @@ class NodeClient():
 
     def get_account_info(
         self,
-        account_key: types.AccountIdentifier,
+        account_id: types.AccountIdentifier,
         block_id: types.BlockIdentifier = None
     ) -> dict:
         """Returns account information at a certain global state root hash.
 
-        :param account_key: An account holder's public key prefixed with a key type identifier.
+        :param account_id: An account holder's public key prefixed with a key type identifier.
         :param block_id: Identifier of a finalised block.
         :returns: Account information in JSON format.
 
         """
         response = self._get_rpc_response(
             constants.RPC_STATE_GET_ACCOUNT_INFO,
-            params_factory.get_account_info_params(account_key, block_id)
+            params_factory.get_account_info_params(account_id, block_id)
             )
 
         return response["account"]
@@ -66,36 +66,36 @@ class NodeClient():
 
     def get_account_main_purse_uref(
         self,
-        account_key: types.AccountIdentifier,
+        account_id: types.AccountIdentifier,
         block_id: types.BlockIdentifier = None
     ) -> types.CL_URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
-        :param account_key: Key of an on-chain account.
+        :param account_id: An account holder's public key prefixed with a key type identifier.
         :param block_id: Identifier of a finalised block.
         :returns: Account main purse unforgeable reference.
 
         """
-        account_info = self.get_account_info(account_key, block_id)
+        account_info = self.get_account_info(account_id, block_id)
 
         return types.CL_URef.from_string(account_info["main_purse"])
 
 
     def get_account_named_key(
         self,
-        account_key: types.AccountIdentifier,
+        account_id: types.AccountIdentifier,
         key_name: str,
         block_id: types.BlockIdentifier = None
     ) -> types.CL_Key:
         """Returns a key stored under an account's storage under a specific name.
 
-        :param account_key: An account holder's public key prefixed with a key type identifier.
+        :param account_id: An account holder's public key prefixed with a key type identifier.
         :param key_name: Name of key under which account data is stored.
         :param block_id: Identifier of a finalised block.
         :returns: A CL key if found.
 
         """
-        account_info = self.get_account_info(account_key, block_id)
+        account_info = self.get_account_info(account_id, block_id)
         for named_key in account_info["named_keys"]:
             if named_key["name"] == key_name:
                 return types.CL_Key.from_string(named_key["key"])

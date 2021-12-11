@@ -1,5 +1,8 @@
 import typing
 
+from pycspr.serialisation import cl_type_to_bytes
+from pycspr.serialisation import cl_value_to_cl_type
+from pycspr.types import cl_types
 from pycspr.types import cl_values
 from pycspr.utils.conversion import int_to_le_bytes
 from pycspr.utils.conversion import int_to_le_bytes_trimmed
@@ -43,7 +46,12 @@ def _encode_list(entity: cl_values.CL_List) -> bytes:
 
 
 def _encode_map(entity: cl_values.CL_Map) -> bytes:
-    raise NotImplementedError()
+    result = bytes([])
+    for k, v in entity.value:
+        result += encode(k) 
+        result += encode(v) 
+
+    return encode(cl_values.CL_U32(len(entity.value))) + result
 
 
 def _encode_option(entity: cl_values.CL_Option) -> bytes:
@@ -121,6 +129,8 @@ def _encode_u256(entity: cl_values.CL_U256) -> bytes:
     as_bytes = int_to_le_bytes_trimmed(entity.value, byte_length, False)
 
     return bytes([len(as_bytes)]) + as_bytes
+
+    # int.from_bytes(bytes([128]), "little", signed=False)
 
 
 def _encode_u512(entity: cl_values.CL_U512) -> bytes:

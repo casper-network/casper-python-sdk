@@ -25,7 +25,15 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         raise NotImplementedError()
 
     elif isinstance(entity, cl_values.CL_Map):
-        raise NotImplementedError()
+        if len(entity.value) == 0:
+            raise ValueError("Map is empty, therefore cannot derive it's cl type")
+
+        k, v = entity.value[0]
+        for k1, v1 in entity.value[1:]:
+            if type(k1) != type(k) or type(v1) != type(v):
+                raise ValueError("Inconsistent value name/key pairs") 
+
+        return cl_types.CL_Type_Map(encode(k), encode(v))
 
     elif isinstance(entity, cl_values.CL_Option):
         return cl_types.CL_Type_Option(entity.option_type)
@@ -73,4 +81,4 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         return cl_types.CL_Type_URef()
 
     else:
-        raise ValueError("CL value cannot be encoded as CL type")
+        raise ValueError(f"CL value cannot be encoded as CL type: {type(entity)} :: {entity}")

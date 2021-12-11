@@ -1,111 +1,175 @@
+import typing
+
 from pycspr import crypto
+from pycspr.serialisation import cl_value_to_cl_type
 from pycspr.types import CL_TYPEKEY_TO_CL_VALUE_TYPE
 from pycspr.types import cl_types
 from pycspr.types import cl_values
 from pycspr.utils.conversion import le_bytes_to_int
 
 
-def decode(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Value:
+def decode(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Value]:
     cl_value_type: cl_values.CL_Value = CL_TYPEKEY_TO_CL_VALUE_TYPE[cl_type.type_key]
     try:
         decoder = _DECODERS[cl_value_type]
     except KeyError:
         raise ValueError(f"Unsupported CL value type: {cl_value_type}")
+
+    return decoder(bstream, cl_type)
+
+
+def _decode_any(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Any]:
+    raise NotImplementedError()
+
+
+def _decode_bool(bstream: bytes, _: cl_types.CL_Type) -> cl_values.CL_Bool:
+    assert len(bstream) >= 1
+    return bstream[1:], cl_values.CL_Bool(bool(bstream[0]))
+
+
+def _decode_byte_array(bstream: bytes, cl_type: cl_types.CL_Type_ByteArray) -> typing.Tuple[bytes, cl_values.CL_ByteArray]:
+    assert len(bstream) >= cl_type.size
+    bstream, encoded = bstream[cl_type.size+1:], bstream[0:cl_type.size+1]
+
+    return bstream, cl_values.CL_ByteArray(encoded)
+
+
+def _decode_i32(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_I32]:
+    assert len(bstream) >= 4
+
+    return bstream[4:], cl_values.CL_I32(le_bytes_to_int(bstream[0:4], True))
+
+
+def _decode_i64(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_I64]:
+    assert len(bstream) >= 8
+
+    return bstream[8:], cl_values.CL_I32(le_bytes_to_int(bstream[0:8], True))
+
+
+def _decode_key(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Key]:
+    assert len(bstream) >= 33
+    key_type = cl_values.CL_KeyType(bstream[0])
+
+    return bstream[33:], cl_values.CL_Key(bstream[1:33], key_type)
+    
+
+def _decode_list(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_List]:
+    raise NotImplementedError()
+
+
+def _decode_map(bstream: bytes, cl_type: cl_types.CL_Type_Map) -> typing.Tuple[bytes, cl_values.CL_Map]:
+    bstream, size = _decode_i32(bstream, None)    
+    items = []
+    for _ in range(size.value):    
+        bstream, key = decode(bstream, cl_type.key_type)
+        bstream, val = decode(bstream, cl_type.value_type)           
+        items.append((key, val))
+
+    return bstream, cl_values.CL_Map(items)
+
+
+def _decode_option(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Option]:
+    assert len(bstream) >= 1
+    if bool(bstream[0]) == True:
+        bstream, decoded = decode(bstream[1:], cl_type.inner_type)
     else:
-        return decoder(encoded, cl_type)
+        bstream = bstream[1:]
+        decoded = None
+
+    return bstream, cl_values.CL_Option(decoded, cl_type.inner_type)
 
 
-def _decode_any(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Any:
+def _decode_public_key(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_PublicKey]:
+    assert len(bstream) >= 1
+    bstream, algo = bstream[1:], crypto.KeyAlgorithm(bstream[0])
+
+    if algo == crypto.KeyAlgorithm.ED25519:
+        key_length = 32
+    elif algo == crypto.KeyAlgorithm.SECP256K1:
+        key_length = 33
+    else:
+        raise ValueError("Unknown ecc key algorithm")
+    assert len(bstream) >= key_length
+
+    return bstream[key_length:], cl_values.CL_PublicKey(algo, bstream[0:key_length])
+
+
+def _decode_result(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Result]:
     raise NotImplementedError()
 
 
-def _decode_bool(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_Bool:
-    return cl_values.CL_Bool(bool(encoded[0]))
+def _decode_string(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_String]:
+    bstream, size = _decode_i32(bstream, None)
+    assert len(bstream) >= size.value    
+    bstream, encoded = bstream[size.value:], bstream[0:size.value]
+
+    return bstream, cl_values.CL_String(encoded.decode("utf-8"))
 
 
-def _decode_byte_array(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_ByteArray:
-    return cl_values.CL_ByteArray(encoded)
-
-
-def _decode_i32(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_I32:
-    return cl_values.CL_I32(le_bytes_to_int(encoded, True))
-
-
-def _decode_i64(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_I64:
-    return cl_values.CL_I64(le_bytes_to_int(encoded, True))
-
-
-def _decode_key(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_Key:
-    return cl_values.CL_Key(encoded[1:], cl_values.CL_KeyType(encoded[0]))
-
-
-def _decode_list(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_List:
+def _decode_tuple_1(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Tuple1]:
     raise NotImplementedError()
 
 
-def _decode_map(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Map:
+def _decode_tuple_2(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Tuple2]:
     raise NotImplementedError()
 
 
-def _decode_option(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Option:
-    decoded = decode(encoded[1:], cl_type.inner_type) if bool(encoded[0]) else None
-    return cl_values.CL_Option(decoded, cl_type.inner_type)
-
-
-def _decode_public_key(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_PublicKey:
-    return cl_values.CL_PublicKey(crypto.KeyAlgorithm(encoded[0]), encoded[1:])
-
-
-def _decode_result(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Result:
+def _decode_tuple_3(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Tuple3]:
     raise NotImplementedError()
 
 
-def _decode_string(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_String:
-    return cl_values.CL_String(encoded[4:].decode("utf-8"))
+def _decode_u8(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U8]:
+    assert len(bstream) >= 1
+
+    return bstream[1:], cl_values.CL_U8(le_bytes_to_int(bstream[0:1], False))
 
 
-def _decode_tuple_1(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Tuple1:
-    raise NotImplementedError()
+def _decode_u32(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U32]:
+    assert len(bstream) >= 4
+
+    return bstream[4:], cl_values.CL_U32(le_bytes_to_int(bstream[0:4], False))
 
 
-def _decode_tuple_2(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Tuple2:
-    raise NotImplementedError()
+def _decode_u64(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U64]:
+    assert len(bstream) >= 8
+
+    return bstream[8:], cl_values.CL_U64(le_bytes_to_int(bstream[0:8], False))
 
 
-def _decode_tuple_3(encoded: bytes, cl_type: cl_types.CL_Type) -> cl_values.CL_Tuple3:
-    raise NotImplementedError()
+def _decode_u128(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U128]:
+    assert len(bstream) >= 1
+    size = bstream[0]
+    assert len(bstream) >= size + 1
+
+    return bstream[size+1:], cl_values.CL_U128(le_bytes_to_int(bstream[1:size+1], False))
 
 
-def _decode_u8(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U8:
-    return cl_values.CL_U8(le_bytes_to_int(encoded, False))
+def _decode_u256(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U256]:
+    assert len(bstream) >= 1
+    size = bstream[0]
+    assert len(bstream) >= size + 1
+
+    return bstream[size+1:], cl_values.CL_U256(le_bytes_to_int(bstream[1:size+1], False))
 
 
-def _decode_u32(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U32:
-    return cl_values.CL_U32(le_bytes_to_int(encoded, False))
+def _decode_u512(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U512]:
+    assert len(bstream) >= 1
+    size = bstream[0]
+    assert len(bstream) >= size + 1
+
+    return bstream[size+1:], cl_values.CL_U512(le_bytes_to_int(bstream[1:size+1], False))
 
 
-def _decode_u64(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U64:
-    return cl_values.CL_U64(le_bytes_to_int(encoded, False))
+def _decode_unit(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Unit]:
+    return bstream, cl_values.CL_Unit()
 
 
-def _decode_u128(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U128:
-    return cl_values.CL_U128(le_bytes_to_int(encoded[1:], False))
+def _decode_uref(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_URef]:
+    assert len(bstream) >= 33
+    bstream, encoded = bstream[33:], bstream[0:33]
+    access_rights = cl_values.CL_URefAccessRights(encoded[-1])    
 
-
-def _decode_u256(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U256:
-    return cl_values.CL_U256(le_bytes_to_int(encoded[1:], False))
-
-
-def _decode_u512(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_U512:
-    return cl_values.CL_U512(le_bytes_to_int(encoded[1:], False))
-
-
-def _decode_unit(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_Unit:
-    return cl_values.CL_Unit()
-
-
-def _decode_uref(encoded: bytes, _: cl_types.CL_Type) -> cl_values.CL_URef:
-    return cl_values.CL_URef(cl_values.CL_URefAccessRights(encoded[-1]), encoded[:-1])
+    return bstream, cl_values.CL_URef(access_rights, encoded[:-1])
 
 
 _DECODERS = {

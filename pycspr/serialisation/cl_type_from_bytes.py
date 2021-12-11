@@ -1,33 +1,32 @@
 from pycspr.serialisation.cl_value_from_bytes import decode as cl_value_from_bytes
 from pycspr.types import cl_types
-from pycspr.types import cl_values
 
 
-def decode(encoded: bytes) -> cl_types.CL_Type:
-    typekey = cl_types.CL_TypeKey(int(encoded[0]))
+def decode(bstream: bytes) -> cl_types.CL_Type:
+    """Decodes a CL type from a byte array.    
 
-    _assert_encoded(encoded, typekey)
+    """
+    print(222, bstream, int(bstream[0]))
 
-    try:
-        return _SIMPLE_TYPES[typekey]()
-    except KeyError:
-        pass
+    bstream, typekey = bstream[1:], cl_types.CL_TypeKey(int(bstream[0]))
 
     if typekey == cl_types.CL_TypeKey.BYTE_ARRAY:
-        size: cl_values.CL_U32 = cl_value_from_bytes(encoded[1:], cl_types.CL_Type_U32())
-        return cl_types.CL_Type_ByteArray(size.value)
+        bstream, size = cl_value_from_bytes(bstream, cl_types.CL_Type_U32())
+        decoded = cl_types.CL_Type_ByteArray(size.value)
 
     elif typekey == cl_types.CL_TypeKey.LIST:
-        return cl_types.CL_Type_List(decode(encoded[1:]))
+        bstream, item_type = decode(bstream)
+        decoded = cl_types.CL_Type_List(item_type)
 
     elif typekey == cl_types.CL_TypeKey.MAP:
         raise NotImplementedError()
 
     elif typekey == cl_types.CL_TypeKey.OPTION:
-        return cl_types.CL_Type_Option(decode(encoded[1:]))
+        bstream, option_type = decode(bstream)
+        decoded = cl_types.CL_Type_Option(option_type)
 
     elif typekey == cl_types.CL_TypeKey.TUPLE_1:
-        return cl_types.CL_Type_Tuple1(decode(encoded[1:]))
+        raise NotImplementedError()
 
     elif typekey == cl_types.CL_TypeKey.TUPLE_2:
         raise NotImplementedError()
@@ -36,28 +35,9 @@ def decode(encoded: bytes) -> cl_types.CL_Type:
         raise NotImplementedError()
 
     else:
-        raise ValueError(f"Invalid cl type byte array: {typekey}")
+        decoded = _SIMPLE_TYPES[typekey]()
 
-
-def _assert_encoded(encoded: bytes, typekey: cl_types.CL_TypeKey):
-    if typekey in _SIMPLE_TYPES:
-        assert len(encoded) == 1
-    elif typekey == cl_types.CL_TypeKey.BYTE_ARRAY:
-        assert len(encoded) == 5
-    elif typekey == cl_types.CL_TypeKey.LIST:
-        assert len(encoded) >= 2
-    elif typekey == cl_types.CL_TypeKey.MAP:
-        assert len(encoded) >= 3
-    elif typekey == cl_types.CL_TypeKey.OPTION:
-        assert len(encoded) >= 2
-    elif typekey == cl_types.CL_TypeKey.TUPLE_1:
-        assert len(encoded) >= 2
-    elif typekey == cl_types.CL_TypeKey.TUPLE_2:
-        assert len(encoded) >= 3
-    elif typekey == cl_types.CL_TypeKey.TUPLE_3:
-        assert len(encoded) >= 4
-    else:
-        assert len(encoded) > 1
+    return bstream, decoded
 
 
 _SIMPLE_TYPES = {
