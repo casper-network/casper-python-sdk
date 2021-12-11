@@ -6,8 +6,6 @@ def decode(bstream: bytes) -> cl_types.CL_Type:
     """Decodes a CL type from a byte array.    
 
     """
-    print(222, bstream, int(bstream[0]))
-
     bstream, typekey = bstream[1:], cl_types.CL_TypeKey(int(bstream[0]))
 
     if typekey == cl_types.CL_TypeKey.BYTE_ARRAY:

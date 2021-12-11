@@ -59,7 +59,7 @@ _INTERFACE_OF_LIBRARY = {
         "NodeConnection",
     },
     _has_enum: {
-        "NodeEventChannelType",
+        "NodeEventChannel",
         "NodeEventType",
         "HashAlgorithm",
         "KeyAlgorithm",
