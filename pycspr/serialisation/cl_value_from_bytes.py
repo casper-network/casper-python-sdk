@@ -1,11 +1,10 @@
 import typing
 
 from pycspr import crypto
-from pycspr.serialisation import cl_value_to_cl_type
 from pycspr.types import CL_TYPEKEY_TO_CL_VALUE_TYPE
 from pycspr.types import cl_types
 from pycspr.types import cl_values
-from pycspr.utils.conversion import le_bytes_to_int
+
 
 
 def decode(bstream: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Value]:
@@ -34,16 +33,20 @@ def _decode_byte_array(bstream: bytes, cl_type: cl_types.CL_Type_ByteArray) -> t
     return bstream, cl_values.CL_ByteArray(encoded)
 
 
-def _decode_i32(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_I32]:
-    assert len(bstream) >= 4
 
-    return bstream[4:], cl_values.CL_I32(le_bytes_to_int(bstream[0:4], True))
+def _decode_int(bstream: bytes, length: int, val_type: cl_values.CL_Value, signed: bool) -> typing.Tuple[bytes, cl_values.CL_U8]:
+    assert len(bstream) >= length
+    bstream, encoded = bstream[length:], bstream[0:length]
+
+    return bstream, val_type(int.from_bytes(encoded, "little", signed=signed))
+
+
+def _decode_i32(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_I32]:
+    return _decode_int(bstream, 4, cl_values.CL_I32, True)
 
 
 def _decode_i64(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_I64]:
-    assert len(bstream) >= 8
-
-    return bstream[8:], cl_values.CL_I32(le_bytes_to_int(bstream[0:8], True))
+    return _decode_int(bstream, 8, cl_values.CL_I64, True)
 
 
 def _decode_key(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Key]:
@@ -119,45 +122,36 @@ def _decode_tuple_3(encoded: bytes, cl_type: cl_types.CL_Type) -> typing.Tuple[b
 
 
 def _decode_u8(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U8]:
-    assert len(bstream) >= 1
-
-    return bstream[1:], cl_values.CL_U8(le_bytes_to_int(bstream[0:1], False))
+    return _decode_int(bstream, 1, cl_values.CL_U8, False)
 
 
 def _decode_u32(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U32]:
-    assert len(bstream) >= 4
-
-    return bstream[4:], cl_values.CL_U32(le_bytes_to_int(bstream[0:4], False))
+    return _decode_int(bstream, 4, cl_values.CL_U32, False)
 
 
 def _decode_u64(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U64]:
-    assert len(bstream) >= 8
-
-    return bstream[8:], cl_values.CL_U64(le_bytes_to_int(bstream[0:8], False))
+    return _decode_int(bstream, 8, cl_values.CL_U64, False)
 
 
 def _decode_u128(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U128]:
     assert len(bstream) >= 1
-    size = bstream[0]
-    assert len(bstream) >= size + 1
+    bstream, size = bstream[1:], bstream[0]
 
-    return bstream[size+1:], cl_values.CL_U128(le_bytes_to_int(bstream[1:size+1], False))
+    return _decode_int(bstream, size, cl_values.CL_U128, False)
 
 
 def _decode_u256(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U256]:
     assert len(bstream) >= 1
-    size = bstream[0]
-    assert len(bstream) >= size + 1
+    bstream, size = bstream[1:], bstream[0]
 
-    return bstream[size+1:], cl_values.CL_U256(le_bytes_to_int(bstream[1:size+1], False))
+    return _decode_int(bstream, size, cl_values.CL_U256, False)
 
 
 def _decode_u512(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U512]:
     assert len(bstream) >= 1
-    size = bstream[0]
-    assert len(bstream) >= size + 1
+    bstream, size = bstream[1:], bstream[0]
 
-    return bstream[size+1:], cl_values.CL_U512(le_bytes_to_int(bstream[1:size+1], False))
+    return _decode_int(bstream, size, cl_values.CL_U512, False)
 
 
 def _decode_unit(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Unit]:
