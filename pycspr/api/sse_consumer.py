@@ -54,12 +54,10 @@ def yield_events(
     sse_client = _get_sse_client(node, event_channel, event_id)
     try:
         for sse_event in sse_client.events():
-            try:
-                event_payload = json.loads(sse_event.data)
-            except json.JSONDecodeError:
-                event_payload = str(sse_event.data)
-            event_type = _get_event_type(event_payload)
-            yield NodeEventInfo(event_channel, event_type, sse_event.id, event_payload)
+            sse_payload = _get_sse_event_payload(sse_event.data)
+            sse_event_type = _get_sse_event_type(sse_payload)
+            if event_type is None or event_type == sse_event_type:
+                yield NodeEventInfo(event_channel, sse_event_type, sse_event.id, sse_payload)
     except Exception as err:
         try:
             sse_client.close()
@@ -81,7 +79,17 @@ def _get_sse_client(node: NodeConnection, event_channel: NodeEventChannel, event
     return sseclient.SSEClient(stream)
 
 
-def _get_event_type(payload: dict) -> NodeEventType:
+def _get_sse_event_payload(data: str) -> typing.Union[str, dict]:
+    """Maps incoming event JSON payload to it's pythonic type.
+
+    """
+    try:
+        return json.loads(data)
+    except json.JSONDecodeError:
+        return str(data)
+
+
+def _get_sse_event_type(payload: dict) -> NodeEventType:
     """Maps incoming event payload to associated event type.
 
     """

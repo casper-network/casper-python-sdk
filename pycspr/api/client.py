@@ -27,6 +27,43 @@ class NodeClient():
         self._get_rpc_response = connection.get_rpc_response
 
 
+    async def await_n_blocks(self, offset: int) -> dict:
+        """Awaits until linear block chain has advanced by N blocks.
+
+        :param offset: Number of blocks to await.
+        :returns: On-chain block information N blocks in the future.
+
+        """        
+        return await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)   
+
+
+    async def await_n_eras(self, offset: int) -> dict:
+        """Awaits until consensus has advanced by N eras.
+
+        :param offset: Number of eras to await.
+        :returns: On-chain era information N eras in the future.
+
+        """    
+        return await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)   
+
+
+    async def await_n_events(self, event_channel: NodeEventChannel, event_type:NodeEventType, offset: int) -> dict:
+        """Awaits emission of N events of a certain type over a certain channel.
+
+        :param event_channel: Type of event channel to which to bind.
+        :param event_type: Type of event type to listen for (all if unspecified).
+        :param offset: Number of blocks to await.
+        :returns: Event payload N events into the future.
+
+        """        
+        assert offset > 0 
+        count = 0
+        for event_info in self.yield_events(event_channel, event_type):
+            count += 1
+            if count == offset:
+                return event_info.payload
+
+
     def get_account_balance(
         self,
         purse_uref: types.CL_URef,
@@ -419,6 +456,7 @@ class NodeClient():
         :param event_id: Identifier of event from which to start stream listening.
 
         """
-        iterator = sse_consumer.yield_events(self.connection, event_channel, event_type, event_id)
-        for event_info in iterator:
+        for event_info in sse_consumer.yield_events(
+            self.connection, event_channel, event_type, event_id
+            ):
             yield event_info
