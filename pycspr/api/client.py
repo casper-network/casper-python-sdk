@@ -52,7 +52,7 @@ class NodeClient():
 
         :param event_channel: Type of event channel to which to bind.
         :param event_type: Type of event type to listen for (all if unspecified).
-        :param offset: Number of blocks to await.
+        :param offset: Number of events to await.
         :returns: Event payload N events into the future.
 
         """        
