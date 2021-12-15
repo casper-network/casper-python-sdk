@@ -414,8 +414,7 @@ class NodeClient():
         return response["deploy_hash"]
 
 
-    def query_global_state(
-        self,
+    def query_global_state(self,
         key: str,
         path: typing.List[str],
         state_id: types.GlobalStateIdentifier = None
@@ -433,14 +432,8 @@ class NodeClient():
             GlobalStateIdentifierType.STATE_ROOT
         )
         params = params_factory.get_query_global_state_params(state_id, key, path)
-        print(params)
 
-        response = self._get_rpc_response(
-            constants.RPC_STATE_QUERY_GLOBAL_STATE,
-            params
-            )
-
-        return response
+        return self._get_rpc_response(constants.RPC_STATE_QUERY_GLOBAL_STATE, params)
 
 
     def yield_events(
