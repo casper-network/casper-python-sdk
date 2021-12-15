@@ -2,6 +2,7 @@ import typing
 
 from pycspr import serialisation
 from pycspr import types
+from pycspr.types.cl_values import CL_Key
 
 
 def get_account_balance_params(
@@ -227,6 +228,34 @@ def get_era_info_params(block_id: types.BlockIdentifier = None) -> dict:
                 "Height": block_id
             }
         }
+
+
+def get_query_global_state_params(
+    state_id: types.GlobalStateIdentifier,
+    key: CL_Key,
+    path: typing.List[str]
+) -> dict:
+    """Returns results of a query to global state at a specified block or state root hash.
+
+    :param state_id: Identifier of global state leaf.
+    :param key: Key of an item stored within global state.
+    :param path: Identifier of a path within item.
+    :returns: Results of a global state query.
+
+    """
+    if state_id.typeof == types.GlobalStateIdentifierType.BLOCK:
+        state_id_type = "BlockHash" 
+    else:
+        state_id_type = "StateRootHash" 
+    state_id = state_id.identifier.hex() if isinstance(state_id.identifier, bytes) else state_id.identifier
+
+    return {
+        "state_identifier": {
+            state_id_type: state_id
+        },
+        "key": key.to_string(),
+        "path": path
+    }
 
 
 def get_state_item_params(

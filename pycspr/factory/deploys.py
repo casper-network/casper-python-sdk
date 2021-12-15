@@ -262,7 +262,7 @@ def create_validator_auction_bid(
                 ),
             DeployArgument(
                 "public_key",
-                CL_PublicKey.from_key(public_key)
+                CL_PublicKey.from_public_key(public_key)
                 ),
             ]
         )
@@ -297,7 +297,7 @@ def create_validator_auction_bid_withdrawal(
                 ),
             DeployArgument(
                 "public_key",
-                CL_PublicKey.from_key(public_key)
+                CL_PublicKey.from_public_key(public_key)
                 ),
             DeployArgument(
                 "unbond_purse",
@@ -336,11 +336,11 @@ def create_validator_delegation(
                 ),
             DeployArgument(
                 "delegator",
-                CL_PublicKey.from_key(public_key_of_delegator)
+                CL_PublicKey.from_public_key(public_key_of_delegator)
                 ),
             DeployArgument(
                 "validator",
-                CL_PublicKey.from_key(public_key_of_validator)
+                CL_PublicKey.from_public_key(public_key_of_validator)
                 ),
         ]
     )
@@ -375,11 +375,11 @@ def create_validator_delegation_withdrawal(
                 ),
             DeployArgument(
                 "delegator",
-                CL_PublicKey.from_key(public_key_of_delegator)
+                CL_PublicKey.from_public_key(public_key_of_delegator)
                 ),
             DeployArgument(
                 "validator",
-                CL_PublicKey.from_key(public_key_of_validator)
+                CL_PublicKey.from_public_key(public_key_of_validator)
                 ),
         ]
     )

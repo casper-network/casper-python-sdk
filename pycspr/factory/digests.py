@@ -19,7 +19,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     """
     return crypto.get_hash(
         serialisation.cl_value_to_bytes(
-            CL_PublicKey.from_key(header.account_public_key)
+            CL_PublicKey.from_public_key(header.account_public_key)
         ) +
         serialisation.cl_value_to_bytes(
             CL_U64(int(header.timestamp.value * 1000))

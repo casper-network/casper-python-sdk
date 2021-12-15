@@ -77,6 +77,8 @@ from pycspr.types.identifiers import DictionaryIdentifier_AccountNamedKey
 from pycspr.types.identifiers import DictionaryIdentifier_ContractNamedKey
 from pycspr.types.identifiers import DictionaryIdentifier_SeedURef
 from pycspr.types.identifiers import DictionaryIdentifier_UniqueKey
+from pycspr.types.identifiers import GlobalStateIdentifier
+from pycspr.types.identifiers import GlobalStateIdentifierType
 from pycspr.types.identifiers import StateRootIdentifier
 
 from pycspr.types.keys import PrivateKey

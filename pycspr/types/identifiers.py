@@ -1,4 +1,5 @@
 import dataclasses
+import enum
 import typing
 
 
@@ -18,6 +19,22 @@ ContractVersion = typing.NewType("U32 integer representing", int)
 
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
 DeployIdentifier = typing.Union[bytes, str]
+
+class GlobalStateIdentifierType(enum.Enum):
+    """Enumeration over set of CL type keys.
+
+    """
+    STATE_ROOT = enum.auto()
+    BLOCK = enum.auto()
+
+
+@dataclasses.dataclass
+class GlobalStateIdentifier():
+    # 32 byte global state identifier, either a block or state root hash.
+    identifier: bytes
+
+    # Type of identifier.
+    typeof: GlobalStateIdentifierType
 
 # Root hash of a node's global state.
 StateRootIdentifier = typing.NewType(

@@ -8,6 +8,8 @@ from pycspr.api import sse_consumer
 from pycspr.api.connection import NodeConnection
 from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
+from pycspr.types.identifiers import GlobalStateIdentifier
+from pycspr.types.identifiers import GlobalStateIdentifierType
 
 
 class NodeClient():
@@ -156,8 +158,7 @@ class NodeClient():
 
     def get_block_transfers(
         self,
-        block_id:
-        types.BlockIdentifier = None
+        block_id: types.BlockIdentifier = None
     ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
@@ -256,15 +257,15 @@ class NodeClient():
         return metrics
 
 
-    def get_node_peers(self) -> dict:
+    def get_node_peers(self) -> typing.List[dict]:
         """Returns node peers information.
 
         :returns: Node peers information.
 
         """
-        node_status = self.get_node_status()
+        response = self._get_rpc_response(constants.RPC_INFO_GET_PEERS)
 
-        return node_status["peers"]
+        return response["peers"]
 
 
     def get_node_status(self) -> dict:
@@ -273,9 +274,7 @@ class NodeClient():
         :returns: Node status information.
 
         """
-        response = self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
-
-        return response
+        return self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
 
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
@@ -376,6 +375,35 @@ class NodeClient():
             )
 
         return response["deploy_hash"]
+
+
+    def query_global_state(
+        self,
+        key: str,
+        path: typing.List[str],
+        state_id: types.GlobalStateIdentifier = None
+    ) -> bytes:
+        """Returns results of a query to global state at a specified block or state root hash.
+
+        :param key: Key of an item stored within global state.
+        :param path: Identifier of a path within item.
+        :param state_id: Identifier of global state leaf.
+        :returns: Results of a global state query.
+
+        """
+        state_id = state_id or GlobalStateIdentifier(
+            self.get_state_root_hash(),
+            GlobalStateIdentifierType.STATE_ROOT
+        )
+        params = params_factory.get_query_global_state_params(state_id, key, path)
+        print(params)
+
+        response = self._get_rpc_response(
+            constants.RPC_STATE_QUERY_GLOBAL_STATE,
+            params
+            )
+
+        return response
 
 
     def yield_events(

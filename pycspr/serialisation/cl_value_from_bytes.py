@@ -28,10 +28,9 @@ def _decode_bool(bstream: bytes, _: cl_types.CL_Type) -> cl_values.CL_Bool:
 
 def _decode_byte_array(bstream: bytes, cl_type: cl_types.CL_Type_ByteArray) -> typing.Tuple[bytes, cl_values.CL_ByteArray]:
     assert len(bstream) >= cl_type.size
-    bstream, encoded = bstream[cl_type.size+1:], bstream[0:cl_type.size+1]
+    bstream, encoded = bstream[cl_type.size:], bstream[:cl_type.size]
 
     return bstream, cl_values.CL_ByteArray(encoded)
-
 
 
 def _decode_int(bstream: bytes, length: int, val_type: cl_values.CL_Value, signed: bool) -> typing.Tuple[bytes, cl_values.CL_U8]:
@@ -135,23 +134,23 @@ def _decode_u64(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_v
 
 def _decode_u128(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U128]:
     assert len(bstream) >= 1
-    bstream, size = bstream[1:], bstream[0]
+    bstream, length = bstream[1:], bstream[0]
 
-    return _decode_int(bstream, size, cl_values.CL_U128, False)
+    return _decode_int(bstream, length, cl_values.CL_U128, False)
 
 
 def _decode_u256(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U256]:
     assert len(bstream) >= 1
-    bstream, size = bstream[1:], bstream[0]
+    bstream, length = bstream[1:], bstream[0]
 
-    return _decode_int(bstream, size, cl_values.CL_U256, False)
+    return _decode_int(bstream, length, cl_values.CL_U256, False)
 
 
 def _decode_u512(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_U512]:
     assert len(bstream) >= 1
-    bstream, size = bstream[1:], bstream[0]
+    bstream, length = bstream[1:], bstream[0]
 
-    return _decode_int(bstream, size, cl_values.CL_U512, False)
+    return _decode_int(bstream, length, cl_values.CL_U512, False)
 
 
 def _decode_unit(bstream: bytes, _: cl_types.CL_Type) -> typing.Tuple[bytes, cl_values.CL_Unit]:

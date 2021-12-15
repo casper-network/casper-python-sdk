@@ -158,7 +158,7 @@ def _get_deploy(
         hash=contract_hash,
         args=[
             DeployArgument("amount", CL_U256(args.amount)),
-            DeployArgument("recipient", CL_PublicKey.from_key(user)),
+            DeployArgument("recipient", CL_PublicKey.from_public_key(user)),
         ]
     )
 

@@ -3,8 +3,8 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl_types import CL_Type
 from pycspr.types.keys import PublicKey
+from pycspr.types.cl_types import CL_Type
 
 
 @dataclasses.dataclass
@@ -171,27 +171,36 @@ class CL_Option(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_PublicKey(PublicKey, CL_Value):
+class CL_PublicKey(CL_Value):
     """Represents a CL type value: account holder's public key.
 
     """
+    # Algorithm used to generate ECC key pair.
+    algo: crypto.KeyAlgorithm
+
+    # Public key as raw bytes.
+    pbk: bytes
+
+    @property
+    def account_hash(self) -> bytes:
+        """Returns on-chain account hash."""
+        return crypto.get_account_hash(self.account_key)
+
+    @property
+    def account_key(self) -> bytes:
+        """Returns on-chain account key."""
+        return crypto.get_account_key(self.algo, self.pbk)
+
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
 
     @staticmethod
-    def from_account_key(account_key: bytes) -> "CL_PublicKey":
-        return CL_PublicKey(crypto.KeyAlgorithm(account_key[0]), account_key[1:])
+    def from_account_key(key: bytes) -> "CL_PublicKey":
+        return CL_PublicKey(crypto.KeyAlgorithm(key[0]), key[1:])
 
     @staticmethod
-    def from_key(as_key: PublicKey) -> "CL_PublicKey":
-        return CL_PublicKey(as_key.algo, as_key.pbk)
-
-    @staticmethod
-    def from_string(as_string: str) -> "CL_PublicKey":
-        return CL_PublicKey(
-            crypto.KeyAlgorithm(bytes.fromhex(as_string)[0]),
-            bytes.fromhex(as_string)[1:]
-        )
+    def from_public_key(key: PublicKey) -> "CL_PublicKey":
+        return CL_PublicKey(key.algo, key.pbk)
 
 
 @dataclasses.dataclass
