@@ -7,8 +7,8 @@ import pytest
 
 import pycspr
 from pycspr.types import CL_TypeKey
-from tests.fixtures.iterators import yield_cl_types
-from tests.fixtures.iterators import yield_cl_values
+from tests.fixtures.iterator_cl_types import yield_cl_types
+from tests.fixtures.iterator_cl_values import yield_cl_values
 
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
