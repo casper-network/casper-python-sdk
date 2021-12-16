@@ -35,7 +35,7 @@ def _get_parsed(entity: cl_values.CL_Value) -> object:
         return entity.to_string()
 
     elif isinstance(entity, cl_values.CL_List):
-        return [str(i) for i in entity.vector]
+        return [_get_parsed(i) for i in entity.vector]
 
     elif isinstance(entity, cl_values.CL_Map):
         return [{
@@ -53,13 +53,23 @@ def _get_parsed(entity: cl_values.CL_Value) -> object:
         return entity.value
 
     elif isinstance(entity, cl_values.CL_Tuple1):
-        raise NotImplementedError()
+        return (
+            _get_parsed(entity.v0),
+        )
+            
 
     elif isinstance(entity, cl_values.CL_Tuple2):
-        raise NotImplementedError()
+        return (
+            _get_parsed(entity.v0),
+            _get_parsed(entity.v1),
+        )
 
     elif isinstance(entity, cl_values.CL_Tuple3):
-        raise NotImplementedError()
+        return (
+            _get_parsed(entity.v0),
+            _get_parsed(entity.v1),
+            _get_parsed(entity.v2),
+        )
 
     elif isinstance(entity, cl_values.CL_U8):
         return entity.value

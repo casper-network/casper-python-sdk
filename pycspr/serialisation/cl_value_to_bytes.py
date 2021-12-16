@@ -72,15 +72,15 @@ def _encode_string(entity: cl_values.CL_String) -> bytes:
 
 
 def _encode_tuple_1(entity: cl_values.CL_Tuple1) -> bytes:
-    raise NotImplementedError()
+    return encode(entity.v0)
 
 
 def _encode_tuple_2(entity: cl_values.CL_Tuple2) -> bytes:
-    raise NotImplementedError()
+    return encode(entity.v0) + encode(entity.v1)
 
 
 def _encode_tuple_3(entity: cl_values.CL_Tuple3) -> bytes:
-    raise NotImplementedError()
+    return encode(entity.v0) + encode(entity.v1) + encode(entity.v2)
 
 
 def _encode_u8(entity: cl_values.CL_U8) -> bytes:

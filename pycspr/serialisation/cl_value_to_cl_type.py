@@ -22,7 +22,15 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         return cl_types.CL_Type_Key()
 
     elif isinstance(entity, cl_values.CL_List):
-        raise NotImplementedError()
+        if len(entity.vector) == 0:
+            raise ValueError("List is empty, therefore cannot derive it's item cl type")
+
+        i = entity.vector[0]
+        for i1 in entity.vector[1:]:
+            if type(i) != type(i1):
+                raise ValueError("Inconsistent list item types") 
+
+        return cl_types.CL_Type_List(encode(i))
 
     elif isinstance(entity, cl_values.CL_Map):
         if len(entity.value) == 0:
@@ -48,13 +56,13 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         return cl_types.CL_Type_String()
 
     elif isinstance(entity, cl_values.CL_Tuple1):
-        raise NotImplementedError()
+        return cl_types.CL_Type_Tuple1(encode(entity.v0))
 
     elif isinstance(entity, cl_values.CL_Tuple2):
-        raise NotImplementedError()
+        return cl_types.CL_Type_Tuple2(encode(entity.v0), encode(entity.v1))
 
     elif isinstance(entity, cl_values.CL_Tuple3):
-        raise NotImplementedError()
+        return cl_types.CL_Type_Tuple3(encode(entity.v0), encode(entity.v1), encode(entity.v2))
 
     elif isinstance(entity, cl_values.CL_U8):
         return cl_types.CL_Type_U8()

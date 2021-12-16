@@ -17,20 +17,28 @@ def decode(bstream: bytes) -> cl_types.CL_Type:
         decoded = cl_types.CL_Type_List(item_type)
 
     elif typekey == cl_types.CL_TypeKey.MAP:
-        raise NotImplementedError()
+        bstream, key_type = decode(bstream)
+        bstream, value_type = decode(bstream)
+        decoded = cl_types.CL_Type_Map(key_type, value_type)
 
     elif typekey == cl_types.CL_TypeKey.OPTION:
         bstream, option_type = decode(bstream)
         decoded = cl_types.CL_Type_Option(option_type)
 
     elif typekey == cl_types.CL_TypeKey.TUPLE_1:
-        raise NotImplementedError()
+        bstream, t0_type = decode(bstream)
+        decoded = cl_types.CL_Type_Tuple1(t0_type)
 
     elif typekey == cl_types.CL_TypeKey.TUPLE_2:
-        raise NotImplementedError()
+        bstream, t0_type = decode(bstream)
+        bstream, t1_type = decode(bstream)
+        decoded = cl_types.CL_Type_Tuple2(t0_type, t1_type)
 
     elif typekey == cl_types.CL_TypeKey.TUPLE_3:
-        raise NotImplementedError()
+        bstream, t0_type = decode(bstream)
+        bstream, t1_type = decode(bstream)
+        bstream, t2_type = decode(bstream)
+        decoded = cl_types.CL_Type_Tuple3(t0_type, t1_type, t2_type)
 
     else:
         decoded = _SIMPLE_TYPES[typekey]()
