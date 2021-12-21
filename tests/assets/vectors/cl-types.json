@@ -9,7 +9,7 @@
     },
     {
         "cl_type": "BYTE_ARRAY",
-        "cl_type_size": 74,
+        "cl_type_size": 32,
         "hex": "XXX"
     },
     {

@@ -1,15 +1,28 @@
 import random
 
 import pycspr
+from pycspr import serialisation
 from pycspr.types import DeployApproval
 from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
 
 
-def test_create_deploy_arguments(cl_values_vector):
+def test_create_deploy_arguments_1(cl_values_vector):
     for cl_value in cl_values_vector:
         arg = DeployArgument("an-argument", cl_value)
         assert isinstance(arg, DeployArgument)
+
+
+def test_create_deploy_arguments_2(cl_values_vector):
+    for cl_value in cl_values_vector:
+        arg = DeployArgument("an-argument", cl_value)
+        assert arg == serialisation.deploy_from_json(DeployArgument, serialisation.deploy_to_json(arg))
+
+
+def test_create_deploy_arguments_3(cl_values_vector):
+    for cl_value in cl_values_vector:
+        arg = DeployArgument("an-argument", cl_value)
+        assert arg == serialisation.deploy_from_bytes(DeployArgument, serialisation.deploy_to_bytes(arg))
 
 
 def test_create_deploy_approval_1(a_deploy, a_test_account):

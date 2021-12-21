@@ -1,2 +1,2 @@
-def decode(typedef: object, obj: dict) -> object:
-    raise NotImplementedError(typedef)
+def decode(typedef: object, bstream: bytes) -> object:    
+    raise NotImplementedError(typedef, bstream)
