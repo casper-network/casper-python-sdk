@@ -2,12 +2,13 @@ import typing
 
 from pycspr import serialisation
 from pycspr import types
+from pycspr.crypto import cl_checksum
 from pycspr.types.cl_values import CL_Key
 
 
 def get_account_balance_params(
     purse_uref: typing.Union[str, types.CL_URef],
-    state_root_hash: types.StateRootIdentifier = None
+    state_root_hash: types.StateRootHash = None
 ) -> dict:
     """Returns JSON-RPC API request parameters.
 
@@ -27,10 +28,7 @@ def get_account_balance_params(
     }
 
 
-def get_account_info_params(
-    account_key: types.AccountIdentifier,
-    block_id: types.BlockIdentifier = None
-) -> dict:
+def get_account_info_params(account_id: types.AccountID, block_id: types.BlockID = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param account_key: Account public key prefixed with a key type identifier.
@@ -38,99 +36,80 @@ def get_account_info_params(
     :returns: JSON-RPC API parameter set.
 
     """
-    if isinstance(account_key, bytes):
-        account_key = account_key.hex()
-    if isinstance(block_id, bytes):
-        block_id = block_id.hex()
-
-    if isinstance(block_id, type(None)):
+    if isinstance(block_id, (bytes, str)):
         return {
-            "public_key": account_key
-        }
-    elif isinstance(block_id, str):
-        return {
-            "public_key": account_key,
+            "public_key": cl_checksum.encode_account_id(account_id),
             "block_identifier": {
-                "Hash": block_id
+                "Hash": cl_checksum.encode_block_id(block_id)
             }
         }
     elif isinstance(block_id, int):
         return {
-            "public_key": account_key,
-            "block_identifier": {
-                "Height": block_id
-            }
-        }
-
-
-def get_auction_info_params(block_id: types.BlockIdentifier = None) -> dict:
-    """Returns JSON-RPC API request parameters.
-
-    :param block_id: Identifier of a finalised block.
-    :returns: JSON-RPC API parameter set.
-
-    """
-    if isinstance(block_id, bytes):
-        block_id = block_id.hex()
-
-    if isinstance(block_id, type(None)):
-        return None
-    elif isinstance(block_id, str):
-        return {
-            "block_identifier": {
-                "Hash": block_id
-            }
-        }
-    elif isinstance(block_id, int):
-        return {
-            "block_identifier": {
-                "Height": block_id
-            }
-        }
-
-
-def get_block_params(block_id: types.BlockIdentifier = None) -> dict:
-    """Returns JSON-RPC API request parameters.
-
-    :param block_id: Identifier of a finalised block.
-    :returns: JSON-RPC API parameter set.
-
-    """
-    if isinstance(block_id, type(None)):
-        return None
-    elif isinstance(block_id, bytes):
-        return {
-            "block_identifier": {
-                "Hash": block_id.hex()
-            }
-        }
-    elif isinstance(block_id, int):
-        return {
+            "public_key": cl_checksum.encode_account_id(account_id),
             "block_identifier": {
                 "Height": block_id
             }
         }
     else:
         return {
+            "public_key": cl_checksum.encode_account_id(account_id),
+            "block_identifier": None
+        }
+
+
+def get_auction_info_params(block_id: types.BlockID = None) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param block_id: Identifier of a finalised block.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(block_id, (bytes, str)):
+        return {
             "block_identifier": {
-                "Hash": block_id
+                "Hash": cl_checksum.encode_block_id(block_id)
+            }
+        }
+    elif isinstance(block_id, int):
+        return {
+            "block_identifier": {
+                "Height": block_id
             }
         }
 
 
-def get_block_transfers_params(block_id: types.BlockIdentifier = None) -> dict:
+def get_block_params(block_id: types.BlockID = None) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param block_id: Identifier of a finalised block.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(block_id, (bytes, str)):
+        return {
+            "block_identifier": {
+                "Hash": cl_checksum.encode_block_id(block_id)
+            }
+        }
+    elif isinstance(block_id, int):
+        return {
+            "block_identifier": {
+                "Height": block_id
+            }
+        }
+
+
+def get_block_transfers_params(block_id: types.BlockID = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    if isinstance(block_id, type(None)):
-        return None
-    elif isinstance(block_id, bytes):
+    if isinstance(block_id, (bytes, str)):
         return {
             "block_identifier": {
-                "Hash": block_id.hex()
+                "Hash": cl_checksum.encode_block_id(block_id)
             }
         }
     elif isinstance(block_id, int):
@@ -139,37 +118,28 @@ def get_block_transfers_params(block_id: types.BlockIdentifier = None) -> dict:
                 "Height": block_id
             }
         }
-    else:
-        return {
-            "block_identifier": {
-                "Hash": block_id
-            }
-        }
 
 
-def get_deploy_params(deploy_id: types.DeployIdentifier) -> dict:
+def get_deploy_params(deploy_id: types.DeployID) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param deploy_id: Identifier of a deploy.
     :returns: JSON-RPC API parameter set.
 
     """
-    if isinstance(deploy_id, bytes):
-        deploy_id = deploy_id.hex()
-
     return {
-        "deploy_hash": deploy_id
+        "deploy_hash": cl_checksum.encode_deploy_id(deploy_id)
     }
 
 
-def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
+def get_dictionary_item_params(identifier: types.DictionaryID) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param identifier: Identifier of a state dictionary.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    if isinstance(identifier, types.DictionaryIdentifier_AccountNamedKey):
+    if isinstance(identifier, types.DictionaryID_AccountNamedKey):
         return {
             "AccountNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -178,7 +148,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, types.DictionaryIdentifier_ContractNamedKey):
+    elif isinstance(identifier, types.DictionaryID_ContractNamedKey):
         return {
             "ContractNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -187,7 +157,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, types.DictionaryIdentifier_SeedURef):
+    elif isinstance(identifier, types.DictionaryID_SeedURef):
         return {
             "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
@@ -195,7 +165,7 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
             }
         }
 
-    elif isinstance(identifier, types.DictionaryIdentifier_UniqueKey):
+    elif isinstance(identifier, types.DictionaryID_UniqueKey):
         return {
             "Dictionary": identifier.seed_uref.as_string()
         }
@@ -204,22 +174,17 @@ def get_dictionary_item_params(identifier: types.DictionaryIdentifier) -> dict:
         raise ValueError("Unrecognized dictionary item type.")
 
 
-def get_era_info_params(block_id: types.BlockIdentifier = None) -> dict:
+def get_era_info_params(block_id: types.BlockID = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
     :returns: JSON-RPC API parameter set.
 
     """
-    if isinstance(block_id, bytes):
-        block_id = block_id.hex()
-
-    if isinstance(block_id, type(None)):
-        return None
-    elif isinstance(block_id, str):
+    if isinstance(block_id, (bytes, str)):
         return {
             "block_identifier": {
-                "Hash": block_id
+                "Hash": cl_checksum.encode_block_id(block_id)
             }
         }
     elif isinstance(block_id, int):
@@ -231,7 +196,7 @@ def get_era_info_params(block_id: types.BlockIdentifier = None) -> dict:
 
 
 def get_query_global_state_params(
-    state_id: types.GlobalStateIdentifier,
+    state_id: types.GlobalStateID,
     key: CL_Key,
     path: typing.List[str]
 ) -> dict:
@@ -243,7 +208,7 @@ def get_query_global_state_params(
     :returns: Results of a global state query.
 
     """
-    if state_id.typeof == types.GlobalStateIdentifierType.BLOCK:
+    if state_id.typeof == types.GlobalStateIDType.BLOCK:
         state_id_type = "BlockHash" 
     else:
         state_id_type = "StateRootHash" 
@@ -271,29 +236,26 @@ def get_state_item_params(
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
+    item_path = item_path if isinstance(item_path, list) else [item_path]
+
     return {
         "key": item_key,
-        "path": item_path if isinstance(item_path, list) else [item_path],
+        "path": item_path,
         "state_root_hash": state_root_hash.hex() if state_root_hash else None
     }
 
 
-def get_state_root_hash_params(block_id: types.BlockIdentifier = None) -> dict:
+def get_state_root_hash_params(block_id: types.BlockID = None) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param block_id: Identifier of a finalised block.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
-    if isinstance(block_id, bytes):
-        block_id = block_id.hex()
-
-    if isinstance(block_id, type(None)):
-        return None
-    elif isinstance(block_id, str):
+    if isinstance(block_id, (bytes, str)):
         return {
             "block_identifier": {
-                "Hash": block_id
+                "Hash": cl_checksum.encode_block_id(block_id)
             }
         }
     elif isinstance(block_id, int):

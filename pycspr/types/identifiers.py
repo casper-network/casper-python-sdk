@@ -5,22 +5,22 @@ import typing
 
 # An account identifier may be a byte array of 33 bytes,
 # a hexadecimal string of 66 characters.
-AccountIdentifier = typing.Union[bytes, str]
+AccountID = typing.Union[bytes, str]
 
 # A block identifier may be a byte array of 32 bytes,
 # a hexadecimal string of 64 characters or a positive integer.
-BlockIdentifier = typing.Union[bytes, str, int]
+BlockID = typing.Union[bytes, str, int]
 
 # On chain contract identifier.
-ContractIdentifier = typing.NewType("Static contract pointer", bytes)
+ContractID = typing.NewType("Static contract pointer", bytes)
 
 # On chain contract version.
 ContractVersion = typing.NewType("U32 integer representing", int)
 
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
-DeployIdentifier = typing.Union[bytes, str]
+DeployID = typing.Union[bytes, str]
 
-class GlobalStateIdentifierType(enum.Enum):
+class GlobalStateIDType(enum.Enum):
     """Enumeration over set of CL type keys.
 
     """
@@ -29,22 +29,23 @@ class GlobalStateIdentifierType(enum.Enum):
 
 
 @dataclasses.dataclass
-class GlobalStateIdentifier():
+class GlobalStateID():
     # 32 byte global state identifier, either a block or state root hash.
     identifier: bytes
 
     # Type of identifier.
-    typeof: GlobalStateIdentifierType
+    typeof: GlobalStateIDType
+
 
 # Root hash of a node's global state.
-StateRootIdentifier = typing.NewType(
+StateRootHash = typing.NewType(
     "Cumulative hash of block execution effects over global state.",
     bytes
     )
 
 
 @dataclasses.dataclass
-class DictionaryIdentifier():
+class DictionaryID():
     """A set of variants for performation dictionary item state queries.
 
     """
@@ -52,7 +53,7 @@ class DictionaryIdentifier():
 
 
 @dataclasses.dataclass
-class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
+class DictionaryID_AccountNamedKey(DictionaryID):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
 
     """
@@ -73,7 +74,7 @@ class DictionaryIdentifier_AccountNamedKey(DictionaryIdentifier):
 
 
 @dataclasses.dataclass
-class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
+class DictionaryID_ContractNamedKey(DictionaryID):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
 
     """
@@ -94,7 +95,7 @@ class DictionaryIdentifier_ContractNamedKey(DictionaryIdentifier):
 
 
 @dataclasses.dataclass
-class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
+class DictionaryID_SeedURef(DictionaryID):
     """Encapsulates information required to query a dictionary item
        via it's seed unforgeable reference.
 
@@ -112,7 +113,7 @@ class DictionaryIdentifier_SeedURef(DictionaryIdentifier):
 
 
 @dataclasses.dataclass
-class DictionaryIdentifier_UniqueKey(DictionaryIdentifier):
+class DictionaryID_UniqueKey(DictionaryID):
     """Encapsulates information required to query a dictionary item via it's unique key.
 
     """

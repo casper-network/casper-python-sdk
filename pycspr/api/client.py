@@ -8,8 +8,8 @@ from pycspr.api import sse_consumer
 from pycspr.api.connection import NodeConnection
 from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
-from pycspr.types.identifiers import GlobalStateIdentifier
-from pycspr.types.identifiers import GlobalStateIdentifierType
+from pycspr.types.identifiers import GlobalStateID
+from pycspr.types.identifiers import GlobalStateIDType
 
 
 class NodeClient():
@@ -67,7 +67,7 @@ class NodeClient():
     def get_account_balance(
         self,
         purse_uref: types.CL_URef,
-        state_root_hash: types.StateRootIdentifier = None
+        state_root_hash: types.StateRootHash = None
     ) -> int:
         """Returns account balance at a certain global state root hash.
 
@@ -85,8 +85,8 @@ class NodeClient():
 
     def get_account_info(
         self,
-        account_id: types.AccountIdentifier,
-        block_id: types.BlockIdentifier = None
+        account_id: types.AccountID,
+        block_id: types.BlockID = None
     ) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -105,8 +105,8 @@ class NodeClient():
 
     def get_account_main_purse_uref(
         self,
-        account_id: types.AccountIdentifier,
-        block_id: types.BlockIdentifier = None
+        account_id: types.AccountID,
+        block_id: types.BlockID = None
     ) -> types.CL_URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
@@ -122,9 +122,9 @@ class NodeClient():
 
     def get_account_named_key(
         self,
-        account_id: types.AccountIdentifier,
+        account_id: types.AccountID,
         key_name: str,
-        block_id: types.BlockIdentifier = None
+        block_id: types.BlockID = None
     ) -> types.CL_Key:
         """Returns a key stored under an account's storage under a specific name.
 
@@ -140,7 +140,7 @@ class NodeClient():
                 return types.CL_Key.from_string(named_key["key"])
 
 
-    def get_auction_info(self, block_id: types.BlockIdentifier = None) -> dict:
+    def get_auction_info(self, block_id: types.BlockID = None) -> dict:
         """Returns current auction system contract information.
 
         :returns: Current auction system contract information.
@@ -154,7 +154,7 @@ class NodeClient():
         return response
 
 
-    def get_block(self, block_id: types.BlockIdentifier = None) -> dict:
+    def get_block(self, block_id: types.BlockID = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -195,7 +195,7 @@ class NodeClient():
 
     def get_block_transfers(
         self,
-        block_id: types.BlockIdentifier = None
+        block_id: types.BlockID = None
     ) -> typing.Tuple[str, list]:
         """Returns on-chain block transfers information.
 
@@ -211,7 +211,7 @@ class NodeClient():
         return (response["block_hash"], response["transfers"])
 
 
-    def get_deploy(self, deploy_id: types.DeployIdentifier) -> dict:
+    def get_deploy(self, deploy_id: types.DeployID) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_id: Identifier of a finalised block.
@@ -224,7 +224,7 @@ class NodeClient():
             )
 
 
-    def get_dictionary_item(self, identifier: types.DictionaryIdentifier) -> dict:
+    def get_dictionary_item(self, identifier: types.DictionaryID) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
         :param identifier: Identifier required to query a dictionary item.
@@ -237,10 +237,10 @@ class NodeClient():
             )
 
 
-    def get_era_info(self, block_id: types.BlockIdentifier = None) -> dict:
-        """Returns current era information.
+    def get_era_info(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era information.
 
-        :param block_id: Identifier of a finalised block.
+        :param block_id: Identifier of a switch block, i.e. a block produced at the end of an era.
         :returns: Era information.
 
         """
@@ -250,6 +250,16 @@ class NodeClient():
             )
 
         return response["era_summary"]
+
+
+    def get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era information.
+
+        :param block_id: Identifier of a switch block, i.e. a block produced at the end of an era.
+        :returns: Era information.
+
+        """
+        return self.get_era_info(block_id)
 
 
     def get_events(
@@ -353,7 +363,7 @@ class NodeClient():
         self,
         item_key: str,
         item_path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: types.StateRootIdentifier = None
+        state_root_hash: types.StateRootHash = None
     ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
@@ -373,7 +383,7 @@ class NodeClient():
         return response["stored_value"]
 
 
-    def get_state_root_hash(self, block_id: types.BlockIdentifier = None) -> bytes:
+    def get_state_root_hash(self, block_id: types.BlockID = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
@@ -417,7 +427,7 @@ class NodeClient():
     def query_global_state(self,
         key: str,
         path: typing.List[str],
-        state_id: types.GlobalStateIdentifier = None
+        state_id: types.GlobalStateID = None
     ) -> bytes:
         """Returns results of a query to global state at a specified block or state root hash.
 
@@ -427,9 +437,9 @@ class NodeClient():
         :returns: Results of a global state query.
 
         """
-        state_id = state_id or GlobalStateIdentifier(
+        state_id = state_id or GlobalStateID(
             self.get_state_root_hash(),
-            GlobalStateIdentifierType.STATE_ROOT
+            GlobalStateIDType.STATE_ROOT
         )
         params = params_factory.get_query_global_state_params(state_id, key, path)
 

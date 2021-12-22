@@ -67,19 +67,19 @@ from pycspr.types.deploys import StoredContractByName
 from pycspr.types.deploys import StoredContractByNameVersioned
 from pycspr.types.deploys import Transfer
 
-from pycspr.types.identifiers import AccountIdentifier
-from pycspr.types.identifiers import BlockIdentifier
-from pycspr.types.identifiers import ContractIdentifier
+from pycspr.types.identifiers import AccountID
+from pycspr.types.identifiers import BlockID
+from pycspr.types.identifiers import ContractID
 from pycspr.types.identifiers import ContractVersion
-from pycspr.types.identifiers import DeployIdentifier
-from pycspr.types.identifiers import DictionaryIdentifier
-from pycspr.types.identifiers import DictionaryIdentifier_AccountNamedKey
-from pycspr.types.identifiers import DictionaryIdentifier_ContractNamedKey
-from pycspr.types.identifiers import DictionaryIdentifier_SeedURef
-from pycspr.types.identifiers import DictionaryIdentifier_UniqueKey
-from pycspr.types.identifiers import GlobalStateIdentifier
-from pycspr.types.identifiers import GlobalStateIdentifierType
-from pycspr.types.identifiers import StateRootIdentifier
+from pycspr.types.identifiers import DeployID
+from pycspr.types.identifiers import DictionaryID
+from pycspr.types.identifiers import DictionaryID_AccountNamedKey
+from pycspr.types.identifiers import DictionaryID_ContractNamedKey
+from pycspr.types.identifiers import DictionaryID_SeedURef
+from pycspr.types.identifiers import DictionaryID_UniqueKey
+from pycspr.types.identifiers import GlobalStateID
+from pycspr.types.identifiers import GlobalStateIDType
+from pycspr.types.identifiers import StateRootHash
 
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey

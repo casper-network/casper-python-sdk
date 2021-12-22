@@ -50,6 +50,15 @@ def cl_values() -> list:
 
 
 @pytest.fixture(scope="session")
+def crypto_checksums() -> list:
+    data = _read_vector("crypto-checksums.json")
+    for i in data:
+        i["input"] = bytes.fromhex(i["input"])
+
+    return data
+
+
+@pytest.fixture(scope="session")
 def crypto_hashes() -> list:
     data = _read_vector("crypto-hashes.json")
     for i in data:

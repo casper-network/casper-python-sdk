@@ -5,7 +5,7 @@ from pycspr import crypto
 from pycspr.types.cl_values import CL_Value
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey
-from pycspr.types.identifiers import ContractIdentifier
+from pycspr.types.identifiers import ContractID
 from pycspr.types.identifiers import ContractVersion
 from pycspr.types.timestamp import Timestamp
 from pycspr.utils import constants
@@ -271,7 +271,7 @@ class StoredContractByHash(StoredContract):
 
     """
     # On-chain smart contract address.
-    hash: ContractIdentifier
+    hash: ContractID
 
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and self.hash == other.hash

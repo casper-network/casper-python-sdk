@@ -28,6 +28,7 @@ from tests.fixtures.node import NODE_PORT_RPC
 from tests.fixtures.node import NODE_PORT_SSE
 from tests.fixtures.vectors import cl_types as cl_types_vector
 from tests.fixtures.vectors import cl_values as cl_values_vector
+from tests.fixtures.vectors import crypto_checksums
 from tests.fixtures.vectors import crypto_hashes
 from tests.fixtures.vectors import crypto_key_pairs
 from tests.fixtures.vectors import crypto_key_pair_specs
