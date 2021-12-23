@@ -20,32 +20,32 @@ def encode(entity: object) -> bytes:
     if isinstance(entity, Deploy):
         raise NotImplementedError()
 
-    if isinstance(entity, DeployApproval):
+    elif isinstance(entity, DeployApproval):
         return entity.signer + entity.signature
 
-    if isinstance(entity, DeployArgument):
+    elif isinstance(entity, DeployArgument):
         return \
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
             _u8_array_to_bytes(cl_value_to_bytes(entity.value)) + \
             cl_type_to_bytes(cl_value_to_cl_type(entity.value))
 
-    if isinstance(entity, DeployHeader):
+    elif isinstance(entity, DeployHeader):
         raise NotImplementedError()
 
-    if isinstance(entity, ModuleBytes):
+    elif isinstance(entity, ModuleBytes):
         return \
             bytes([0]) + \
             _u8_array_to_bytes(list(entity.module_bytes)) + \
             _vector_to_bytes(list(map(encode, entity.args)))
 
-    if isinstance(entity, StoredContractByHash):
+    elif isinstance(entity, StoredContractByHash):
         return \
             bytes([1]) + \
             cl_value_to_bytes(cl_values.CL_ByteArray(entity.hash)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
             _vector_to_bytes(list(map(encode, entity.args)))
 
-    if isinstance(entity, StoredContractByHashVersioned):
+    elif isinstance(entity, StoredContractByHashVersioned):
         return \
             bytes([2]) + \
             cl_value_to_bytes(cl_values.CL_ByteArray(entity.hash)) + \
@@ -53,14 +53,14 @@ def encode(entity: object) -> bytes:
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
             _vector_to_bytes(list(map(encode, entity.args)))
 
-    if isinstance(entity, StoredContractByName):
+    elif isinstance(entity, StoredContractByName):
         return \
             bytes([3]) + \
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
             _vector_to_bytes(list(map(encode, entity.args)))
 
-    if isinstance(entity, StoredContractByNameVersioned):
+    elif isinstance(entity, StoredContractByNameVersioned):
         return \
             bytes([4]) + \
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
@@ -68,7 +68,7 @@ def encode(entity: object) -> bytes:
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
             _vector_to_bytes(list(map(encode, entity.args)))
 
-    if isinstance(entity, Transfer):
+    elif isinstance(entity, Transfer):
         return \
             bytes([5]) + \
             _vector_to_bytes(list(map(encode, entity.args)))

@@ -3,90 +3,86 @@ from pycspr.types import cl_values
 
 
 def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
-    if isinstance(entity, cl_values.CL_Any):
-        return cl_types.CL_Type_Any()
-
-    elif isinstance(entity, cl_values.CL_Bool):
-        return cl_types.CL_Type_Bool()
-
-    elif isinstance(entity, cl_values.CL_ByteArray):
-        return cl_types.CL_Type_ByteArray(len(entity))
-
-    elif isinstance(entity, cl_values.CL_I32):
-        return cl_types.CL_Type_I32()
-
-    elif isinstance(entity, cl_values.CL_I64):
-        return cl_types.CL_Type_I64()
-
-    elif isinstance(entity, cl_values.CL_Key):
-        return cl_types.CL_Type_Key()
-
-    elif isinstance(entity, cl_values.CL_List):
-        if len(entity.vector) == 0:
-            raise ValueError("List is empty, therefore cannot derive it's item cl type")
-
-        i = entity.vector[0]
-        for i1 in entity.vector[1:]:
-            if type(i) != type(i1):
-                raise ValueError("Inconsistent list item types") 
-
-        return cl_types.CL_Type_List(encode(i))
-
-    elif isinstance(entity, cl_values.CL_Map):
-        if len(entity.value) == 0:
-            raise ValueError("Map is empty, therefore cannot derive it's cl type")
-
-        k, v = entity.value[0]
-        for k1, v1 in entity.value[1:]:
-            if type(k1) != type(k) or type(v1) != type(v):
-                raise ValueError("Inconsistent value name/key pairs") 
-
-        return cl_types.CL_Type_Map(encode(k), encode(v))
-
-    elif isinstance(entity, cl_values.CL_Option):
-        return cl_types.CL_Type_Option(entity.option_type)
-
-    elif isinstance(entity, cl_values.CL_PublicKey):
-        return cl_types.CL_Type_PublicKey()
-
-    elif isinstance(entity, cl_values.CL_Result):
-        raise NotImplementedError()
-
-    elif isinstance(entity, cl_values.CL_String):
-        return cl_types.CL_Type_String()
-
-    elif isinstance(entity, cl_values.CL_Tuple1):
-        return cl_types.CL_Type_Tuple1(encode(entity.v0))
-
-    elif isinstance(entity, cl_values.CL_Tuple2):
-        return cl_types.CL_Type_Tuple2(encode(entity.v0), encode(entity.v1))
-
-    elif isinstance(entity, cl_values.CL_Tuple3):
-        return cl_types.CL_Type_Tuple3(encode(entity.v0), encode(entity.v1), encode(entity.v2))
-
-    elif isinstance(entity, cl_values.CL_U8):
-        return cl_types.CL_Type_U8()
-
-    elif isinstance(entity, cl_values.CL_U32):
-        return cl_types.CL_Type_U32()
-
-    elif isinstance(entity, cl_values.CL_U64):
-        return cl_types.CL_Type_U64()
-
-    elif isinstance(entity, cl_values.CL_U128):
-        return cl_types.CL_Type_U128()
-
-    elif isinstance(entity, cl_values.CL_U256):
-        return cl_types.CL_Type_U256()
-
-    elif isinstance(entity, cl_values.CL_U512):
-        return cl_types.CL_Type_U512()
-
-    elif isinstance(entity, cl_values.CL_Unit):
-        return cl_types.CL_Type_Unit()
-
-    elif isinstance(entity, cl_values.CL_URef):
-        return cl_types.CL_Type_URef()
-
+    try:
+        encoder = _ENCODERS_COMPLEX[type(entity)]
+    except KeyError:
+        try:
+            encoder = _ENCODERS_SIMPLE[type(entity)]
+        except KeyError:
+            raise NotImplementedError(f"CL value cannot be encoded as CL type: {type(entity)}")
+        else:
+            return encoder()
     else:
-        raise ValueError(f"CL value cannot be encoded as CL type: {type(entity)} :: {entity}")
+        return encoder(entity)
+
+
+def encode_byte_array(entity: cl_values.CL_ByteArray):
+    return cl_types.CL_Type_ByteArray(len(entity))
+
+
+def encode_list(entity: cl_values.CL_List):
+    if len(entity.vector) == 0:
+        raise ValueError("List is empty, therefore cannot derive it's item cl type")
+
+    i = entity.vector[0]
+    for i1 in entity.vector[1:]:
+        if type(i) != type(i1):
+            raise ValueError("Inconsistent list item types") 
+
+    return cl_types.CL_Type_List(encode(i))
+
+
+def encode_map(entity: cl_values.CL_Map):
+    if len(entity.value) == 0:
+        raise ValueError("Map is empty, therefore cannot derive it's cl type")
+
+    k, v = entity.value[0]
+    for k1, v1 in entity.value[1:]:
+        if type(k1) != type(k) or type(v1) != type(v):
+            raise ValueError("Inconsistent value name/key pairs") 
+
+    return cl_types.CL_Type_Map(encode(k), encode(v))
+
+
+def encode_option(entity: cl_values.CL_Option):
+    return cl_types.CL_Type_Option(entity.option_type)
+
+
+def encode_tuple_1(entity: cl_values.CL_Tuple1):
+    return cl_types.CL_Type_Tuple1(encode(entity.v0))
+
+
+def encode_tuple_2(entity: cl_values.CL_Tuple2):
+    return cl_types.CL_Type_Tuple2(encode(entity.v0), encode(entity.v1))
+
+
+def encode_tuple_3(entity: cl_values.CL_Tuple3):
+    return cl_types.CL_Type_Tuple3(encode(entity.v0), encode(entity.v1), encode(entity.v2))
+
+
+_ENCODERS_COMPLEX: dict = {
+    cl_values.CL_ByteArray: encode_byte_array,
+    cl_values.CL_List: encode_list,
+    cl_values.CL_Map: encode_map,
+    cl_values.CL_Option: encode_option,
+    cl_values.CL_Tuple1: encode_tuple_1,
+    cl_values.CL_Tuple2: encode_tuple_2,
+    cl_values.CL_Tuple3: encode_tuple_3,
+}
+
+_ENCODERS_SIMPLE: dict = {
+    cl_values.CL_Bool: cl_types.CL_Type_Bool,
+    cl_values.CL_I32: cl_types.CL_Type_I32,
+    cl_values.CL_I64: cl_types.CL_Type_I64,
+    cl_values.CL_Key: cl_types.CL_Type_Key,
+    cl_values.CL_PublicKey: cl_types.CL_Type_PublicKey,
+    cl_values.CL_String: cl_types.CL_Type_String,
+    cl_values.CL_U8: cl_types.CL_Type_U8,
+    cl_values.CL_U32: cl_types.CL_Type_U32,
+    cl_values.CL_U64: cl_types.CL_Type_U64,
+    cl_values.CL_U128: cl_types.CL_Type_U128,
+    cl_values.CL_U256: cl_types.CL_Type_U256,
+    cl_values.CL_U512: cl_types.CL_Type_U512,
+    cl_values.CL_Unit: cl_types.CL_Type_Unit,
+    cl_values.CL_URef: cl_types.CL_Type_URef,
+}

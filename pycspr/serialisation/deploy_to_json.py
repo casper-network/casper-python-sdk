@@ -21,19 +21,19 @@ def encode(entity: object) -> dict:
             "session": encode(entity.session)
         }
 
-    if isinstance(entity, DeployApproval):
+    elif isinstance(entity, DeployApproval):
         return {
             "signature": entity.signature.hex(),
             "signer": entity.signer.account_key.hex()
         }
 
-    if isinstance(entity, DeployArgument):
+    elif isinstance(entity, DeployArgument):
         return [
             entity.name,
             cl_value_to_json(entity.value)
         ]
 
-    if isinstance(entity, DeployHeader):
+    elif isinstance(entity, DeployHeader):
         return {
             "account": entity.account_public_key.account_key.hex(),
             "body_hash": entity.body_hash.hex(),
@@ -44,7 +44,7 @@ def encode(entity: object) -> dict:
             "ttl": entity.ttl.to_string()
         }
 
-    if isinstance(entity, ModuleBytes):
+    elif isinstance(entity, ModuleBytes):
         return {
             "ModuleBytes": {
                 "args": [encode(i) for i in entity.args],
@@ -52,7 +52,7 @@ def encode(entity: object) -> dict:
             }
         }
 
-    if isinstance(entity, StoredContractByHash):
+    elif isinstance(entity, StoredContractByHash):
         return {
             "StoredContractByHash": {
                 "args": [encode(i) for i in entity.args],
@@ -61,7 +61,7 @@ def encode(entity: object) -> dict:
             }
         }
 
-    if isinstance(entity, StoredContractByHashVersioned):
+    elif isinstance(entity, StoredContractByHashVersioned):
         return {
             "StoredContractByHashVersioned": {
                 "args": [encode(i) for i in entity.args],
@@ -71,7 +71,7 @@ def encode(entity: object) -> dict:
             }
         }
 
-    if isinstance(entity, StoredContractByName):
+    elif isinstance(entity, StoredContractByName):
         return {
             "StoredContractByName": {
                 "args": [encode(i) for i in entity.args],
@@ -80,7 +80,7 @@ def encode(entity: object) -> dict:
             }
         }
 
-    if isinstance(entity, StoredContractByNameVersioned):
+    elif isinstance(entity, StoredContractByNameVersioned):
         return {
             "StoredContractByNameVersioned": {
                 "args": [encode(i) for i in entity.args],
@@ -90,7 +90,7 @@ def encode(entity: object) -> dict:
             }
         }
 
-    if isinstance(entity, Transfer):
+    elif isinstance(entity, Transfer):
         return {
             "Transfer": {
                 "args": [encode(i) for i in entity.args],
