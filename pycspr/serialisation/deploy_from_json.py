@@ -16,7 +16,8 @@ from pycspr.types import Timestamp
 
 
 def decode(typedef: object, obj: dict) -> object:
-    obj = _parse_json(typedef, obj)
+    print(typedef)
+    obj = _get_parsed_json(typedef, obj)
 
     if typedef is Deploy:
         return Deploy(
@@ -27,19 +28,19 @@ def decode(typedef: object, obj: dict) -> object:
             session=decode(DeployExecutableItem, obj["session"])
         )
 
-    if typedef is DeployApproval:
+    elif typedef is DeployApproval:
         return DeployApproval(
             signer=create_public_key_from_account_key(bytes.fromhex(obj["signer"])),
             signature=bytes.fromhex(obj["signature"]),
         )
 
-    if typedef is DeployArgument:
+    elif typedef is DeployArgument:
         return DeployArgument(
             name=obj[0],
             value=cl_value_from_json(obj[1])
             )
 
-    if typedef is DeployExecutableItem:
+    elif typedef is DeployExecutableItem:
         if "ModuleBytes" in obj:
             return decode(ModuleBytes, obj)
         elif "StoredContractByHash" in obj:
@@ -55,7 +56,7 @@ def decode(typedef: object, obj: dict) -> object:
         else:
             raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
-    if typedef is DeployHeader:
+    elif typedef is DeployHeader:
         return DeployHeader(
             account_public_key=create_public_key_from_account_key(bytes.fromhex(obj["account"])),
             body_hash=bytes.fromhex(obj["body_hash"]),
@@ -66,20 +67,20 @@ def decode(typedef: object, obj: dict) -> object:
             ttl=DeployTimeToLive.from_string(obj["ttl"])
         )
 
-    if typedef is ModuleBytes:
+    elif typedef is ModuleBytes:
         return ModuleBytes(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             module_bytes=bytes.fromhex(obj["module_bytes"])
             )
 
-    if typedef is StoredContractByHash:
+    elif typedef is StoredContractByHash:
         return StoredContractByHash(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             entry_point=obj["entry_point"],
             hash=bytes.fromhex(obj["hash"])
         )
 
-    if typedef is StoredContractByHashVersioned:
+    elif typedef is StoredContractByHashVersioned:
         return StoredContractByHashVersioned(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             entry_point=obj["entry_point"],
@@ -87,14 +88,14 @@ def decode(typedef: object, obj: dict) -> object:
             version=obj["version"]
         )
 
-    if typedef is StoredContractByName:
+    elif typedef is StoredContractByName:
         return StoredContractByName(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             entry_point=obj["entry_point"],
             name=obj["name"],
         )
 
-    if typedef is StoredContractByNameVersioned:
+    elif typedef is StoredContractByNameVersioned:
         return StoredContractByNameVersioned(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             entry_point=obj["entry_point"],
@@ -102,33 +103,27 @@ def decode(typedef: object, obj: dict) -> object:
             version=obj["version"]
         )
 
-    if typedef is Transfer:
+    elif typedef is Transfer:
         return Transfer(
             args=[decode(DeployArgument, i) for i in obj["args"]],
             )
 
 
-def _parse_json(typedef: object, obj: dict):
+def _get_parsed_json(typedef: object, obj: dict) -> dict:
     if typedef is DeployArgument:
         if isinstance(obj[1]["bytes"], str):
             obj[1]["bytes"] = bytes.fromhex(obj[1]["bytes"])
-
-    if typedef is ModuleBytes:
+    elif typedef is ModuleBytes:
         return obj["ModuleBytes"]
-
-    if typedef is StoredContractByHash:
+    elif typedef is StoredContractByHash:
         return obj["StoredContractByHash"]
-
-    if typedef is StoredContractByHashVersioned:
+    elif typedef is StoredContractByHashVersioned:
         return obj["StoredContractByHashVersioned"]
-
-    if typedef is StoredContractByName:
+    elif typedef is StoredContractByName:
         return obj["StoredContractByName"]
-
-    if typedef is StoredContractByNameVersioned:
+    elif typedef is StoredContractByNameVersioned:
         return obj["StoredContractByNameVersioned"]
-
-    if typedef is Transfer:
+    elif typedef is Transfer:
         return obj["Transfer"]
 
     return obj

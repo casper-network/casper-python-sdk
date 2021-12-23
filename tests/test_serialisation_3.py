@@ -12,4 +12,5 @@ def test_serialisation_of_transfer_to_json(deploy_params_static, deploys_1):
         )
         as_dict: dict = serialisation.deploy_to_json(entity)
         assert isinstance(as_dict, dict)
+        print(as_dict)
         assert entity == serialisation.deploy_from_json(type(entity), as_dict)
