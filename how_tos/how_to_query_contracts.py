@@ -121,16 +121,6 @@ def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CL_Key:
     return named_key
 
 
-    return client.get_account_named_key(operator.account_key, "ERC20")
-
-    # Query operator account for a named key == ERC20 & return parsed named key value.
-    account_info = client.get_account_info(operator.account_key)
-    for named_key in account_info["named_keys"]:
-        if named_key["name"] == "ERC20":
-            return bytes.fromhex(named_key["key"][5:])
-
-
-
 # Entry point.
 if __name__ == "__main__":
     _main(_ARGS.parse_args())

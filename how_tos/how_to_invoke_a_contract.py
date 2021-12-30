@@ -10,7 +10,6 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.types import CL_ByteArray
 from pycspr.types import CL_U256
 from pycspr.types import Deploy
-from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
