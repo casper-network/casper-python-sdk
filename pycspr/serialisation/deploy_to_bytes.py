@@ -17,6 +17,12 @@ from pycspr.types.deploys import Transfer
 
 
 def encode(entity: object) -> bytes:
+    """Encodes a deploy related type instance as an array of bytes.
+
+    :param entity: A deploy related type instance to be encoded.
+    :returns: An array of bytes.
+    
+    """
     if isinstance(entity, Deploy):
         raise NotImplementedError()
 

@@ -4,57 +4,63 @@ from pycspr.types import cl_types
 
 
 def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
+    """Decodes a CL type from a JSON string or object.
+
+    :param encoded: A CL type previously encoded as JSON.
+    :returns: A CL type definition.
+
+    """    
     if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:
         return _SIMPLE_TYPES[encoded]()
     elif "ByteArray" in encoded:
-        return decode_byte_array(encoded)
+        return _decode_byte_array(encoded)
     elif "List" in encoded:
-        return decode_list(encoded)
+        return _decode_list(encoded)
     elif "Map" in encoded:
-        return decode_map(encoded)
+        return _decode_map(encoded)
     elif "Option" in encoded:
-        return decode_option(encoded)
+        return _decode_option(encoded)
     elif "Tuple1" in encoded:
-        return decode_tuple_1(encoded)
+        return _decode_tuple_1(encoded)
     elif "Tuple2" in encoded:
-        return decode_tuple_2(encoded)
+        return _decode_tuple_2(encoded)
     elif "Tuple3" in encoded:
-        return decode_tuple_3(encoded)
+        return _decode_tuple_3(encoded)
     else:
         raise ValueError("Invalid CL type JSON representation")
 
 
-def decode_byte_array(obj: dict):
+def _decode_byte_array(obj: dict):
     return cl_types.CL_Type_ByteArray(obj["ByteArray"])
 
 
-def decode_list(obj: dict):
+def _decode_list(obj: dict):
     return cl_types.CL_Type_List(decode(obj["List"]))
 
 
-def decode_map(obj: dict):
+def _decode_map(obj: dict):
     return cl_types.CL_Type_Map(
         decode(obj["Map"]["key"]),
         decode(obj["Map"]["value"])
         )
 
 
-def decode_option(obj: dict):
+def _decode_option(obj: dict):
     return cl_types.CL_Type_Option(decode(obj["Option"]))
 
 
-def decode_tuple_1(obj: dict):
+def _decode_tuple_1(obj: dict):
     return cl_types.CL_Type_Tuple1(decode(obj["Tuple1"]))
 
 
-def decode_tuple_2(obj: dict):
+def _decode_tuple_2(obj: dict):
     return cl_types.CL_Type_Tuple2(
         decode(obj["Tuple2"][0]),
         decode(obj["Tuple2"][1])
         )
 
 
-def decode_tuple_3(obj: dict):
+def _decode_tuple_3(obj: dict):
     return cl_types.CL_Type_Tuple3(
         decode(obj["Tuple3"][0]),
         decode(obj["Tuple3"][1]),

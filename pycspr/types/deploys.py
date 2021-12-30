@@ -334,4 +334,5 @@ class Transfer(DeployExecutableItem):
     """Encapsulates information required to execute a host-side balance transfer.
 
     """
-    pass
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other)

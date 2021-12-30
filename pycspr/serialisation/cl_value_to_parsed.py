@@ -3,6 +3,12 @@ from pycspr.types import cl_values
 
 
 def encode(entity: cl_values.CL_Value) -> object:
+    """Encodes a CL value as value interpretable by humans.
+
+    :param entity: A CL value to be encoded.
+    :returns: A humanized CL value representation.
+    
+    """    
     if isinstance(entity, cl_values.CL_Any):
         raise NotImplementedError()
 

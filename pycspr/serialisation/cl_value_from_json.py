@@ -3,6 +3,12 @@ from pycspr.serialisation.cl_value_from_bytes import decode as cl_value_from_byt
 
 
 def decode(obj: dict):
+    """Decodes a CL value from a JSON object.
+
+    :param obj: A CL value encoded as a JSON compatible dictionary.
+    :returns: A CL value.
+
+    """
     assert "cl_type" in obj and "bytes" in obj
     cl_type = cl_type_from_json(obj["cl_type"])
     bstream = obj["bytes"]

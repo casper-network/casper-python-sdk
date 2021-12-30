@@ -7,6 +7,12 @@ from pycspr.serialisation.cl_value_to_parsed import encode as cl_value_to_parsed
 
 
 def encode(entity: cl_values.CL_Value) -> dict:
+    """Encodes a CL value as a JSON compatible dictionary.
+
+    :param entity: A CL value to be encoded.
+    :returns: A JSON compatible dictionary.
+    
+    """
     return {
         "cl_type": cl_type_to_json(cl_value_to_cl_type(entity)),
         "bytes": cl_checksum.encode(cl_value_to_bytes(entity)),

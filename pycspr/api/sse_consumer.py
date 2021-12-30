@@ -62,7 +62,7 @@ def yield_events(
         try:
             sse_client.close()
         except Exception as inner_err:
-            print(inner_err)
+            print(f"Ignoring error raised when closing SSE connection: {inner_err}.")
         finally:
             raise err
 

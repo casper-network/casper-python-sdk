@@ -13,6 +13,12 @@ from pycspr.types.deploys import Transfer
 
 
 def encode(entity: object) -> dict:
+    """Encodes a deploy related type instance as a JSON compatible dictionary.
+
+    :param entity: A deploy related type instance to be encoded.
+    :returns: A JSON compatible dictionary.
+    
+    """
     if isinstance(entity, Deploy):
         return {
             "approvals": [encode(i) for i in entity.approvals],

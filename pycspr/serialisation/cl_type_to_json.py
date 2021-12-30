@@ -5,6 +5,12 @@ from pycspr.types import CL_TypeKey
 
 
 def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
+    """Encodes a CL type as a JSON compatible string or dictionary.
+
+    :param entity: A CL type to be encoded.
+    :returns: A JSON compatible string or dictionary.
+    
+    """
     try:
         encoder = _ENCODERS_COMPLEX[entity.type_key]
     except KeyError:
@@ -16,19 +22,19 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
         return encoder(entity)
 
 
-def encode_byte_array(entity: cl_types.CL_Type_ByteArray):
+def _encode_byte_array(entity: cl_types.CL_Type_ByteArray):
     return {
         "ByteArray": entity.size
     }
 
 
-def encode_list(entity: cl_types.CL_Type_List):
+def _encode_list(entity: cl_types.CL_Type_List):
     return {
         "List": encode(entity.inner_type)
     }
 
 
-def encode_map(entity: cl_types.CL_Type_Map):
+def _encode_map(entity: cl_types.CL_Type_Map):
     return {
         "Map": {
             "key": encode(entity.key_type),
@@ -37,19 +43,19 @@ def encode_map(entity: cl_types.CL_Type_Map):
     }
 
 
-def encode_option(entity: cl_types.CL_Type_Option):
+def _encode_option(entity: cl_types.CL_Type_Option):
     return {
         "Option": encode(entity.inner_type)
     }
 
 
-def encode_tuple_1(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_1(entity: cl_types.CL_Type_Tuple1):
     return {
         "Tuple1": encode(entity.t0_type)
     }
 
 
-def encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
     return {
         "Tuple2": [
             encode(entity.t0_type),
@@ -58,7 +64,7 @@ def encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
     }
 
 
-def encode_tuple_3(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_3(entity: cl_types.CL_Type_Tuple1):
     return {
         "Tuple3": [
             encode(entity.t0_type),
@@ -69,13 +75,13 @@ def encode_tuple_3(entity: cl_types.CL_Type_Tuple1):
 
 
 _ENCODERS_COMPLEX: dict = {
-    CL_TypeKey.BYTE_ARRAY: encode_byte_array,
-    CL_TypeKey.LIST: encode_list,
-    CL_TypeKey.MAP: encode_map,
-    CL_TypeKey.OPTION: encode_option,
-    CL_TypeKey.TUPLE_1: encode_tuple_1,
-    CL_TypeKey.TUPLE_2: encode_tuple_2,
-    CL_TypeKey.TUPLE_3: encode_tuple_3,
+    CL_TypeKey.BYTE_ARRAY: _encode_byte_array,
+    CL_TypeKey.LIST: _encode_list,
+    CL_TypeKey.MAP: _encode_map,
+    CL_TypeKey.OPTION: _encode_option,
+    CL_TypeKey.TUPLE_1: _encode_tuple_1,
+    CL_TypeKey.TUPLE_2: _encode_tuple_2,
+    CL_TypeKey.TUPLE_3: _encode_tuple_3,
 }
 
 _ENCODERS_SIMPLE: dict = {

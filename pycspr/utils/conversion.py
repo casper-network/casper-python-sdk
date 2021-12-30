@@ -61,10 +61,8 @@ def humanized_time_interval_to_milliseconds(interval: str) -> int:
         return int(interval[0:-1]) * (1000)
     if interval.endswith("m"):
         return int(interval[0:-1]) * (60 * 1000)
-        print("TODO: convert m")
     if interval.endswith("h"):
         return int(interval[0:-1]) * (60 * 60 * 1000)
-        print("TODO: convert h")
     if interval.endswith("day"):
         return int(interval[0:-3]) * (24 * 60 * 60 * 1000)
 

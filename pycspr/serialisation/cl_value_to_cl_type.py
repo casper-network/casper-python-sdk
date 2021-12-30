@@ -3,6 +3,12 @@ from pycspr.types import cl_values
 
 
 def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
+    """Encodes a CL value as a CL type definition.
+
+    :param entity: A CL value to be encoded.
+    :returns: A CL type definition.
+    
+    """
     try:
         encoder = _ENCODERS_COMPLEX[type(entity)]
     except KeyError:
@@ -16,11 +22,11 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
         return encoder(entity)
 
 
-def encode_byte_array(entity: cl_values.CL_ByteArray):
+def _encode_byte_array(entity: cl_values.CL_ByteArray):
     return cl_types.CL_Type_ByteArray(len(entity))
 
 
-def encode_list(entity: cl_values.CL_List):
+def _encode_list(entity: cl_values.CL_List):
     if len(entity.vector) == 0:
         raise ValueError("List is empty, therefore cannot derive it's item cl type")
 
@@ -32,7 +38,7 @@ def encode_list(entity: cl_values.CL_List):
     return cl_types.CL_Type_List(encode(i))
 
 
-def encode_map(entity: cl_values.CL_Map):
+def _encode_map(entity: cl_values.CL_Map):
     if len(entity.value) == 0:
         raise ValueError("Map is empty, therefore cannot derive it's cl type")
 
@@ -44,30 +50,30 @@ def encode_map(entity: cl_values.CL_Map):
     return cl_types.CL_Type_Map(encode(k), encode(v))
 
 
-def encode_option(entity: cl_values.CL_Option):
+def _encode_option(entity: cl_values.CL_Option):
     return cl_types.CL_Type_Option(entity.option_type)
 
 
-def encode_tuple_1(entity: cl_values.CL_Tuple1):
+def _encode_tuple_1(entity: cl_values.CL_Tuple1):
     return cl_types.CL_Type_Tuple1(encode(entity.v0))
 
 
-def encode_tuple_2(entity: cl_values.CL_Tuple2):
+def _encode_tuple_2(entity: cl_values.CL_Tuple2):
     return cl_types.CL_Type_Tuple2(encode(entity.v0), encode(entity.v1))
 
 
-def encode_tuple_3(entity: cl_values.CL_Tuple3):
+def _encode_tuple_3(entity: cl_values.CL_Tuple3):
     return cl_types.CL_Type_Tuple3(encode(entity.v0), encode(entity.v1), encode(entity.v2))
 
 
 _ENCODERS_COMPLEX: dict = {
-    cl_values.CL_ByteArray: encode_byte_array,
-    cl_values.CL_List: encode_list,
-    cl_values.CL_Map: encode_map,
-    cl_values.CL_Option: encode_option,
-    cl_values.CL_Tuple1: encode_tuple_1,
-    cl_values.CL_Tuple2: encode_tuple_2,
-    cl_values.CL_Tuple3: encode_tuple_3,
+    cl_values.CL_ByteArray: _encode_byte_array,
+    cl_values.CL_List: _encode_list,
+    cl_values.CL_Map: _encode_map,
+    cl_values.CL_Option: _encode_option,
+    cl_values.CL_Tuple1: _encode_tuple_1,
+    cl_values.CL_Tuple2: _encode_tuple_2,
+    cl_values.CL_Tuple3: _encode_tuple_3,
 }
 
 _ENCODERS_SIMPLE: dict = {
