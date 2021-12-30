@@ -7,7 +7,6 @@ def test_serialisation_of_cl_types_to_bytes(cl_types_vector):
         assert isinstance(as_bytes, bytes)
         _, from_bytes = serialisation.cl_type_from_bytes(as_bytes)
         assert cl_type == from_bytes
-    # raise ValueError()
 
 
 def test_serialisation_of_cl_types_to_json(cl_types_vector):

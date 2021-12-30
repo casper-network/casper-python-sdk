@@ -93,7 +93,7 @@ def _decode_list(
         bstream, item = decode(bstream, cl_type.inner_type)
         vector.append(item)
 
-    return bstream, cl_values.CL_List(vector, cl_type.inner_type)
+    return bstream, cl_values.CL_List(vector)
 
 
 def _decode_map(

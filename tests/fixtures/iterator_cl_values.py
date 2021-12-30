@@ -29,7 +29,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CL_Value]:
             yield types.CL_Key.from_string(value)
 
         elif type_key == CL_TypeKey.LIST:
-            yield types.CL_List([types.CL_U64(i) for i in value], types.CL_Type_U64())
+            yield types.CL_List([types.CL_U64(i) for i in value])
 
         elif type_key == CL_TypeKey.MAP:
             yield types.CL_Map(

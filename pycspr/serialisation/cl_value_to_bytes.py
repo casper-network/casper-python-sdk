@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.types import cl_values
 from pycspr.utils.conversion import int_to_le_bytes
 from pycspr.utils.conversion import int_to_le_bytes_trimmed
@@ -30,12 +32,38 @@ def _encode_byte_array(entity: cl_values.CL_ByteArray) -> bytes:
     return entity.value
 
 
+def _encode_int(
+    value: int,
+    byte_lengths: typing.List[int],
+    signed: bool,
+    trim: bool
+) -> bytes:
+    encoded = None
+    for length in byte_lengths:
+        try:
+            encoded = value.to_bytes(length, "little", signed=signed)
+        except OverflowError:
+            continue
+    
+    if encoded is None:
+        raise ValueError("Invalid integer: max size exceeded")
+
+    if trim:
+        while encoded and encoded[-1] == 0:
+            encoded = encoded[0:-1]
+
+    if len(byte_lengths) == 1:
+        return encoded
+    else:
+        return bytes([len(encoded)]) + encoded
+
+
 def _encode_i32(entity: cl_values.CL_I32) -> bytes:
-    return int_to_le_bytes(entity.value, 4, True)
+    return _encode_int(entity.value, (4, ), signed=True, trim=False)
 
 
 def _encode_i64(entity: cl_values.CL_I64) -> bytes:
-    return int_to_le_bytes(entity.value, 8, True)
+    return _encode_int(entity.value, (8, ), signed=True, trim=False)
 
 
 def _encode_key(entity: cl_values.CL_Key) -> bytes:
@@ -87,74 +115,27 @@ def _encode_tuple_3(entity: cl_values.CL_Tuple3) -> bytes:
 
 
 def _encode_u8(entity: cl_values.CL_U8) -> bytes:
-    return int_to_le_bytes(entity.value, 1, False)
+    return _encode_int(entity.value, (1, ), signed=False, trim=False)
 
 
 def _encode_u32(entity: cl_values.CL_U32) -> bytes:
-    return int_to_le_bytes(entity.value, 4, False)
+    return _encode_int(entity.value, (4, ), signed=False, trim=False)
 
 
 def _encode_u64(entity: cl_values.CL_U64) -> bytes:
-    return int_to_le_bytes(entity.value, 8, False)
+    return _encode_int(entity.value, (8, ), signed=False, trim=False)
 
 
 def _encode_u128(entity: cl_values.CL_U128) -> bytes:
-    if cl_values.CL_U8.is_in_range(entity.value):
-        byte_length = 1
-    elif cl_values.CL_U32.is_in_range(entity.value):
-        byte_length = 4
-    elif cl_values.CL_U64.is_in_range(entity.value):
-        byte_length = 8
-    elif cl_values.CL_U128.is_in_range(entity.value):
-        byte_length = 16
-    else:
-        raise ValueError("Invalid U128: max size exceeded")
-
-    as_bytes = int_to_le_bytes_trimmed(entity.value, byte_length, False)
-
-    return bytes([len(as_bytes)]) + as_bytes
+    return _encode_int(entity.value, (1, 4, 8, 16), signed=False, trim=True)
 
 
 def _encode_u256(entity: cl_values.CL_U256) -> bytes:
-    if cl_values.CL_U8.is_in_range(entity.value):
-        byte_length = 1
-    elif cl_values.CL_U32.is_in_range(entity.value):
-        byte_length = 4
-    elif cl_values.CL_U64.is_in_range(entity.value):
-        byte_length = 8
-    elif cl_values.CL_U128.is_in_range(entity.value):
-        byte_length = 16
-    elif cl_values.CL_U256.is_in_range(entity.value):
-        byte_length = 32
-    else:
-        raise ValueError("Invalid U256: max size exceeded")
-
-    as_bytes = int_to_le_bytes_trimmed(entity.value, byte_length, False)
-
-    return bytes([len(as_bytes)]) + as_bytes
-
-    # int.from_bytes(bytes([128]), "little", signed=False)
+    return _encode_int(entity.value, (1, 4, 8, 16, 32), signed=False, trim=True)
 
 
 def _encode_u512(entity: cl_values.CL_U512) -> bytes:
-    if cl_values.CL_U8.is_in_range(entity.value):
-        byte_length = 1
-    elif cl_values.CL_U32.is_in_range(entity.value):
-        byte_length = 4
-    elif cl_values.CL_U64.is_in_range(entity.value):
-        byte_length = 8
-    elif cl_values.CL_U128.is_in_range(entity.value):
-        byte_length = 16
-    elif cl_values.CL_U256.is_in_range(entity.value):
-        byte_length = 32
-    elif cl_values.CL_U512.is_in_range(entity.value):
-        byte_length = 64
-    else:
-        raise ValueError("Invalid U512: max size exceeded")
-
-    as_bytes = int_to_le_bytes_trimmed(entity.value, byte_length, False)
-
-    return bytes([len(as_bytes)]) + as_bytes
+    return _encode_int(entity.value, (1, 4, 8, 16, 32, 64), signed=False, trim=True)
 
 
 def _encode_unit(_: cl_values.CL_Unit) -> bytes:

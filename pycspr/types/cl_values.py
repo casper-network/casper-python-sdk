@@ -130,11 +130,8 @@ class CL_List(CL_Value):
     # Set of associated items.
     vector: typing.List[CL_Value]
 
-    # Item type identifier.
-    item_type: CL_Type
-
     def __eq__(self, other) -> bool:
-        return self.vector == other.vector and self.item_type == other.item_type
+        return self.vector == other.vector
 
 
 @dataclasses.dataclass
@@ -268,9 +265,7 @@ class CL_U8(CL_Int):
     """Represents a CL type value: U8.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 8) - 1
+    pass
 
 
 @dataclasses.dataclass
@@ -278,9 +273,7 @@ class CL_U32(CL_Int):
     """Represents a CL type value: U32.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 32) - 1
+    pass
 
 
 @dataclasses.dataclass
@@ -288,9 +281,7 @@ class CL_U64(CL_Int):
     """Represents a CL type value: U64.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 64) - 1
+    pass
 
 
 @dataclasses.dataclass
@@ -298,9 +289,7 @@ class CL_U128(CL_Int):
     """Represents a CL type value: U128.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 128) - 1
+    pass
 
 
 @dataclasses.dataclass
@@ -308,9 +297,7 @@ class CL_U256(CL_Int):
     """Represents a CL type value: U256.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 256) - 1
+    pass
 
 
 @dataclasses.dataclass
@@ -318,9 +305,7 @@ class CL_U512(CL_Int):
     """Represents a CL type value: U512.
 
     """
-    @staticmethod
-    def is_in_range(value: int) -> bool:
-        return value >= 0 and value <= (2 ** 512) - 1
+    pass
 
 
 @dataclasses.dataclass

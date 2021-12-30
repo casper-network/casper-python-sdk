@@ -1,3 +1,6 @@
+import operator
+import itertools
+
 from pycspr import crypto
 from pycspr import serialisation
 from pycspr.types import CL_PublicKey
@@ -34,7 +37,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
             CL_ByteArray(header.body_hash)
         ) +
         serialisation.cl_value_to_bytes(
-            CL_List(header.dependencies, CL_Type_String())
+            CL_List(header.dependencies)
         ) +
         serialisation.cl_value_to_bytes(
             CL_String(header.chain_name)

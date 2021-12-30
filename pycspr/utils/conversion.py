@@ -19,10 +19,7 @@ def int_to_le_bytes(x: int, length: int, signed: bool) -> bytes:
     :param signed: Flag indicating whether integer is signed.
 
     """
-    if not isinstance(x, int):
-        x = int(x)
-
-    return bytes([i for i in x.to_bytes(length, "little", signed=signed)])
+    return x.to_bytes(length, "little", signed=signed)
 
 
 def int_to_le_bytes_trimmed(x: int, length: int, signed: bool) -> bytes:
