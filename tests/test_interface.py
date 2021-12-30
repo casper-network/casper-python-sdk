@@ -71,6 +71,7 @@ _INTERFACE_OF_LIBRARY = {
     _has_function: {
         "create_deploy",
         "create_deploy_approval",
+        "create_deploy_arguments",
         "create_deploy_parameters",
         "create_deploy_ttl",
         "create_transfer",

@@ -48,10 +48,19 @@ class DeployExecutableItem():
 
     """
     # Set of arguments mapped to endpoint parameters.
-    args: typing.List[DeployArgument]
+    args: typing.Union[typing.List[DeployArgument], typing.Dict[str, CL_Value]]
 
     def __eq__(self, other) -> bool:
-        return self.args == other.args
+        return self.arguments == other.arguments
+
+    @property
+    def arguments(self) -> typing.List[DeployArgument]:
+        if isinstance(self.args, list):
+            return self.args
+        elif isinstance(self.args, dict):
+            return [DeployArgument(k, v) for (k, v) in self.args.items()]
+        else:
+            raise ValueError("Deploy arguments can be passed as either a list or dictionary")
 
 
 @dataclasses.dataclass

@@ -26,6 +26,7 @@ from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
 from pycspr.types import Timestamp
 from pycspr.types import Transfer
+from pycspr.types.cl_values import CL_Value
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
@@ -72,6 +73,16 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
             deploy_hash, approver.private_key, approver.key_algo
             )
     )
+
+
+def create_deploy_arguments(args: typing.Dict[str, CL_Value]) -> typing.List[DeployArgument]:
+    """Returns a collection of deploy arguments for interpretation by a node.
+
+    :param args: Dictionary of argument name & cl-value pairs.
+    :returns: A collection of deploy arguments for interpretation by a node.
+
+    """
+    return [DeployArgument(k, v) for (k, v) in args.items()]
 
 
 def create_deploy_body(
@@ -169,9 +180,9 @@ def create_standard_payment(
 
     """
     return ModuleBytes(
-        args=[
-            DeployArgument("amount", CL_U512(amount)),
-        ],
+        args={
+            "amount": CL_U512(amount)
+        },
         module_bytes=bytes([])
         )
 
@@ -214,20 +225,11 @@ def create_transfer_session(
     """
     correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
     return Transfer(
-        args=[
-            DeployArgument(
-                "amount",
-                CL_U512(amount)
-                ),
-            DeployArgument(
-                "target",
-                CL_PublicKey.from_account_key(target)
-                ),
-            DeployArgument(
-                "id",
-                CL_Option(CL_U64(correlation_id), CL_Type_U64())
-                ),
-        ]
+        args={
+            "amount": CL_U512(amount),
+            "target": CL_PublicKey.from_account_key(target),
+            "id": CL_Option(CL_U64(correlation_id), CL_Type_U64()),
+        }
     )
 
 
@@ -251,21 +253,12 @@ def create_validator_auction_bid(
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
-        args=[
-            DeployArgument(
-                "amount",
-                CL_U512(amount)
-                ),
-            DeployArgument(
-                "delegation_rate",
-                CL_U8(delegation_rate)
-                ),
-            DeployArgument(
-                "public_key",
-                CL_PublicKey.from_public_key(public_key)
-                ),
-            ]
-        )
+        args={
+            "amount": CL_U512(amount),
+            "delegation_rate": CL_U8(delegation_rate),
+            "public_key": CL_PublicKey.from_public_key(public_key),
+        }
+    )
 
     return create_deploy(params, payment, session)
 
@@ -290,21 +283,13 @@ def create_validator_auction_bid_withdrawal(
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
-        args=[
-            DeployArgument(
-                "amount",
-                CL_U512(amount)
-                ),
-            DeployArgument(
-                "public_key",
-                CL_PublicKey.from_public_key(public_key)
-                ),
-            DeployArgument(
-                "unbond_purse",
-                unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else CL_URef.from_string(unbond_purse_ref)
-                ),
-            ]
-        )
+        args={
+            "amount": CL_U512(amount),
+            "public_key": CL_PublicKey.from_public_key(public_key),
+            "unbond_purse": unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else \
+                            CL_URef.from_string(unbond_purse_ref)
+        }
+    )
 
     return create_deploy(params, payment, session)
 
@@ -368,20 +353,11 @@ def create_validator_delegation_withdrawal(
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
-        args=[
-            DeployArgument(
-                "amount",
-                CL_U512(amount)
-                ),
-            DeployArgument(
-                "delegator",
-                CL_PublicKey.from_public_key(public_key_of_delegator)
-                ),
-            DeployArgument(
-                "validator",
-                CL_PublicKey.from_public_key(public_key_of_validator)
-                ),
-        ]
+        args={
+            "amount": CL_U512(amount),
+            "delegator": CL_PublicKey.from_public_key(public_key_of_delegator),
+            "validator": CL_PublicKey.from_public_key(public_key_of_validator)
+        }
     )
 
     return create_deploy(params, payment, session)

@@ -10,7 +10,6 @@ from pycspr.types import CL_String
 from pycspr.types import CL_U8
 from pycspr.types import CL_U256
 from pycspr.types import Deploy
-from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
@@ -186,24 +185,12 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
     # Set session logic.
     session: ModuleBytes = ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
-        args=[
-            DeployArgument(
-                "token_decimals",
-                CL_U8(args.token_decimals)
-                ),
-            DeployArgument(
-                "token_name",
-                CL_String(args.token_name)
-                ),
-            DeployArgument(
-                "token_symbol",
-                CL_String(args.token_symbol)
-                ),
-            DeployArgument(
-                "token_total_supply",
-                CL_U256(args.token_total_supply)
-                ),
-        ]
+        args={
+            "token_decimals": CL_U8(args.token_decimals),
+            "token_name": CL_String(args.token_name),
+            "token_symbol": CL_String(args.token_symbol),
+            "token_total_supply": CL_U256(args.token_total_supply),
+        }
     )
 
     return pycspr.create_deploy(params, payment, session)

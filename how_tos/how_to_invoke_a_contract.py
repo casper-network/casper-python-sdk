@@ -190,16 +190,10 @@ def _get_deploy(
     session: StoredContractByHash = StoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
-        args=[
-            DeployArgument(
-                "amount",
-                CL_U256(args.amount)
-                ),
-            DeployArgument(
-                "recipient",
-                CL_ByteArray(user.account_hash)
-                ),
-        ]
+        args={
+            "amount": CL_U256(args.amount),
+            "recipient": CL_ByteArray(user.account_hash)
+        }
     )
 
     return pycspr.create_deploy(params, payment, session)

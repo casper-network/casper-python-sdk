@@ -32,6 +32,7 @@ from pycspr.crypto import KeyAlgorithm
 
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
+from pycspr.factory import create_deploy_arguments
 from pycspr.factory import create_deploy_parameters
 from pycspr.factory import create_deploy_ttl
 from pycspr.factory import create_transfer

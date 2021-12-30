@@ -7,6 +7,7 @@ from pycspr.factory.accounts import parse_public_key
 from pycspr.factory.accounts import parse_public_key_bytes
 from pycspr.factory.deploys import create_deploy
 from pycspr.factory.deploys import create_deploy_approval
+from pycspr.factory.deploys import create_deploy_arguments
 from pycspr.factory.deploys import create_deploy_body
 from pycspr.factory.deploys import create_deploy_header
 from pycspr.factory.deploys import create_deploy_parameters

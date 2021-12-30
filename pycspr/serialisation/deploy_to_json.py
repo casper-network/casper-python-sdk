@@ -48,7 +48,7 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, ModuleBytes):
         return {
             "ModuleBytes": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
                 "module_bytes": cl_checksum.encode(entity.module_bytes)
             }
         }
@@ -56,7 +56,7 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, StoredContractByHash):
         return {
             "StoredContractByHash": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
                 "entry_point": entity.entry_point,
                 "hash": cl_checksum.encode(entity.hash)
             }
@@ -65,7 +65,7 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, StoredContractByHashVersioned):
         return {
             "StoredContractByHashVersioned": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
                 "entry_point": entity.entry_point,
                 "hash": cl_checksum.encode(entity.hash),
                 "version": entity.version
@@ -75,7 +75,7 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, StoredContractByName):
         return {
             "StoredContractByName": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
                 "entry_point": entity.entry_point,
                 "name": encode.name
             }
@@ -84,7 +84,7 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, StoredContractByNameVersioned):
         return {
             "StoredContractByNameVersioned": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
                 "entry_point": entity.entry_point,
                 "name": encode.name,
                 "version": encode.version
@@ -94,6 +94,6 @@ def encode(entity: object) -> dict:
     elif isinstance(entity, Transfer):
         return {
             "Transfer": {
-                "args": [encode(i) for i in entity.args],
+                "args": [encode(i) for i in entity.arguments],
             }
         }

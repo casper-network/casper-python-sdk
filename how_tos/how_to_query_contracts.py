@@ -5,15 +5,9 @@ import pathlib
 import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
-from pycspr.types import CL_U256
-from pycspr.types import CL_PublicKey
-from pycspr.types import Deploy
-from pycspr.types import DeployArgument
-from pycspr.types import DeployParameters
-from pycspr.types import ModuleBytes
+from pycspr.types import CL_Key
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
-from pycspr.types import StoredContractByHash
 
 
 # Path to NCTL assets.
@@ -72,7 +66,7 @@ def _main(args: argparse.Namespace):
     operator = _get_operator_key(args)
 
     # Set contract hash.
-    contract_hash: bytes = _get_contract_hash(args, client, operator)
+    contract_hash: CL_Key = _get_contract_hash(client, operator)
 
     # Issue queries.
     token_decimals = _get_contract_data(client, contract_hash, "decimals")
@@ -98,11 +92,11 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     ))
 
 
-def _get_contract_data(client: NodeClient, contract_hash: bytes, key: str) -> bytes:
+def _get_contract_data(client: NodeClient, contract_hash: CL_Key, key: str) -> bytes:
     """Queries chain for data associated with a contract.
 
     """
-    value = client.get_state_item(f"hash-{contract_hash.hex()}", key)
+    value = client.get_state_item(f"hash-{contract_hash.identifier.hex()}", key)
 
     return value["CLValue"]["parsed"]
 
@@ -116,53 +110,25 @@ def _get_operator_key(args: argparse.Namespace) -> PublicKey:
         )
 
 
-def _get_contract_hash(
-    args: argparse.Namespace,
-    client: NodeClient,
-    operator: PrivateKey
-) -> bytes:
+def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CL_Key:
     """Returns on-chain contract identifier.
 
     """
+    named_key = client.get_account_named_key(operator.account_key, "ERC20")
+    if named_key is None:
+        raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
+
+    return named_key
+
+
+    return client.get_account_named_key(operator.account_key, "ERC20")
+
     # Query operator account for a named key == ERC20 & return parsed named key value.
     account_info = client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])
 
-    raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
-
-
-def _get_deploy(
-    args: argparse.Namespace,
-    contract_hash: bytes,
-    operator: PrivateKey,
-    user: PublicKey
-) -> Deploy:
-    """Returns delegation deploy to be dispatched to a node.
-
-    """
-    # Set standard deploy parameters.
-    params: DeployParameters = \
-        pycspr.create_deploy_parameters(
-            account=operator,
-            chain_name=args.chain_name
-            )
-
-    # Set payment logic.
-    payment: ModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
-
-    # Set session logic.
-    session: StoredContractByHash = StoredContractByHash(
-        entry_point="transfer",
-        hash=contract_hash,
-        args=[
-            DeployArgument("amount", CL_U256(args.amount)),
-            DeployArgument("recipient", CL_PublicKey.from_public_key(user)),
-        ]
-    )
-
-    return pycspr.create_deploy(params, payment, session)
 
 
 # Entry point.

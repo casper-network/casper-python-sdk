@@ -36,14 +36,14 @@ def encode(entity: object) -> bytes:
         return \
             bytes([0]) + \
             _u8_array_to_bytes(list(entity.module_bytes)) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
     elif isinstance(entity, StoredContractByHash):
         return \
             bytes([1]) + \
             cl_value_to_bytes(cl_values.CL_ByteArray(entity.hash)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
     elif isinstance(entity, StoredContractByHashVersioned):
         return \
@@ -51,14 +51,14 @@ def encode(entity: object) -> bytes:
             cl_value_to_bytes(cl_values.CL_ByteArray(entity.hash)) + \
             cl_value_to_bytes(cl_values.CL_U32(entity.version)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
     elif isinstance(entity, StoredContractByName):
         return \
             bytes([3]) + \
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
     elif isinstance(entity, StoredContractByNameVersioned):
         return \
@@ -66,12 +66,12 @@ def encode(entity: object) -> bytes:
             cl_value_to_bytes(cl_values.CL_String(entity.name)) + \
             cl_value_to_bytes(cl_values.CL_U32(entity.version)) + \
             cl_value_to_bytes(cl_values.CL_String(entity.entry_point)) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
     elif isinstance(entity, Transfer):
         return \
             bytes([5]) + \
-            _vector_to_bytes(list(map(encode, entity.args)))
+            _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
 def _u8_array_to_bytes(value: typing.List[int]) -> bytes:
