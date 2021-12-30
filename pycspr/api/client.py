@@ -33,8 +33,8 @@ class NodeClient():
         :param offset: Number of blocks to await.
         :returns: On-chain block information N blocks in the future.
 
-        """        
-        return await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)   
+        """
+        return await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)
 
 
     async def await_n_eras(self, offset: int) -> dict:
@@ -43,11 +43,16 @@ class NodeClient():
         :param offset: Number of eras to await.
         :returns: On-chain era information N eras in the future.
 
-        """    
-        return await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)   
+        """
+        return await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)
 
 
-    async def await_n_events(self, event_channel: NodeEventChannel, event_type:NodeEventType, offset: int) -> dict:
+    async def await_n_events(
+        self,
+        event_channel: NodeEventChannel,
+        event_type: NodeEventType,
+        offset: int
+    ) -> dict:
         """Awaits emission of N events of a certain type over a certain channel.
 
         :param event_channel: Type of event channel to which to bind.
@@ -55,8 +60,8 @@ class NodeClient():
         :param offset: Number of events to await.
         :returns: Event payload N events into the future.
 
-        """        
-        assert offset > 0 
+        """
+        assert offset > 0
         count = 0
         for event_info in self.yield_events(event_channel, event_type):
             count += 1
@@ -240,7 +245,7 @@ class NodeClient():
     def get_era_info(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information.
 
-        :param block_id: Identifier of a switch block, i.e. a block produced at the end of an era.
+        :param block_id: Identifier of a block produced at the end of an era.
         :returns: Era information.
 
         """
@@ -255,7 +260,7 @@ class NodeClient():
     def get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information.
 
-        :param block_id: Identifier of a switch block, i.e. a block produced at the end of an era.
+        :param block_id: Identifier of a block produced at the end of an era.
         :returns: Era information.
 
         """
@@ -424,7 +429,8 @@ class NodeClient():
         return response["deploy_hash"]
 
 
-    def query_global_state(self,
+    def query_global_state(
+        self,
         key: str,
         path: typing.List[str],
         state_id: types.GlobalStateID = None
@@ -459,7 +465,12 @@ class NodeClient():
         :param event_id: Identifier of event from which to start stream listening.
 
         """
-        for event_info in sse_consumer.yield_events(
-            self.connection, event_channel, event_type, event_id
-            ):
+        iterator = sse_consumer.yield_events(
+            self.connection,
+            event_channel,
+            event_type,
+            event_id
+            )
+
+        for event_info in iterator:
             yield event_info

@@ -3,13 +3,12 @@ import re
 
 from setuptools import setup
 from setuptools import find_packages
-from setuptools import Extension
 from setuptools.dist import Distribution
 
 
 # List of 3rd party python dependencies.
 with open("requirements.txt", "r") as fstream:
-     _REQUIRES = fstream.read().splitlines()
+    _REQUIRES = fstream.read().splitlines()
 
 
 class _BinaryDistribution(Distribution):

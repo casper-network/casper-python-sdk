@@ -3,9 +3,8 @@ from pycspr.types import cl_types
 from pycspr.types import CL_TypeKey
 
 
-
 def decode(bstream: bytes) -> cl_types.CL_Type:
-    """Decodes a CL type from a byte array.    
+    """Decodes a CL type from a byte array.
 
     """
     typekey, bstream = CL_TypeKey(int(bstream[0])), bstream[1:]
@@ -26,7 +25,7 @@ def decode_byte_array(bstream: bytes):
 def decode_list(bstream: bytes):
     bstream, item_type = decode(bstream)
 
-    return bstream, cl_types.CL_Type_List(item_type) 
+    return bstream, cl_types.CL_Type_List(item_type)
 
 
 def decode_map(bstream: bytes):

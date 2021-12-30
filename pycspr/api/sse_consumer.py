@@ -67,7 +67,11 @@ def yield_events(
             raise err
 
 
-def _get_sse_client(node: NodeConnection, event_channel: NodeEventChannel, event_id: int) -> sseclient.SSEClient:
+def _get_sse_client(
+    node: NodeConnection,
+    event_channel: NodeEventChannel,
+    event_id: int
+) -> sseclient.SSEClient:
     """Returns SSE client.
 
     """

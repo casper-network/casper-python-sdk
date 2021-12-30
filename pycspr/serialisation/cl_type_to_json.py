@@ -36,6 +36,7 @@ def encode_map(entity: cl_types.CL_Type_Map):
         }
     }
 
+
 def encode_option(entity: cl_types.CL_Type_Option):
     return {
         "Option": encode(entity.inner_type)

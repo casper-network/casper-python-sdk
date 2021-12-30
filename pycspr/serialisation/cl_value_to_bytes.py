@@ -45,8 +45,8 @@ def encode_list(entity: cl_values.CL_List) -> bytes:
 def encode_map(entity: cl_values.CL_Map) -> bytes:
     result = bytes([])
     for k, v in entity.value:
-        result += encode(k) 
-        result += encode(v) 
+        result += encode(k)
+        result += encode(v)
 
     return encode(cl_values.CL_U32(len(entity.value))) + result
 

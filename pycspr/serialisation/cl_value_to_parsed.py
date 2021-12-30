@@ -54,7 +54,7 @@ def encode(entity: cl_values.CL_Value) -> object:
         return (
             encode(entity.v0),
         )
-            
+
     elif isinstance(entity, cl_values.CL_Tuple2):
         return (
             encode(entity.v0),

@@ -3,7 +3,6 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.crypto import cl_checksum
 from pycspr.types.keys import PublicKey
 from pycspr.types.cl_types import CL_Type
 

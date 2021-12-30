@@ -13,7 +13,7 @@ _HEX_CHARS: typing.List[str] = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     'a', 'b', 'c', 'd', 'e', 'f',
     'A', 'B', 'C', 'D', 'E', 'F',
-];
+]
 
 
 def decode(input: str) -> bytes:
@@ -21,7 +21,7 @@ def decode(input: str) -> bytes:
 
     :param input: A checksummed hexadecimal string to be mapped.
     :returns: An array of bytes.
-    
+
     """
     input_bytes: bytes = bytes.fromhex(input)
 
@@ -38,8 +38,9 @@ def decode(input: str) -> bytes:
 
 
 def encode(input: bytes) -> str:
-    """Encodes input bytes as hexadecimal with mixed-case based checksums following a scheme similar to [EIP-55][1].  
-    
+    """Encodes input bytes as hexadecimal with mixed-case based checksums
+    following a scheme similar to [EIP-55][1].
+
     :param input: Input data to be encoded.
     :returns: Checksummed hexadecimal string.
 
@@ -52,8 +53,8 @@ def encode(input: bytes) -> str:
 
 
 def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
-    """Encodes an account identifier as a checksummed hexadecimal string.  
-    
+    """Encodes an account identifier as a checksummed hexadecimal string.
+
     :param block_id: An account identifier.
     :returns: Checksummed hexadecimal string.
 
@@ -65,8 +66,8 @@ def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
 
 
 def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
-    """Encodes a block identifier as a checksummed hexadecimal string.  
-    
+    """Encodes a block identifier as a checksummed hexadecimal string.
+
     :param block_id: A block identifier.
     :returns: Checksummed hexadecimal string.
 
@@ -78,8 +79,8 @@ def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
 
 
 def encode_deploy_id(deploy_id: typing.Union[str, bytes]) -> str:
-    """Encodes a deploy identifier as a checksummed hexadecimal string.  
-    
+    """Encodes a deploy identifier as a checksummed hexadecimal string.
+
     :param deploy_id: A deploy identifier.
     :returns: Checksummed hexadecimal string.
 
@@ -91,8 +92,8 @@ def encode_deploy_id(deploy_id: typing.Union[str, bytes]) -> str:
 
 
 def encode_digest(digest: typing.Union[str, bytes]) -> str:
-    """Encodes a digest as a checksummed hexadecimal string.  
-    
+    """Encodes a digest as a checksummed hexadecimal string.
+
     :param digest: A digest.
     :returns: Checksummed hexadecimal string.
 
@@ -104,8 +105,8 @@ def encode_digest(digest: typing.Union[str, bytes]) -> str:
 
 
 def encode_signature(signature: typing.Union[str, bytes]) -> str:
-    """Encodes a digital signature as a checksummed hexadecimal string.  
-    
+    """Encodes a digital signature as a checksummed hexadecimal string.
+
     :param signature: A digital signature.
     :returns: Checksummed hexadecimal string.
 
@@ -117,8 +118,8 @@ def encode_signature(signature: typing.Union[str, bytes]) -> str:
 
 
 def _encode(input: bytes) -> typing.Iterator[str]:
-    """Maps input to iterator of hexadecimal characters.  
-    
+    """Maps input to iterator of hexadecimal characters.
+
     """
     hash_bits: typing.Iterator[int] = _bytes_to_bits_cycle(
         get_hash(input, size=32, algo=HashAlgorithm.BLAKE2B)
@@ -131,7 +132,7 @@ def _encode(input: bytes) -> typing.Iterator[str]:
 
 def _bytes_to_bits_cycle(input: bytes) -> typing.Iterator[int]:
     """Maps input to a cyclic bit iterator.
-    
+
     """
     def _iterator():
         for i in input:
@@ -143,7 +144,7 @@ def _bytes_to_bits_cycle(input: bytes) -> typing.Iterator[int]:
 
 def _bytes_to_nibbles(input: typing.List[int]) -> typing.Iterator[int]:
     """Maps input to a iterator of nibbles.
-    
+
     """
     for byte in input:
         for offset in [4, 0]:
@@ -152,6 +153,6 @@ def _bytes_to_nibbles(input: typing.List[int]) -> typing.Iterator[int]:
 
 def _is_string_same_case(input: str):
     """Returns flag indicating whether input string is a single case.
-    
+
     """
     return input == input.lower() or input == input.upper()

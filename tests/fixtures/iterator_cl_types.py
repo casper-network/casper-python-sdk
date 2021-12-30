@@ -54,7 +54,9 @@ def yield_cl_types(fixtures: list) -> typing.Iterator[CL_Type]:
             yield types.CL_Type_Tuple2(types.CL_Type_U64(), types.CL_Type_U128())
 
         elif type_key == CL_TypeKey.TUPLE_3:
-            yield types.CL_Type_Tuple3(types.CL_Type_U64(), types.CL_Type_U128(), types.CL_Type_U256())
+            yield types.CL_Type_Tuple3(
+                types.CL_Type_U64(), types.CL_Type_U128(), types.CL_Type_U256()
+                )
 
         elif type_key == CL_TypeKey.U8:
             yield types.CL_Type_U8()
@@ -96,7 +98,7 @@ def _get_inner_types():
         types.CL_Type_String(),
         types.CL_Type_Tuple1(types.CL_Type_U64()),
         types.CL_Type_Tuple2(types.CL_Type_U64(), types.CL_Type_U128()),
-        types.CL_Type_Tuple3(types.CL_Type_U64(),types.CL_Type_U128(), types.CL_Type_U256()),
+        types.CL_Type_Tuple3(types.CL_Type_U64(), types.CL_Type_U128(), types.CL_Type_U256()),
         types.CL_Type_U8(),
         types.CL_Type_U32(),
         types.CL_Type_U64(),

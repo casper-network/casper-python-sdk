@@ -27,7 +27,7 @@ def encode_list(entity: cl_values.CL_List):
     i = entity.vector[0]
     for i1 in entity.vector[1:]:
         if type(i) != type(i1):
-            raise ValueError("Inconsistent list item types") 
+            raise ValueError("Inconsistent list item types")
 
     return cl_types.CL_Type_List(encode(i))
 
@@ -39,7 +39,7 @@ def encode_map(entity: cl_values.CL_Map):
     k, v = entity.value[0]
     for k1, v1 in entity.value[1:]:
         if type(k1) != type(k) or type(v1) != type(v):
-            raise ValueError("Inconsistent value name/key pairs") 
+            raise ValueError("Inconsistent value name/key pairs")
 
     return cl_types.CL_Type_Map(encode(k), encode(v))
 

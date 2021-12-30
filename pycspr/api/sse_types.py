@@ -30,7 +30,7 @@ class NodeEventType(enum.Enum):
 @dataclasses.dataclass
 class NodeEventInfo():
     """Encapsulates emitted event information.
-    
+
     """
     # Channel over which event emitted by a node.
     channel: NodeEventChannel

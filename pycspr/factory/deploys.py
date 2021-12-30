@@ -286,8 +286,9 @@ def create_validator_auction_bid_withdrawal(
         args={
             "amount": CL_U512(amount),
             "public_key": CL_PublicKey.from_public_key(public_key),
-            "unbond_purse": unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else \
-                            CL_URef.from_string(unbond_purse_ref)
+            "unbond_purse":
+                unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else
+                CL_URef.from_string(unbond_purse_ref)
         }
     )
 

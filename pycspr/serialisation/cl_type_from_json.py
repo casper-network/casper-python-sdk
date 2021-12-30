@@ -53,6 +53,7 @@ def decode_tuple_2(obj: dict):
         decode(obj["Tuple2"][1])
         )
 
+
 def decode_tuple_3(obj: dict):
     return cl_types.CL_Type_Tuple3(
         decode(obj["Tuple3"][0]),

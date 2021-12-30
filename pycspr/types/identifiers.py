@@ -20,6 +20,7 @@ ContractVersion = typing.NewType("U32 integer representing", int)
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
 DeployID = typing.Union[bytes, str]
 
+
 class GlobalStateIDType(enum.Enum):
     """Enumeration over set of CL type keys.
 
@@ -34,7 +35,7 @@ class GlobalStateID():
     identifier: bytes
 
     # Type of identifier.
-    typeof: GlobalStateIDType
+    id_type: GlobalStateIDType
 
 
 # Root hash of a node's global state.
