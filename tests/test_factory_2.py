@@ -27,7 +27,7 @@ def test_create_validator_auction_bid_withdrawal(
         amount=random.randint(0, 1e9),
         public_key=a_test_account.as_public_key,
         path_to_wasm=path_to_wasm_auction_bid_withdrawal,
-        unbond_purse=a_test_uref
+        unbond_purse_ref=a_test_uref
         ),
         Deploy
         )

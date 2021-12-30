@@ -86,15 +86,17 @@ def _get_sse_event_payload(data: str) -> typing.Union[str, dict]:
     try:
         return json.loads(data)
     except json.JSONDecodeError:
-        return str(data)
+        return data
 
 
-def _get_sse_event_type(payload: dict) -> NodeEventType:
+def _get_sse_event_type(payload: typing.Union[str, dict]) -> NodeEventType:
     """Maps incoming event payload to associated event type.
 
     """
-    for event_type in NodeEventType:
-        if event_type.name in payload:
-            return event_type
-
-    print("TODO: process unknown event: {payload}")
+    if isinstance(payload, str):
+        return NodeEventType.Shutdown
+    else:
+        for event_type in NodeEventType:
+            if event_type.name in payload:
+                return event_type
+        print("TODO: process unknown event: {payload}")

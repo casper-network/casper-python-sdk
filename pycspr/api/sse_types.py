@@ -23,6 +23,7 @@ class NodeEventType(enum.Enum):
     DeployExpired = enum.auto()
     Fault = enum.auto()
     FinalitySignature = enum.auto()
+    Shutdown = enum.auto()
     Step = enum.auto()
 
 

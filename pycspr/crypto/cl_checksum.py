@@ -51,7 +51,7 @@ def encode(input: bytes) -> str:
     return "".join(_encode(input))
 
 
-def encode_account_id(account_id: typing.Union[str, bytes]) -> str:
+def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
     """Encodes an account identifier as a checksummed hexadecimal string.  
     
     :param block_id: An account identifier.
@@ -61,7 +61,7 @@ def encode_account_id(account_id: typing.Union[str, bytes]) -> str:
     if isinstance(account_id, str):
         account_id = bytes.fromhex(account_id)
 
-    return encode(account_id[:1]) + encode(account_id[1:])
+    return account_id[:1].hex() + encode(account_id[1:])
 
 
 def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
@@ -88,6 +88,32 @@ def encode_deploy_id(deploy_id: typing.Union[str, bytes]) -> str:
         deploy_id = bytes.fromhex(deploy_id)
 
     return encode(deploy_id)
+
+
+def encode_digest(digest: typing.Union[str, bytes]) -> str:
+    """Encodes a digest as a checksummed hexadecimal string.  
+    
+    :param digest: A digest.
+    :returns: Checksummed hexadecimal string.
+
+    """
+    if isinstance(digest, str):
+        digest = bytes.fromhex(digest)
+
+    return encode(digest)
+
+
+def encode_signature(signature: typing.Union[str, bytes]) -> str:
+    """Encodes a digital signature as a checksummed hexadecimal string.  
+    
+    :param signature: A digital signature.
+    :returns: Checksummed hexadecimal string.
+
+    """
+    if isinstance(signature, str):
+        signature = bytes.fromhex(signature)
+
+    return signature[:1].hex() + encode(signature[1:])
 
 
 def _encode(input: bytes) -> typing.Iterator[str]:

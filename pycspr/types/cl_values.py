@@ -3,6 +3,7 @@ import enum
 import typing
 
 from pycspr import crypto
+from pycspr.crypto import cl_checksum
 from pycspr.types.keys import PublicKey
 from pycspr.types.cl_types import CL_Type
 
@@ -104,15 +105,6 @@ class CL_Key(CL_Value):
 
     def __eq__(self, other) -> bool:
         return self.identifier == other.identifier and self.key_type == other.key_type
-
-    def to_string(self) -> str:
-        if self.key_type == CL_KeyType.ACCOUNT:
-            prefix = "account-hash"
-        elif self.key_type == CL_KeyType.HASH:
-            prefix = "hash"
-        elif self.key_type == CL_KeyType.UREF:
-            prefix = "uref"
-        return f"{prefix}-{self.identifier.hex()}"
 
     @staticmethod
     def from_string(value: str) -> "CL_Key":
@@ -369,9 +361,6 @@ class CL_URef(CL_Value):
     def __eq__(self, other) -> bool:
         return self.access_rights == other.access_rights and \
                self.address == other.address
-
-    def to_string(self):
-        return f"uref-{self.address.hex()}-{self.access_rights.value:03}"
 
     @staticmethod
     def from_string(as_string: str) -> "CL_URef":

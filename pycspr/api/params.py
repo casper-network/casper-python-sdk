@@ -18,7 +18,7 @@ def get_account_balance_params(
 
     """
     if isinstance(purse_uref, types.CL_URef):
-        purse_uref = purse_uref.to_string()
+        purse_uref = serialisation.cl_value_to_parsed(purse_uref)
     if isinstance(state_root_hash, bytes):
         state_root_hash = state_root_hash.hex()
 
@@ -38,21 +38,21 @@ def get_account_info_params(account_id: types.AccountID, block_id: types.BlockID
     """
     if isinstance(block_id, (bytes, str)):
         return {
-            "public_key": cl_checksum.encode_account_id(account_id),
+            "public_key": cl_checksum.encode_account_key(account_id),
             "block_identifier": {
                 "Hash": cl_checksum.encode_block_id(block_id)
             }
         }
     elif isinstance(block_id, int):
         return {
-            "public_key": cl_checksum.encode_account_id(account_id),
+            "public_key": cl_checksum.encode_account_key(account_id),
             "block_identifier": {
                 "Height": block_id
             }
         }
     else:
         return {
-            "public_key": cl_checksum.encode_account_id(account_id),
+            "public_key": cl_checksum.encode_account_key(account_id),
             "block_identifier": None
         }
 
@@ -218,7 +218,7 @@ def get_query_global_state_params(
         "state_identifier": {
             state_id_type: state_id
         },
-        "key": key.to_string(),
+        "key": serialisation.cl_value_to_parsed(key),
         "path": path
     }
 

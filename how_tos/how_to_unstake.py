@@ -97,11 +97,11 @@ def _main(args: argparse.Namespace):
         )
 
     # Set validator unbond purse.
-    validator_purse: CL_URef = \
+    validator_purse_uref: CL_URef = \
         client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
-    deploy: Deploy = _get_deploy(args, validator, validator_purse)
+    deploy: Deploy = _get_deploy(args, validator, validator_purse_uref)
 
     # Approve deploy.
     deploy.approve(validator)
@@ -125,7 +125,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
 def _get_deploy(
     args: argparse.Namespace,
     validator: PrivateKey,
-    validator_purse: CL_URef
+    validator_purse_uref: CL_URef
 ) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
@@ -142,7 +142,7 @@ def _get_deploy(
         amount=args.amount,
         public_key=validator.as_public_key,
         path_to_wasm=args.path_to_wasm,
-        unbond_purse=validator_purse,
+        unbond_purse_ref=validator_purse_uref,
         )
 
     return deploy

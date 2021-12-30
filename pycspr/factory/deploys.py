@@ -275,7 +275,7 @@ def create_validator_auction_bid_withdrawal(
     amount: int,
     public_key: PublicKey,
     path_to_wasm: str,
-    unbond_purse: str,
+    unbond_purse_ref: typing.Union[CL_URef, str],
 ) -> Deploy:
     """Returns an auction bid withdraw delegation deploy.
 
@@ -283,7 +283,7 @@ def create_validator_auction_bid_withdrawal(
     :param amount: Amount in motes to be withdrawn from auction.
     :param public_key: Public key of validator.
     :param path_to_wasm: Path to compiled delegate.wasm.
-    :param unbond_purse: Validator's purse to which to withdraw funds.
+    :param unbond_purse_ref: Validator's purse unforgeable reference to which to withdraw funds.
     :returns: A standard delegation deploy.
 
     """
@@ -301,7 +301,7 @@ def create_validator_auction_bid_withdrawal(
                 ),
             DeployArgument(
                 "unbond_purse",
-                CL_URef.from_string(unbond_purse)
+                unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else CL_URef.from_string(unbond_purse_ref)
                 ),
             ]
         )
