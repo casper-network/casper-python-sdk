@@ -1,8 +1,6 @@
 import typing
 
 from pycspr.types import cl_values
-from pycspr.utils.conversion import int_to_le_bytes
-from pycspr.utils.conversion import int_to_le_bytes_trimmed
 
 
 def encode(entity: cl_values.CL_Value) -> bytes:
