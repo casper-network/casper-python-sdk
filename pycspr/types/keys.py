@@ -30,6 +30,9 @@ class PublicKey():
     def __hash__(self) -> bytes:
         return hash(self.account_key)
 
+    def __len__(self) -> int:
+        return len(self.account_key)
+
 
 @dataclasses.dataclass
 class PrivateKey:
@@ -50,6 +53,9 @@ class PrivateKey:
 
     def __hash__(self) -> bytes:
         return hash(self.pvk)
+
+    def __len__(self) -> int:
+        return len(self.pvk)
 
     @property
     def private_key(self) -> bytes:

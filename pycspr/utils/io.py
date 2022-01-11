@@ -3,7 +3,27 @@ import pathlib
 import typing
 
 from pycspr import serialisation
+from pycspr import factory
 from pycspr.types import Deploy
+
+
+def get_deploy_size_bytes(deploy: Deploy) -> int:
+    """Returns size of a deploy in bytes.
+
+    :deploy: Deploy to be written in JSON format.
+    :returns: Size of deploy in bytes.
+
+    """
+    size: int = len(deploy.hash)
+    for approval in deploy.approvals:
+        size += len(approval.signature)
+        size += len(approval.signer)
+    size += len(serialisation.deploy_to_bytes(deploy.header))
+    size += len(serialisation.deploy_to_bytes(
+        factory.create_deploy_body(deploy.payment, deploy.session))
+        )
+    
+    return size
 
 
 def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:

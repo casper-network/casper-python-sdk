@@ -21,10 +21,16 @@ class DeployApproval:
     signer: PublicKey
 
     # The digital signatutre signalling approval of deploy processing.
+    # It's length is 65 bytes: leading byte represents ECC algo type. 
     signature: bytes
 
     def __eq__(self, other) -> bool:
         return self.signer == other.signer and self.signature == other.signature
+
+    @property
+    def sig(self) -> bytes:
+        """Returns signature denuded of leading byte (representing ECC algo)."""
+        return self.signature[1:]
 
 
 @dataclasses.dataclass

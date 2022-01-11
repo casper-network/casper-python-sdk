@@ -7,6 +7,7 @@ from pycspr.types import cl_values
 from pycspr.types.deploys import Deploy
 from pycspr.types.deploys import DeployApproval
 from pycspr.types.deploys import DeployArgument
+from pycspr.types.deploys import DeployBody
 from pycspr.types.deploys import DeployHeader
 from pycspr.types.deploys import ModuleBytes
 from pycspr.types.deploys import StoredContractByHash
@@ -32,11 +33,22 @@ def encode(entity: object) -> bytes:
 
 
 def _encode_deploy(entity: Deploy) -> bytes:
-    raise NotImplementedError()
+    return \
+        encode(entity.header) + \
+        entity.hash + \
+        encode(entity.payment) + \
+        encode(entity.session) + \
+        _encode_deploy_approval_set(entity.approvals)
 
 
 def _encode_deploy_approval(entity: DeployApproval) -> bytes:
     return entity.signer + entity.signature
+
+
+def _encode_deploy_approval_set(entities: typing.List[DeployApproval]) -> bytes:
+    return \
+        cl_value_to_bytes(cl_values.CL_U32(len(entities))) + \
+        bytes([i for j in map(encode, entities) for i in j])
 
 
 def _encode_deploy_argument(entity: DeployArgument) -> bytes:
@@ -46,8 +58,32 @@ def _encode_deploy_argument(entity: DeployArgument) -> bytes:
         cl_type_to_bytes(cl_value_to_cl_type(entity.value))
 
 
+def _encode_deploy_body(entity: DeployBody) -> bytes:
+    return encode(entity.payment) + encode(entity.session) + entity.hash
+
+
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
-    raise NotImplementedError()
+    return cl_value_to_bytes(
+        cl_values.CL_PublicKey.from_public_key(entity.account_public_key)
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_U64(int(entity.timestamp.value * 1000))
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_U64(entity.ttl.as_milliseconds)
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_U64(entity.gas_price)
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_ByteArray(entity.body_hash)
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_List(entity.dependencies)
+    ) + \
+    cl_value_to_bytes(
+        cl_values.CL_String(entity.chain_name)
+    )
 
 
 def _encode_module_bytes(entity: ModuleBytes) -> bytes:
@@ -111,6 +147,7 @@ _ENCODERS = {
     Deploy: _encode_deploy,
     DeployApproval: _encode_deploy_approval,
     DeployArgument: _encode_deploy_argument,
+    DeployBody: _encode_deploy_body,
     DeployHeader: _encode_deploy_header,
     ModuleBytes: _encode_module_bytes,
     StoredContractByHash: _encode_stored_contract_by_hash,
