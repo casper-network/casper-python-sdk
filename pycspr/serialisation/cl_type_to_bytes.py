@@ -12,11 +12,16 @@ def encode(entity: cl_types.CL_Type) -> bytes:
     
     """
     if entity.type_key in _ENCODERS_SIMPLE:
-        return bytes([entity.type_key.value])
-    elif entity.type_key in _ENCODERS_COMPLEX:
-        return bytes([entity.type_key.value]) + _ENCODERS_COMPLEX[entity.type_key](entity)
+        encoded = bytes([])
     else:
-        raise ValueError("Unrecognized cl type")
+        try:
+            encoder = _ENCODERS_COMPLEX[entity.type_key]
+        except KeyError:
+            raise ValueError("Unrecognized cl type")
+        else:
+            encoded = encoder(entity)
+
+    return bytes([entity.type_key.value]) + encoded
 
 
 def _encode_byte_array(entity: cl_types.CL_Type_ByteArray):

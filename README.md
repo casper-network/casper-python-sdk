@@ -71,6 +71,11 @@ How To: Create Key Pairs  ?
 
 See [here](how_tos/how_to_create_key_pairs.py).
 
+How To: Apply a checksum  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_apply_a_checksum.py).
+
 How To: Run unit tests against an NCTL network ?
 ------------------------------------------------------
 
