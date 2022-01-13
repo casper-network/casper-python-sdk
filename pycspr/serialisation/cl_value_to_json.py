@@ -11,7 +11,7 @@ def encode(entity: cl_values.CL_Value) -> dict:
 
     :param entity: A CL value to be encoded.
     :returns: A JSON compatible dictionary.
-    
+
     """
     return {
         "cl_type": cl_type_to_json(cl_value_to_cl_type(entity)),

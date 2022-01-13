@@ -9,7 +9,7 @@ def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
     :param encoded: A CL type previously encoded as JSON.
     :returns: A CL type definition.
 
-    """    
+    """
     if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:
         return _SIMPLE_TYPES[encoded]()
     elif "ByteArray" in encoded:

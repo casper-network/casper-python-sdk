@@ -28,7 +28,7 @@ def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:
     :param typedef: Deploy related type definition.
     :returns: A deploy related type.
 
-    """ 
+    """
     try:
         decoder = _DECODERS[typedef]
     except KeyError:
@@ -71,10 +71,12 @@ def _decode_deploy_approval(bstream: bytes) -> typing.Tuple[bytes, DeployApprova
     )
 
 
-def _decode_deploy_approval_set(bstream: bytes) -> typing.Tuple[bytes, typing.List[DeployApproval]]:
+def _decode_deploy_approval_set(
+    bstream: bytes
+) -> typing.Tuple[bytes, typing.List[DeployApproval]]:
     approvals = []
     bstream, args_length = cl_value_from_bytes(bstream, cl_types.CL_Type_U32())
-    for _ in range(args_length.value):        
+    for _ in range(args_length.value):
         bstream, approval = decode(bstream, DeployApproval)
         approvals.append(approval)
 
@@ -90,10 +92,12 @@ def _decode_deploy_argument(bstream: bytes) -> typing.Tuple[bytes, DeployArgumen
     return bstream_rem, DeployArgument(name.value, arg_cl_value)
 
 
-def _decode_deploy_argument_set(bstream: bytes) -> typing.Tuple[bytes, typing.List[DeployArgument]]:
+def _decode_deploy_argument_set(
+    bstream: bytes
+) -> typing.Tuple[bytes, typing.List[DeployArgument]]:
     args = []
     bstream, args_length = cl_value_from_bytes(bstream, cl_types.CL_Type_U32())
-    for _ in range(args_length.value):        
+    for _ in range(args_length.value):
         bstream, arg = decode(bstream, DeployArgument)
         args.append(arg)
 
@@ -179,13 +183,15 @@ def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, Store
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, StoredContractByHash(
-        args=args, 
-        entry_point=entry_point.value, 
+        args=args,
+        entry_point=entry_point.value,
         hash=contract_hash.value
         )
 
 
-def _decode_stored_contract_by_hash_versioned(bstream: bytes) -> typing.Tuple[bytes, StoredContractByHashVersioned]:
+def _decode_stored_contract_by_hash_versioned(
+    bstream: bytes
+) -> typing.Tuple[bytes, StoredContractByHashVersioned]:
     bstream = bstream[1:]
     bstream, contract_hash = cl_value_from_bytes(bstream, cl_types.CL_Type_ByteArray(32))
     bstream, contract_version = cl_value_from_bytes(bstream, cl_types.CL_Type_U32())
@@ -193,8 +199,8 @@ def _decode_stored_contract_by_hash_versioned(bstream: bytes) -> typing.Tuple[by
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, StoredContractByHashVersioned(
-        args=args, 
-        entry_point=entry_point.value, 
+        args=args,
+        entry_point=entry_point.value,
         hash=contract_hash.value,
         version=contract_version.value
         )
@@ -207,13 +213,15 @@ def _decode_stored_contract_by_name(bstream: bytes) -> typing.Tuple[bytes, Store
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, StoredContractByName(
-        args=args, 
-        entry_point=entry_point.value, 
+        args=args,
+        entry_point=entry_point.value,
         name=contract_name.value
         )
 
 
-def _decode_stored_contract_by_name_versioned(bstream: bytes) -> typing.Tuple[bytes, StoredContractByNameVersioned]:
+def _decode_stored_contract_by_name_versioned(
+    bstream: bytes
+) -> typing.Tuple[bytes, StoredContractByNameVersioned]:
     bstream = bstream[1:]
     bstream, contract_name = cl_value_from_bytes(bstream, cl_types.CL_Type_String())
     bstream, contract_version = cl_value_from_bytes(bstream, cl_types.CL_Type_U32())
@@ -221,8 +229,8 @@ def _decode_stored_contract_by_name_versioned(bstream: bytes) -> typing.Tuple[by
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, StoredContractByNameVersioned(
-        args=args, 
-        entry_point=entry_point.value, 
+        args=args,
+        entry_point=entry_point.value,
         name=contract_name.value,
         version=contract_version.value
         )

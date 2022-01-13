@@ -16,7 +16,7 @@ def decode(
     :param cl_type: CL type information.
     :returns: A CL value.
 
-    """  
+    """
     try:
         decoder = _DECODERS[cl_type.type_key]
     except KeyError:

@@ -7,8 +7,8 @@ def encode(entity: cl_values.CL_Value) -> object:
 
     :param entity: A CL value to be encoded.
     :returns: A humanized CL value representation.
-    
-    """    
+
+    """
     try:
         encoder = _ENCODERS[type(entity)]
     except KeyError:

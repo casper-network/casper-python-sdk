@@ -9,7 +9,7 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
 
     :param entity: A CL type to be encoded.
     :returns: A JSON compatible string or dictionary.
-    
+
     """
     try:
         encoder = _ENCODERS_COMPLEX[entity.type_key]

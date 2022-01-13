@@ -5,10 +5,10 @@ from pycspr.types import Deploy
 
 class InvalidDeployException():
     """Exception thrown when a deploy is deemed invalid.
-    
+
     """
     def __init__(self, msg):
-        self.msg = f"{msg}.  Deploy tampering may have occurred - review your security processes."
+        self.msg = f"{msg}. Deploy tampering may have occurred - review security process."
 
 
 def validate_deploy(deploy: Deploy):
@@ -23,7 +23,7 @@ def validate_deploy(deploy: Deploy):
         raise InvalidDeployException("Invalid deploy body hash")
 
     # Validate deploy hash.
-    deploy_hash: bytes = factory.create_digest_of_deploy(deploy.header)    
+    deploy_hash: bytes = factory.create_digest_of_deploy(deploy.header)
     if deploy.hash != deploy_hash:
         raise InvalidDeployException("Invalid deploy hash")
 

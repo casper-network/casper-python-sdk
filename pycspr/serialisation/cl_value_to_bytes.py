@@ -8,8 +8,8 @@ def encode(entity: cl_values.CL_Value) -> bytes:
 
     :param entity: A CL value to be encoded.
     :returns: An array of bytes.
-    
-    """    
+
+    """
     try:
         encoder = _ENCODERS[type(entity)]
     except KeyError:
@@ -42,7 +42,7 @@ def _encode_int(
             encoded = value.to_bytes(length, "little", signed=signed)
         except OverflowError:
             continue
-    
+
     if encoded is None:
         raise ValueError("Invalid integer: max size exceeded")
 

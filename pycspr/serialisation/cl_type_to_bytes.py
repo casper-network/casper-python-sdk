@@ -9,7 +9,7 @@ def encode(entity: cl_types.CL_Type) -> bytes:
 
     :param entity: A CL type to be encoded.
     :returns: An array of bytes.
-    
+
     """
     if entity.type_key in _ENCODERS_SIMPLE:
         encoded = bytes([])

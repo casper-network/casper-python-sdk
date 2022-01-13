@@ -7,7 +7,7 @@ def encode(entity: cl_values.CL_Value) -> cl_types.CL_Type:
 
     :param entity: A CL value to be encoded.
     :returns: A CL type definition.
-    
+
     """
     try:
         encoder = _ENCODERS_COMPLEX[type(entity)]

@@ -17,14 +17,14 @@ def encode(entity: object) -> dict:
 
     :param entity: A deploy related type instance to be encoded.
     :returns: A JSON compatible dictionary.
-    
+
     """
     try:
         encoder = _ENCODERS[type(entity)]
     except KeyError:
         raise ValueError(f"Unknown deploy type: {entity}")
     else:
-        return encoder(entity)    
+        return encoder(entity)
 
 
 def _encode_deploy(entity: Deploy) -> dict:

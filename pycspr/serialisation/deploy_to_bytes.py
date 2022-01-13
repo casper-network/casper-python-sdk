@@ -1,4 +1,3 @@
-from math import isfinite
 import typing
 
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
@@ -23,7 +22,7 @@ def encode(entity: object) -> bytes:
 
     :param entity: A deploy related type instance to be encoded.
     :returns: An array of bytes.
-    
+
     """
     try:
         encoder = _ENCODERS[type(entity)]
@@ -68,27 +67,30 @@ def _encode_deploy_body(entity: DeployBody) -> bytes:
 
 
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
-    return cl_value_to_bytes(
+    result = bytes([])
+    result += cl_value_to_bytes(
         cl_values.CL_PublicKey.from_public_key(entity.account_public_key)
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_U64(int(entity.timestamp.value * 1000))
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_U64(entity.ttl.as_milliseconds)
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_U64(entity.gas_price)
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_ByteArray(entity.body_hash)
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_List(entity.dependencies)
-    ) + \
-    cl_value_to_bytes(
+    )
+    result += cl_value_to_bytes(
         cl_values.CL_String(entity.chain_name)
     )
+
+    return result
 
 
 def _encode_module_bytes(entity: ModuleBytes) -> bytes:

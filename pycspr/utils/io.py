@@ -22,7 +22,7 @@ def get_deploy_size_bytes(deploy: Deploy) -> int:
     size += len(serialisation.deploy_to_bytes(
         factory.create_deploy_body(deploy.payment, deploy.session))
         )
-    
+
     return size
 
 

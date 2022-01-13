@@ -21,7 +21,7 @@ class DeployApproval:
     signer: PublicKey
 
     # The digital signatutre signalling approval of deploy processing.
-    # It's length is 65 bytes: leading byte represents ECC algo type. 
+    # It's length is 65 bytes: leading byte represents ECC algo type.
     signature: bytes
 
     def __eq__(self, other) -> bool:
@@ -183,7 +183,7 @@ class DeployTimeToLive():
             as_milliseconds=as_milliseconds,
             humanized=as_string
         )
-    
+
     @staticmethod
     def from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
         return DeployTimeToLive(
