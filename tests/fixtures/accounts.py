@@ -52,30 +52,12 @@ def test_account_2():
     )
 
 
-def _get_account_of_nctl_faucet():
-    """Returns account information related to NCTL faucet.
-
-    """
-    path = _PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem"
-
-    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
-
-
-def _get_account_of_nctl_user(user_id: int):
-    """Returns account information related to NCTL user 1.
-
-    """
-    path = _PATH_TO_NCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
-
-    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
-
-
 @pytest.fixture(scope="session")
 def cp1():
     """Returns counter-party 1 test account key.
 
     """
-    return _get_account_of_nctl_faucet()
+    return get_account_of_nctl_faucet()
 
 
 @pytest.fixture(scope="session")
@@ -83,7 +65,7 @@ def cp2():
     """Returns counter-party 2 test account key.
 
     """
-    return _get_account_of_nctl_user(1)
+    return get_account_of_nctl_user(1)
 
 
 @pytest.fixture(scope="session")
@@ -103,3 +85,31 @@ def account_hash(account_key: bytes) -> bytes:
 
     """
     return pycspr.get_account_hash(account_key)
+
+
+def get_account_of_nctl_faucet():
+    """Returns account information related to NCTL faucet.
+
+    """
+    path = _PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem"
+
+    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
+
+
+def get_account_of_nctl_user(user_id: int):
+    """Returns account information related to NCTL user 1.
+
+    """
+    path = _PATH_TO_NCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
+
+    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
+
+
+def create_account():
+    """Returns a test account.
+    
+    """
+    algo = pycspr.crypto.DEFAULT_KEY_ALGO
+    pvk, pbk = pycspr.crypto.get_key_pair(algo)
+
+    return pycspr.factory.create_private_key(algo, pvk, pbk)

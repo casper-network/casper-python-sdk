@@ -1,16 +1,18 @@
-import pycspr
 from pycspr import serialisation
+from pycspr.types import DeployBody
 
 
-def test_serialisation_of_transfer_to_json(deploy_params_static, deploys_1):
-    for vector in [v for v in deploys_1 if v["typeof"] == "transfer"]:
-        entity = pycspr.create_transfer(
-            params=deploy_params_static,
-            amount=vector["session"]["amount"],
-            target=vector["session"]["target"],
-            correlation_id=vector["session"]["correlation_id"]
-        )
-        as_dict: dict = serialisation.deploy_to_json(entity)
-        assert isinstance(as_dict, dict)
-        print(as_dict)
-        assert entity == serialisation.deploy_from_json(type(entity), as_dict)
+def test_that_deploy_entities_serialisation_to_and_from_bytes(deploy_entities_iterator):
+    for entity in deploy_entities_iterator():
+        encoded = serialisation.deploy_to_bytes(entity)
+        _, decoded = serialisation.deploy_from_bytes(encoded, type(entity))
+        assert entity == decoded
+
+
+def test_that_deploy_entities_serialisation_to_and_from_json(deploy_entities_iterator):
+    for entity in deploy_entities_iterator():
+        if type(entity) in (DeployBody, ):
+            continue
+        encoded = serialisation.deploy_to_json(entity)
+        decoded = serialisation.deploy_from_json(type(entity), encoded)
+        assert entity == decoded

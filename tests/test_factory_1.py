@@ -24,10 +24,10 @@ def test_create_deploy_arguments_2(cl_values_vector):
 
 def test_create_deploy_arguments_3(cl_values_vector):
     for cl_value in cl_values_vector:
-        arg = DeployArgument("an-argument", cl_value)
-        arg_bytes = serialisation.deploy_to_bytes(arg)
-        pytest.xfail("serialisation.deploy_from_bytes not implemented")
-        assert arg == serialisation.deploy_from_bytes(DeployArgument, arg_bytes)
+        entity = DeployArgument("an-argument", cl_value)
+        encoded = serialisation.deploy_to_bytes(entity)
+        _, decoded = serialisation.deploy_from_bytes(encoded, DeployArgument)
+        assert entity == decoded
 
 
 def test_create_deploy_approval_1(a_deploy, a_test_account):

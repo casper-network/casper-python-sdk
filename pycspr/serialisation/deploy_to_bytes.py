@@ -1,3 +1,4 @@
+from math import isfinite
 import typing
 
 from pycspr.serialisation.cl_value_to_bytes import encode as cl_value_to_bytes
@@ -42,7 +43,11 @@ def _encode_deploy(entity: Deploy) -> bytes:
 
 
 def _encode_deploy_approval(entity: DeployApproval) -> bytes:
-    return entity.signer + entity.signature
+    # TODO: check why this logic is required
+    if isinstance(entity.signer, bytes):
+        return entity.signer + entity.signature
+    else:
+        return entity.signer.account_key + entity.signature
 
 
 def _encode_deploy_approval_set(entities: typing.List[DeployApproval]) -> bytes:

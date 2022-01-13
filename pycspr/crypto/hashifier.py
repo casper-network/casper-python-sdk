@@ -1,4 +1,5 @@
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
+from pycspr.crypto.defaults import DEFAULT_HASH_ALGO
 from pycspr.crypto.enums import HashAlgorithm
 
 
@@ -14,9 +15,9 @@ DIGEST_LENGTH = 32
 def get_hash(
     data: bytes,
     size: int = DIGEST_LENGTH,
-    algo: HashAlgorithm = HashAlgorithm.BLAKE2B
+    algo: HashAlgorithm = DEFAULT_HASH_ALGO
 ) -> bytes:
-    """Maps input to a blake2b hash.
+    """Maps input to a hash function output.
 
     :param data: Data to be hashed.
     :param size: Desired hashing output length.

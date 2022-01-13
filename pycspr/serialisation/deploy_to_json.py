@@ -98,7 +98,7 @@ def _encode_stored_contract_by_name(entity: StoredContractByName) -> dict:
         "StoredContractByName": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
-            "name": encode.name
+            "name": entity.name
         }
     }
 
@@ -108,8 +108,8 @@ def _encode_stored_contract_by_name_versioned(entity: StoredContractByNameVersio
         "StoredContractByNameVersioned": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
-            "name": encode.name,
-            "version": encode.version
+            "name": entity.name,
+            "version": entity.version
         }
     }
 

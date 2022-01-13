@@ -183,6 +183,13 @@ class DeployTimeToLive():
             as_milliseconds=as_milliseconds,
             humanized=as_string
         )
+    
+    @staticmethod
+    def from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
+        return DeployTimeToLive(
+            as_milliseconds,
+            conversion.milliseconds_to_humanized_time_interval(as_milliseconds)
+            )
 
     def to_string(self) -> str:
         return self.humanized
@@ -217,6 +224,12 @@ class Deploy():
                self.payment == other.payment and \
                self.session == other.session
 
+    def get_body(self) -> DeployBody:
+        return DeployBody(
+            payment=self.payment,
+            session=self.session,
+            hash=self.header.body_hash
+        )
 
     def approve(self, approver: PrivateKey):
         """Creates a deploy approval & appends it to associated set.
@@ -230,7 +243,6 @@ class Deploy():
         approval = DeployApproval(approver.as_public_key, sig)
         self._append_approval(approval)
 
-
     def set_approval(self, approval: DeployApproval):
         """Appends an approval to associated set.
 
@@ -243,7 +255,6 @@ class Deploy():
             raise ValueError("Invalid signature - please review your processes.")
 
         self._append_approval(approval)
-
 
     def _append_approval(self, approval: DeployApproval):
         """Appends an approval to managed set - implicitly deduplicating.

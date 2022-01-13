@@ -4,6 +4,7 @@ import typing
 
 from pycspr.crypto import ecc_ed25519 as ed25519
 from pycspr.crypto import ecc_secp256k1 as secp256k1
+from pycspr.crypto.defaults import DEFAULT_KEY_ALGO
 from pycspr.crypto.enums import KeyAlgorithm
 
 
@@ -14,7 +15,7 @@ ALGOS = {
 }
 
 
-def get_key_pair(algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> typing.Tuple[bytes, bytes]:
+def get_key_pair(algo: KeyAlgorithm = DEFAULT_KEY_ALGO) -> typing.Tuple[bytes, bytes]:
     """Returns an ECC key pair, each key is a 32 byte array.
 
     :param algo: Type of ECC algo to be used when generating key pair.
@@ -28,7 +29,7 @@ def get_key_pair(algo: KeyAlgorithm = KeyAlgorithm.ED25519) -> typing.Tuple[byte
 
 def get_key_pair_from_bytes(
     pvk: bytes,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> typing.Tuple[bytes, bytes]:
     """Returns a key pair mapped from a byte array representation of a private key.
 
@@ -44,7 +45,7 @@ def get_key_pair_from_bytes(
 
 def get_key_pair_from_base64(
     pvk_b64: str,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> typing.Tuple[bytes, bytes]:
     """Returns a key pair mapped from a base 64 representation of a private key.
 
@@ -58,7 +59,7 @@ def get_key_pair_from_base64(
 
 def get_key_pair_from_hex_string(
     pvk_hex: str,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> typing.Tuple[bytes, bytes]:
     """Returns an ECC key pair derived from a hexadecimal string encoded private key.
 
@@ -72,7 +73,7 @@ def get_key_pair_from_hex_string(
 
 def get_key_pair_from_pem_file(
     fpath: str,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> typing.Tuple[bytes, bytes]:
     """Returns an ECC key pair derived from a previously persisted PEM file.
 
@@ -88,7 +89,7 @@ def get_key_pair_from_pem_file(
 
 def get_pvk_pem_from_bytes(
     pvk: bytes,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bytes:
     """Returns an ECC private key in PEM format.
 
@@ -102,7 +103,7 @@ def get_pvk_pem_from_bytes(
 
 def get_pvk_pem_from_hex_string(
     pvk: str,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bytes:
     """Returns an ECC private key mapped from a private key encoded as a hexadecial string.
 
@@ -116,7 +117,7 @@ def get_pvk_pem_from_hex_string(
 
 def get_pvk_pem_file_from_bytes(
     pvk: bytes,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bytes:
     """Returns path to a file containing an ECC private key in PEM format.
 
@@ -136,7 +137,7 @@ def get_pvk_pem_file_from_bytes(
 def get_signature(
     msg_hash: bytes,
     pvk: bytes,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bytes:
     """Returns an ED25519 digital signature of data signed from a private key.
 
@@ -152,7 +153,7 @@ def get_signature(
 def get_signature_from_pem_file(
     msg_hash: bytes,
     fpath: str,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bytes:
     """Returns an ED25519 digital signature of data signed from a private key PEM file.
 
@@ -171,7 +172,7 @@ def is_signature_valid(
     msg_hash: bytes,
     sig: bytes,
     vk: bytes,
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> bool:
     """Returns a flag indicating whether a signature was signed by a signing key.
 

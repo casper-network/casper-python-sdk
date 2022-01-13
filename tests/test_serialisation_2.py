@@ -1,52 +1,17 @@
-import pytest
-
-import pycspr
 from pycspr import serialisation
 
 
-def test_serialisation_of_standard_payment_to_bytes(deploys_1):
-    for vector in [v for v in deploys_1 if v["typeof"] == "transfer"]:
-        entity = pycspr.create_standard_payment(
-            vector["payment"]["amount"]
-        )
-        as_bytes: bytes = serialisation.deploy_to_bytes(entity)
-        assert as_bytes.hex() == vector["bytes"]["payment"].hex()
-        pytest.xfail("serialisation.deploy_from_bytes not implemented")
-        assert entity == serialisation.deploy_from_bytes(type(entity), as_bytes)
+def test_that_cl_values_serialisation_to_and_from_bytes(cl_values_vector):
+    for cl_value in cl_values_vector:
+        as_bytes = serialisation.cl_value_to_bytes(cl_value)
+        assert isinstance(as_bytes, bytes)
+        cl_type = serialisation.cl_value_to_cl_type(cl_value)
+        _, cl_value_1 = serialisation.cl_value_from_bytes(as_bytes, cl_type)
+        assert cl_value == cl_value_1
 
 
-def test_serialisation_of_standard_payment_to_json(deploys_1):
-    for vector in [v for v in deploys_1 if v["typeof"] == "transfer"]:
-        entity = pycspr.create_standard_payment(
-            vector["payment"]["amount"]
-        )
-        assert entity == serialisation.deploy_from_json(
-            type(entity),
-            serialisation.deploy_to_json(entity)
-            )
-
-
-def test_serialisation_of_transfer_session_to_bytes(deploys_1):
-    for vector in [v for v in deploys_1 if v["typeof"] == "transfer"]:
-        entity = pycspr.factory.create_transfer_session(
-            vector["session"]["amount"],
-            vector["session"]["target"],
-            vector["session"]["correlation_id"]
-            )
-        as_bytes: bytes = serialisation.deploy_to_bytes(entity)
-        assert as_bytes == vector["bytes"]["session"]
-        pytest.xfail("serialisation.deploy_from_bytes not implemented")
-        assert entity == serialisation.deploy_from_bytes(type(entity), as_bytes)
-
-
-def test_serialisation_of_transfer_session_to_json(deploys_1):
-    for vector in [v for v in deploys_1 if v["typeof"] == "transfer"]:
-        entity = pycspr.factory.create_transfer_session(
-            vector["session"]["amount"],
-            vector["session"]["target"],
-            vector["session"]["correlation_id"]
-            )
-        assert entity == serialisation.deploy_from_json(
-            type(entity),
-            serialisation.deploy_to_json(entity)
-            )
+def test_that_cl_values_serialisation_to_and_from_json(cl_values_vector):
+    for cl_value in cl_values_vector:
+        as_json = serialisation.cl_value_to_json(cl_value)
+        assert isinstance(as_json, dict)
+        assert cl_value == serialisation.cl_value_from_json(as_json)

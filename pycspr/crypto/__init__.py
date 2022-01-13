@@ -4,6 +4,8 @@ from pycspr.crypto.cl_operations import get_account_key
 from pycspr.crypto.cl_operations import get_account_key_algo
 from pycspr.crypto.cl_operations import get_signature_for_deploy_approval
 from pycspr.crypto.cl_operations import verify_deploy_approval_signature
+from pycspr.crypto.defaults import DEFAULT_HASH_ALGO
+from pycspr.crypto.defaults import DEFAULT_KEY_ALGO
 from pycspr.crypto.ecc import get_key_pair
 from pycspr.crypto.ecc import get_key_pair_from_base64
 from pycspr.crypto.ecc import get_key_pair_from_bytes
