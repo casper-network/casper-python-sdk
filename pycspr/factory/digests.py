@@ -27,7 +27,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
             CL_U64(header.ttl.as_milliseconds)
         ) +
         serialisation.to_bytes(
-             CL_U64(header.gas_price)
+            CL_U64(header.gas_price)
         ) +
         serialisation.to_bytes(
             CL_ByteArray(header.body_hash)

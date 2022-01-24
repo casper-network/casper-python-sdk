@@ -8,13 +8,12 @@ from pycspr.serialisation.json import cl_value_json_serialiser
 from pycspr.serialisation.json import deploy_json_serialiser
 from pycspr.serialisation.utils import cl_value_to_cl_type
 from pycspr.serialisation.utils import cl_value_to_parsed
-
 from pycspr.types.cl_types import CL_Type
 from pycspr.types.cl_values import CL_Value
 
 
 def to_bytes(entity: object) -> bytes:
-    if isinstance(entity, CL_Type):            
+    if isinstance(entity, CL_Type):
         return cl_type_binary_serialiser.encode(entity)
     elif isinstance(entity, CL_Value):
         return cl_value_binary_serialiser.encode(entity)
@@ -23,7 +22,7 @@ def to_bytes(entity: object) -> bytes:
 
 
 def to_json(entity: object) -> typing.Union[str, dict]:
-    if isinstance(entity, CL_Type):            
+    if isinstance(entity, CL_Type):
         return cl_type_json_serialiser.encode(entity)
     elif isinstance(entity, CL_Value):
         return cl_value_json_serialiser.encode(entity)

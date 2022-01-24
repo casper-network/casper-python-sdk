@@ -84,7 +84,7 @@ def create_deploy() -> Deploy:
 def create_transfer() -> Deploy:
     cp1 = create_account()
     cp2 = create_account()
-    params=create_deploy_params(account=cp1)
+    params = create_deploy_params(account=cp1)
 
     deploy = pycspr.create_transfer(
         params=params,
@@ -109,7 +109,12 @@ def create_deploy_header() -> DeployHeader:
     return create_deploy().header
 
 
-def create_deploy_params(account=None, chain_id=None, timestamp=None, ttl_humanized=None) -> DeployParameters:
+def create_deploy_params(
+    account=None,
+    chain_id=None,
+    timestamp=None,
+    ttl_humanized=None
+) -> DeployParameters:
     account = account or create_account()
     chain_id = chain_id or create_chain_id()
     timestamp = timestamp or create_timestamp()
