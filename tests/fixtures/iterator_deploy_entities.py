@@ -4,11 +4,8 @@ import pytest
 
 import pycspr
 from pycspr import types
-from pycspr.types.deploys import Deploy
 from pycspr.types.deploys import DeployApproval
 from pycspr.types.deploys import DeployArgument
-from pycspr.types.deploys import DeployBody
-from pycspr.types.deploys import DeployHeader
 from pycspr.types.deploys import ModuleBytes
 from pycspr.types.deploys import StoredContractByHash
 from pycspr.types.deploys import StoredContractByHashVersioned
@@ -39,7 +36,7 @@ def yield_entities() -> typing.Iterator[object]:
             _create_stored_contract_by_name,
             _create_stored_contract_by_name_versioned,
             _create_transfer,
-            ):
+        ):
             yield func()
 
     return _inner
@@ -111,18 +108,3 @@ def _create_transfer() -> Transfer:
         correlation_id=123456,
         target=_TEST_ACCOUNT_KEY,
     )
-
-
-# _ENCODERS = {
-#     Deploy: _encode_deploy,
-#     DeployApproval: _encode_deploy_approval,
-#     DeployArgument: _encode_deploy_argument,
-#     DeployBody: _encode_deploy_body,
-#     DeployHeader: _encode_deploy_header,
-#     ModuleBytes: _encode_module_bytes,
-#     StoredContractByHash: _encode_stored_contract_by_hash,
-#     StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-#     StoredContractByName: _encode_stored_contract_by_name,
-#     StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-#     Transfer: _encode_transfer,
-# }

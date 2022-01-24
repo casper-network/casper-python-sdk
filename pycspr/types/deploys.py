@@ -216,7 +216,6 @@ class Deploy():
     # Executable information passed to chain's VM.
     session: DeployExecutableItem
 
-
     def __eq__(self, other) -> bool:
         return self.approvals == other.approvals and \
                self.hash == other.hash and \

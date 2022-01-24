@@ -26,26 +26,22 @@ class NodeClient():
         self._get_rest_response = connection.get_rest_response
         self._get_rpc_response = connection.get_rpc_response
 
-
-    async def await_n_blocks(self, offset: int) -> dict:
+    async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
 
         :param offset: Number of blocks to await.
-        :returns: On-chain block information N blocks in the future.
 
         """
-        return await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)
+        await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)
 
-
-    async def await_n_eras(self, offset: int) -> dict:
+    async def await_n_eras(self, offset: int):
         """Awaits until consensus has advanced by N eras.
 
         :param offset: Number of eras to await.
-        :returns: On-chain era information N eras in the future.
 
         """
-        return await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)
-
+        await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)
+        await self.await_n_blocks(1)
 
     async def await_n_events(
         self,
@@ -68,6 +64,29 @@ class NodeClient():
             if count == offset:
                 return event_info.payload
 
+    async def await_until_block_n(self, block_height: int) -> dict:
+        """Awaits until linear block chain has advanced to block N.
+
+        :param block_height: Hieght of block to await.
+        :returns: On-chain block information at block N blocks.
+
+        """
+        _, block_height_current = self.get_chain_heights()
+        offset = block_height - block_height_current
+        if offset > 0:
+            await self.await_n_blocks(offset)
+
+    async def await_until_era_n(self, era_height: int) -> dict:
+        """Awaits until consensus has advanced to era N.
+
+        :param era_height: Height of era to await.
+        :returns: On-chain era information N eras in the future.
+
+        """
+        era_height_current, _ = self.get_chain_heights()
+        offset = era_height - era_height_current
+        if offset > 0:
+            await self.await_n_eras(offset)
 
     def get_account_balance(
         self,
@@ -86,7 +105,6 @@ class NodeClient():
         response = self._get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
 
         return int(response["balance_value"])
-
 
     def get_account_info(
         self,
@@ -107,7 +125,6 @@ class NodeClient():
 
         return response["account"]
 
-
     def get_account_main_purse_uref(
         self,
         account_id: types.AccountID,
@@ -123,7 +140,6 @@ class NodeClient():
         account_info = self.get_account_info(account_id, block_id)
 
         return types.CL_URef.from_string(account_info["main_purse"])
-
 
     def get_account_named_key(
         self,
@@ -144,7 +160,6 @@ class NodeClient():
             if named_key["name"] == key_name:
                 return types.CL_Key.from_string(named_key["key"])
 
-
     def get_auction_info(self, block_id: types.BlockID = None) -> dict:
         """Returns current auction system contract information.
 
@@ -155,7 +170,6 @@ class NodeClient():
             constants.RPC_STATE_GET_AUCTION_INFO,
             params_factory.get_auction_info_params(block_id)
             )
-
 
     def get_block(self, block_id: types.BlockID = None) -> dict:
         """Returns on-chain block information.
@@ -170,7 +184,6 @@ class NodeClient():
             )
 
         return response["block"]
-
 
     def get_block_at_era_switch(
         self,
@@ -195,6 +208,15 @@ class NodeClient():
                 break
             time.sleep(polling_interval_seconds)
 
+    def get_block_height(self) -> int:
+        """Returns height of current block.
+
+        :returns: Hieght of current block.
+
+        """
+        _, block_height = self.get_chain_heights()
+
+        return block_height
 
     def get_block_transfers(
         self,
@@ -213,6 +235,15 @@ class NodeClient():
 
         return (response["block_hash"], response["transfers"])
 
+    def get_chain_heights(self) -> int:
+        """Returns height of current era & block.
+
+        :returns: 2-ary tuple: (era height, block height).
+
+        """
+        block: dict = self.get_block()
+
+        return block["header"]["era_id"], block["header"]["height"]
 
     def get_deploy(self, deploy_id: types.DeployID) -> dict:
         """Returns on-chain deploy information.
@@ -226,7 +257,6 @@ class NodeClient():
             params_factory.get_deploy_params(deploy_id)
             )
 
-
     def get_dictionary_item(self, identifier: types.DictionaryID) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
@@ -239,6 +269,15 @@ class NodeClient():
             params_factory.get_dictionary_item_params(identifier)
             )
 
+    def get_era_height(self) -> int:
+        """Returns height of current era.
+
+        :returns: Hieght of current era.
+
+        """
+        era_hieght, _ = self.get_chain_heights()
+
+        return era_hieght
 
     def get_era_info(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information.
@@ -254,7 +293,6 @@ class NodeClient():
 
         return response["era_summary"]
 
-
     def get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information.
 
@@ -263,7 +301,6 @@ class NodeClient():
 
         """
         return self.get_era_info(block_id)
-
 
     def get_events(
         self,
@@ -282,7 +319,6 @@ class NodeClient():
         """
         sse_consumer.get_events(self.connection, callback, event_channel, event_type, event_id)
 
-
     def get_node_metric(self, metric_id: str) -> list:
         """Returns node metrics information filtered by a particular metric.
 
@@ -293,7 +329,6 @@ class NodeClient():
         metrics = self.get_node_metrics()
 
         return [i for i in metrics if i.lower().startswith(metric_id.lower())]
-
 
     def get_node_metrics(self) -> list:
         """Returns set of node metrics.
@@ -306,7 +341,6 @@ class NodeClient():
 
         return metrics
 
-
     def get_node_peers(self) -> typing.List[dict]:
         """Returns node peers information.
 
@@ -317,7 +351,6 @@ class NodeClient():
 
         return response["peers"]
 
-
     def get_node_status(self) -> dict:
         """Returns node status information.
 
@@ -325,7 +358,6 @@ class NodeClient():
 
         """
         return self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
-
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
@@ -339,7 +371,6 @@ class NodeClient():
             if obj["name"].lower() == endpoint.lower():
                 return obj
 
-
     def get_rpc_endpoints(self) -> typing.Union[dict, list]:
         """Returns RPC schema.
 
@@ -350,7 +381,6 @@ class NodeClient():
 
         return sorted([i["name"] for i in schema["methods"]])
 
-
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
 
@@ -360,7 +390,6 @@ class NodeClient():
         response = self._get_rpc_response(constants.RPC_DISCOVER)
 
         return response["schema"]
-
 
     def get_state_item(
         self,
@@ -385,7 +414,6 @@ class NodeClient():
 
         return response["stored_value"]
 
-
     def get_state_root_hash(self, block_id: types.BlockID = None) -> bytes:
         """Returns an root hash of global state at a specified block.
 
@@ -400,7 +428,6 @@ class NodeClient():
 
         return bytes.fromhex(response["state_root_hash"])
 
-
     def get_validator_changes(self) -> dict:
         """Returns status changes of active validators.
 
@@ -411,7 +438,6 @@ class NodeClient():
         response = self._get_rpc_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES)
 
         return response["changes"]
-
 
     def send_deploy(self, deploy: types.Deploy):
         """Dispatches a deploy to a node for processing.
@@ -425,7 +451,6 @@ class NodeClient():
             )
 
         return response["deploy_hash"]
-
 
     def query_global_state(
         self,
@@ -448,7 +473,6 @@ class NodeClient():
         params = params_factory.get_query_global_state_params(state_id, key, path)
 
         return self._get_rpc_response(constants.RPC_STATE_QUERY_GLOBAL_STATE, params)
-
 
     def yield_events(
         self,

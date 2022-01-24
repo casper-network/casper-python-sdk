@@ -107,7 +107,7 @@ def get_account_of_nctl_user(user_id: int):
 
 def create_account():
     """Returns a test account.
-    
+
     """
     algo = pycspr.crypto.DEFAULT_KEY_ALGO
     pvk, pbk = pycspr.crypto.get_key_pair(algo)

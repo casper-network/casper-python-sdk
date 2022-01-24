@@ -212,7 +212,7 @@ def get_query_global_state_params(
         state_id_type = "BlockHash"
     else:
         state_id_type = "StateRootHash"
-
+    
     state_id = \
         state_id.identifier.hex() if isinstance(state_id.identifier, bytes) else \
         state_id.identifier

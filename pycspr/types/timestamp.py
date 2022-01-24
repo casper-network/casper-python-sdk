@@ -13,7 +13,6 @@ class Timestamp():
     def __eq__(self, other) -> bool:
         return self.value == other.value
 
-
     @staticmethod
     def from_string(as_string: str) -> "Timestamp":
         if as_string.endswith("Z"):
@@ -21,7 +20,6 @@ class Timestamp():
             as_string = f"{as_string}+00:00"
 
         return Timestamp(dt.datetime.fromisoformat(as_string).timestamp())
-
 
     def to_string(self) -> str:
         ts_3_decimal_places = round(self.value, 3)

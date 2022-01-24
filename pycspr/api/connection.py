@@ -58,7 +58,6 @@ class NodeConnection:
         """Instance string representation."""
         return self.host
 
-
     def get_rest_response(self, endpoint: str) -> dict:
         """Invokes remote REST API and returns parsed response.
 
@@ -70,7 +69,6 @@ class NodeConnection:
         response = requests.get(endpoint)
 
         return response.content.decode("utf-8")
-
 
     def get_rpc_response(self, endpoint: str, params: dict = None) -> dict:
         """Invokes remote JSON-RPC API and returns parsed response.
