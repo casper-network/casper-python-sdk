@@ -86,7 +86,7 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: amount of ERC-20 tokens to be transferred to user..
+# CLI argument: amount of ERC-20 tokens to be transferred to user.
 _ARGS.add_argument(
     "--amount",
     default=int(2e9),

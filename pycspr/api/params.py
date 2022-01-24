@@ -1,6 +1,6 @@
 import typing
 
-from pycspr import serialisation
+from pycspr import serialisation1
 from pycspr import types
 from pycspr.crypto import cl_checksum
 from pycspr.types.cl_values import CL_Key
@@ -18,7 +18,7 @@ def get_account_balance_params(
 
     """
     if isinstance(purse_uref, types.CL_URef):
-        purse_uref = serialisation.cl_value_to_parsed(purse_uref)
+        purse_uref = serialisation1.cl_value_to_parsed(purse_uref)
     if isinstance(state_root_hash, bytes):
         state_root_hash = state_root_hash.hex()
 
@@ -221,7 +221,7 @@ def get_query_global_state_params(
         "state_identifier": {
             state_id_type: state_id
         },
-        "key": serialisation.cl_value_to_parsed(key),
+        "key": serialisation1.cl_value_to_parsed(key),
         "path": path
     }
 
@@ -277,5 +277,5 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
 
     """
     return {
-        "deploy": serialisation.deploy_to_json(deploy)
+        "deploy": serialisation1.to_json(deploy)
     }

@@ -151,12 +151,10 @@ class NodeClient():
         :returns: Current auction system contract information.
 
         """
-        response = self._get_rpc_response(
+        return self._get_rpc_response(
             constants.RPC_STATE_GET_AUCTION_INFO,
             params_factory.get_auction_info_params(block_id)
             )
-
-        return response
 
 
     def get_block(self, block_id: types.BlockID = None) -> dict:

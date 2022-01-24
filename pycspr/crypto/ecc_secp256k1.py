@@ -56,7 +56,6 @@ def get_signature(msg: bytes, pvk: bytes) -> bytes:
     :returns: A digital signature.
 
     """
-
     sk = ecdsa.SigningKey.from_string(pvk, curve=_CURVE)
 
     return sk.sign_deterministic(msg, hashfunc=_HASH_FN)

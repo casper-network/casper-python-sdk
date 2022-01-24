@@ -1,16 +1,16 @@
-from pycspr import serialisation
+from pycspr import serialisation1
 
 
 def test_that_cl_types_serialisation_to_and_from_bytes(cl_types_vector):
-    for cl_type in cl_types_vector:
-        as_bytes = serialisation.cl_type_to_bytes(cl_type)
-        assert isinstance(as_bytes, bytes)
-        _, from_bytes = serialisation.cl_type_from_bytes(as_bytes)
-        assert cl_type == from_bytes
+    for entity in cl_types_vector:
+        encoded = serialisation1.to_bytes(entity)
+        assert isinstance(encoded, bytes)
+        _, decoded = serialisation1.from_bytes(encoded)
+        assert entity == decoded
 
 
 def test_that_cl_types_serialisation_to_and_from_json(cl_types_vector):
-    for cl_type in cl_types_vector:
-        as_json = serialisation.cl_type_to_json(cl_type)
-        assert isinstance(as_json, (str, dict))
-        assert cl_type == serialisation.cl_type_from_json(as_json)
+    for entity in cl_types_vector:
+        encoded = serialisation1.to_json(entity)
+        assert isinstance(encoded, (str, dict))
+        assert entity == serialisation1.from_json(encoded)

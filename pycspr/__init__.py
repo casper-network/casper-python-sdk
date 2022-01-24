@@ -7,13 +7,13 @@
 #  88              d8'                              88
 
 __title__ = "pycspr"
-__version__ = "0.12.0"
+__version__ = "0.12.1"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
 from pycspr import crypto
 from pycspr import factory
-from pycspr import serialisation
+from pycspr import serialisation1
 from pycspr import types
 
 from pycspr.api.client import NodeClient
@@ -45,6 +45,11 @@ from pycspr.factory import parse_private_key
 from pycspr.factory import parse_private_key_bytes
 from pycspr.factory import parse_public_key
 from pycspr.factory import parse_public_key_bytes
+
+from pycspr.serialisation1 import to_bytes
+from pycspr.serialisation1 import to_json
+from pycspr.serialisation1 import from_bytes
+from pycspr.serialisation1 import from_json
 
 from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_deploy
