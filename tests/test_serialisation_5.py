@@ -1,5 +1,5 @@
 import pycspr
-from pycspr import serialisation1
+from pycspr import serialisation
 
 
 def test_that_standard_transfer_serialises_to_and_from_json(deploy_params_static, deploys_1):
@@ -10,6 +10,6 @@ def test_that_standard_transfer_serialises_to_and_from_json(deploy_params_static
             target=vector["session"]["target"],
             correlation_id=vector["session"]["correlation_id"]
         )
-        encoded = serialisation1.to_json(entity)
-        decoded = serialisation1.from_json(encoded, type(entity))
+        encoded = serialisation.to_json(entity)
+        decoded = serialisation.from_json(encoded, type(entity))
         assert entity == decoded

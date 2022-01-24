@@ -13,7 +13,7 @@ __license__ = "Apache 2.0"
 
 from pycspr import crypto
 from pycspr import factory
-from pycspr import serialisation1
+from pycspr import serialisation
 from pycspr import types
 
 from pycspr.api.client import NodeClient
@@ -46,10 +46,10 @@ from pycspr.factory import parse_private_key_bytes
 from pycspr.factory import parse_public_key
 from pycspr.factory import parse_public_key_bytes
 
-from pycspr.serialisation1 import to_bytes
-from pycspr.serialisation1 import to_json
-from pycspr.serialisation1 import from_bytes
-from pycspr.serialisation1 import from_json
+from pycspr.serialisation import to_bytes
+from pycspr.serialisation import to_json
+from pycspr.serialisation import from_bytes
+from pycspr.serialisation import from_json
 
 from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_deploy

@@ -2,7 +2,7 @@ import json
 import pathlib
 import typing
 
-from pycspr import serialisation1
+from pycspr import serialisation
 from pycspr import factory
 from pycspr.types import Deploy
 
@@ -18,8 +18,8 @@ def get_deploy_size_bytes(deploy: Deploy) -> int:
     for approval in deploy.approvals:
         size += len(approval.signature)
         size += len(approval.signer)
-        size += len(serialisation1.to_bytes(deploy.header))
-        size += len(serialisation1.to_bytes(
+        size += len(serialisation.to_bytes(deploy.header))
+        size += len(serialisation.to_bytes(
             factory.create_deploy_body(deploy.payment, deploy.session))
         )
 
@@ -34,7 +34,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
-        return serialisation1.from_json(json.loads(fstream.read()), Deploy)
+        return serialisation.from_json(json.loads(fstream.read()), Deploy)
 
 
 def read_wasm(fpath: typing.Union[pathlib.Path, str]) -> bytes:
@@ -69,6 +69,6 @@ def write_deploy(
         raise IOError("Deploy has already been written to file system")
 
     with open(str(fpath), "w") as fstream:
-        fstream.writelines(json.dumps(serialisation1.to_json(deploy), indent=4))
+        fstream.writelines(json.dumps(serialisation.to_json(deploy), indent=4))
 
     return str(fpath)

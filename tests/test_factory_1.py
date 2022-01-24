@@ -1,7 +1,7 @@
 import random
 
 import pycspr
-from pycspr import serialisation1
+from pycspr import serialisation
 from pycspr.types import DeployApproval
 from pycspr.types import DeployArgument
 from pycspr.types import DeployParameters
@@ -16,15 +16,15 @@ def test_create_deploy_arguments_1(cl_values_vector):
 def test_create_deploy_arguments_2(cl_values_vector):
     for cl_value in cl_values_vector:
         arg = DeployArgument("an-argument", cl_value)
-        arg_json = serialisation1.to_json(arg)
-        assert arg == serialisation1.from_json(arg_json, DeployArgument)
+        arg_json = serialisation.to_json(arg)
+        assert arg == serialisation.from_json(arg_json, DeployArgument)
 
 
 def test_create_deploy_arguments_3(cl_values_vector):
     for cl_value in cl_values_vector:
         entity = DeployArgument("an-argument", cl_value)
-        encoded = serialisation1.to_bytes(entity)
-        _, decoded = serialisation1.from_bytes(encoded, DeployArgument)
+        encoded = serialisation.to_bytes(entity)
+        _, decoded = serialisation.from_bytes(encoded, DeployArgument)
         assert entity == decoded
 
 

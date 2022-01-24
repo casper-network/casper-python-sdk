@@ -1,5 +1,5 @@
 import pycspr
-from pycspr import serialisation1
+from pycspr import serialisation
 
 
 def test_that_standard_payment_serialises_to_and_from_bytes(deploys_1):
@@ -7,9 +7,9 @@ def test_that_standard_payment_serialises_to_and_from_bytes(deploys_1):
         entity = pycspr.create_standard_payment(
             vector["payment"]["amount"]
         )
-        encoded = serialisation1.to_bytes(entity)
+        encoded = serialisation.to_bytes(entity)
         assert encoded == vector["bytes"]["payment"]
-        _, decoded = serialisation1.from_bytes(encoded, type(entity))
+        _, decoded = serialisation.from_bytes(encoded, type(entity))
         assert entity == decoded
 
 
@@ -18,8 +18,8 @@ def test_that_standard_payment_serialises_to_and_from_json(deploys_1):
         entity = pycspr.create_standard_payment(
             vector["payment"]["amount"]
         )
-        encoded = serialisation1.to_json(entity)
-        decoded = serialisation1.from_json(encoded, type(entity))
+        encoded = serialisation.to_json(entity)
+        decoded = serialisation.from_json(encoded, type(entity))
         assert entity == decoded
 
 
@@ -30,9 +30,9 @@ def test_that_transfer_session_serialises_to_and_from_bytes(deploys_1):
             vector["session"]["target"],
             vector["session"]["correlation_id"]
             )
-        encoded = serialisation1.to_bytes(entity)
+        encoded = serialisation.to_bytes(entity)
         assert encoded == vector["bytes"]["session"]
-        _, decoded = serialisation1.from_bytes(encoded, type(entity))
+        _, decoded = serialisation.from_bytes(encoded, type(entity))
         assert entity == decoded
 
 
@@ -43,6 +43,6 @@ def test_that_transfer_session_serialises_to_and_from_json(deploys_1):
             vector["session"]["target"],
             vector["session"]["correlation_id"]
             )
-        encoded = serialisation1.to_json(entity)
-        decoded = serialisation1.from_json(encoded, type(entity))
+        encoded = serialisation.to_json(entity)
+        decoded = serialisation.from_json(encoded, type(entity))
         assert entity == decoded
