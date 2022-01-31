@@ -11,7 +11,6 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
     :returns: A JSON compatible string or dictionary.
 
     """
-    print(107)
     try:
         encoder = _ENCODERS_COMPLEX[entity.type_key]
     except KeyError:

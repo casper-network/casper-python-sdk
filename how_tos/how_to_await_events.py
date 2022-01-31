@@ -83,5 +83,4 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
 
 # Entry point.
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(_ARGS.parse_args()))
+    asyncio.run(main(_ARGS.parse_args()))
