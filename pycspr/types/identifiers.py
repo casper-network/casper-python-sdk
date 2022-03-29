@@ -58,20 +58,20 @@ class DictionaryID_AccountNamedKey(DictionaryID):
     """Encapsulates information required to query a dictionary item via an Account's named keys.
 
     """
+    # The account key as a formatted string whose named keys contains dictionary_name.
+    account_key: str
+
     # The dictionary item key.
     dictionary_item_key: str
 
     # The named key under which the dictionary seed URef is stored.
     dictionary_name: str
 
-    # The account key as a formatted string whose named keys contains dictionary_name.
-    key: str
-
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and \
+               self.account_key == other.account_key and \
                self.dictionary_item_key == other.dictionary_item_key and \
-               self.dictionary_name == other.dictionary_name and \
-               self.key == other.key
+               self.dictionary_name == other.dictionary_name
 
 
 @dataclasses.dataclass
@@ -79,20 +79,20 @@ class DictionaryID_ContractNamedKey(DictionaryID):
     """Encapsulates information required to query a dictionary item via a Contract's named keys.
 
     """
+    # The contract key as a formatted string whose named keys contains dictionary_name.
+    contract_key: str
+
     # The dictionary item key.
     dictionary_item_key: str
 
     # The named key under which the dictionary seed URef is stored.
     dictionary_name: str
 
-    # The contract key as a formatted string whose named keys contains dictionary_name.
-    key: str
-
     def __eq__(self, other) -> bool:
         return super().__eq__(other) and \
+               self.contract_key == other.contract_key and \
                self.dictionary_item_key == other.dictionary_item_key and \
-               self.dictionary_name == other.dictionary_name and \
-               self.key == other.key
+               self.dictionary_name == other.dictionary_name
 
 
 @dataclasses.dataclass

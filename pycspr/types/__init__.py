@@ -138,3 +138,19 @@ CL_TYPEKEY_TO_CL_TYPE = {
     CL_TypeKey.UNIT: CL_Type_Unit,
     CL_TypeKey.UREF: CL_Type_URef,
 }
+
+DEPLOY_EXECUTABLE_ITEM_VARIANTS = (
+    ModuleBytes,
+    StoredContractByHash,
+    StoredContractByHashVersioned,
+    StoredContractByName,
+    StoredContractByNameVersioned,
+    Transfer,
+)
+
+DICTIONARY_ID_VARIANTS = (
+    DictionaryID_AccountNamedKey,
+    DictionaryID_ContractNamedKey,
+    DictionaryID_SeedURef,
+    DictionaryID_UniqueKey
+)

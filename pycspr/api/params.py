@@ -3,6 +3,7 @@ import typing
 from pycspr import serialisation
 from pycspr import types
 from pycspr.crypto import cl_checksum
+from pycspr.types import DICTIONARY_ID_VARIANTS
 from pycspr.types.cl_values import CL_Key
 
 
@@ -132,46 +133,53 @@ def get_deploy_params(deploy_id: types.DeployID) -> dict:
     }
 
 
-def get_dictionary_item_params(identifier: types.DictionaryID) -> dict:
+def get_dictionary_item_params(identifier: types.DictionaryID, state_root_hash: bytes) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param identifier: Identifier of a state dictionary.
+    :param state_root_hash: A node's root state hash at some point in chain time.
     :returns: Parameters to be passed to JSON-RPC API.
 
     """
+    if not isinstance(identifier, DICTIONARY_ID_VARIANTS):
+        raise ValueError("Unrecognized dictionary item type.")
+
+    result: dict = {
+        "state_root_hash": state_root_hash.hex(),
+    }
+
     if isinstance(identifier, types.DictionaryID_AccountNamedKey):
-        return {
+        result["dictionary_identifier"] = {
             "AccountNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
-                "key": identifier.key
-            }
+                "key": f"hash-{cl_checksum.encode_account_id(identifier.account_key)}"
+            }            
         }
 
     elif isinstance(identifier, types.DictionaryID_ContractNamedKey):
-        return {
+        result["dictionary_identifier"] = {
             "ContractNamedKey": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
-                "key": identifier.key
-            }
+                "key": f"hash-{cl_checksum.encode_contract_id(identifier.contract_key)}"
+            }          
         }
 
     elif isinstance(identifier, types.DictionaryID_SeedURef):
-        return {
+        result["dictionary_identifier"] = {
             "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "seed_uref": identifier.dictionary_name
-            }
+            }     
         }
 
     elif isinstance(identifier, types.DictionaryID_UniqueKey):
-        return {
-            "Dictionary": identifier.seed_uref.as_string()
+        result["dictionary_identifier"] = {
+            "Dictionary": identifier.seed_uref.as_string()   
         }
-
-    else:
-        raise ValueError("Unrecognized dictionary item type.")
+    
+    return result
 
 
 def get_era_info_params(block_id: types.BlockID = None) -> dict:
