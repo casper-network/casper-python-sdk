@@ -257,16 +257,23 @@ class NodeClient():
             params_factory.get_deploy_params(deploy_id)
             )
 
-    def get_dictionary_item(self, identifier: types.DictionaryID) -> dict:
+    def get_dictionary_item(
+        self,
+        identifier: types.DictionaryID,
+        state_root_hash: types.StateRootHash = None
+    ) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
         :param identifier: Identifier required to query a dictionary item.
+        :param state_root_hash: A node's root state hash at some point in chain time.
         :returns: On-chain data stored under a dictionary item.
 
         """
+        state_root_hash = state_root_hash or self.get_state_root_hash()
+
         return self._get_rpc_response(
             constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            params_factory.get_dictionary_item_params(identifier)
+            params_factory.get_dictionary_item_params(identifier, state_root_hash)
             )
 
     def get_era_height(self) -> int:

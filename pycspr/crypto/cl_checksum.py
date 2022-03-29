@@ -1,6 +1,7 @@
 import itertools
 import typing
 
+
 from pycspr.crypto.enums import HashAlgorithm
 from pycspr.crypto.hashifier import get_hash
 
@@ -65,6 +66,10 @@ def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
     return account_id[:1].hex() + encode(account_id[1:])
 
 
+# Synonym due to semantic issues.
+encode_account_id = encode_account_key
+
+
 def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
     """Encodes a block identifier as a checksummed hexadecimal string.
 
@@ -76,6 +81,19 @@ def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
         block_id = bytes.fromhex(block_id)
 
     return encode(block_id)
+
+
+def encode_contract_id(contract_id: typing.Union[str, bytes]) -> str:
+    """Encodes a contract identifier as a checksummed hexadecimal string.
+
+    :param contract_id: A contract identifier.
+    :returns: Checksummed hexadecimal string.
+
+    """
+    if isinstance(contract_id, str):
+        contract_id = bytes.fromhex(contract_id)
+
+    return encode(contract_id)
 
 
 def encode_deploy_id(deploy_id: typing.Union[str, bytes]) -> str:
