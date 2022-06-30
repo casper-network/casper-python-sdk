@@ -228,7 +228,7 @@ class NodeClient():
         :returns: On-chain block transfers information.
 
         """
-        response = self._get_rpc_response(
+        response: dict = self._get_rpc_response(
             constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
             params_factory.get_block_transfers_params(block_id)
             )
@@ -244,6 +244,16 @@ class NodeClient():
         block: dict = self.get_block()
 
         return block["header"]["era_id"], block["header"]["height"]
+
+    def get_chain_spec(self) -> dict:
+        """Returns raw bytes of the chainspec.toml, genesis accounts.toml, and global_state.toml files.
+
+        :returns: Chain specification information.
+
+        """
+        response: dict = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
+
+        return response["chainspec_bytes"]
 
     def get_deploy(self, deploy_id: types.DeployID) -> dict:
         """Returns on-chain deploy information.
@@ -421,7 +431,7 @@ class NodeClient():
 
         return response["stored_value"]
 
-    def get_state_root_hash(self, block_id: types.BlockID = None) -> bytes:
+    def get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.

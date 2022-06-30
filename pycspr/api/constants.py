@@ -10,6 +10,7 @@ RPC_CHAIN_GET_BLOCK_TRANSFERS = "chain_get_block_transfers"
 RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK = "chain_get_era_info_by_switch_block"
 RPC_CHAIN_GET_STATE_ROOT_HASH = "chain_get_state_root_hash"
 RPC_DISCOVER = "rpc.discover"
+RPC_INFO_GET_CHAINSPEC="info_get_chainspec"
 RPC_INFO_GET_DEPLOY = "info_get_deploy"
 RPC_INFO_GET_PEERS = "info_get_peers"
 RPC_INFO_GET_STATUS = "info_get_status"
@@ -27,6 +28,7 @@ RPC_ENDPOINTS: set = {
     RPC_CHAIN_GET_BLOCK_TRANSFERS,
     RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
     RPC_CHAIN_GET_STATE_ROOT_HASH,
+    RPC_INFO_GET_CHAINSPEC,
     RPC_INFO_GET_DEPLOY,
     RPC_INFO_GET_PEERS,
     RPC_INFO_GET_STATUS,

@@ -1,5 +1,5 @@
 from pycspr.api.constants import RPC_ENDPOINTS
-
+from pycspr.api.constants import RPC_INFO_GET_CHAINSPEC
 
 def test_get_rpc_schema(CLIENT):
     def _assert(response):
@@ -26,3 +26,12 @@ def test_get_rpc_endpoint(CLIENT):
 
     for endpoint in RPC_ENDPOINTS:
         _assert(CLIENT.get_rpc_endpoint(endpoint))
+
+
+def test_get_chain_spec(CLIENT):
+    def _assert(response):
+        print(response)
+        raise ValueError()
+        assert isinstance(response, dict)
+
+    _assert(CLIENT.get_chain_spec())
