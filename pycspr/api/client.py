@@ -489,7 +489,7 @@ class NodeClient():
         )
         params = params_factory.get_query_global_state_params(state_id, key, path)
 
-        return self._get_rpc_response(constants.RPC_STATE_QUERY_GLOBAL_STATE, params)
+        return self._get_rpc_response(constants.RPC_QUERY_GLOBAL_STATE, params)
 
     def yield_events(
         self,

@@ -20,7 +20,7 @@ RPC_STATE_GET_AUCTION_INFO = "state_get_auction_info"
 RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
-RPC_STATE_QUERY_GLOBAL_STATE = "query_global_state"
+RPC_QUERY_GLOBAL_STATE = "query_global_state"
 
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
@@ -38,7 +38,7 @@ RPC_ENDPOINTS: set = {
     RPC_STATE_GET_BALANCE,
     RPC_STATE_GET_DICTIONARY_ITEM,
     RPC_STATE_GET_ITEM,
-    RPC_STATE_QUERY_GLOBAL_STATE,
+    RPC_QUERY_GLOBAL_STATE,
     }
 
 # Node REST endpoints.
