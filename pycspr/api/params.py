@@ -24,8 +24,12 @@ def get_account_balance_params(
         state_root_hash = state_root_hash.hex()
 
     return {
-        "purse_uref": purse_uref,
-        "state_root_hash": state_root_hash
+        "purse_identifier": {
+            "purse_uref": purse_uref
+        },
+        "state_identifier": {
+            "StateRootHash": state_root_hash
+        }
     }
 
 

@@ -102,9 +102,63 @@ class NodeClient():
         """
         state_root_hash = state_root_hash or self.get_state_root_hash()
         params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_BALANCE, params)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
 
-        return int(response["balance_value"])
+        return int(response["balance"])
+
+    def get_account_balance_from_account_hash(
+        self,
+        purse_uref: types.CL_URef,
+        state_root_hash: types.StateRootHash = None
+    ) -> int:
+        """Returns account balance at a certain global state root hash.
+
+        :param purse_uref: URef of a purse associated with an on-chain account.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: Account balance if on-chain account is found.
+
+        """
+        state_root_hash = state_root_hash or self.get_state_root_hash()
+        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
+
+        return int(response["balance"])
+
+    def get_account_balance_from_account_key(
+        self,
+        purse_uref: types.CL_URef,
+        state_root_hash: types.StateRootHash = None
+    ) -> int:
+        """Returns account balance at a certain global state root hash.
+
+        :param purse_uref: URef of a purse associated with an on-chain account.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: Account balance if on-chain account is found.
+
+        """
+        state_root_hash = state_root_hash or self.get_state_root_hash()
+        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
+
+        return int(response["balance"])
+
+    def get_account_balance_from_purse_uref(
+        self,
+        purse_uref: types.CL_URef,
+        state_root_hash: types.StateRootHash = None
+    ) -> int:
+        """Returns account balance at a certain global state root hash.
+
+        :param purse_uref: URef of a purse associated with an on-chain account.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: Account balance if on-chain account is found.
+
+        """
+        state_root_hash = state_root_hash or self.get_state_root_hash()
+        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
+
+        return int(response["balance"])
 
     def get_account_info(
         self,
@@ -292,9 +346,9 @@ class NodeClient():
         :returns: Hieght of current era.
 
         """
-        era_hieght, _ = self.get_chain_heights()
+        era_height, _ = self.get_chain_heights()
 
-        return era_hieght
+        return era_height
 
     def get_era_info(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information.
