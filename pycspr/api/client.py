@@ -96,7 +96,7 @@ class NodeClient():
     ) -> int:
         """Returns account balance at a certain global state root hash.
 
-        :param purse_id: An identifier associated with a purse under which an account balance resides.
+        :param purse_id: Identifier associated with a purse under which a balance resides.
         :param state_root_hash: A node's root state hash at some point in chain time.
         :returns: Account balance if on-chain account is found.
 

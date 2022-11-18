@@ -36,7 +36,6 @@ class GlobalStateIDType(enum.Enum):
     BLOCK = enum.auto()
 
 
-
 @dataclasses.dataclass
 class GlobalStateID():
     # 32 byte global state identifier, either a block or state root hash.
