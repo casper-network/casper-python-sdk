@@ -39,13 +39,3 @@ def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
         assert response.access_rights == pycspr.types.CL_URefAccessRights.READ_ADD_WRITE
 
     _assert(CLIENT.get_account_main_purse_uref(account_key))
-
-
-def test_get_account_balance(CLIENT, account_main_purse_uref: object, state_root_hash: bytes):
-    assert isinstance(account_main_purse_uref, pycspr.types.CL_URef)
-
-    def _assert(response):
-        assert isinstance(response, int)
-        assert response >= 0
-
-    _assert(CLIENT.get_account_balance(account_main_purse_uref, state_root_hash))
