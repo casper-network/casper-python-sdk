@@ -3,6 +3,9 @@ import enum
 import typing
 
 
+# The output of a one way hashing function.
+Digest = typing.Union[bytes, str]
+
 # An account identifier may be a byte array of 33 bytes,
 # a hexadecimal string of 66 characters.
 AccountID = typing.Union[bytes, str]

@@ -100,29 +100,29 @@ class NodeClient():
         :returns: Account balance if on-chain account is found.
 
         """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
-        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
-
-        return int(response["balance"])
+        return self.get_account_balance_under_purse_uref(purse_uref, state_root_hash)
 
     def get_account_balance_under_account_hash(
         self,
-        purse_uref: types.CL_URef,
+        account_hash: types.AccountID,
         state_root_hash: types.StateRootHash = None
     ) -> int:
         """Returns account balance at a certain global state root hash.
 
-        :param purse_uref: URef of a purse associated with an on-chain account.
+        :param account_hash: On-chain account address derived from account public key.
         :param state_root_hash: A node's root state hash at some point in chain time.
         :returns: Account balance if on-chain account is found.
 
         """
-        raise NotImplementedError()
+        return self._get_account_balance(
+            account_hash,
+            params_factory.get_account_balance_under_account_hash_params,
+            state_root_hash
+        )
 
     def get_account_balance_under_account_key(
         self,
-        account_id: types.AccountID,
+        account_key: types.AccountID,
         state_root_hash: types.StateRootHash = None
     ) -> int:
         """Returns account balance at a certain global state root hash.
@@ -132,7 +132,11 @@ class NodeClient():
         :returns: Account balance if on-chain account is found.
 
         """
-        raise NotImplementedError()
+        return self._get_account_balance(
+            account_key,
+            params_factory.get_account_balance_under_account_key_params,
+            state_root_hash
+        )
 
     def get_account_balance_under_purse_uref(
         self,
@@ -146,8 +150,15 @@ class NodeClient():
         :returns: Account balance if on-chain account is found.
 
         """
+        return self._get_account_balance(
+            purse_uref,
+            params_factory.get_account_balance_under_purse_uref_params,
+            state_root_hash
+        )
+
+    def _get_account_balance(self, accountID, param_factory, state_root_hash: types.StateRootHash = None) -> int:
         state_root_hash = state_root_hash or self.get_state_root_hash()
-        params = params_factory.get_account_balance_params(purse_uref, state_root_hash)
+        params = param_factory(accountID, state_root_hash)
         response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
 
         return int(response["balance"])

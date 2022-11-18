@@ -5,9 +5,62 @@ from pycspr import types
 from pycspr.crypto import cl_checksum
 from pycspr.types import DICTIONARY_ID_VARIANTS
 from pycspr.types.cl_values import CL_Key
+from pycspr.types.cl_values import CL_KeyType
 
 
-def get_account_balance_params(
+def get_account_balance_under_account_hash_params(
+    account_hash: types.AccountID,
+    state_root_hash: types.StateRootHash = None
+) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param account_hash: On-chain account address derived from account public key.
+    :param state_root_hash: A node's root state hash at a point in chain time.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(account_hash, bytes):
+        account_hash = account_hash.hex()
+    if isinstance(state_root_hash, bytes):
+        state_root_hash = state_root_hash.hex()
+
+    return {
+        "purse_identifier": {
+            "main_purse_under_account_hash": f"account-hash-{account_hash}"
+        },
+        "state_identifier": {
+            "StateRootHash": state_root_hash
+        }
+    }
+
+
+def get_account_balance_under_account_key_params(
+    account_key: types.AccountID,
+    state_root_hash: types.StateRootHash = None
+) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param account_key: Account public key prefixed with a key type identifier.
+    :param state_root_hash: A node's root state hash at a point in chain time.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(account_key, bytes):
+        account_key = account_key.hex()
+    if isinstance(state_root_hash, bytes):
+        state_root_hash = state_root_hash.hex()
+
+    return {
+        "purse_identifier": {
+            "main_purse_under_public_key": account_key
+        },
+        "state_identifier": {
+            "StateRootHash": state_root_hash
+        }
+    }
+
+
+def get_account_balance_under_purse_uref_params(
     purse_uref: typing.Union[str, types.CL_URef],
     state_root_hash: types.StateRootHash = None
 ) -> dict:
