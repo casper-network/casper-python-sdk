@@ -8,7 +8,7 @@ def test_get_account_balance_under_purse_uref(CLIENT, account_main_purse_uref: o
         assert isinstance(response, int)
         assert response >= 0
 
-    _assert(CLIENT.get_account_balance_under_purse_uref(account_main_purse_uref, state_root_hash))
+    _assert(CLIENT.get_account_balance(account_main_purse_uref, state_root_hash))
 
 
 def test_get_account_balance_under_account_hash(CLIENT, account_hash: bytes, state_root_hash: bytes):
@@ -16,7 +16,7 @@ def test_get_account_balance_under_account_hash(CLIENT, account_hash: bytes, sta
         assert isinstance(response, int)
         assert response >= 0
 
-    _assert(CLIENT.get_account_balance_under_account_hash(account_hash, state_root_hash))
+    _assert(CLIENT.get_account_balance(account_hash, state_root_hash))
 
 
 def test_get_account_balance_under_account_key(CLIENT, account_key: bytes, state_root_hash: bytes):
@@ -24,4 +24,4 @@ def test_get_account_balance_under_account_key(CLIENT, account_key: bytes, state
         assert isinstance(response, int)
         assert response >= 0
 
-    _assert(CLIENT.get_account_balance_under_account_key(account_key, state_root_hash))
+    _assert(CLIENT.get_account_balance(account_key, state_root_hash))

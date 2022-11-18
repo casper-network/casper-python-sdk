@@ -8,6 +8,50 @@ from pycspr.types.cl_values import CL_Key
 from pycspr.types.cl_values import CL_KeyType
 
 
+def get_account_balance_params(
+    purse_id: types.PurseID,
+    state_root_hash: types.StateRootHash = None
+) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param purse_id: An identifier associated with a purse under which an account balance resides.
+    :param state_root_hash: A node's root state hash at a point in chain time.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(purse_id, types.CL_URef):
+        result = {
+            "purse_identifier": {
+                "purse_uref": serialisation.cl_value_to_parsed(purse_id)
+            },
+        }
+    elif isinstance(purse_id, bytes):
+        if len(purse_id) == 32:
+            result = {
+                "purse_identifier": {
+                    "main_purse_under_account_hash": f"account-hash-{purse_id.hex()}"
+                },
+            }
+        else:
+            result = {
+                "purse_identifier": {
+                    "main_purse_under_public_key": purse_id.hex()
+                },
+            }
+    else:
+        raise ValueError("Invalid purse identifier")
+
+    # TODO: state identifier can be either StateRootHash | Block Height | Block Hash
+    if isinstance(state_root_hash, bytes):
+        state_root_hash = state_root_hash.hex()
+
+    return result | {
+        "state_identifier": {
+            "StateRootHash": state_root_hash
+        }                
+    }
+
+
 def get_account_balance_under_account_hash_params(
     account_hash: types.AccountID,
     state_root_hash: types.StateRootHash = None

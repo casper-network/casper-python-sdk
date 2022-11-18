@@ -23,19 +23,24 @@ ContractVersion = typing.NewType("U32 integer representing", int)
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
 DeployID = typing.Union[bytes, str]
 
+# A purse identifier under which an account balance resides.
+PurseID = typing.Union[bytes, object]
+
 
 class GlobalStateIDType(enum.Enum):
     """Enumeration over set of CL type keys.
 
     """
+    # TODO: extend -> BlockHash`, `BlockHeight`, `StateRootHash
     STATE_ROOT = enum.auto()
     BLOCK = enum.auto()
+
 
 
 @dataclasses.dataclass
 class GlobalStateID():
     # 32 byte global state identifier, either a block or state root hash.
-    identifier: bytes
+    identifier: typing.Union[bytes, int]
 
     # Type of identifier.
     id_type: GlobalStateIDType
