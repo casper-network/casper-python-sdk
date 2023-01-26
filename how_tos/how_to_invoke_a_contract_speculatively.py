@@ -21,7 +21,7 @@ from pycspr.types import StoredContractByHash
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to invoke an ERC-20 smart contract.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to speculatively invoke an ERC-20 smart contract.")
 
 # CLI argument: path to contract operator secret key - defaults to NCTL faucet.
 _ARGS.add_argument(
@@ -117,8 +117,10 @@ def _main(args: argparse.Namespace):
     # Approve deploy.
     deploy.approve(operator)
 
-    # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    # Dispatch deploy to a node for speculative execution.
+    response = client.speculative_exec(deploy)
+
+    print(response)
 
     print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")

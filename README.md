@@ -16,27 +16,27 @@ How To: Install ?
 pip install pycspr
 ```
 
-How To: Query a node  ?
+How To: Query a node ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_query_nodes.py).
 
-How To: Transfer funds between 2 accounts  ?
+How To: Transfer funds between 2 accounts ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_transfer.py).
 
-How To: Delegate funds to a validator  ?
+How To: Delegate funds to a validator ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_delegate.py).
 
-How To: Undelegate funds from a validator  ?
+How To: Undelegate funds from a validator ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_undelegate.py).
 
-How To: Stake funds as a validator  ?
+How To: Stake funds as a validator ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_stake.py).
@@ -46,32 +46,37 @@ How To: Unstake funds as a validator ?
 
 See [here](how_tos/how_to_unstake.py).
 
-How To: Install a smart contract  ?
+How To: Install a smart contract ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_install_a_contract.py).
 
-How To: Invoke a smart contract  ?
+How To: Invoke a smart contract ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_invoke_a_contract.py).
 
-How To: Query a smart contract  ?
+How To: Invoke a smart contract speculatively ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_invoke_a_contract_speculatively.py).
+
+How To: Query a smart contract ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_query_contracts.py).
 
-How To: Hash data  ?
+How To: Hash data ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_hash_data.py).
 
-How To: Create Key Pairs  ?
+How To: Create Key Pairs ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_create_key_pairs.py).
 
-How To: Apply a checksum  ?
+How To: Apply a checksum ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_apply_a_checksum.py).
