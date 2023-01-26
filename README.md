@@ -56,15 +56,15 @@ How To: Invoke a smart contract ?
 
 See [here](how_tos/how_to_invoke_a_contract.py).
 
-How To: Invoke a smart contract speculatively ?
-------------------------------------------------------
-
-See [here](how_tos/how_to_invoke_a_contract_speculatively.py).
-
 How To: Query a smart contract ?
 ------------------------------------------------------
 
 See [here](how_tos/how_to_query_contracts.py).
+
+How To: Speculatively execute a deploy ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_speculatively_execute_a_deploy.py).
 
 How To: Hash data ?
 ------------------------------------------------------

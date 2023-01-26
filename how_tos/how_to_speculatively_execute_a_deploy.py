@@ -21,7 +21,7 @@ from pycspr.types import StoredContractByHash
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to speculatively invoke an ERC-20 smart contract.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to speculatively execute a deploy.")
 
 # CLI argument: path to contract operator secret key - defaults to NCTL faucet.
 _ARGS.add_argument(
