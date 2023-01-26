@@ -26,6 +26,7 @@ class NodeClient():
         self.connection = connection
         self._get_rest_response = connection.get_rest_response
         self._get_rpc_response = connection.get_rpc_response
+        self._get_speculative_rpc_response = connection.get_speculative_rpc_response
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -466,6 +467,20 @@ class NodeClient():
         response = self._get_rpc_response(
             constants.RPC_ACCOUNT_PUT_DEPLOY,
             params_factory.put_deploy_params(deploy)
+            )
+
+        return response["deploy_hash"]
+
+    def speculative_exec(self, deploy: types.Deploy, block_id: types.BlockID = None):
+        """Dispatches a deploy to a node for speculative processing.
+
+        :param deploy: A deploy to be speculatively processed at a node.
+        :param block_id: Identifier of a finalised block.
+
+        """
+        response = self._get_speculative_rpc_response(
+            constants.SPECULATIVE_RPC_EXEC_DEPLOY,
+            params_factory.speculative_exec_params(deploy, block_id)
             )
 
         return response["deploy_hash"]

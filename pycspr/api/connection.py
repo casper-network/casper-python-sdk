@@ -31,6 +31,9 @@ class NodeConnection:
     # Number of exposed RPC port.
     port_rpc: int = constants.DEFAULT_PORT_RPC
 
+    # Number of exposed speculative RPC port.
+    port_rpc_speculative: int = constants.DEFAULT_PORT_SPECULATIVE_RPC
+
     # Number of exposed SSE port.
     port_sse: int = constants.DEFAULT_PORT_SSE
 
@@ -48,6 +51,11 @@ class NodeConnection:
     def address_rpc(self) -> str:
         """A node's RPC server base address."""
         return f"{self.address}:{self.port_rpc}/rpc"
+
+    @property
+    def address_rpc_speculative(self) -> str:
+        """A node's speculative RPC server base address."""
+        return f"{self.address}:{self.port_rpc_speculative}/rpc"
 
     @property
     def address_sse(self) -> str:
@@ -78,11 +86,36 @@ class NodeConnection:
         :returns: Parsed JSON-RPC response.
 
         """
-        response = requests.post(
+        return self._get_rpc_response(
             self.address_rpc,
-            json=jsonrpcclient.request(endpoint, params),
-            )
+            endpoint,
+            params
+        )
 
+    def get_speculative_rpc_response(self, endpoint: str, params: dict = None) -> dict:
+        """Invokes remote speculative JSON-RPC API and returns parsed response.
+
+        :endpoint: Target endpoint to invoke.
+        :params: Endpoints parameters.
+        :returns: Parsed JSON-RPC response.
+
+        """
+        return self._get_rpc_response(
+            self.address_rpc_speculative,
+            endpoint,
+            params
+        )
+
+    def _get_rpc_response(self, address: str, endpoint: str, params: dict = None) -> dict:
+        """Invokes remote speculative JSON-RPC API and returns parsed response.
+
+        :address: Server address.
+        :endpoint: Target endpoint to invoke.
+        :params: Endpoints parameters.
+        :returns: Parsed JSON-RPC response.
+
+        """
+        response = requests.post(address, json=jsonrpcclient.request(endpoint, params))
         parsed = jsonrpcclient.parse(response.json())
         if isinstance(parsed, jsonrpcclient.responses.Error):
             raise NodeAPIError(parsed)

@@ -387,3 +387,35 @@ def put_deploy_params(deploy: types.Deploy) -> dict:
     return {
         "deploy": serialisation.to_json(deploy)
     }
+
+
+def speculative_exec_params(
+    deploy: types.Deploy,
+    block_id: types.BlockID = None
+    ) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param deploy: A deploy to be dispatched to a node.
+    :param block_id: Identifier of a finalised block.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    if isinstance(block_id, (bytes, str)):
+        return {
+            "block_identifier": {
+                "Hash": cl_checksum.encode_block_id(block_id)
+            },
+            "deploy": serialisation.to_json(deploy)
+        }
+    elif isinstance(block_id, int):
+        return {
+            "block_identifier": {
+                "Height": block_id
+            },
+            "deploy": serialisation.to_json(deploy)
+        }
+    else:
+        return {
+            "block_identifier": None,
+            "deploy": serialisation.to_json(deploy)
+        }
