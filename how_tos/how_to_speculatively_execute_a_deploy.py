@@ -1,52 +1,48 @@
 import argparse
 import os
 import pathlib
+import random
 import typing
 
 import pycspr
 from pycspr import NodeClient
 from pycspr import NodeConnection
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types import CL_ByteArray
-from pycspr.types import CL_U256
-from pycspr.types import Deploy
-from pycspr.types import DeployParameters
-from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
+from pycspr.types import Deploy
 from pycspr.types import PublicKey
-from pycspr.types import StoredContractByHash
 
 
-# Path to NCTL network assets.
+# Path to NCTL assets.
 _PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to speculatively execute a deploy.")
+_ARGS = argparse.ArgumentParser("Illustration of how to execute native transfers.")
 
-# CLI argument: path to contract operator secret key - defaults to NCTL faucet.
+# CLI argument: path to cp1 secret key - defaults to NCTL user 1.
 _ARGS.add_argument(
-    "--operator-secret-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem",
-    dest="path_to_operator_secret_key",
-    help="Path to operator's secret_key.pem file.",
+    "--cp1-secret-key-path",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "secret_key.pem",
+    dest="path_to_cp1_secret_key",
+    help="Path to counter-party one's secret_key.pem file.",
     type=str,
     )
 
-# CLI argument: type of contract operator secret key - defaults to ED25519.
+# CLI argument: type of cp1 secret key - defaults to ED25519.
 _ARGS.add_argument(
-    "--operator-secret-key-type",
+    "--cp1-secret-key-type",
     default=KeyAlgorithm.ED25519.name,
-    dest="type_of_operator_secret_key",
-    help="Type of operator's secret key.",
+    dest="type_of_cp1_secret_key",
+    help="Type of counter party one's secret key.",
     type=str,
     )
 
-# CLI argument: path to user to whom tokens will be transferred - defaults to NCTL user 1.
+# CLI argument: path to cp2 account key - defaults to NCTL user 2.
 _ARGS.add_argument(
-    "--user-public-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "public_key_hex",
-    dest="path_to_user_public_key",
-    help="Path to user's public_key_hex file.",
+    "--cp2-account-key-path",
+    default=_PATH_TO_NCTL_ASSETS / "users" / "user-2" / "public_key_hex",
+    dest="path_to_cp2_account_key",
+    help="Path to counter-party two's public_key_hex file.",
     type=str,
     )
 
@@ -57,15 +53,6 @@ _ARGS.add_argument(
     dest="chain_name",
     help="Name of target chain.",
     type=str,
-    )
-
-# CLI argument: amount in motes to be offered as payment.
-_ARGS.add_argument(
-    "--payment",
-    default=int(1e9),
-    dest="deploy_payment",
-    help="Amount in motes to be offered as payment.",
-    type=int,
     )
 
 # CLI argument: host address of target node - defaults to NCTL node 1.
@@ -86,12 +73,12 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: amount of ERC-20 tokens to be transferred to user.
+# CLI argument: Node API speculative JSON-RPC port - defaults to 25101 @ NCTL node 1.
 _ARGS.add_argument(
-    "--amount",
-    default=int(2e9),
-    dest="amount",
-    help="Amount of ERC-20 tokens to be transferred to user.",
+    "--node-port-rpc-speculative",
+    default=25101,
+    dest="node_port_rpc_speculative",
+    help="Node API speculative JSON-RPC port.  Typically 7778 on most nodes.",
     type=int,
     )
 
@@ -103,28 +90,23 @@ def _main(args: argparse.Namespace):
 
     """
     # Set node client.
-    client: NodeClient = _get_client(args)
+    client = _get_client(args)
 
-    # Set contract operator / user.
-    operator, user = _get_operator_and_user_keys(args)
-
-    # Set contract hash.
-    contract_hash: bytes = _get_contract_hash(args, client, operator)
+    # Set counter-parties.
+    cp1, cp2 = _get_counter_parties(args)
 
     # Set deploy.
-    deploy: Deploy = _get_deploy(args, contract_hash, operator, user)
+    deploy: Deploy = _get_deploy(args, cp1, cp2)
 
     # Approve deploy.
-    deploy.approve(operator)
+    deploy.approve(cp1)
 
-    # Dispatch deploy to a node for speculative execution.
-    response = client.speculative_exec(deploy)
+    # Dispatch deploy to a node.
+    # client.send_deploy(deploy)
 
-    print(response)
+    client.speculative_exec(deploy)
 
-    print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
-    print("-" * 72)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -134,70 +116,44 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     return NodeClient(NodeConnection(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
+        port_rpc_speculative=args.node_port_rpc_speculative
     ))
 
 
-def _get_operator_and_user_keys(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
-    """Returns the smart contract operator's private key.
+def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:
+    """Returns the 2 counter-parties participating in the transfer.
 
     """
-    operator = pycspr.parse_private_key(
-        args.path_to_operator_secret_key,
-        args.type_of_operator_secret_key,
+    cp1 = pycspr.parse_private_key(
+        args.path_to_cp1_secret_key,
+        args.type_of_cp1_secret_key,
         )
-    user = pycspr.parse_public_key(
-        args.path_to_user_public_key,
+    cp2 = pycspr.parse_public_key(
+        args.path_to_cp2_account_key
         )
 
-    return operator, user
+    return cp1, cp2
 
 
-def _get_contract_hash(
-    args: argparse.Namespace,
-    client: NodeClient,
-    operator: PrivateKey
-) -> bytes:
-    """Returns on-chain contract identifier.
-
-    """
-    # Query operator account for a named key == ERC20 & return parsed named key value.
-    account_info = client.get_account_info(operator.account_key)
-    for named_key in account_info["named_keys"]:
-        if named_key["name"] == "ERC20":
-            return bytes.fromhex(named_key["key"][5:])
-
-    raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
-
-
-def _get_deploy(
-    args: argparse.Namespace,
-    contract_hash: bytes,
-    operator: PrivateKey,
-    user: PublicKey
-) -> Deploy:
-    """Returns delegation deploy to be dispatched to a node.
+def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> Deploy:
+    """Returns transfer deploy to be dispatched to a node.
 
     """
     # Set standard deploy parameters.
-    params: DeployParameters = pycspr.create_deploy_parameters(
-        account=operator,
+    deploy_params = pycspr.create_deploy_parameters(
+        account=cp1,
         chain_name=args.chain_name
         )
 
-    # Set payment logic.
-    payment: ModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
+    # Set deploy.
+    deploy = pycspr.create_transfer(
+        params=deploy_params,
+        amount=int(2.5e9),
+        target=cp2.account_key,
+        correlation_id=random.randint(1, 1e6)
+        )
 
-    # Set session logic.
-    session: StoredContractByHash = StoredContractByHash(
-        entry_point="transfer",
-        hash=contract_hash,
-        args={
-            "amount": CL_U256(args.amount),
-            "recipient": CL_ByteArray(user.account_hash)
-        }
-    )
-
-    return pycspr.create_deploy(params, payment, session)
+    return deploy
 
 
 # Entry point.

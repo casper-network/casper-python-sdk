@@ -1,5 +1,5 @@
 # Default deploy time to live.
-DEFAULT_DEPLOY_TTL = "30m"
+DEFAULT_DEPLOY_TTL = "5m"
 
 # Default deploy gas price.
 DEFAULT_GAS_PRICE = 1

@@ -478,12 +478,10 @@ class NodeClient():
         :param block_id: Identifier of a finalised block.
 
         """
-        response = self._get_speculative_rpc_response(
+        return self._get_speculative_rpc_response(
             constants.SPECULATIVE_RPC_EXEC_DEPLOY,
             params_factory.speculative_exec_params(deploy, block_id)
             )
-
-        return response["deploy_hash"]
 
     def query_global_state(
         self,
