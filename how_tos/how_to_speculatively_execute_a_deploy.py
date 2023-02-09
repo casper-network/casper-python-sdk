@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import os
 import pathlib
 import random
@@ -82,8 +83,17 @@ _ARGS.add_argument(
     type=int,
     )
 
+# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
+_ARGS.add_argument(
+    "--node-port-sse",
+    default=18101,
+    dest="node_port_sse",
+    help="Node API SSE port.  Typically 9999 on most nodes.",
+    type=int,
+    )
 
-def _main(args: argparse.Namespace):
+
+async def _main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -102,11 +112,9 @@ def _main(args: argparse.Namespace):
     deploy.approve(cp1)
 
     # Dispatch deploy to a node.
-    # client.send_deploy(deploy)
+    r = client.speculative_exec(deploy)
 
-    client.speculative_exec(deploy)
-
-    print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
+    print(r)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -116,7 +124,8 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     return NodeClient(NodeConnection(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
-        port_rpc_speculative=args.node_port_rpc_speculative
+        port_rpc_speculative=args.node_port_rpc_speculative,
+        port_sse=args.node_port_sse
     ))
 
 
@@ -158,4 +167,4 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
 
 # Entry point.
 if __name__ == "__main__":
-    _main(_ARGS.parse_args())
+    asyncio.run(_main(_ARGS.parse_args()))
