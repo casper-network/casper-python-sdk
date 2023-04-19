@@ -192,7 +192,7 @@ class NodeClient():
         polling_interval_seconds: float = 1.0,
         max_polling_time_seconds: float = 120.0
     ) -> dict:
-        """Returns last finalised block in current era.
+        """Returns next switch block.
 
         :param polling_interval_seconds: Time interval time before polling for next switch block.
         :param max_polling_time_seconds: Maximum time in seconds to poll.
