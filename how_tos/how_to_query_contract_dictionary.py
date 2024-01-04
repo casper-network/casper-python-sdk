@@ -6,7 +6,7 @@ from pycspr.types import DictionaryID_ContractNamedKey
 
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to query a dictionary item stored under an account.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to query a dictionary item.")
 
 
 # CLI argument: name of target chain - defaults to NCTL chain.
@@ -84,7 +84,7 @@ def _main(args: argparse.Namespace):
     response = client.get_dictionary_item(dictionary_id)
 
     print(response)
-    
+
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.

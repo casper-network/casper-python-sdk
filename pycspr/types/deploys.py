@@ -292,7 +292,8 @@ class StoredContract(DeployExecutableItem):
 
 @dataclasses.dataclass
 class StoredContractByHash(StoredContract):
-    """Encapsulates information required to execute an on-chain smart contract referenced by hash.
+    """Encapsulates information required to execute an on-chain
+       smart contract referenced by hash.
 
     """
     # On-chain smart contract address.

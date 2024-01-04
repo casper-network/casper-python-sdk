@@ -154,7 +154,7 @@ def get_dictionary_item_params(identifier: types.DictionaryID, state_root_hash: 
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": f"hash-{cl_checksum.encode_account_id(identifier.account_key)}"
-            }            
+            }
         }
 
     elif isinstance(identifier, types.DictionaryID_ContractNamedKey):
@@ -163,7 +163,7 @@ def get_dictionary_item_params(identifier: types.DictionaryID, state_root_hash: 
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "dictionary_name": identifier.dictionary_name,
                 "key": f"hash-{cl_checksum.encode_contract_id(identifier.contract_key)}"
-            }          
+            }
         }
 
     elif isinstance(identifier, types.DictionaryID_SeedURef):
@@ -171,14 +171,14 @@ def get_dictionary_item_params(identifier: types.DictionaryID, state_root_hash: 
             "URef": {
                 "dictionary_item_key": identifier.dictionary_item_key,
                 "seed_uref": identifier.dictionary_name
-            }     
+            }
         }
 
     elif isinstance(identifier, types.DictionaryID_UniqueKey):
         result["dictionary_identifier"] = {
-            "Dictionary": identifier.seed_uref.as_string()   
+            "Dictionary": identifier.seed_uref.as_string()
         }
-    
+
     return result
 
 
@@ -220,7 +220,7 @@ def get_query_global_state_params(
         state_id_type = "BlockHash"
     else:
         state_id_type = "StateRootHash"
-    
+
     state_id = \
         state_id.identifier.hex() if isinstance(state_id.identifier, bytes) else \
         state_id.identifier

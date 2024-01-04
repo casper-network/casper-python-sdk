@@ -2,6 +2,9 @@ def test_get_chain_spec(CLIENT):
     def _assert(response):
         assert isinstance(response, dict)
         assert len(response) == 3
+        assert "chainspec_bytes" in response
+        assert "maybe_genesis_accounts_bytes" in response
+        assert "maybe_global_state_bytes" in response
 
     _assert(CLIENT.get_chain_spec())
 

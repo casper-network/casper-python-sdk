@@ -16,9 +16,11 @@ from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
 from tests.fixtures.deploys import create_deploy_header
 
-_TEST_ACCOUNT_KEY = bytes.fromhex("011e0ee16a28b65e3cfa74d003eea4811b06173438e920fa38961ce60eb23548f4")
+_TEST_ACCOUNT_KEY = \
+    bytes.fromhex("011e0ee16a28b65e3cfa74d003eea4811b06173438e920fa38961ce60eb23548f4")
 _TEST_BYTES = _TEST_ACCOUNT_KEY[1:]
-_TEST_SIG = bytes.fromhex("01f43d8300bbd683b90bd2474d35da7cca664df5a505c47f4d35bf93531dc359bdf50b5e9493a2484306cc5eb41933b9fb118cf7954cf04d6c28441fcb1ee42f02")
+_TEST_SIG = \
+    bytes.fromhex("01f43d8300bbd683b90bd2474d35da7cca664df5a505c47f4d35bf93531dc359bdf50b5e9493a2484306cc5eb41933b9fb118cf7954cf04d6c28441fcb1ee42f02")
 
 
 @pytest.fixture(scope="session")

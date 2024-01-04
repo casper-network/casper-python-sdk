@@ -27,7 +27,7 @@ def test_account_1():
     """Returns test user account information.
 
     """
-    path = _PATH_TO_ACCOUNTS / "account-1"  / "secret_key.pem"
+    path = _PATH_TO_ACCOUNTS / "account-1" / "secret_key.pem"
     (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
 
     return pycspr.types.PrivateKey(
@@ -42,7 +42,7 @@ def test_account_2():
     """Returns test user account information.
 
     """
-    path = _PATH_TO_ACCOUNTS / "account-2"  / "secret_key.pem"
+    path = _PATH_TO_ACCOUNTS / "account-2" / "secret_key.pem"
     (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
 
     return pycspr.types.PrivateKey(
