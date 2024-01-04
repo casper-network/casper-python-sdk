@@ -25,7 +25,6 @@ RPC_STATE_GET_ITEM = "state_get_item"
 RPC_STATE_QUERY_GLOBAL_STATE = "query_global_state"
 
 RPC_ENDPOINTS_UNSUPPORTED: set = {
-    RPC_CHAIN_GET_ERA_SUMMARY,
     RPC_QUERY_BALANCE,
     }
 

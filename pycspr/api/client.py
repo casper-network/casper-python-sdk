@@ -319,6 +319,20 @@ class NodeClient():
         """
         return self.get_era_info(block_id)
 
+    def get_era_summary(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era summary information.
+
+        :param block_id: Identifier of a block.
+        :returns: Era summary information.
+
+        """
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_ERA_SUMMARY,
+            params_factory.get_era_summary_params(block_id)
+            )
+
+        return response["era_summary"]
+
     def get_events(
         self,
         callback: typing.Callable[[NodeEventChannel, NodeEventType, int, dict], None],
