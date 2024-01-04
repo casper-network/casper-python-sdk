@@ -245,6 +245,16 @@ class NodeClient():
 
         return block["header"]["era_id"], block["header"]["height"]
 
+    def get_chain_spec(self) -> dict:
+        """Returns canonical network state information.
+
+        :returns: Chain spec, genesis accounts and global state information.
+
+        """
+        response = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
+
+        return response["chainspec_bytes"]
+
     def get_deploy(self, deploy_id: types.DeployID) -> dict:
         """Returns on-chain deploy information.
 
