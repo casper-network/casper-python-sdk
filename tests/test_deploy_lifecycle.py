@@ -39,7 +39,7 @@ def test_that_a_deploy_can_be_written_to_fs(deploy_params, cp1, cp2):
         os.remove(fpath)
 
 
-def test_can_write_to_and_read_from_fs(deploy_params, cp1, cp2):
+def test_that_a_deploy_can_be_written_to_and_read_from_fs(deploy_params, cp1, cp2):
     deploy_1 = _create_deploy(deploy_params, cp2)
     with tempfile.TemporaryFile() as fp:
         fpath = pycspr.write_deploy(deploy_1, str(fp))

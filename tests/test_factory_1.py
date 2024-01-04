@@ -62,7 +62,7 @@ def test_create_deploy_parameters(a_test_account, a_test_chain_id, a_test_timest
 def test_create_standard_payment():
     assert isinstance(
         pycspr.create_standard_payment(
-            amount=random.randint(0, 1e5),
+            amount=random.randint(0, int(1e5)),
         ),
         pycspr.types.ModuleBytes
         )
@@ -71,8 +71,8 @@ def test_create_standard_payment():
 def test_create_transfer_session(a_test_account):
     assert isinstance(
         pycspr.factory.create_transfer_session(
-            amount=random.randint(0, 1e9),
-            correlation_id=random.randint(0, 1e9),
+            amount=random.randint(0, int(1e9)),
+            correlation_id=random.randint(0, int(1e9)),
             target=a_test_account.account_key,
             ),
         pycspr.types.Transfer
@@ -82,11 +82,11 @@ def test_create_transfer_session(a_test_account):
 def test_create_transfer_body(a_test_account):
     body = pycspr.factory.create_deploy_body(
         pycspr.factory.create_standard_payment(
-            amount=random.randint(0, 1e5),
+            amount=random.randint(0, int(1e5)),
         ),
         pycspr.factory.create_transfer_session(
-            amount=random.randint(0, 1e9),
-            correlation_id=random.randint(0, 1e9),
+            amount=random.randint(0, int(1e9)),
+            correlation_id=random.randint(0, int(1e9)),
             target=a_test_account.account_key,
         )
     )
@@ -98,11 +98,11 @@ def test_create_transfer_body(a_test_account):
 def test_create_transfer_header(deploy_params, a_test_account):
     body = pycspr.factory.create_deploy_body(
         pycspr.create_standard_payment(
-            amount=random.randint(0, 1e5),
+            amount=random.randint(0, int(1e5)),
         ),
         pycspr.factory.create_transfer_session(
-            amount=random.randint(0, 1e9),
-            correlation_id=random.randint(0, 1e9),
+            amount=random.randint(0, int(1e9)),
+            correlation_id=random.randint(0, int(1e9)),
             target=a_test_account.account_key,
         )
     )
@@ -118,9 +118,9 @@ def test_create_transfer_header(deploy_params, a_test_account):
 def test_create_transfer(deploy_params, a_test_account):
     deploy = pycspr.create_transfer(
         params=deploy_params,
-        amount=random.randint(0, 1e5),
+        amount=random.randint(0, int(1e5)),
         target=a_test_account.account_key,
-        correlation_id=random.randint(0, 1e9)
+        correlation_id=random.randint(0, int(1e9))
     )
     assert isinstance(deploy, pycspr.types.Deploy)
     assert isinstance(deploy.hash, bytes) and len(deploy.hash) == 32
