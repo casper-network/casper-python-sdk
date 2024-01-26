@@ -74,7 +74,7 @@ def a_deploy(deploy_params, cp1, cp2):
 
 
 def create_chain_id() -> str:
-    return "casper-net-1"
+    return "cspr-dev-cctl"
 
 
 def create_deploy() -> Deploy:

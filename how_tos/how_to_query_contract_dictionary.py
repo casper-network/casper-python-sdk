@@ -9,7 +9,7 @@ from pycspr.types import DictionaryID_ContractNamedKey
 _ARGS = argparse.ArgumentParser("Demo illustrating how to query a dictionary item.")
 
 
-# CLI argument: name of target chain - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to CCTL chain.
 _ARGS.add_argument(
     "--chain",
     default="casper-test",
@@ -18,7 +18,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="3.208.91.63",
@@ -27,7 +27,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
+# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
     default=7777,

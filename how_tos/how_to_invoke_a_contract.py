@@ -17,16 +17,16 @@ from pycspr.types import PublicKey
 from pycspr.types import StoredContractByHash
 
 
-# Path to NCTL network assets.
-_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
+# Path to CCTL network assets.
+_PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to install an ERC-20 smart contract.")
 
-# CLI argument: path to contract operator secret key - defaults to NCTL faucet.
+# CLI argument: path to contract operator secret key - defaults to CCTL faucet.
 _ARGS.add_argument(
     "--operator-secret-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem",
+    default=_PATH_TO_CCTL_ASSETS / "faucet" / "secret_key.pem",
     dest="path_to_operator_secret_key",
     help="Path to operator's secret_key.pem file.",
     type=str,
@@ -41,19 +41,19 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to user to whom tokens will be transferred - defaults to NCTL user 1.
+# CLI argument: path to user to whom tokens will be transferred - defaults to CCTL user 1.
 _ARGS.add_argument(
     "--user-public-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "public_key_hex",
+    default=_PATH_TO_CCTL_ASSETS / "users" / "user-1" / "public_key_hex",
     dest="path_to_user_public_key",
     help="Path to user's public_key_hex file.",
     type=str,
     )
 
-# CLI argument: name of target chain - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to CCTL chain.
 _ARGS.add_argument(
     "--chain",
-    default="casper-net-1",
+    default="cspr-dev-cctl",
     dest="chain_name",
     help="Name of target chain.",
     type=str,
@@ -68,7 +68,7 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="localhost",
@@ -77,7 +77,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
+# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
     default=11101,

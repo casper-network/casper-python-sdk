@@ -483,6 +483,28 @@ class NodeClient():
 
         return response["deploy_hash"]
 
+    def query_balance(
+        self,
+        purse_id: types.PurseID,
+        state_id: types.GlobalStateID = None
+    ) -> int:
+        """Returns account balance at a certain global state root hash.
+
+        :param purse_id: Identifier of purse being queried.
+        :param state_id: Identifier of global root state hash at some point in chain time.
+        :returns: Account balance in motes (if purse exists).
+
+        """
+        state_id = state_id or GlobalStateID(
+            self.get_state_root_hash(),
+            GlobalStateIDType.STATE_ROOT
+        )
+
+        params = params_factory.get_query_balance_params(purse_id, state_id)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
+
+        return int(response["balance_value"])
+
     def query_global_state(
         self,
         key: str,
@@ -503,7 +525,7 @@ class NodeClient():
         )
         params = params_factory.get_query_global_state_params(state_id, key, path)
 
-        return self._get_rpc_response(constants.RPC_STATE_QUERY_GLOBAL_STATE, params)
+        return self._get_rpc_response(constants.RPC_QUERY_GLOBAL_STATE, params)
 
     def yield_events(
         self,

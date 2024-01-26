@@ -11,7 +11,7 @@ from pycspr import NodeEventType
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("How to consume node SSE events demo.")
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="localhost",
@@ -20,7 +20,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
+# CLI argument: Node API SSE port - defaults to 18101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-sse",
     default=18101,
@@ -29,7 +29,7 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
+# CLI argument: SSE channel type - defaults to main.
 _ARGS.add_argument(
     "--channel",
     default=NodeEventChannel.main.name,
@@ -39,7 +39,7 @@ _ARGS.add_argument(
     choices=[i.name for i in NodeEventChannel],
     )
 
-# CLI argument: Type of event to which to listen to - defaults to all.
+# CLI argument: SSE event type - defaults to all.
 _ARGS.add_argument(
     "--event",
     default="all",

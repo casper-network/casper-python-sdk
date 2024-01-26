@@ -9,7 +9,7 @@ import pycspr
 
 _PATH_TO_ASSETS = pathlib.Path(os.path.dirname(__file__)).parent / "assets"
 _PATH_TO_ACCOUNTS = _PATH_TO_ASSETS / "accounts"
-_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
+_PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 
 @pytest.fixture(scope="session")
@@ -70,10 +70,10 @@ def cp2():
 
 @pytest.fixture(scope="session")
 def account_key() -> bytes:
-    """Returns a test NCTL account key.
+    """Returns a test CCTL account key.
 
     """
-    path = _PATH_TO_NCTL_ASSETS / "users" / "user-1" / "public_key_hex"
+    path = _PATH_TO_CCTL_ASSETS / "users" / "user-1" / "public_key_hex"
 
     with open(path) as fstream:
         return bytes.fromhex(fstream.read())
@@ -81,26 +81,26 @@ def account_key() -> bytes:
 
 @pytest.fixture(scope="session")
 def account_hash(account_key: bytes) -> bytes:
-    """Returns a test NCTL account key.
+    """Returns a test CCTL account key.
 
     """
     return pycspr.get_account_hash(account_key)
 
 
 def get_account_of_nctl_faucet():
-    """Returns account information related to NCTL faucet.
+    """Returns account information related to CCTL faucet.
 
     """
-    path = _PATH_TO_NCTL_ASSETS / "faucet" / "secret_key.pem"
+    path = _PATH_TO_CCTL_ASSETS / "faucet" / "secret_key.pem"
 
     return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
 
 
 def get_account_of_nctl_user(user_id: int):
-    """Returns account information related to NCTL user 1.
+    """Returns account information related to CCTL user 1.
 
     """
-    path = _PATH_TO_NCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
+    path = _PATH_TO_CCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
 
     return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
 

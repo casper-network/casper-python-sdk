@@ -21,6 +21,20 @@ ContractVersion = typing.NewType("U32 integer representing", int)
 DeployID = typing.Union[bytes, str]
 
 
+PublicKey = typing.Union[bytes, str]
+URef = str
+PurseID = typing.Union[AccountID, PublicKey, URef]
+
+
+class PurseIDType(enum.Enum):
+    """Enumeration over set of CL type keys.
+
+    """
+    PublicKey = enum.auto()
+    AccountHash = enum.auto()
+    URef = enum.auto()
+
+
 class GlobalStateIDType(enum.Enum):
     """Enumeration over set of CL type keys.
 
