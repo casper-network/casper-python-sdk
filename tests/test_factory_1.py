@@ -53,7 +53,7 @@ def test_create_deploy_parameters(a_test_account, a_test_chain_id, a_test_timest
             dependencies=[],
             gas_price=random.randint(0, 65),
             timestamp=a_test_timestamp,
-            ttl="1day",
+            ttl="12h",
         ),
         DeployParameters
         )
