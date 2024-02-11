@@ -303,6 +303,43 @@ def get_era_info_params(block_id: types.BlockID = None) -> dict:
         }
 
 
+def get_era_summary_params(block_id: types.BlockID = None) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param block_id: Identifier of a finalised block.
+    :returns: JSON-RPC API parameter set.
+
+    """
+    if isinstance(block_id, (bytes, str)):
+        return {
+            "block_identifier": {
+                "Hash": cl_checksum.encode_block_id(block_id)
+            }
+        }
+    elif isinstance(block_id, int):
+        return {
+            "block_identifier": {
+                "Height": block_id
+            }
+        }
+
+
+def get_query_balance_params(
+    state_id: types.GlobalStateID,
+    key: CL_Key,
+    path: typing.List[str]
+) -> dict:
+    """Returns results of a query to global state at a specified block or state root hash.
+
+    :param state_id: Identifier of global state leaf.
+    :param key: Key of an item stored within global state.
+    :param path: Identifier of a path within item.
+    :returns: Results of a global state query.
+
+    """
+    pass
+
+
 def get_query_global_state_params(
     state_id: types.GlobalStateID,
     key: CL_Key,

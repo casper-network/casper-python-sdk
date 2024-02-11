@@ -80,6 +80,7 @@ from pycspr.types.identifiers import DictionaryID_UniqueKey
 from pycspr.types.identifiers import GlobalStateID
 from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.types.identifiers import PurseID
+from pycspr.types.identifiers import PurseIDType
 from pycspr.types.identifiers import StateRootHash
 
 from pycspr.types.keys import PrivateKey

@@ -14,3 +14,4 @@ class HashAlgorithm(enum.Enum):
 
     """
     BLAKE2B = enum.auto()
+    BLAKE3 = enum.auto()

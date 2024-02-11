@@ -1,12 +1,12 @@
 import pycspr
 
 
-def test_deploy_size_in_bytes(deploy_params, cp1, cp2):
+def test_that_deploy_size_in_bytes_is_deterministic(deploy_params, cp1, cp2):
     deploy = _create_deploy(deploy_params, cp1, cp2)
-    assert pycspr.get_deploy_size_bytes(deploy) == 394
+    assert pycspr.get_deploy_size_bytes(deploy) == 395
 
 
-def test_deploy_validation_1(deploy_params, cp1, cp2):
+def test_that_deploy_validation_succeeds(deploy_params, cp1, cp2):
     deploy = _create_deploy(deploy_params, cp1, cp2)
     assert pycspr.validate_deploy(deploy) is None
 

@@ -1,21 +1,10 @@
 import argparse
 
-from pycspr.crypto import HashAlgorithm
-from pycspr.crypto import get_hash
+import pycspr
 
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to hash data using pycspr.")
-
-# CLI argument: hashing algorithm.
-_ARGS.add_argument(
-    "--algo",
-    default=HashAlgorithm.BLAKE2B.name,
-    dest="algo",
-    help="Hashing algorithm to be used - defaults to blake2b.",
-    type=str,
-    choices=[i.name for i in HashAlgorithm],
-    )
 
 # CLI argument: data to be hashed.
 _ARGS.add_argument(
@@ -33,16 +22,27 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
-    # Parse args.
-    algo = HashAlgorithm[args.algo]
+    print("-" * 74)
+    print("PYCSPR :: How To Get Cryptographic Hash")
+    print("")
+    print("Illustrates usage of pycspr.crypto.get_hash function.")
+    print("-" * 74)
+    print(f"Data to be hashed: {args.data.decode()}")
+    print("-" * 74)
 
-    # Create a digest - default algo = blake2b, default size = 32.
-    digest: bytes = get_hash(args.data)
+    # Create a digest - algo = default, default size = 32.
+    digest: bytes = pycspr.get_hash(args.data)
     assert isinstance(digest, bytes) and len(digest) == 32
 
-    # Create a digest of a specific size / algo.
-    digest: bytes = get_hash(args.data, algo=algo, size=32)
-    assert isinstance(digest, bytes) and len(digest) == 32
+    # Iterate supported algos:
+    for algo in pycspr.HashAlgorithm:
+        # Create a digest - default size = 32.
+        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=32)        
+        assert isinstance(digest, bytes) and len(digest) == 32
+
+        # Create a digest - size = 64.
+        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=64)        
+        assert isinstance(digest, bytes) and len(digest) == 64
 
 
 # Entry point.

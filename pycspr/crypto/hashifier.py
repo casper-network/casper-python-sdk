@@ -1,4 +1,5 @@
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
+from pycspr.crypto.hashifier_blake3 import get_hash as blake3
 from pycspr.crypto.defaults import DEFAULT_HASH_ALGO
 from pycspr.crypto.enums import HashAlgorithm
 
@@ -6,6 +7,7 @@ from pycspr.crypto.enums import HashAlgorithm
 # Map: Hash Algo Type -> Hash Algo Implementation.
 ALGOS = {
     HashAlgorithm.BLAKE2B: blake2b,
+    HashAlgorithm.BLAKE3: blake3,
 }
 
 # Default length of a hash digest.

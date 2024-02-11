@@ -45,7 +45,7 @@ def _get_version():
 _VERSION = _get_version()
 
 # Library packages.
-_PACKAGES = find_packages()
+_PACKAGES = find_packages(exclude=['tests*'])
 
 # User readme.
 _README = _read("README.rst")

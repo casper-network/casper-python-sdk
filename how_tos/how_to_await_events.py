@@ -8,7 +8,7 @@ from pycspr import NodeConnection
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("How to consume node SSE events demo.")
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="localhost",
@@ -17,7 +17,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
+# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
     default=11101,
@@ -26,7 +26,7 @@ _ARGS.add_argument(
     type=int,
     )
 
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
+# CLI argument: Node API SSE port - defaults to 18101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-sse",
     default=18101,
@@ -42,6 +42,12 @@ async def main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Apply Await Events")
+    print("")
+    print("Illustrates usage of pycspr.NodeClient.await_* functions.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 
@@ -68,6 +74,8 @@ async def main(args: argparse.Namespace):
     print(f"awaiting until era {future_era_height} ...")
     await client.await_until_era_n(future_era_height)
     assert future_era_height == client.get_era_height()
+
+    print("-" * 74)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:

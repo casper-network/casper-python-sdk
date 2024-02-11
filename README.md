@@ -81,7 +81,17 @@ How To: Apply a checksum ?
 
 See [here](how_tos/how_to_apply_a_checksum.py).
 
-How To: Run unit tests against an NCTL network ?
+How To: Await Events  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_await_events.py).
+
+How To: Consume Events  ?
+------------------------------------------------------
+
+See [here](how_tos/how_to_consume_events.py).
+
+How To: Run unit tests against an CCTL network ?
 ------------------------------------------------------
 
 ```

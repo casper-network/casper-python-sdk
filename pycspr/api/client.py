@@ -248,12 +248,12 @@ class NodeClient():
         return block["header"]["era_id"], block["header"]["height"]
 
     def get_chain_spec(self) -> dict:
-        """Returns raw bytes of the chainspec.toml, genesis accounts.toml, and global_state.toml files.
+        """Returns canonical network state information.
 
-        :returns: Chain specification information.
+        :returns: Chain spec, genesis accounts and global state information.
 
         """
-        response: dict = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
+        response = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
 
         return response["chainspec_bytes"]
 
@@ -320,6 +320,20 @@ class NodeClient():
 
         """
         return self.get_era_info(block_id)
+
+    def get_era_summary(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era summary information.
+
+        :param block_id: Identifier of a block.
+        :returns: Era summary information.
+
+        """
+        response = self._get_rpc_response(
+            constants.RPC_CHAIN_GET_ERA_SUMMARY,
+            params_factory.get_era_summary_params(block_id)
+            )
+
+        return response["era_summary"]
 
     def get_events(
         self,
@@ -471,17 +485,27 @@ class NodeClient():
 
         return response["deploy_hash"]
 
-    def speculative_exec(self, deploy: types.Deploy, block_id: types.BlockID = None):
-        """Dispatches a deploy to a node for speculative processing.
+    def query_balance(
+        self,
+        purse_id: types.PurseID,
+        state_id: types.GlobalStateID = None
+    ) -> int:
+        """Returns account balance at a certain global state root hash.
 
-        :param deploy: A deploy to be speculatively processed at a node.
-        :param block_id: Identifier of a finalised block.
+        :param purse_id: Identifier of purse being queried.
+        :param state_id: Identifier of global root state hash at some point in chain time.
+        :returns: Account balance in motes (if purse exists).
 
         """
-        return self._get_speculative_rpc_response(
-            constants.SPECULATIVE_RPC_EXEC_DEPLOY,
-            params_factory.speculative_exec_params(deploy, block_id)
-            )
+        state_id = state_id or GlobalStateID(
+            self.get_state_root_hash(),
+            GlobalStateIDType.STATE_ROOT
+        )
+
+        params = params_factory.get_query_balance_params(purse_id, state_id)
+        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
+
+        return int(response["balance_value"])
 
     def query_global_state(
         self,

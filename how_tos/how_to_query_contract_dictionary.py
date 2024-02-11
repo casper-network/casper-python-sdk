@@ -6,10 +6,10 @@ from pycspr.types import DictionaryID_ContractNamedKey
 
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to query a dictionary item stored under an account.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to query a dictionary item.")
 
 
-# CLI argument: name of target chain - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to CCTL chain.
 _ARGS.add_argument(
     "--chain",
     default="casper-test",
@@ -18,7 +18,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="3.208.91.63",
@@ -27,7 +27,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
+# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
     default=7777,
@@ -70,6 +70,10 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Query For A Smart Contract's Named Keys")
+    print("-" * 74)
+
     # Set node client.
     client: NodeClient = _get_client(args)
 
@@ -84,7 +88,7 @@ def _main(args: argparse.Namespace):
     response = client.get_dictionary_item(dictionary_id)
 
     print(response)
-    
+
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.

@@ -5,7 +5,7 @@ import pytest
 
 import pycspr
 
-_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
+_PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 
 @pytest.fixture(scope="session")

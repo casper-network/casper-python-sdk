@@ -13,7 +13,7 @@ from tests.fixtures.accounts import create_account
 
 _A_KNOWN_ISO_TIMESTAMP = "2021-06-28T15:55:25.335+00:00"
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat(_A_KNOWN_ISO_TIMESTAMP).timestamp()
-_A_KNOWN_DEPLOY_HUMANIZED_TTL = "1day"
+_A_KNOWN_DEPLOY_HUMANIZED_TTL = "12h"
 
 
 @pytest.fixture(scope="session")
@@ -74,7 +74,7 @@ def a_deploy(deploy_params, cp1, cp2):
 
 
 def create_chain_id() -> str:
-    return "casper-net-1"
+    return "cspr-dev-cctl"
 
 
 def create_deploy() -> Deploy:

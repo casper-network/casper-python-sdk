@@ -9,6 +9,7 @@ RPC_ACCOUNT_PUT_DEPLOY = "account_put_deploy"
 RPC_CHAIN_GET_BLOCK = "chain_get_block"
 RPC_CHAIN_GET_BLOCK_TRANSFERS = "chain_get_block_transfers"
 RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK = "chain_get_era_info_by_switch_block"
+RPC_CHAIN_GET_ERA_SUMMARY = "chain_get_era_summary"
 RPC_CHAIN_GET_STATE_ROOT_HASH = "chain_get_state_root_hash"
 RPC_DISCOVER = "rpc.discover"
 RPC_INFO_GET_CHAINSPEC = "info_get_chainspec"
@@ -24,11 +25,16 @@ RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
 
+RPC_ENDPOINTS_UNSUPPORTED: set = {
+    RPC_QUERY_BALANCE,
+    }
+
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
     RPC_CHAIN_GET_BLOCK,
     RPC_CHAIN_GET_BLOCK_TRANSFERS,
     RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
+    RPC_CHAIN_GET_ERA_SUMMARY,
     RPC_CHAIN_GET_STATE_ROOT_HASH,
     RPC_INFO_GET_CHAINSPEC,
     RPC_INFO_GET_DEPLOY,

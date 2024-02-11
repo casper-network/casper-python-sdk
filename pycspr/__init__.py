@@ -7,7 +7,7 @@
 #  88              d8'                              88
 
 __title__ = "pycspr"
-__version__ = "0.13.0"
+__version__ = "0.12.4"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
@@ -23,6 +23,8 @@ from pycspr.api.sse_types import NodeEventChannel
 from pycspr.api.sse_types import NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
 
+from pycspr.crypto import DEFAULT_HASH_ALGO
+from pycspr.crypto import DEFAULT_KEY_ALGO
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_account_key_algo

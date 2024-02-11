@@ -12,18 +12,18 @@ from pycspr.types import Deploy
 from pycspr.types import PublicKey
 
 
-# Path to NCTL assets.
-_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
-_PATH_TO_NCTL_NODE = _PATH_TO_NCTL_ASSETS / "nodes" / "node-1"
-_PATH_TO_NCTL_USER = _PATH_TO_NCTL_ASSETS / "users" / "user-1"
+# Path to CCTL assets.
+_PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
+_PATH_TO_CCTL_NODE = _PATH_TO_CCTL_ASSETS / "nodes" / "node-1"
+_PATH_TO_CCTL_USER = _PATH_TO_CCTL_ASSETS / "users" / "user-1"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("How to delegate CSPR to a validator.")
 
-# CLI argument: path to delegator secret key - defaults to NCTL user 1.
+# CLI argument: path to delegator secret key - defaults to CCTL user 1.
 _ARGS.add_argument(
     "--delegator-secret-key-path",
-    default=_PATH_TO_NCTL_USER / "secret_key.pem",
+    default=_PATH_TO_CCTL_USER / "secret_key.pem",
     dest="path_to_delegator_secret_key",
     help="Path to delegator's secret_key.pem file.",
     type=str,
@@ -38,10 +38,10 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to validator's account key - defaults to NCTL node 1.
+# CLI argument: path to validator's account key - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--validator-account-key-path",
-    default=_PATH_TO_NCTL_NODE / "keys" / "public_key_hex",
+    default=_PATH_TO_CCTL_NODE / "keys" / "public_key_hex",
     dest="path_to_validator_account_key",
     help="Path to validator's public_key_hex file.",
     type=str,
@@ -50,22 +50,22 @@ _ARGS.add_argument(
 # CLI argument: path to session code wasm binary.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=_PATH_TO_NCTL_ASSETS / "bin" / "auction" / "delegate.wasm",
+    default=_PATH_TO_CCTL_ASSETS / "bin" / "delegate.wasm",
     dest="path_to_wasm",
     help="Path to delegate.wasm file.",
     type=str,
     )
 
-# CLI argument: name of target chain - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to CCTL chain.
 _ARGS.add_argument(
     "--chain",
-    default="casper-net-1",
+    default="cspr-dev-cctl",
     dest="chain_name",
     help="Name of target chain.",
     type=str,
     )
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="localhost",
@@ -74,7 +74,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
+# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc",
     default=11101,
@@ -90,6 +90,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Delegate")
+    print("")
+    print("Illustrates usage of pycspr.create_validator_delegation function.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 

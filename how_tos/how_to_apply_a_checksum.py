@@ -2,7 +2,6 @@ import argparse
 import typing
 
 import pycspr
-from pycspr.crypto import KeyAlgorithm
 
 
 # CLI argument parser.
@@ -15,12 +14,20 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Apply A Checksum")
+    print("")
+    print("Illustrates usage of pycspr.crypto.cl_checksum module.")
+    print("-" * 74)
+
     # Create new key pair & destructure raw public key.
-    key_pair: typing.Tuple[bytes, bytes] = pycspr.crypto.get_key_pair(algo=KeyAlgorithm.ED25519)
+    key_pair: typing.Tuple[bytes, bytes] = \
+        pycspr.crypto.get_key_pair(algo=pycspr.KeyAlgorithm.ED25519)
     pbk: bytes = key_pair[1]
 
     # Map raw public key to account key.
-    account_key: bytes = pycspr.crypto.get_account_key(KeyAlgorithm.ED25519, pbk)
+    account_key: bytes = \
+        pycspr.crypto.get_account_key(pycspr.KeyAlgorithm.ED25519, pbk)
 
     # Map account key to checksummed hexadecimal.
     account_key_checksum: str = pycspr.crypto.cl_checksum.encode_account_key(account_key)
@@ -28,6 +35,7 @@ def _main(args: argparse.Namespace):
     print("Account Key Hexadecimal:")
     print(f" ... raw:         {account_key.hex()}")
     print(f" ... checksummed: {account_key_checksum}")
+    print("-" * 74)
 
 
 # Entry point.

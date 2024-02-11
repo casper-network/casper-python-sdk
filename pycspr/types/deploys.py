@@ -292,7 +292,8 @@ class StoredContract(DeployExecutableItem):
 
 @dataclasses.dataclass
 class StoredContractByHash(StoredContract):
-    """Encapsulates information required to execute an on-chain smart contract referenced by hash.
+    """Encapsulates information required to execute an on-chain
+       smart contract referenced by hash.
 
     """
     # On-chain smart contract address.
@@ -303,9 +304,7 @@ class StoredContractByHash(StoredContract):
 
 
 @dataclasses.dataclass
-class StoredContractByHashVersioned(
-    StoredContractByHash
-):
+class StoredContractByHashVersioned(StoredContractByHash):
     """Encapsulates information required to execute a versioned on-chain smart
     contract referenced by hash.
 
@@ -331,9 +330,7 @@ class StoredContractByName(StoredContract):
 
 
 @dataclasses.dataclass
-class StoredContractByNameVersioned(
-    StoredContractByName
-):
+class StoredContractByNameVersioned(StoredContractByName):
     """Encapsulates information required to execute a versioned
        on-chain smart contract referenced by name.
 
