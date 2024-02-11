@@ -23,6 +23,8 @@ from pycspr.api.sse_types import NodeEventChannel
 from pycspr.api.sse_types import NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
 
+from pycspr.crypto import DEFAULT_HASH_ALGO
+from pycspr.crypto import DEFAULT_KEY_ALGO
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_account_key_algo
