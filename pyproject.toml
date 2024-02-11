@@ -1,3 +1,24 @@
+[tool.poetry]
+name = "y"
+version = "0.13.0"
+description = "Python library for interacting with a CSPR node."
+authors = ["Mark A. Greenslade <asladeofgreen@gmail.com>"]
+license = "Apache 2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+jsonrpcclient = "^4.0.3"
+cryptography = "^42.0.2"
+ecdsa = "^0.18.0"
+blake3 = "^0.4.1"
+sseclient-py = "^1.8.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+pytest = "^8.0.0"
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
