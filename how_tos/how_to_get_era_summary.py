@@ -32,6 +32,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Get Chain Era Summary")
+    print("")
+    print("Illustrates usage of pycspr.NodeClient.get_era_summary function.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 

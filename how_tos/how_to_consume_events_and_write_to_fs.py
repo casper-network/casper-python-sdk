@@ -50,6 +50,15 @@ _ARGS.add_argument(
     )
 
 
+# CLI argument: Path to output file.
+_ARGS.add_argument(
+    "--output",
+    dest="path_to_output",
+    help="Path to output file.",
+    type=str,
+    )
+
+
 def main(args: argparse.Namespace):
     """Main entry point.
 
@@ -57,7 +66,7 @@ def main(args: argparse.Namespace):
 
     """
     print("-" * 74)
-    print("PYCSPR :: How To Consume Events")
+    print("PYCSPR :: How To Consume Events And Write To File System")
     print("")
     print("Illustrates usage of pycspr.NodeClient.get_events function.")
     print("-" * 74)
@@ -65,13 +74,26 @@ def main(args: argparse.Namespace):
     # Set node client.
     client = _get_client(args)
 
-    # Bind to node events.
-    client.get_events(
-        callback=_on_event,
-        event_channel=NodeEventChannel[args.channel],
-        event_type=None if args.event == "all" else NodeEventType[args.event],
-        event_id=0
-    )
+    with open(args.path_to_output, 'w') as fhandle:
+        fhandle.write("[\n")
+        fhandle.flush()
+
+        try:
+
+            # Bind to node events.
+            client.get_events(
+                callback=lambda x: _on_event(x, fhandle),
+                event_channel=NodeEventChannel[args.channel],
+                event_type=None if args.event == "all" else NodeEventType[args.event],
+                event_id=0
+            )
+
+        except KeyboardInterrupt:
+            pass
+
+        finally:
+            fhandle.write("\n]")
+            fhandle.flush()
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:
@@ -84,15 +106,20 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     ))
 
 
-def _on_event(event_info: NodeEventInfo):
+def _on_event(event_info: NodeEventInfo, fhandle):
     """Event callback handler.
 
     """
-    print("-" * 74)
-    print(f"Event #{event_info.idx} :: {event_info.channel.name} :: {event_info.typeof.name}")
-    print("-" * 74)
-    print(json.dumps(event_info.payload, indent=4))
-    print("-" * 74)
+    if event_info.idx is not None:
+        fhandle.write(",\n")
+
+    fhandle.write(json.dumps({
+        "id": event_info.idx,
+        "channel": event_info.channel.name,
+        "payload": event_info.payload
+    }, indent=4, sort_keys=True))
+
+    fhandle.flush()
 
 
 # Entry point.

@@ -14,6 +14,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Apply A Checksum")
+    print("")
+    print("Illustrates usage of pycspr.crypto.cl_checksum module.")
+    print("-" * 74)
+
     # Create new key pair & destructure raw public key.
     key_pair: typing.Tuple[bytes, bytes] = \
         pycspr.crypto.get_key_pair(algo=pycspr.KeyAlgorithm.ED25519)
@@ -29,6 +35,7 @@ def _main(args: argparse.Namespace):
     print("Account Key Hexadecimal:")
     print(f" ... raw:         {account_key.hex()}")
     print(f" ... checksummed: {account_key_checksum}")
+    print("-" * 74)
 
 
 # Entry point.

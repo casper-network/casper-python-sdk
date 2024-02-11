@@ -31,6 +31,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Get Chainspec")
+    print("")
+    print("Illustrates usage of pycspr.NodeClient.get_chain_spec function.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 

@@ -42,7 +42,7 @@ _ARGS.add_argument(
 # CLI argument: path to smart contract wasm binary - defaults to CCTL bin/wasm/erc20.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=_PATH_TO_CCTL_ASSETS / "bin" / "wasm" / "erc20.wasm",
+    default=_PATH_TO_CCTL_ASSETS / "bin" / "erc20.wasm",
     dest="path_to_wasm",
     help="Path to erc20.wasm file.",
     type=str,
@@ -127,6 +127,10 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Install A Smart Contract")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 

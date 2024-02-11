@@ -42,6 +42,12 @@ async def main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Apply Await Events")
+    print("")
+    print("Illustrates usage of pycspr.NodeClient.await_* functions.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 
@@ -68,6 +74,8 @@ async def main(args: argparse.Namespace):
     print(f"awaiting until era {future_era_height} ...")
     await client.await_until_era_n(future_era_height)
     assert future_era_height == client.get_era_height()
+
+    print("-" * 74)
 
 
 def _get_client(args: argparse.Namespace) -> NodeClient:

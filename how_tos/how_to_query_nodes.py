@@ -67,6 +67,10 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Query A Node")
+    print("-" * 74)
+
     # Set client.
     client = _get_client(args)
 

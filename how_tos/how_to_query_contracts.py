@@ -59,6 +59,10 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Query For A Smart Contract Named Key")
+    print("-" * 74)
+
     # Set node client.
     client: NodeClient = _get_client(args)
 

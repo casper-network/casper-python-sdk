@@ -37,7 +37,7 @@ _ARGS.add_argument(
 # CLI argument: path to session code wasm binary - defaults to CCTL bin/wasm/add_bid.wasm.
 _ARGS.add_argument(
     "--path-to-wasm",
-    default=_PATH_TO_CCTL_ASSETS / "bin" / "wasm" / "add_bid.wasm",
+    default=_PATH_TO_CCTL_ASSETS / "bin" / "add_bid.wasm",
     dest="path_to_wasm",
     help="Path to add_bid.wasm file.",
     type=str,
@@ -95,6 +95,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Stake")
+    print("")
+    print("Illustrates usage of pycspr.create_validator_auction_bid function.")
+    print("-" * 74)
+
     # Set node client.
     client: NodeClient = _get_client(args)
 

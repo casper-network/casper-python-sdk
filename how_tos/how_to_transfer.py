@@ -80,6 +80,12 @@ def _main(args: argparse.Namespace):
     :param args: Parsed command line arguments.
 
     """
+    print("-" * 74)
+    print("PYCSPR :: How To Make A Transfer")
+    print("")
+    print("Illustrates usage of pycspr.create_transfer function.")
+    print("-" * 74)
+
     # Set node client.
     client = _get_client(args)
 
