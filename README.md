@@ -91,8 +91,10 @@ How To: Consume Events  ?
 
 See [here](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/how_to_consume_events.py).
 
-How To: Run unit tests against an CCTL network ?
+How To: Run unit tests against a CCTL network ?
 ------------------------------------------------------
+
+Ensure you are running a [CCTL](https://github.com/casper-network/cctl) network and have exported the CCTL environment variable.
 
 ```
 cd YOUR_WORKING_DIRECTORY
