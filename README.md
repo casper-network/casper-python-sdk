@@ -1,6 +1,6 @@
 # Casper Python SDK
 
-Python 3.9+ library for interacting with a CSPR node.
+Python library for interacting with a CSPR node.
 
 
 What is casper-client-py ?

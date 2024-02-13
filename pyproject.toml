@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "y"
+name = "pycspr"
 version = "0.13.0"
 description = "Python library for interacting with a CSPR node."
 authors = ["Mark A. Greenslade <asladeofgreen@gmail.com>"]
