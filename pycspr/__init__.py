@@ -7,7 +7,7 @@
 #  88              d8'                              88
 
 __title__ = "pycspr"
-__version__ = "0.12.4"
+__version__ = "0.13.0"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
@@ -57,5 +57,6 @@ from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_deploy
 from pycspr.utils.io import read_wasm
 from pycspr.utils.io import write_deploy
+
 from pycspr.utils.validation import validate_deploy
 from pycspr.utils.validation import InvalidDeployException
