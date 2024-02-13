@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pycspr"
-version = "0.13.0"
+version = "0.13.1"
 description = "Python library for interacting with a CSPR node."
 authors = ["Mark A. Greenslade <asladeofgreen@gmail.com>"]
 license = "Apache 2"
