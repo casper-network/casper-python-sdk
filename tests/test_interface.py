@@ -105,7 +105,7 @@ _INTERFACE_OF_LIBRARY = {
 
 
 def test_version_of_library():
-    assert pycspr.__version__ == "0.13.2"
+    assert pycspr.__version__ == "1.0.0"
 
 
 def test_exports_of_library():
