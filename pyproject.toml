@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pycspr"
-version = "0.13.1"
+version = "0.13.2"
 authors = ["Mark A. Greenslade <asladeofgreen@gmail.com>"]
 description = "Python library for interacting with a CSPR node."
 documentation = "https://github.com/casper-network/casper-python-sdk/README.md"
