@@ -2,15 +2,10 @@
 
 Python library for interacting with a CSPR node.
 
-
-## What is casper-client-py ?
-
-The python client is published as pycspr: **PY**thon **C**a**SP**e**R**.  It's goal is to streamline client side experience of interacting with a casper node.
-
 ##  Installation
 
 ```
-pip install pycspr
+pip3 install pycspr
 ```
 
 ##  Usage
@@ -45,13 +40,64 @@ pip install pycspr
 
 * [How To: Consume Events  ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/how_to_consume_events.py)
 
-How To: Run unit tests against a CCTL network ?
-------------------------------------------------------
+##  Development
 
-Ensure you are running a [CCTL](https://github.com/casper-network/cctl) network and have exported the CCTL environment variable.
+### Pre-Requisites
+
+[1. Setup Local CCTL Network](https://github.com/casper-network/cctl).
+
+[2. Install poetry](https://python-poetry.org).
+
+### Install SDK
 
 ```
 cd YOUR_WORKING_DIRECTORY
-poetry shell
-pytest ./tests
+git clone https://github.com/casper-network/casper-python-sdk.git
+cd casper-python-sdk
+poetry install
 ````
+
+### Testing 
+
+#### Important Environment Variables
+
+* Mandatory
+
+    * CCTL
+
+        * path to local clone of CCTL repo
+
+* Optional
+
+    * PYCSPR_TEST_NODE_HOST
+
+        * host of a test node
+        * default =  localhost
+
+    * PYCSPR_TEST_NODE_PORT_REST
+
+        * port of rest server exposed by test node
+        * default =  14101
+
+    * PYCSPR_TEST_NODE_PORT_RPC
+
+        * port of json-rpc server exposed by test node
+        * default =  11101
+
+    * PYCSPR_TEST_NODE_PORT_SSE
+
+        * port of sse server exposed by test node
+        * default =  18101
+
+    * PYCSPR_TEST_NODE_PORT_SPEC_EXEC
+
+        * port of speculative execution server exposed by test node
+        * default =  25101
+
+#### Running Tests
+
+```
+cd YOUR_WORKING_DIRECTORY/casper-python-sdk
+poetry shell
+pytest ./tests [TEST-FILTER]
+```
