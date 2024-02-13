@@ -1,5 +1,0 @@
-{
-    "code": -32000,
-    "message": "No such deploy",
-    "data": "failed to get deploy-hash(3401..ecfc) and metadata from storage"
-  }

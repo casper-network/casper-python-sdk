@@ -1,5 +1,0 @@
-{
-    "code": -32008,
-    "message": "Invalid Deploy",
-    "data": "deploy received by the node expired at 2024-01-05T10:23:55.648Z with node's time at 2024-01-05T10:34:25.201Z"
-}

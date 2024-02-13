@@ -1,5 +1,0 @@
-{
-    "code": -32008,
-    "message": "Invalid Deploy",
-    "data": "invalid deploy: the provided hash does not match the actual hash of the deploy"
-}
