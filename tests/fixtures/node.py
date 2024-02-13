@@ -41,3 +41,7 @@ def NODE_PORT_RPC() -> str:
 @pytest.fixture(scope="session")
 def NODE_PORT_SSE() -> str:
     return os.getenv("PYCSPR_TEST_NODE_PORT_SSE", 18101)
+
+@pytest.fixture(scope="session")
+def NODE_PORT_SPEC_EXEC() -> str:
+    return os.getenv("PYCSPR_TEST_NODE_PORT_SPEC_EXEC", 25101)
