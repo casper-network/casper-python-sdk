@@ -1,6 +1,0 @@
-blake3
-cryptography
-ecdsa
-jsonrpcclient
-requests
-sseclient-py
