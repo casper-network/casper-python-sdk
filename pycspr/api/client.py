@@ -542,12 +542,10 @@ class NodeClient():
         :param event_id: Identifier of event from which to start stream listening.
 
         """
-        iterator = sse_consumer.yield_events(
+        for event_info in sse_consumer.yield_events(
             self.connection,
             event_channel,
             event_type,
             event_id
-            )
-
-        for event_info in iterator:
+            ):
             yield event_info

@@ -5,7 +5,7 @@
             "payment": "00000000000100000006000000616d6f756e74060000000500e40b540208"
         },
         "hashes": {
-            "deploy": "f6ab37f7b338c5449b1dbd749f09260db04af50403db57247e45fe24ecf606a0",
+            "deploy": "cea82bbae03fcdf2f0ed6bc66fb904e532720bd105f1a3a6a136d07f86e073b2",
             "body": "b984d6384ddae3e84bd8a28bd79495b65bd2951673a58297b368ab6e085ec73c"
         },
         "payment": {

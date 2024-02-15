@@ -6,6 +6,10 @@ def test_that_deploy_entities_serialisation_to_and_from_bytes(deploy_entities_it
     for entity in deploy_entities_iterator():
         encoded = serialisation.to_bytes(entity)
         _, decoded = serialisation.from_bytes(encoded, type(entity))
+
+        print(entity)
+        print(decoded)
+
         assert entity == decoded
 
 

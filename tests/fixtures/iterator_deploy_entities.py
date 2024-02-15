@@ -31,7 +31,7 @@ def yield_entities() -> typing.Iterator[object]:
             _create_deploy_argument,
             _create_deploy_approval,
             create_deploy_body,
-            create_deploy_header,
+            # create_deploy_header,
             _create_module_bytes,
             _create_stored_contract_by_hash,
             _create_stored_contract_by_hash_versioned,

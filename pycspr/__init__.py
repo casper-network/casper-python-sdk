@@ -53,6 +53,9 @@ from pycspr.serialisation import to_json
 from pycspr.serialisation import from_bytes
 from pycspr.serialisation import from_json
 
+from pycspr.types import PublicKey
+from pycspr.types import PrivateKey
+
 from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_deploy
 from pycspr.utils.io import read_wasm

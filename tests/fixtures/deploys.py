@@ -13,7 +13,7 @@ from tests.fixtures.accounts import create_account
 
 _A_KNOWN_ISO_TIMESTAMP = "2021-06-28T15:55:25.335+00:00"
 _A_KNOWN_DEPLOY_TIMESTAMP = datetime.datetime.fromisoformat(_A_KNOWN_ISO_TIMESTAMP).timestamp()
-_A_KNOWN_DEPLOY_HUMANIZED_TTL = "12h"
+_A_KNOWN_DEPLOY_HUMANIZED_TTL = "2hr"
 
 
 @pytest.fixture(scope="session")
@@ -28,7 +28,7 @@ def a_test_timestamp() -> int:
 
 @pytest.fixture(scope="session")
 def a_test_ttl_humanized() -> str:
-    return create_ttl_humanized()
+    return create_deploy_ttl_humanized()
 
 
 @pytest.fixture(scope="session")
@@ -118,7 +118,8 @@ def create_deploy_params(
     account = account or create_account()
     chain_id = chain_id or create_chain_id()
     timestamp = timestamp or create_timestamp()
-    ttl_humanized = ttl_humanized or create_ttl_humanized()
+    ttl_humanized = ttl_humanized or create_deploy_ttl_humanized()
+    print(123, ttl_humanized)
 
     return pycspr.create_deploy_parameters(
             account=pycspr.factory.create_public_key(
@@ -137,13 +138,12 @@ def create_timestamp() -> str:
     return datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
 
 
-def create_ttl_humanized() -> str:
+def create_deploy_ttl_humanized() -> str:
     (unit, quantity) = random.choice((
-        ("ms", random.randint(1, 1000 * 60 * 60 * 24)),
-        ("s", random.randint(1, 60)),
-        ("m", random.randint(1, 60)),
-        ("h", random.randint(1, 24)),
-        ("day", 1)
+        ("ms", random.randint(1, 1000 * 60 * 60 * 2)),
+        ("seconds", random.randint(1, 60)),
+        ("minutes", random.randint(1, 60)),
+        ("hours", random.randint(1, 2)),
         ))
 
     return f"{quantity}{unit}"

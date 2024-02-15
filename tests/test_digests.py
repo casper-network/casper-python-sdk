@@ -30,4 +30,8 @@ def test_derivation_of_a_deploy_hash(deploy_params_static, deploys_1):
                 )
         )
 
+        print(entity.hash.hex())
+
+        print(vector["hashes"]["deploy"].hex())
+
         assert entity.hash == vector["hashes"]["deploy"]

@@ -158,12 +158,12 @@ def create_deploy_parameters(
 def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> DeployTimeToLive:
     """Returns a deploy's time to live after which it will not longer be accepted by a node.
 
-    :param humanized_ttl: A humanized ttl, e.g. 1 day.
+    :param humanized_ttl: A humanized ttl, e.g. 2 hours.
 
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl. Maximum (ms) = {constants.DEPLOY_TTL_MS_MAX}")
+        raise ValueError(f"Invalid deploy ttl. Max = {constants.DEPLOY_TTL_MS_MAX}ms. Actual = {humanized_ttl}.")
 
     return DeployTimeToLive(
         humanized=humanized_ttl,
