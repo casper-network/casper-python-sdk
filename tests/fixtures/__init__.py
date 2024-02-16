@@ -8,6 +8,7 @@ from tests.fixtures.accounts import test_account_1
 from tests.fixtures.chain import account_main_purse_uref
 from tests.fixtures.chain import block
 from tests.fixtures.chain import block_hash
+from tests.fixtures.chain import global_state_id
 from tests.fixtures.chain import state_root_hash
 from tests.fixtures.chain import switch_block
 from tests.fixtures.chain import switch_block_hash

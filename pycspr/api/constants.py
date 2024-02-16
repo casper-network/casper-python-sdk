@@ -25,8 +25,12 @@ RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
 
-RPC_ENDPOINTS_UNSUPPORTED: set = {
-    RPC_QUERY_BALANCE,
+# TODO: Implement when non-empty.
+RPC_ENDPOINTS_UNSUPPORTED: set = set()
+
+# TODO: Mark as for deprecation.
+RPC_ENDPOINTS_FOR_DEPRECATION: set = {
+    RPC_STATE_GET_BALANCE,
     }
 
 RPC_ENDPOINTS: set = {

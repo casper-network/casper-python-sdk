@@ -92,18 +92,22 @@ class NodeClient():
 
     def get_account_balance(
         self,
-        purse_id: PurseID,
-        state_root_hash: types.StateRootHash = None
+        purse_id: types.PurseID,
+        global_state_id: types.GlobalStateID = None
     ) -> int:
-        """Returns account balance at a certain global state root hash.
+        """Returns account balance at a certain point in global state history.
 
-        :param purse_id: Identifier associated with a purse under which a balance resides.
-        :param state_root_hash: A node's root state hash at some point in chain time.
-        :returns: Account balance if on-chain account is found.
+        :param purse_id: Identifier of purse being queried.
+        :param global_state_id: Identifier of global state root at some point in time.
+        :returns: Account balance in motes (if purse exists).
 
         """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-        params = params_factory.get_account_balance_params(purse_id, state_root_hash)
+        global_state_id = global_state_id or GlobalStateID(
+            self.get_state_root_hash(),
+            GlobalStateIDType.STATE_ROOT_HASH
+        )
+
+        params = params_factory.get_query_balance_params(global_state_id, purse_id)
         response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
 
         return int(response["balance"])
@@ -120,10 +124,8 @@ class NodeClient():
         :returns: Account information in JSON format.
 
         """
-        response = self._get_rpc_response(
-            constants.RPC_STATE_GET_ACCOUNT_INFO,
-            params_factory.get_account_info_params(account_id, block_id)
-            )
+        params = params_factory.get_account_info_params(account_id, block_id)
+        response = self._get_rpc_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params)
 
         return response["account"]
 
@@ -485,28 +487,6 @@ class NodeClient():
 
         return response["deploy_hash"]
 
-    def query_balance(
-        self,
-        purse_id: types.PurseID,
-        state_id: types.GlobalStateID = None
-    ) -> int:
-        """Returns account balance at a certain global state root hash.
-
-        :param purse_id: Identifier of purse being queried.
-        :param state_id: Identifier of global root state hash at some point in chain time.
-        :returns: Account balance in motes (if purse exists).
-
-        """
-        state_id = state_id or GlobalStateID(
-            self.get_state_root_hash(),
-            GlobalStateIDType.STATE_ROOT
-        )
-
-        params = params_factory.get_query_balance_params(purse_id, state_id)
-        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
-
-        return int(response["balance_value"])
-
     def query_global_state(
         self,
         key: str,
@@ -523,7 +503,7 @@ class NodeClient():
         """
         state_id = state_id or GlobalStateID(
             self.get_state_root_hash(),
-            GlobalStateIDType.STATE_ROOT
+            GlobalStateIDType.STATE_ROOT_HASH
         )
         params = params_factory.get_query_global_state_params(state_id, key, path)
 

@@ -1,8 +1,12 @@
 import pytest
 
+from pycspr.types import CL_URef
+from pycspr.types import GlobalStateID
+from pycspr.types import GlobalStateIDType
+
 
 @pytest.fixture(scope="session")
-def account_main_purse_uref(CLIENT, account_key: bytes) -> str:
+def account_main_purse_uref(CLIENT, account_key: bytes) -> CL_URef:
     """Returns an on-chain account's main purse unforgeable reference.
 
     """
@@ -26,6 +30,14 @@ def block_hash(block) -> str:
 
 
 @pytest.fixture(scope="session")
+def global_state_id(state_root_hash) -> GlobalStateID:
+    """Returns current state root hash.
+
+    """
+    return GlobalStateID(state_root_hash, GlobalStateIDType.STATE_ROOT_HASH)
+
+
+@pytest.fixture(scope="session")
 def state_root_hash(CLIENT) -> bytes:
     """Returns current state root hash.
 
@@ -34,7 +46,7 @@ def state_root_hash(CLIENT) -> bytes:
 
 
 @pytest.fixture(scope="session")
-def switch_block(CLIENT) -> str:
+def switch_block(CLIENT) -> dict:
     """Returns hash of most recent switch block.
 
     """

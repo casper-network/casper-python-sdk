@@ -2,17 +2,18 @@ import dataclasses
 import enum
 import typing
 
+from pycspr.types.cl_values import CL_URef
 
-# The output of a one way hashing function.
+
+# The output of a one way hashing function - 32 bytes.
 Digest = typing.Union[bytes, str]
 
 # An account identifier may be a byte array of 33 bytes,
 # a hexadecimal string of 66 characters.
 AccountID = typing.Union[bytes, str]
 
-# A block identifier may be a byte array of 32 bytes,
-# a hexadecimal string of 64 characters or a positive integer.
-BlockID = typing.Union[bytes, str, int]
+# A block identifier: byte array | hex string | height,
+BlockID = typing.Union[Digest, int]
 
 # On chain contract identifier.
 ContractID = typing.NewType("Static contract pointer", bytes)
@@ -21,49 +22,51 @@ ContractID = typing.NewType("Static contract pointer", bytes)
 ContractVersion = typing.NewType("U32 integer representing", int)
 
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
-DeployID = typing.Union[bytes, str]
+DeployID = typing.NewType("U32 integer representing", Digest)
 
-# A purse identifier under which an account balance resides.
-PurseID = typing.Union[bytes, object]
-
-
+# A public key associated with an assymetric key pair controlled by an entity.
 PublicKey = typing.Union[bytes, str]
-URef = str
-PurseID = typing.Union[AccountID, PublicKey, URef]
-
-
-class PurseIDType(enum.Enum):
-    """Enumeration over set of CL type keys.
-
-    """
-    PublicKey = enum.auto()
-    AccountHash = enum.auto()
-    URef = enum.auto()
-
-
-class GlobalStateIDType(enum.Enum):
-    """Enumeration over set of CL type keys.
-
-    """
-    # TODO: extend -> BlockHash`, `BlockHeight`, `StateRootHash
-    STATE_ROOT = enum.auto()
-    BLOCK = enum.auto()
-
-
-@dataclasses.dataclass
-class GlobalStateID():
-    # 32 byte global state identifier, either a block or state root hash.
-    identifier: typing.Union[bytes, int]
-
-    # Type of identifier.
-    id_type: GlobalStateIDType
-
 
 # Root hash of a node's global state.
 StateRootHash = typing.NewType(
     "Cumulative hash of block execution effects over global state.",
     bytes
     )
+
+@dataclasses.dataclass
+class PurseID():
+    # Purse identifier - account id | public key | uref.
+    identifier: typing.Union[AccountID, PublicKey, CL_URef]
+
+    # Type of identifier.
+    id_type: "PurseIDType"
+
+
+class PurseIDType(enum.Enum):
+    """Enumeration over set of CL type keys.
+
+    """
+    PUBLIC_KEY = enum.auto()
+    ACCOUNT_HASH = enum.auto()
+    UREF = enum.auto()
+
+
+@dataclasses.dataclass
+class GlobalStateID():
+    # 32 byte global state identifier, either a block hash, block height or state root hash.
+    identifier: typing.Union[bytes, str, int]
+
+    # Type of identifier.
+    id_type: "GlobalStateIDType"
+
+
+class GlobalStateIDType(enum.Enum):
+    """Enumeration over set of CL type keys.
+
+    """
+    BLOCK_HASH = enum.auto()
+    BLOCK_HEIGHT = enum.auto()
+    STATE_ROOT_HASH = enum.auto()
 
 
 @dataclasses.dataclass
