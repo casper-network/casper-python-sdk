@@ -6,7 +6,7 @@ import typing
 
 import pycspr
 from pycspr import NodeClient
-from pycspr import NodeConnection
+from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import Deploy
@@ -108,7 +108,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnection(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     ))

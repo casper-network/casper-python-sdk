@@ -15,7 +15,7 @@ def CLIENT(
     NODE_PORT_RPC,
     NODE_PORT_SSE
 ) -> pycspr.NodeClient:
-    return pycspr.NodeClient(pycspr.NodeConnection(
+    return pycspr.NodeClient(pycspr.NodeConnectionInfo(
         host=NODE_HOST,
         port_rest=NODE_PORT_REST,
         port_rpc=NODE_PORT_RPC,

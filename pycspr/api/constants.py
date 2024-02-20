@@ -1,3 +1,6 @@
+# Default host.
+DEFAULT_HOST = "localhost"
+
 # Default ports.
 DEFAULT_PORT_REST = 8888
 DEFAULT_PORT_RPC = 7777

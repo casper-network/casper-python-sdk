@@ -2,7 +2,7 @@ import argparse
 import json
 
 from pycspr import NodeClient
-from pycspr import NodeConnection
+from pycspr import NodeConnectionInfo
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Demo illustrating how to pull era summary information.")
@@ -52,7 +52,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnection(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc=args.node_port_rpc,
     ))

@@ -4,7 +4,7 @@ import typing
 import requests
 import sseclient
 
-from pycspr.api.connection import NodeConnection
+from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.sse_types import NodeEventChannel
 from pycspr.api.sse_types import NodeEventType
 from pycspr.api.sse_types import NodeEventInfo
@@ -12,7 +12,7 @@ from pycspr.api.sse_types import SSE_CHANNEL_TO_SSE_EVENT
 
 
 def get_events(
-    node: NodeConnection,
+    node: NodeConnectionInfo,
     callback: typing.Callable[[NodeEventInfo], None],
     event_channel: NodeEventChannel,
     event_type: NodeEventType = None,
@@ -33,7 +33,7 @@ def get_events(
 
 
 def yield_events(
-    node: NodeConnection,
+    node: NodeConnectionInfo,
     event_channel: NodeEventChannel,
     event_type: NodeEventType = None,
     event_id: int = 0
@@ -68,7 +68,7 @@ def yield_events(
 
 
 def _get_sse_client(
-    node: NodeConnection,
+    node: NodeConnectionInfo,
     event_channel: NodeEventChannel,
     event_id: int
 ) -> sseclient.SSEClient:

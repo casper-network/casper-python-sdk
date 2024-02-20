@@ -5,7 +5,7 @@ import typing
 
 import pycspr
 from pycspr import NodeClient
-from pycspr import NodeConnection
+from pycspr import NodeConnectionInfo
 from pycspr.types import CL_URef
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
@@ -67,7 +67,7 @@ _ARGS.add_argument(
 
 class _Context():
     def __init__(self, args: argparse.Namespace):
-        self.client = NodeClient(NodeConnection(
+        self.client = NodeClient(NodeConnectionInfo(
             host=args.node_host,
             port_rest=args.node_port_rest,
             port_rpc=args.node_port_rpc,

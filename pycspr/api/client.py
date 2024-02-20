@@ -5,7 +5,7 @@ from pycspr import types
 from pycspr.api import constants
 from pycspr.api import params as params_factory
 from pycspr.api import sse_consumer
-from pycspr.api.connection import NodeConnection
+from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
 from pycspr.types.identifiers import GlobalStateID
@@ -13,20 +13,29 @@ from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.types.identifiers import PurseID
 
 
+from pycspr.api.clients import RestServerClient
+from pycspr.api.clients import RpcServerClient
+
+
 class NodeClient():
     """Exposes a set of (categorised) functions for interacting  with a node.
 
     """
-    def __init__(self, connection: NodeConnection):
+    def __init__(self, connection_info: NodeConnectionInfo):
         """Instance constructor.
 
         :param connection: Information required to connect to a node.
 
         """
-        self.connection = connection
-        self._get_rest_response = connection.get_rest_response
-        self._get_rpc_response = connection.get_rpc_response
-        self._get_speculative_rpc_response = connection.get_speculative_rpc_response
+        self.connection = connection_info
+
+        self._rest_client = RestServerClient(connection_info)
+        self._rpc_client = RpcServerClient(connection_info)
+
+
+        self._get_rest_response = connection_info.get_rest_response
+        self._get_rpc_response = connection_info.get_rpc_response
+        self._get_speculative_rpc_response = connection_info.get_speculative_rpc_response
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -167,9 +176,12 @@ class NodeClient():
     def get_auction_info(self, block_id: types.BlockID = None) -> dict:
         """Returns current auction system contract information.
 
+        :param block_id: Identifier of a finalised block.
         :returns: Current auction system contract information.
 
         """
+        return self._rpc_client.state_get_auction_info(block_id)
+        
         return self._get_rpc_response(
             constants.RPC_STATE_GET_AUCTION_INFO,
             params_factory.get_auction_info_params(block_id)
@@ -182,12 +194,7 @@ class NodeClient():
         :returns: On-chain block information.
 
         """
-        response = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_BLOCK,
-            params_factory.get_block_params(block_id)
-            )
-
-        return response["block"]
+        return self._rpc_client.chain_get_block(block_id)
 
     def get_block_at_era_switch(
         self,
@@ -456,12 +463,7 @@ class NodeClient():
         :returns: State root hash at specified block.
 
         """
-        response = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
-            params_factory.get_state_root_hash_params(block_id)
-            )
-
-        return bytes.fromhex(response["state_root_hash"])
+        return self._rpc_client.chain_get_state_root_hash(block_id)
 
     def get_validator_changes(self) -> dict:
         """Returns status changes of active validators.
@@ -470,9 +472,8 @@ class NodeClient():
         :returns: Status changes of active validators.
 
         """
-        response = self._get_rpc_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES)
+        return self._rpc_client.info_get_validator_changes()
 
-        return response["changes"]
 
     def send_deploy(self, deploy: types.Deploy):
         """Dispatches a deploy to a node for processing.

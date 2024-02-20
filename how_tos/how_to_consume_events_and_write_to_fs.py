@@ -2,7 +2,7 @@ import argparse
 import json
 
 from pycspr import NodeClient
-from pycspr import NodeConnection
+from pycspr import NodeConnectionInfo
 from pycspr import NodeEventChannel
 from pycspr import NodeEventInfo
 from pycspr import NodeEventType
@@ -100,7 +100,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnection(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_sse=args.node_port_sse
     ))

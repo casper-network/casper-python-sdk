@@ -18,7 +18,7 @@ class NodeAPIError(Exception):
 
 
 @dataclasses.dataclass
-class NodeConnection:
+class NodeConnectionInfo:
     """Encapsulates information required to connect to a node.
 
     """
@@ -115,7 +115,8 @@ class NodeConnection:
         :returns: Parsed JSON-RPC response.
 
         """
-        response = requests.post(address, json=jsonrpcclient.request(endpoint, params))
+        request = jsonrpcclient.request(endpoint, params)
+        response = requests.post(address, json=request)
         parsed = jsonrpcclient.parse(response.json())
         if isinstance(parsed, jsonrpcclient.responses.Error):
             raise NodeAPIError(parsed)

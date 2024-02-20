@@ -18,7 +18,7 @@ from pycspr import types
 
 from pycspr.api.client import NodeClient
 from pycspr.api.connection import NodeAPIError
-from pycspr.api.connection import NodeConnection
+from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.sse_types import NodeEventChannel
 from pycspr.api.sse_types import NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
