@@ -157,7 +157,6 @@ def _get_node_rpc(ctx: _Context):
     rpc_schema: dict = ctx.client.get_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: get_rpc_schema")
-    print(rpc_schema)
 
     # get_rpc_endpoints.
     rpc_endpoints: typing.List[str] = ctx.client.get_rpc_endpoints()

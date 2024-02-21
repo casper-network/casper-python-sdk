@@ -10,19 +10,8 @@ from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
 from pycspr.types.identifiers import GlobalStateID
 from pycspr.types.identifiers import GlobalStateIDType
-from pycspr.types.identifiers import PurseID
-
 from pycspr.api.clients import RestServerClient
 from pycspr.api.clients import RpcServerClient
-
-    # def get_node_status(self) -> dict:
-    #     """Returns node status information.
-
-    #     :returns: Node status information.
-
-    #     """
-    #     return self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
-
 
 
 class NodeClient():
@@ -51,6 +40,7 @@ class NodeClient():
         self.get_era_info_by_switch_block = self._rpc_client.chain_get_era_info_by_switch_block
         self.get_node_peers = self._rpc_client.info_get_peers
         self.get_node_status = self._rpc_client.info_get_status
+        self.get_rpc_schema = self._rpc_client.discover
         self.get_state_root_hash = self._rpc_client.chain_get_state_root_hash
         self.get_validator_changes = self._rpc_client.info_get_validator_changes
 
@@ -301,16 +291,6 @@ class NodeClient():
         schema = self.get_rpc_schema()
 
         return sorted([i["name"] for i in schema["methods"]])
-
-    def get_rpc_schema(self) -> dict:
-        """Returns RPC schema.
-
-        :returns: Node JSON-RPC API schema.
-
-        """
-        response = self._get_rpc_response(constants.RPC_DISCOVER)
-
-        return response["schema"]
 
     def get_state_item(
         self,
