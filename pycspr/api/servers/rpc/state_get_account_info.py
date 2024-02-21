@@ -1,11 +1,10 @@
-from pycspr.types import AccountID
-from pycspr.types import BlockID
 from pycspr.api import constants
 from pycspr.api.servers.rpc import utils
-from pycspr.api.servers.rpc.utils import Proxy
+from pycspr.types import AccountID
+from pycspr.types import BlockID
 
 
-def exec(proxy: Proxy, account_id: AccountID, block_id: BlockID = None) -> dict:
+def exec(proxy: utils.Proxy, account_id: AccountID, block_id: BlockID = None) -> dict:
     """Returns account information at a certain global state root hash.
 
     :param proxy: Remote RPC server proxy.

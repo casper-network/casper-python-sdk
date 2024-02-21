@@ -12,7 +12,6 @@ from pycspr.types.identifiers import GlobalStateID
 from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.types.identifiers import PurseID
 
-
 from pycspr.api.clients import RestServerClient
 from pycspr.api.clients import RpcServerClient
 
@@ -32,6 +31,13 @@ class NodeClient():
         self._rest_client = RestServerClient(connection_info)
         self._rpc_client = RpcServerClient(connection_info)
 
+        self.get_account_info = self._rpc_client.state_get_account_info
+        self.get_auction_info = self._rpc_client.state_get_auction_info
+        self.get_block = self._rpc_client.chain_get_block
+        self.get_block_transfers = self._rpc_client.chain_get_block_transfers
+        self.get_deploy = self._rpc_client.info_get_deploy
+        self.get_state_root_hash = self._rpc_client.chain_get_state_root_hash
+        self.get_validator_changes = self._rpc_client.info_get_validator_changes
 
         self._get_rest_response = connection_info.get_rest_response
         self._get_rpc_response = connection_info.get_rpc_response
@@ -121,23 +127,6 @@ class NodeClient():
 
         return int(response["balance"])
 
-    def get_account_info(
-        self,
-        account_id: types.AccountID,
-        block_id: types.BlockID = None
-    ) -> dict:
-        """Returns account information at a certain global state root hash.
-
-        :param account_id: An account holder's public key prefixed with a key type identifier.
-        :param block_id: Identifier of a finalised block.
-        :returns: Account information in JSON format.
-
-        """
-        params = params_factory.get_account_info_params(account_id, block_id)
-        response = self._get_rpc_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params)
-
-        return response["account"]
-
     def get_account_main_purse_uref(
         self,
         account_id: types.AccountID,
@@ -173,29 +162,6 @@ class NodeClient():
             if named_key["name"] == key_name:
                 return types.CL_Key.from_string(named_key["key"])
 
-    def get_auction_info(self, block_id: types.BlockID = None) -> dict:
-        """Returns current auction system contract information.
-
-        :param block_id: Identifier of a finalised block.
-        :returns: Current auction system contract information.
-
-        """
-        return self._rpc_client.state_get_auction_info(block_id)
-        
-        return self._get_rpc_response(
-            constants.RPC_STATE_GET_AUCTION_INFO,
-            params_factory.get_auction_info_params(block_id)
-            )
-
-    def get_block(self, block_id: types.BlockID = None) -> dict:
-        """Returns on-chain block information.
-
-        :param block_id: Identifier of a finalised block.
-        :returns: On-chain block information.
-
-        """
-        return self._rpc_client.chain_get_block(block_id)
-
     def get_block_at_era_switch(
         self,
         polling_interval_seconds: float = 1.0,
@@ -229,23 +195,6 @@ class NodeClient():
 
         return block_height
 
-    def get_block_transfers(
-        self,
-        block_id: types.BlockID = None
-    ) -> typing.Tuple[str, list]:
-        """Returns on-chain block transfers information.
-
-        :param block_id: Identifier of a finalised block.
-        :returns: On-chain block transfers information.
-
-        """
-        response: dict = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_BLOCK_TRANSFERS,
-            params_factory.get_block_transfers_params(block_id)
-            )
-
-        return (response["block_hash"], response["transfers"])
-
     def get_chain_heights(self) -> int:
         """Returns height of current era & block.
 
@@ -265,18 +214,6 @@ class NodeClient():
         response = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
 
         return response["chainspec_bytes"]
-
-    def get_deploy(self, deploy_id: types.DeployID) -> dict:
-        """Returns on-chain deploy information.
-
-        :param deploy_id: Identifier of a finalised block.
-        :returns: On-chain deploy information.
-
-        """
-        return self._get_rpc_response(
-            constants.RPC_INFO_GET_DEPLOY,
-            params_factory.get_deploy_params(deploy_id)
-            )
 
     def get_dictionary_item(
         self,
@@ -455,25 +392,6 @@ class NodeClient():
             )
 
         return response["stored_value"]
-
-    def get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
-        """Returns an root hash of global state at a specified block.
-
-        :param block_id: Identifier of a finalised block.
-        :returns: State root hash at specified block.
-
-        """
-        return self._rpc_client.chain_get_state_root_hash(block_id)
-
-    def get_validator_changes(self) -> dict:
-        """Returns status changes of active validators.
-
-        :param node: Information required to connect to a node.
-        :returns: Status changes of active validators.
-
-        """
-        return self._rpc_client.info_get_validator_changes()
-
 
     def send_deploy(self, deploy: types.Deploy):
         """Dispatches a deploy to a node for processing.

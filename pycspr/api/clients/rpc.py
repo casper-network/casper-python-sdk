@@ -27,6 +27,15 @@ class RpcServerClient():
         """
         return SERVER.chain_get_block(self.proxy, block_id)
 
+    def chain_get_block_transfers(self, block_id: types.BlockID = None) -> dict:
+        """Returns on-chain block transfers information.
+
+        :param block_id: Identifier of a finalised block.
+        :returns: On-chain block transfers information.
+
+        """
+        return SERVER.chain_get_block_transfers(self.proxy, block_id)
+
     def chain_get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
         """Returns an root hash of global state at a specified block.
 
@@ -35,6 +44,15 @@ class RpcServerClient():
 
         """
         return SERVER.chain_get_state_root_hash(self.proxy, block_id)
+
+    def info_get_deploy(self, deploy_id: types.DeployID) -> dict:
+        """Returns on-chain deploy information.
+
+        :param deploy_id: Identifier of a deploy processed by network.
+        :returns: On-chain deploy information.
+
+        """
+        return SERVER.info_get_deploy(self.proxy, deploy_id)
 
     def info_get_validator_changes(self) -> dict:
         """Returns status changes of active validators.
@@ -45,13 +63,24 @@ class RpcServerClient():
         """
         return SERVER.info_get_validator_changes(self.proxy)
 
-    def state_get_auction_info(self) -> dict:
+    def state_get_account_info(self, account_id: types.AccountID, block_id: types.BlockID = None) -> dict:
+        """Returns account information at a certain global state root hash.
+
+        :param account_id: An account holder's public key prefixed with a key type identifier.
+        :param block_id: Identifier of a finalised block.
+        :returns: Account information in JSON format.
+
+        """    
+        return SERVER.state_get_account_info(self.proxy, account_id, block_id)    
+
+    def state_get_auction_info(self, block_id: types.BlockID = None) -> dict:
         """Returns current auction system contract information.
 
+        :param block_id: Identifier of a finalised block.
         :returns: Current auction system contract information.
 
         """
-        return SERVER.state_get_auction_info(self.proxy)
+        return SERVER.state_get_auction_info(self.proxy, block_id)
 
     def query_balance(
         self,
