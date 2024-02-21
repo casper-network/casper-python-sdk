@@ -88,14 +88,14 @@ def _main(args: argparse.Namespace):
 
     ctx = _Context(args)
     for func in {
-        # _get_node_rpc,
-        # _get_node_ops,
+        _get_node_rpc,
+        _get_node_ops,
         _get_chain_block,
-        # _get_chain_era_info,
-        # _get_chain_era_summary,
-        # _get_chain_auction_info,
-        # _get_chain_state_root_hash,
-        # _get_chain_account_info,
+        _get_chain_era_info,
+        _get_chain_era_summary,
+        _get_chain_auction_info,
+        _get_chain_state_root_hash,
+        _get_chain_account_info,
     }:
         func(ctx)
         print("-" * 74)
@@ -157,6 +157,7 @@ def _get_node_rpc(ctx: _Context):
     rpc_schema: dict = ctx.client.get_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: get_rpc_schema")
+    print(rpc_schema)
 
     # get_rpc_endpoints.
     rpc_endpoints: typing.List[str] = ctx.client.get_rpc_endpoints()
@@ -193,7 +194,8 @@ def _get_chain_auction_info(ctx: _Context):
 
 
 def _get_chain_era_info(ctx: _Context):
-    block: dict = ctx.client.get_block()
+    print("POLLING :: get_block_at_era_switch - may take some time")
+    block: dict = ctx.client.get_block_at_era_switch()
 
     for block_id in {
         None,
@@ -203,6 +205,8 @@ def _get_chain_era_info(ctx: _Context):
         era_info: bytes = ctx.client.get_era_info(block_id)
         assert isinstance(era_info, dict)
         print(f"SUCCESS :: get_era_info :: block-id={block_id}")
+        assert era_info == ctx.client.get_era_info_by_switch_block(block_id)
+        print(era_info)
 
     assert ctx.client.get_era_info(block["hash"]) == \
            ctx.client.get_era_info(block["header"]["height"])

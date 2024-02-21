@@ -36,6 +36,15 @@ class RpcServerClient():
         """
         return SERVER.chain_get_block_transfers(self.proxy, block_id)
 
+    def chain_get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era information scoped by block id.
+
+        :param block_id: Identifier of a block.
+        :returns: Era information.
+
+        """
+        return SERVER.chain_get_era_info_by_switch_block(self.proxy, block_id)
+
     def chain_get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
         """Returns an root hash of global state at a specified block.
 
@@ -45,6 +54,14 @@ class RpcServerClient():
         """
         return SERVER.chain_get_state_root_hash(self.proxy, block_id)
 
+    def info_get_chainspec(self) -> dict:
+        """Returns canonical network state information.
+
+        :returns: Chain spec, genesis accounts and global state information.
+
+        """
+        return SERVER.info_get_chainspec(self.proxy)
+
     def info_get_deploy(self, deploy_id: types.DeployID) -> dict:
         """Returns on-chain deploy information.
 
@@ -53,6 +70,22 @@ class RpcServerClient():
 
         """
         return SERVER.info_get_deploy(self.proxy, deploy_id)
+
+    def info_get_peers(self) -> dict:
+        """Returns node peer information.
+
+        :returns: Node peer information.
+
+        """
+        return SERVER.info_get_peers(self.proxy)
+
+    def info_get_status(self) -> dict:
+        """Returns node status information.
+
+        :returns: Node status information.
+
+        """
+        return SERVER.info_get_status(self.proxy)
 
     def info_get_validator_changes(self) -> dict:
         """Returns status changes of active validators.

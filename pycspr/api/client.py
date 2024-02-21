@@ -15,6 +15,15 @@ from pycspr.types.identifiers import PurseID
 from pycspr.api.clients import RestServerClient
 from pycspr.api.clients import RpcServerClient
 
+    # def get_node_status(self) -> dict:
+    #     """Returns node status information.
+
+    #     :returns: Node status information.
+
+    #     """
+    #     return self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
+
+
 
 class NodeClient():
     """Exposes a set of (categorised) functions for interacting  with a node.
@@ -30,12 +39,18 @@ class NodeClient():
 
         self._rest_client = RestServerClient(connection_info)
         self._rpc_client = RpcServerClient(connection_info)
-
+        
+        self.get_account_balance = self._rpc_client.query_balance
         self.get_account_info = self._rpc_client.state_get_account_info
         self.get_auction_info = self._rpc_client.state_get_auction_info
         self.get_block = self._rpc_client.chain_get_block
         self.get_block_transfers = self._rpc_client.chain_get_block_transfers
+        self.get_chain_spec = self._rpc_client.info_get_chainspec
         self.get_deploy = self._rpc_client.info_get_deploy
+        self.get_era_info = self._rpc_client.chain_get_era_info_by_switch_block
+        self.get_era_info_by_switch_block = self._rpc_client.chain_get_era_info_by_switch_block
+        self.get_node_peers = self._rpc_client.info_get_peers
+        self.get_node_status = self._rpc_client.info_get_status
         self.get_state_root_hash = self._rpc_client.chain_get_state_root_hash
         self.get_validator_changes = self._rpc_client.info_get_validator_changes
 
@@ -104,28 +119,6 @@ class NodeClient():
         offset = era_height - era_height_current
         if offset > 0:
             await self.await_n_eras(offset)
-
-    def get_account_balance(
-        self,
-        purse_id: types.PurseID,
-        global_state_id: types.GlobalStateID = None
-    ) -> int:
-        """Returns account balance at a certain point in global state history.
-
-        :param purse_id: Identifier of purse being queried.
-        :param global_state_id: Identifier of global state root at some point in time.
-        :returns: Account balance in motes (if purse exists).
-
-        """
-        global_state_id = global_state_id or GlobalStateID(
-            self.get_state_root_hash(),
-            GlobalStateIDType.STATE_ROOT_HASH
-        )
-
-        params = params_factory.get_query_balance_params(global_state_id, purse_id)
-        response = self._get_rpc_response(constants.RPC_QUERY_BALANCE, params)
-
-        return int(response["balance"])
 
     def get_account_main_purse_uref(
         self,
@@ -205,16 +198,6 @@ class NodeClient():
 
         return block["header"]["era_id"], block["header"]["height"]
 
-    def get_chain_spec(self) -> dict:
-        """Returns canonical network state information.
-
-        :returns: Chain spec, genesis accounts and global state information.
-
-        """
-        response = self._get_rpc_response(constants.RPC_INFO_GET_CHAINSPEC)
-
-        return response["chainspec_bytes"]
-
     def get_dictionary_item(
         self,
         identifier: types.DictionaryID,
@@ -243,29 +226,6 @@ class NodeClient():
         era_height, _ = self.get_chain_heights()
 
         return era_height
-
-    def get_era_info(self, block_id: types.BlockID = None) -> dict:
-        """Returns consensus era information.
-
-        :param block_id: Identifier of a block produced at the end of an era.
-        :returns: Era information.
-
-        """
-        response = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-            params_factory.get_era_info_params(block_id)
-            )
-
-        return response["era_summary"]
-
-    def get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
-        """Returns consensus era information.
-
-        :param block_id: Identifier of a block produced at the end of an era.
-        :returns: Era information.
-
-        """
-        return self.get_era_info(block_id)
 
     def get_era_summary(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era summary information.
@@ -319,24 +279,6 @@ class NodeClient():
         metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
 
         return metrics
-
-    def get_node_peers(self) -> typing.List[dict]:
-        """Returns node peers information.
-
-        :returns: Node peers information.
-
-        """
-        response = self._get_rpc_response(constants.RPC_INFO_GET_PEERS)
-
-        return response["peers"]
-
-    def get_node_status(self) -> dict:
-        """Returns node status information.
-
-        :returns: Node status information.
-
-        """
-        return self._get_rpc_response(constants.RPC_INFO_GET_STATUS)
 
     def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
