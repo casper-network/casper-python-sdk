@@ -38,6 +38,7 @@ class NodeClient():
         self.get_deploy = self._rpc_client.info_get_deploy
         self.get_era_info = self._rpc_client.chain_get_era_info_by_switch_block
         self.get_era_info_by_switch_block = self._rpc_client.chain_get_era_info_by_switch_block
+        self.get_era_summary = self._rpc_client.chain_get_era_summary
         self.get_node_peers = self._rpc_client.info_get_peers
         self.get_node_status = self._rpc_client.info_get_status
         self.get_rpc_schema = self._rpc_client.discover
@@ -216,20 +217,6 @@ class NodeClient():
         era_height, _ = self.get_chain_heights()
 
         return era_height
-
-    def get_era_summary(self, block_id: types.BlockID = None) -> dict:
-        """Returns consensus era summary information.
-
-        :param block_id: Identifier of a block.
-        :returns: Era summary information.
-
-        """
-        response = self._get_rpc_response(
-            constants.RPC_CHAIN_GET_ERA_SUMMARY,
-            params_factory.get_era_summary_params(block_id)
-            )
-
-        return response["era_summary"]
 
     def get_events(
         self,

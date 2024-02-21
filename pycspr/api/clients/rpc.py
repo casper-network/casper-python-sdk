@@ -36,6 +36,15 @@ class RpcServerClient():
         """
         return SERVER.chain_get_block_transfers(self.proxy, block_id)
 
+    def chain_get_era_summary(self, block_id: types.BlockID = None) -> dict:
+        """Returns consensus era summary information.
+
+        :param block_id: Identifier of a block.
+        :returns: Era summary information.
+
+        """
+        return SERVER.chain_get_era_summary(self.proxy, block_id)
+
     def chain_get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
 
@@ -45,14 +54,6 @@ class RpcServerClient():
         """
         return SERVER.chain_get_era_info_by_switch_block(self.proxy, block_id)
 
-    def discover(self) -> dict:
-        """Returns RPC schema.
-
-        :returns: Node JSON-RPC API schema.
-
-        """
-        return SERVER.discover(self.proxy)
-
     def chain_get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
         """Returns an root hash of global state at a specified block.
 
@@ -61,6 +62,14 @@ class RpcServerClient():
 
         """
         return SERVER.chain_get_state_root_hash(self.proxy, block_id)
+
+    def discover(self) -> dict:
+        """Returns RPC schema.
+
+        :returns: Node JSON-RPC API schema.
+
+        """
+        return SERVER.discover(self.proxy)
 
     def info_get_chainspec(self) -> dict:
         """Returns canonical network state information.

@@ -88,14 +88,14 @@ def _main(args: argparse.Namespace):
 
     ctx = _Context(args)
     for func in {
-        _get_node_rpc,
-        _get_node_ops,
-        _get_chain_block,
-        _get_chain_era_info,
+        # _get_node_rpc,
+        # _get_node_ops,
+        # _get_chain_block,
+        # _get_chain_era_info,
         _get_chain_era_summary,
-        _get_chain_auction_info,
-        _get_chain_state_root_hash,
-        _get_chain_account_info,
+        # _get_chain_auction_info,
+        # _get_chain_state_root_hash,
+        # _get_chain_account_info,
     }:
         func(ctx)
         print("-" * 74)
@@ -205,7 +205,6 @@ def _get_chain_era_info(ctx: _Context):
         assert isinstance(era_info, dict)
         print(f"SUCCESS :: get_era_info :: block-id={block_id}")
         assert era_info == ctx.client.get_era_info_by_switch_block(block_id)
-        print(era_info)
 
     assert ctx.client.get_era_info(block["hash"]) == \
            ctx.client.get_era_info(block["header"]["height"])
@@ -226,7 +225,7 @@ def _get_chain_era_summary(ctx: _Context):
 
     assert ctx.client.get_era_summary(block["hash"]) == \
            ctx.client.get_era_summary(block["header"]["height"])
-    print("SUCCESS :: get_era_summary :: by equivalent switch block height & hash")
+    print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
 
 
 def _get_chain_state_root_hash(ctx: _Context):

@@ -1,6 +1,7 @@
 from pycspr.api.servers.rpc.chain_get_block import exec as chain_get_block
 from pycspr.api.servers.rpc.chain_get_block_transfers import exec as chain_get_block_transfers
 from pycspr.api.servers.rpc.chain_get_era_info_by_switch_block import exec as chain_get_era_info_by_switch_block
+from pycspr.api.servers.rpc.chain_get_era_summary import exec as chain_get_era_summary
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
 from pycspr.api.servers.rpc.discover import exec as discover
 from pycspr.api.servers.rpc.info_get_chainspec import exec as info_get_chainspec
