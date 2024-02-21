@@ -3,13 +3,10 @@ import typing
 
 from pycspr import types
 from pycspr.api import constants
-from pycspr.api import params as params_factory
 from pycspr.api import sse_consumer
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.sse_types import NodeEventChannel, NodeEventInfo
 from pycspr.api.sse_types import NodeEventType
-from pycspr.types.identifiers import GlobalStateID
-from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.api.clients import RestServerClient
 from pycspr.api.clients import RpcServerClient
 
@@ -26,9 +23,13 @@ class NodeClient():
         """
         self.connection = connection_info
 
+        self._get_rest_response = connection_info.get_rest_response
+        self._get_speculative_rpc_response = connection_info.get_speculative_rpc_response
+
         self._rest_client = RestServerClient(connection_info)
         self._rpc_client = RpcServerClient(connection_info)
         
+        # RPC server function set.
         self.get_account_balance = self._rpc_client.query_balance
         self.get_account_info = self._rpc_client.state_get_account_info
         self.get_auction_info = self._rpc_client.state_get_auction_info
@@ -43,12 +44,11 @@ class NodeClient():
         self.get_node_peers = self._rpc_client.info_get_peers
         self.get_node_status = self._rpc_client.info_get_status
         self.get_rpc_schema = self._rpc_client.discover
+        self.get_state_item = self._rpc_client.state_get_item
         self.get_state_root_hash = self._rpc_client.chain_get_state_root_hash
         self.get_validator_changes = self._rpc_client.info_get_validator_changes
+        self.query_global_state = self._rpc_client.query_global_state
 
-        self._get_rest_response = connection_info.get_rest_response
-        self._get_rpc_response = connection_info.get_rpc_response
-        self._get_speculative_rpc_response = connection_info.get_speculative_rpc_response
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -260,51 +260,6 @@ class NodeClient():
         schema = self.get_rpc_schema()
 
         return sorted([i["name"] for i in schema["methods"]])
-
-    def get_state_item(
-        self,
-        item_key: str,
-        item_path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: types.StateRootHash = None
-    ) -> bytes:
-        """Returns a representation of an item stored under a key in global state.
-
-        :param item_key: Storage item key.
-        :param item_path: Storage item path.
-        :param state_root_hash: A node's root state hash at some point in chain time.
-        :returns: Item stored under passed key/path.
-
-        """
-        item_path = item_path if isinstance(item_path, list) else [item_path]
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-        response = self._get_rpc_response(
-            constants.RPC_STATE_GET_ITEM,
-            params_factory.get_state_item_params(item_key, item_path, state_root_hash)
-            )
-
-        return response["stored_value"]
-
-    def query_global_state(
-        self,
-        key: str,
-        path: typing.List[str],
-        state_id: types.GlobalStateID = None
-    ) -> bytes:
-        """Returns results of a query to global state at a specified block or state root hash.
-
-        :param key: Key of an item stored within global state.
-        :param path: Identifier of a path within item.
-        :param state_id: Identifier of global state leaf.
-        :returns: Results of a global state query.
-
-        """
-        state_id = state_id or GlobalStateID(
-            self.get_state_root_hash(),
-            GlobalStateIDType.STATE_ROOT_HASH
-        )
-        params = params_factory.get_query_global_state_params(state_id, key, path)
-
-        return self._get_rpc_response(constants.RPC_QUERY_GLOBAL_STATE, params)
 
     def yield_events(
         self,

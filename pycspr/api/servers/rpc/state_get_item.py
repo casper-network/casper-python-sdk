@@ -10,27 +10,25 @@ from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_s
 def exec(
     proxy: utils.Proxy,
     key: str,
-    path: typing.List[str],
-    state_id: types.GlobalStateID = None
+    path: typing.Union[str, typing.List[str]] = [],
+    state_root_hash: types.StateRootHash = None
 ) -> bytes:
     """Returns results of a query to global state at a specified block or state root hash.
 
     :param proxy: Remote RPC server proxy. 
     :param key: Key of an item stored within global state.
     :param path: Identifier of a path within item.
-    :param state_id: Identifier of global state leaf.
+    :param state_root_hash: A node's root state hash at some point in chain time.
     :returns: Results of a global state query.
 
     """
-    state_id = state_id or types.GlobalStateID(
-        chain_get_state_root_hash(),
-        types.GlobalStateIDType.STATE_ROOT_HASH
-    )
+    path = path if isinstance(path, list) else [path]
+    state_root_hash = state_root_hash or chain_get_state_root_hash(proxy)
 
-    return proxy.get_response(
-        constants.RPC_QUERY_GLOBAL_STATE,
-        get_params(state_id, key, path)
-        )
+    params = get_params(key, path, state_root_hash)
+    response = proxy.get_response(constants.RPC_STATE_GET_ITEM, params)
+
+    return response["stored_value"]
 
 
 def get_params(
@@ -65,4 +63,26 @@ def get_params(
         },
         "key": serialisation.cl_value_to_parsed(key),
         "path": path
+    }
+
+
+def get_state_item_params(
+    item_key: str,
+    item_path: typing.Union[str, typing.List[str]] = [],
+    state_root_hash: bytes = None,
+) -> dict:
+    """Returns JSON-RPC API request parameters.
+
+    :param item_key: A global state item key.
+    :param item_path: Path(s) to a data held beneath the key.
+    :param state_root_hash: A node's root state hash at some point in chain time.
+    :returns: Parameters to be passed to JSON-RPC API.
+
+    """
+    item_path = item_path if isinstance(item_path, list) else [item_path]
+
+    return {
+        "key": item_key,
+        "path": item_path,
+        "state_root_hash": state_root_hash.hex() if state_root_hash else None
     }

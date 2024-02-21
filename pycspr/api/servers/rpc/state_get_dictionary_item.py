@@ -5,11 +5,8 @@ from pycspr.types import DictionaryID_AccountNamedKey
 from pycspr.types import DictionaryID_ContractNamedKey
 from pycspr.types import DictionaryID_SeedURef
 from pycspr.types import DictionaryID_UniqueKey
-from pycspr.types import GlobalStateID
-from pycspr.types import GlobalStateIDType
 from pycspr.types import StateRootHash
 from pycspr.api import constants
-from pycspr.api.servers.rpc import utils
 from pycspr.api.servers.rpc.utils import Proxy
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
 

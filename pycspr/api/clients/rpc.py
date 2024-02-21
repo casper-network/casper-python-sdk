@@ -1,3 +1,5 @@
+import typing
+
 from pycspr import types
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.servers import rpc as SERVER
@@ -135,6 +137,22 @@ class RpcServerClient():
         """
         return SERVER.query_balance(self.proxy, purse_id, global_state_id)
 
+    def query_global_state(
+        self,
+        key: str,
+        path: typing.List[str],
+        state_id: types.GlobalStateID = None
+    ) -> bytes:
+        """Returns results of a query to global state at a specified block or state root hash.
+
+        :param key: Key of an item stored within global state.
+        :param path: Identifier of a path within item.
+        :param state_id: Identifier of global state leaf.
+        :returns: Results of a global state query.
+
+        """
+        return SERVER.query_global_state(self.proxy)
+
     def state_get_account_info(self, account_id: types.AccountID, block_id: types.BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -162,3 +180,20 @@ class RpcServerClient():
 
         """
         return SERVER.state_get_dictionary_item(self.proxy, identifier, state_root_hash)
+
+    def state_get_item(
+        self,
+        key: str,
+        path: typing.Union[str, typing.List[str]] = [],
+        state_root_hash: types.StateRootHash = None
+    ) -> bytes:
+        """Returns a representation of an item stored under a key in global state.
+
+        :param key: Storage item key.
+        :param path: Storage item path.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: Item stored under passed key/path.
+
+        """
+        return SERVER.state_get_item(self.proxy, key, path, state_root_hash)
+    
