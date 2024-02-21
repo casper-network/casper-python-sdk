@@ -36,6 +36,7 @@ class NodeClient():
         self.get_block_transfers = self._rpc_client.chain_get_block_transfers
         self.get_chain_spec = self._rpc_client.info_get_chainspec
         self.get_deploy = self._rpc_client.info_get_deploy
+        self.get_dictionary_item = self._rpc_client.state_get_dictionary_item
         self.get_era_info = self._rpc_client.chain_get_era_info_by_switch_block
         self.get_era_info_by_switch_block = self._rpc_client.chain_get_era_info_by_switch_block
         self.get_era_summary = self._rpc_client.chain_get_era_summary
@@ -189,25 +190,6 @@ class NodeClient():
 
         return block["header"]["era_id"], block["header"]["height"]
 
-    def get_dictionary_item(
-        self,
-        identifier: types.DictionaryID,
-        state_root_hash: types.StateRootHash = None
-    ) -> dict:
-        """Returns on-chain data stored under a dictionary item.
-
-        :param identifier: Identifier required to query a dictionary item.
-        :param state_root_hash: A node's root state hash at some point in chain time.
-        :returns: On-chain data stored under a dictionary item.
-
-        """
-        state_root_hash = state_root_hash or self.get_state_root_hash()
-
-        return self._get_rpc_response(
-            constants.RPC_STATE_GET_DICTIONARY_ITEM,
-            params_factory.get_dictionary_item_params(identifier, state_root_hash)
-            )
-
     def get_era_height(self) -> int:
         """Returns height of current era.
 
@@ -301,19 +283,6 @@ class NodeClient():
             )
 
         return response["stored_value"]
-
-    def send_deploy(self, deploy: types.Deploy):
-        """Dispatches a deploy to a node for processing.
-
-        :param deploy: A deploy to be processed at a node.
-
-        """
-        response = self._get_rpc_response(
-            constants.RPC_ACCOUNT_PUT_DEPLOY,
-            params_factory.put_deploy_params(deploy)
-            )
-
-        return response["deploy_hash"]
 
     def query_global_state(
         self,

@@ -18,6 +18,14 @@ class RpcServerClient():
             port=connection_info.port_rpc
         )
 
+    def exec(self, deploy: types.Deploy) -> bytes:
+        """Dispatches a deploy to a node for processing.
+
+        :param deploy: A deploy to be processed at a node.
+
+        """    
+        pass
+
     def chain_get_block(self, block_id: types.BlockID = None) -> dict:
         """Returns on-chain block information.
 
@@ -113,6 +121,20 @@ class RpcServerClient():
         """
         return SERVER.info_get_validator_changes(self.proxy)
 
+    def query_balance(
+        self,
+        purse_id: types.PurseID,
+        global_state_id: types.GlobalStateID = None
+    ) -> int:
+        """Returns account balance at a certain point in global state history.
+
+        :param purse_id: Identifier of purse being queried.
+        :param global_state_id: Identifier of global state root at some point in time.
+        :returns: Account balance in motes (if purse exists).
+
+        """
+        return SERVER.query_balance(self.proxy, purse_id, global_state_id)
+
     def state_get_account_info(self, account_id: types.AccountID, block_id: types.BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -132,16 +154,11 @@ class RpcServerClient():
         """
         return SERVER.state_get_auction_info(self.proxy, block_id)
 
-    def query_balance(
-        self,
-        purse_id: types.PurseID,
-        global_state_id: types.GlobalStateID = None
-    ) -> int:
-        """Returns account balance at a certain point in global state history.
+    def state_get_dictionary_item(self, identifier: types.DictionaryID, state_root_hash: types.StateRootHash = None) -> dict:
+        """Returns current auction system contract information.
 
-        :param purse_id: Identifier of purse being queried.
-        :param global_state_id: Identifier of global state root at some point in time.
-        :returns: Account balance in motes (if purse exists).
+        :param block_id: Identifier of a finalised block.
+        :returns: Current auction system contract information.
 
         """
-        return SERVER.query_balance(self.proxy, purse_id, global_state_id)
+        return SERVER.state_get_dictionary_item(self.proxy, identifier, state_root_hash)
