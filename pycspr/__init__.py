@@ -19,9 +19,10 @@ from pycspr import types
 from pycspr.api.client import NodeClient
 from pycspr.api.connection import NodeAPIError
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.sse_types import NodeEventChannel
-from pycspr.api.sse_types import NodeEventInfo
-from pycspr.api.sse_types import NodeEventType
+
+from pycspr.api.servers.sse.types import NodeEventChannel
+from pycspr.api.servers.sse.types import NodeEventInfo
+from pycspr.api.servers.sse.types import NodeEventType
 
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO

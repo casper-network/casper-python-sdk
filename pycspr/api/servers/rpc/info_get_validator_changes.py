@@ -1,9 +1,9 @@
 from pycspr.api import constants
 from pycspr.api.servers.rpc.utils.proxy import Proxy
-from pycspr.types import StateRootHash
+from pycspr.types import StateRootID
 
 
-def exec(proxy: Proxy) -> StateRootHash:
+def exec(proxy: Proxy) -> StateRootID:
     """Returns root hash of global state at a finalised block.
 
     :param proxy: Remote RPC server proxy.

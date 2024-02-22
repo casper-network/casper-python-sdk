@@ -83,9 +83,9 @@ def main(args: argparse.Namespace):
             # Bind to node events.
             client.get_events(
                 callback=lambda x: _on_event(x, fhandle),
-                event_channel=NodeEventChannel[args.channel],
-                event_type=None if args.event == "all" else NodeEventType[args.event],
-                event_id=0
+                channel=NodeEventChannel[args.channel],
+                typeof=None if args.event == "all" else NodeEventType[args.event],
+                idx=0
             )
 
         except KeyboardInterrupt:

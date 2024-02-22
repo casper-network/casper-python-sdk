@@ -5,13 +5,13 @@ from pycspr.types import DictionaryID_AccountNamedKey
 from pycspr.types import DictionaryID_ContractNamedKey
 from pycspr.types import DictionaryID_SeedURef
 from pycspr.types import DictionaryID_UniqueKey
-from pycspr.types import StateRootHash
+from pycspr.types import StateRootID
 from pycspr.api import constants
 from pycspr.api.servers.rpc.utils.proxy import Proxy
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
 
 
-def exec(proxy: Proxy, identifier: DictionaryID, state_root_hash: StateRootHash = None) -> dict:
+def exec(proxy: Proxy, identifier: DictionaryID, state_root_hash: StateRootID = None) -> dict:
     """Returns on-chain data stored under a dictionary item.
 
     :param proxy: Remote RPC server proxy.
@@ -27,7 +27,7 @@ def exec(proxy: Proxy, identifier: DictionaryID, state_root_hash: StateRootHash 
     return proxy.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
 
-def get_params(identifier: DictionaryID, state_root_hash: StateRootHash) -> dict:
+def get_params(identifier: DictionaryID, state_root_hash: StateRootID) -> dict:
     """Returns JSON-RPC API request parameters.
 
     :param identifier: Identifier of a state dictionary.

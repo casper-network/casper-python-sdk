@@ -81,7 +81,7 @@ from pycspr.types.identifiers import GlobalStateID
 from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.types.identifiers import PurseID
 from pycspr.types.identifiers import PurseIDType
-from pycspr.types.identifiers import StateRootHash
+from pycspr.types.identifiers import StateRootID
 
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey

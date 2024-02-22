@@ -27,8 +27,8 @@ DeployID = typing.Union[bytes, str]
 # A public key associated with an assymetric key pair controlled by an entity.
 PublicKey = typing.Union[bytes, str]
 
-# Root hash of a node's global state.
-StateRootHash = typing.Union[bytes, str]
+# Root id of a node's global state.
+StateRootID = typing.Union[bytes, str]
 
 @dataclasses.dataclass
 class PurseID():

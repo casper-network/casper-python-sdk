@@ -73,6 +73,7 @@ class _Context():
             port_rpc=args.node_port_rpc,
             port_sse=args.node_port_sse
         ))
+        self.switch_block = None
         self.user_public_key = pycspr.parse_public_key(args.path_to_account_key)
 
 
@@ -87,29 +88,29 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
 
     ctx = _Context(args)
-    for func in {
-        # _get_node_rpc,
-        # _get_node_ops,
-        # _get_chain_block,
+    for func in [
+        _get_node_rpc,
+        _get_node_ops,
+        _get_chain_block,
+        # _get_chain_block_at_era_switch,
+        _get_chain_block_transfers,
         # _get_chain_era_info,
         _get_chain_era_summary,
-        # _get_chain_auction_info,
-        # _get_chain_state_root_hash,
-        # _get_chain_account_info,
-    }:
+        _get_chain_auction_info,
+        _get_chain_state_root_hash,
+        _get_chain_account_info,
+    ]:
         func(ctx)
         print("-" * 74)
 
 
 def _get_chain_block(ctx: _Context):
-    # Query: get_block_at_era_switch - polls until switch block.
-    print("POLLING :: get_block_at_era_switch - may take some time")
-    block: dict = ctx.client.get_block_at_era_switch()
+    # Query: get_block.
+    block: dict = ctx.client.get_block()
     assert isinstance(block, dict)
-    print("SUCCESS :: get_block_at_era_switch")
+    print("SUCCESS :: get_block :: block-id=None")
 
     for block_id in {
-        None,
         block["hash"],
         block["header"]["height"]
     }:
@@ -120,6 +121,18 @@ def _get_chain_block(ctx: _Context):
     assert ctx.client.get_block(block["hash"]) == \
            ctx.client.get_block(block["header"]["height"])
     print("SUCCESS :: get_block - by equivalent height & hash")
+
+
+def _get_chain_block_at_era_switch(ctx: _Context):
+    # Query: get_block_at_era_switch - polls until switch block.
+    print("POLLING :: get_block_at_era_switch - may take some time")
+    block: dict = ctx.client.get_block_at_era_switch()
+    assert isinstance(block, dict)
+    print("SUCCESS :: get_block_at_era_switch")
+
+
+def _get_chain_block_transfers(ctx: _Context):
+    block: dict = ctx.client.get_block()
 
     # Query: get_block_transfers - by hash & by height.
     block_transfers: tuple = ctx.client.get_block_transfers(block["hash"])
@@ -236,17 +249,17 @@ def _get_chain_state_root_hash(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        state_root_hash: bytes = ctx.client.get_state_root_hash(block_id)
+        state_root_hash: bytes = ctx.client.get_state_root(block_id)
         assert isinstance(state_root_hash, bytes)
         print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
 
-    assert ctx.client.get_state_root_hash(block["hash"]) == \
-           ctx.client.get_state_root_hash(block["header"]["height"])
+    assert ctx.client.get_state_root(block["hash"]) == \
+           ctx.client.get_state_root(block["header"]["height"])
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 
 def _get_chain_account_info(ctx: _Context):
-    state_root_hash: bytes = ctx.client.get_state_root_hash()
+    state_root_hash: bytes = ctx.client.get_state_root()
 
     # Query: get_account_info.
     account_info: dict = ctx.client.get_account_info(ctx.user_public_key.account_key)

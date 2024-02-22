@@ -3,14 +3,14 @@ import typing
 from pycspr.api import constants
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
 from pycspr.api.servers.rpc.utils.proxy import Proxy
-from pycspr.types import StateRootHash
+from pycspr.types import StateRootID
 
 
 def exec(
     proxy: Proxy,
     key: str,
     path: typing.Union[str, typing.List[str]] = [],
-    state_root_hash: StateRootHash = None
+    state_root_hash: StateRootID = None
 ) -> bytes:
     """Returns results of a query to global state at a specified block or state root hash.
 
