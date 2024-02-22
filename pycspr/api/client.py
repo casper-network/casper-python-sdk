@@ -48,6 +48,7 @@ class NodeClient():
         self.get_state_root_hash = self._rpc_client.chain_get_state_root_hash
         self.get_validator_changes = self._rpc_client.info_get_validator_changes
         self.query_global_state = self._rpc_client.query_global_state
+        self.send_deploy = self._rpc_client.account_put_deploy
 
 
     async def await_n_blocks(self, offset: int):
@@ -234,6 +235,8 @@ class NodeClient():
         :returns: Node metrics information.
 
         """
+        return self._rest_client.get_node_metrics()
+
         response = self._get_rest_response(constants.REST_GET_METRICS)
         metrics = sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
 

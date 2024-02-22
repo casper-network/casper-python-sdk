@@ -1,8 +1,15 @@
 import typing
 
-from pycspr import types
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.servers import rpc as SERVER
+from pycspr.types import AccountID
+from pycspr.types import BlockID
+from pycspr.types import DeployID
+from pycspr.types import Deploy
+from pycspr.types import DictionaryID
+from pycspr.types import GlobalStateID
+from pycspr.types import PurseID
+from pycspr.types import StateRootHash
 
 
 class RpcServerClient():
@@ -20,15 +27,16 @@ class RpcServerClient():
             port=connection_info.port_rpc
         )
 
-    def exec(self, deploy: types.Deploy) -> bytes:
+    def account_put_deploy(self, deploy: Deploy) -> DeployID:
         """Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
+        :returns: Deploy identifier.
 
-        """    
-        pass
+        """
+        return SERVER.account_put_deploy(self.proxy, deploy)
 
-    def chain_get_block(self, block_id: types.BlockID = None) -> dict:
+    def chain_get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -37,7 +45,7 @@ class RpcServerClient():
         """
         return SERVER.chain_get_block(self.proxy, block_id)
 
-    def chain_get_block_transfers(self, block_id: types.BlockID = None) -> dict:
+    def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -46,7 +54,7 @@ class RpcServerClient():
         """
         return SERVER.chain_get_block_transfers(self.proxy, block_id)
 
-    def chain_get_era_summary(self, block_id: types.BlockID = None) -> dict:
+    def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
 
         :param block_id: Identifier of a block.
@@ -55,7 +63,7 @@ class RpcServerClient():
         """
         return SERVER.chain_get_era_summary(self.proxy, block_id)
 
-    def chain_get_era_info_by_switch_block(self, block_id: types.BlockID = None) -> dict:
+    def chain_get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
@@ -64,7 +72,7 @@ class RpcServerClient():
         """
         return SERVER.chain_get_era_info_by_switch_block(self.proxy, block_id)
 
-    def chain_get_state_root_hash(self, block_id: types.BlockID = None) -> types.StateRootHash:
+    def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
@@ -89,7 +97,7 @@ class RpcServerClient():
         """
         return SERVER.info_get_chainspec(self.proxy)
 
-    def info_get_deploy(self, deploy_id: types.DeployID) -> dict:
+    def info_get_deploy(self, deploy_id: DeployID) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_id: Identifier of a deploy processed by network.
@@ -125,8 +133,8 @@ class RpcServerClient():
 
     def query_balance(
         self,
-        purse_id: types.PurseID,
-        global_state_id: types.GlobalStateID = None
+        purse_id: PurseID,
+        global_state_id: GlobalStateID = None
     ) -> int:
         """Returns account balance at a certain point in global state history.
 
@@ -141,7 +149,7 @@ class RpcServerClient():
         self,
         key: str,
         path: typing.List[str],
-        state_id: types.GlobalStateID = None
+        state_id: GlobalStateID = None
     ) -> bytes:
         """Returns results of a query to global state at a specified block or state root hash.
 
@@ -151,19 +159,19 @@ class RpcServerClient():
         :returns: Results of a global state query.
 
         """
-        return SERVER.query_global_state(self.proxy)
+        return SERVER.query_global_state(self.proxy, key, path, state_id)
 
-    def state_get_account_info(self, account_id: types.AccountID, block_id: types.BlockID = None) -> dict:
+    def state_get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
         :param block_id: Identifier of a finalised block.
         :returns: Account information in JSON format.
 
-        """    
-        return SERVER.state_get_account_info(self.proxy, account_id, block_id)    
+        """
+        return SERVER.state_get_account_info(self.proxy, account_id, block_id)
 
-    def state_get_auction_info(self, block_id: types.BlockID = None) -> dict:
+    def state_get_auction_info(self, block_id: BlockID = None) -> dict:
         """Returns current auction system contract information.
 
         :param block_id: Identifier of a finalised block.
@@ -172,7 +180,11 @@ class RpcServerClient():
         """
         return SERVER.state_get_auction_info(self.proxy, block_id)
 
-    def state_get_dictionary_item(self, identifier: types.DictionaryID, state_root_hash: types.StateRootHash = None) -> dict:
+    def state_get_dictionary_item(
+        self,
+        identifier: DictionaryID,
+        state_root_hash: StateRootHash = None
+    ) -> dict:
         """Returns current auction system contract information.
 
         :param block_id: Identifier of a finalised block.
@@ -185,7 +197,7 @@ class RpcServerClient():
         self,
         key: str,
         path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: types.StateRootHash = None
+        state_root_hash: StateRootHash = None
     ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
@@ -196,4 +208,3 @@ class RpcServerClient():
 
         """
         return SERVER.state_get_item(self.proxy, key, path, state_root_hash)
-    
