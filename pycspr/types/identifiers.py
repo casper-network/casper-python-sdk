@@ -22,16 +22,13 @@ ContractID = typing.NewType("Static contract pointer", bytes)
 ContractVersion = typing.NewType("U32 integer representing", int)
 
 # A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
-DeployID = typing.NewType("U32 integer representing", Digest)
+DeployID = typing.Union[bytes, str]
 
 # A public key associated with an assymetric key pair controlled by an entity.
 PublicKey = typing.Union[bytes, str]
 
 # Root hash of a node's global state.
-StateRootHash = typing.NewType(
-    "Cumulative hash of block execution effects over global state.",
-    bytes
-    )
+StateRootHash = typing.Union[bytes, str]
 
 @dataclasses.dataclass
 class PurseID():

@@ -1,68 +1,69 @@
 import typing
 
 from pycspr import serialisation
-from pycspr import types
 from pycspr.api import constants
-from pycspr.api.servers.rpc import utils
+from pycspr.api.servers.rpc.utils.proxy import Proxy
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
+from pycspr.types import CL_Key
+from pycspr.types import GlobalStateID
+from pycspr.types import GlobalStateIDType
+
+
+_GLOBAL_STATE_ID_PARAM_NAME = {
+    GlobalStateIDType.BLOCK_HASH: "BlockHash",
+    GlobalStateIDType.BLOCK_HEIGHT: "BlockHeight",
+    GlobalStateIDType.STATE_ROOT_HASH: "StateRootHash",
+}
 
 
 def exec(
-    proxy: utils.Proxy,
+    proxy: Proxy,
     key: str,
     path: typing.List[str],
-    state_id: types.GlobalStateID = None
+    state_id: GlobalStateID = None
 ) -> bytes:
     """Returns results of a query to global state at a specified block or state root hash.
 
-    :param proxy: Remote RPC server proxy. 
+    :param proxy: Remote RPC server proxy.
     :param key: Key of an item stored within global state.
     :param path: Identifier of a path within item.
     :param state_id: Identifier of global state leaf.
     :returns: Results of a global state query.
 
     """
-    state_id = state_id or types.GlobalStateID(
-        chain_get_state_root_hash(),
-        types.GlobalStateIDType.STATE_ROOT_HASH
-    )
+    if state_id is None:
+        state_root: bytes = chain_get_state_root_hash()
+        state_id: GlobalStateID = GlobalStateID(state_root, GlobalStateIDType.STATE_ROOT_HASH)
 
     return proxy.get_response(
         constants.RPC_QUERY_GLOBAL_STATE,
-        get_params(state_id, key, path)
+        get_params(key, path, state_id)
         )
 
 
-def get_params(
-    state_id: types.GlobalStateID,
-    key: types.CL_Key,
-    path: typing.List[str]
-) -> dict:
-    """Returns results of a query to global state at a specified block or state root hash.
+def get_params(key: CL_Key, path: typing.List[str], state_id: GlobalStateID) -> dict:
+    """Returns query parameters.
 
-    :param state_id: Identifier of global state leaf.
     :param key: Key of an item stored within global state.
     :param path: Identifier of a path within item.
-    :returns: Parameters to be passed to endpoint.
+    :param state_id: Identifier of global state leaf.
+    :returns: RPC endpoint parameters.
 
     """
-    if state_id.id_type == types.GlobalStateIDType.BLOCK_HASH:
-        state_id_type = "BlockHash"
-    elif state_id.id_type == types.GlobalStateIDType.BLOCK_HEIGHT:
-        state_id_type = "BlockHash"
-    elif state_id.id_type == types.GlobalStateIDType.STATE_ROOT_HASH:
-        state_id_type = "StateRootHash"
-    else:
+    try:
+        state_id_type = _GLOBAL_STATE_ID_PARAM_NAME[state_id.id_type]
+    except KeyError:
         raise ValueError(f"Invalid global state identifier type: {state_id.id_type}")
 
-    state_id = \
-        state_id.identifier.hex() if isinstance(state_id.identifier, bytes) else \
-        state_id.identifier
+    if isinstance(state_id.identifier, bytes):
+        state_id = state_id.identifier.hex()
+    else:
+        state_id = state_id.identifier
 
     return {
+        "key": serialisation.cl_value_to_parsed(key),
+        "path": path,
         "state_identifier": {
             state_id_type: state_id
-        },
-        "key": serialisation.cl_value_to_parsed(key),
-        "path": path
+        }
     }

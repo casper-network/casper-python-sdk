@@ -7,14 +7,14 @@ from pycspr.types import DictionaryID_SeedURef
 from pycspr.types import DictionaryID_UniqueKey
 from pycspr.types import StateRootHash
 from pycspr.api import constants
-from pycspr.api.servers.rpc.utils import Proxy
+from pycspr.api.servers.rpc.utils.proxy import Proxy
 from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
 
 
 def exec(proxy: Proxy, identifier: DictionaryID, state_root_hash: StateRootHash = None) -> dict:
     """Returns on-chain data stored under a dictionary item.
 
-    :param proxy: Remote RPC server proxy. 
+    :param proxy: Remote RPC server proxy.
     :param identifier: Identifier required to query a dictionary item.
     :param state_root_hash: A node's root state hash at some point in chain time.
     :returns: On-chain data stored under a dictionary item.
@@ -64,7 +64,7 @@ def get_params(identifier: DictionaryID, state_root_hash: StateRootHash) -> dict
         elif isinstance(identifier, DictionaryID_UniqueKey):
             return {
                 "Dictionary": identifier.seed_uref.as_string()
-            }        
+            }
 
     return {
         "dictionary_identifier": get_dictionary_param(),

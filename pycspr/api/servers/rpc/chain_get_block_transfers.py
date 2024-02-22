@@ -1,18 +1,21 @@
-from pycspr.types import BlockID
+import typing
+
 from pycspr.api import constants
-from pycspr.api.servers.rpc import utils
-from pycspr.api.servers.rpc.utils import Proxy
+from pycspr.api.servers.rpc.utils.params import get_block_id
+from pycspr.api.servers.rpc.utils.proxy import Proxy
+from pycspr.types import BlockID
+from pycspr.types import DeployID
 
 
-def exec(proxy: Proxy, block_id: BlockID = None) -> dict:
-    """Returns on-chain block transfers information.
+def exec(proxy: Proxy, block_id: BlockID = None) -> typing.Tuple[BlockID, typing.List[DeployID]]:
+    """Returns identifiers of set of transfers contained within a block.
 
-    :param proxy: Remote RPC server proxy. 
+    :param proxy: Remote RPC server proxy.
     :param block_id: Identifier of a finalised block.
     :returns: On-chain block transfers information.
 
     """
-    params: dict = utils.get_block_id(block_id, False)
+    params: dict = get_block_id(block_id, False)
     response: dict = proxy.get_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
     return (response["block_hash"], response["transfers"])

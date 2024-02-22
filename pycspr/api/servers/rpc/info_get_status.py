@@ -1,11 +1,11 @@
 from pycspr.api import constants
-from pycspr.api.servers.rpc.utils import Proxy
+from pycspr.api.servers.rpc.utils.proxy import Proxy
 
 
 def exec(proxy: Proxy) -> dict:
     """Returns node status information.
 
-    :param proxy: Remote RPC server proxy. 
+    :param proxy: Remote RPC server proxy.
     :returns: Node status information.
 
     """
