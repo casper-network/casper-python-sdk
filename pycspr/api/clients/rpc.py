@@ -275,7 +275,7 @@ class ServerClientExtensions():
         """
         elapsed = 0.0
         while True:
-            block = self.get_block()
+            block = self.client.get_block()
             if block["header"]["era_end"] is not None:
                 return block
 

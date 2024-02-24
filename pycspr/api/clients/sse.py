@@ -25,7 +25,7 @@ class ServerClient():
         self.proxy = Proxy(
             host=connection_info.host,
             port=connection_info.port_sse
-        )
+        )        
 
     def yield_events(
         self,

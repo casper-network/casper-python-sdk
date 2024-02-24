@@ -85,9 +85,11 @@ class Proxy:
                     else:
                         raise ValueError(f"Unknown event type: {payload}")
 
+                # If event type is in scope then yield event information.
                 if etype is None or etype == typeof:
                     yield NodeEventInfo(echannel, etype, event.id, payload)
 
+        # On error ensure client connection is closed.
         except Exception as err:
             try:
                 sse_client.close()
