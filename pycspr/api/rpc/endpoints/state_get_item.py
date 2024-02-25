@@ -1,8 +1,8 @@
 import typing
 
 from pycspr.api import constants
-from pycspr.api.servers.rpc.chain_get_state_root_hash import exec as chain_get_state_root_hash
-from pycspr.api.rpc.utils.proxy import Proxy
+from pycspr.api.rpc.endpoints.chain_get_state_root_hash import exec as chain_get_state_root_hash
+from pycspr.api.rpc.proxy import Proxy
 from pycspr.types import StateRootID
 
 

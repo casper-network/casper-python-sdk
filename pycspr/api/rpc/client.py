@@ -2,7 +2,8 @@ import time
 import typing
 
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.servers import rpc as SERVER
+from pycspr.api.rpc import endpoints
+from pycspr.api.rpc.proxy import Proxy
 from pycspr.types import AccountID
 from pycspr.types import BlockID
 from pycspr.types import CL_Key
@@ -15,7 +16,7 @@ from pycspr.types import PurseID
 from pycspr.types import StateRootID
 
 
-class ServerClient():
+class Client():
     """Node RPC server client.
 
     """
@@ -25,8 +26,8 @@ class ServerClient():
         :param connection: Information required to connect to a node.
 
         """
-        self.ext = ServerClientExtensions(self)
-        self.proxy = SERVER.Proxy(
+        self.ext = ClientExtensions(self)
+        self.proxy = Proxy(
             host=connection_info.host,
             port=connection_info.port_rpc
         )
@@ -38,7 +39,7 @@ class ServerClient():
         :returns: Deploy identifier.
 
         """
-        return SERVER.account_put_deploy(self.proxy, deploy)
+        return endpoints.account_put_deploy(self.proxy, deploy)
 
     def get_account_balance(
         self,
@@ -52,7 +53,7 @@ class ServerClient():
         :returns: Account balance in motes (if purse exists).
 
         """
-        return SERVER.query_balance(self.proxy, purse_id, global_state_id)
+        return endpoints.query_balance(self.proxy, purse_id, global_state_id)
 
     def get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
@@ -62,7 +63,7 @@ class ServerClient():
         :returns: Account information in JSON format.
 
         """
-        return SERVER.state_get_account_info(self.proxy, account_id, block_id)
+        return endpoints.state_get_account_info(self.proxy, account_id, block_id)
 
     def get_auction_info(self, block_id: BlockID = None) -> dict:
         """Returns current auction system contract information.
@@ -71,7 +72,7 @@ class ServerClient():
         :returns: Current auction system contract information.
 
         """
-        return SERVER.state_get_auction_info(self.proxy, block_id)
+        return endpoints.state_get_auction_info(self.proxy, block_id)
 
     def get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
@@ -80,7 +81,7 @@ class ServerClient():
         :returns: On-chain block information.
 
         """
-        return SERVER.chain_get_block(self.proxy, block_id)
+        return endpoints.chain_get_block(self.proxy, block_id)
 
     def get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
@@ -89,7 +90,7 @@ class ServerClient():
         :returns: On-chain block transfers information.
 
         """
-        return SERVER.chain_get_block_transfers(self.proxy, block_id)
+        return endpoints.chain_get_block_transfers(self.proxy, block_id)
 
     def get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -97,7 +98,7 @@ class ServerClient():
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        return SERVER.info_get_chainspec(self.proxy)
+        return endpoints.info_get_chainspec(self.proxy)
 
     def get_deploy(self, deploy_id: DeployID) -> dict:
         """Returns on-chain deploy information.
@@ -106,7 +107,7 @@ class ServerClient():
         :returns: On-chain deploy information.
 
         """
-        return SERVER.info_get_deploy(self.proxy, deploy_id)
+        return endpoints.info_get_deploy(self.proxy, deploy_id)
 
     def get_dictionary_item(
         self,
@@ -119,7 +120,7 @@ class ServerClient():
         :returns: Current auction system contract information.
 
         """
-        return SERVER.state_get_dictionary_item(self.proxy, identifier, state_root_hash)
+        return endpoints.state_get_dictionary_item(self.proxy, identifier, state_root_hash)
 
     def get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
@@ -128,7 +129,7 @@ class ServerClient():
         :returns: Era summary information.
 
         """
-        return SERVER.chain_get_era_summary(self.proxy, block_id)
+        return endpoints.chain_get_era_summary(self.proxy, block_id)
 
     def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
@@ -137,7 +138,7 @@ class ServerClient():
         :returns: Era information.
 
         """
-        return SERVER.chain_get_era_info_by_switch_block(self.proxy, block_id)
+        return endpoints.chain_get_era_info_by_switch_block(self.proxy, block_id)
 
     def get_node_peers(self) -> dict:
         """Returns node peer information.
@@ -145,7 +146,7 @@ class ServerClient():
         :returns: Node peer information.
 
         """
-        return SERVER.info_get_peers(self.proxy)
+        return endpoints.info_get_peers(self.proxy)
 
     def get_node_status(self) -> dict:
         """Returns node status information.
@@ -153,7 +154,7 @@ class ServerClient():
         :returns: Node status information.
 
         """
-        return SERVER.info_get_status(self.proxy)
+        return endpoints.info_get_status(self.proxy)
 
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
@@ -161,7 +162,7 @@ class ServerClient():
         :returns: Node JSON-RPC API schema.
 
         """
-        return SERVER.discover(self.proxy)
+        return endpoints.discover(self.proxy)
 
     def get_state_item(
         self,
@@ -177,7 +178,7 @@ class ServerClient():
         :returns: Item stored under passed key/path.
 
         """
-        return SERVER.state_get_item(self.proxy, key, path, state_root_hash)
+        return endpoints.state_get_item(self.proxy, key, path, state_root_hash)
 
     def get_state_key_value(
         self,
@@ -193,7 +194,7 @@ class ServerClient():
         :returns: Results of a global state query.
 
         """
-        return SERVER.query_global_state(self.proxy, key, path, state_id)
+        return endpoints.query_global_state(self.proxy, key, path, state_id)
 
     def get_state_root(self, block_id: BlockID = None) -> StateRootID:
         """Returns an root hash of global state at a specified block.
@@ -202,7 +203,7 @@ class ServerClient():
         :returns: State root hash at specified block.
 
         """
-        return SERVER.chain_get_state_root_hash(self.proxy, block_id)
+        return endpoints.chain_get_state_root_hash(self.proxy, block_id)
 
     def get_validator_changes(self) -> dict:
         """Returns status changes of active validators.
@@ -211,14 +212,14 @@ class ServerClient():
         :returns: Status changes of active validators.
 
         """
-        return SERVER.info_get_validator_changes(self.proxy)
+        return endpoints.info_get_validator_changes(self.proxy)
 
 
-class ServerClientExtensions():
+class ClientExtensions():
     """Node RPC server client extensions, i.e. 2nd order functions.
 
     """
-    def __init__(self, client: ServerClient):
+    def __init__(self, client: Client):
         """Instance constructor.
 
         :param client: Node RPC client.
@@ -300,7 +301,7 @@ class ServerClientExtensions():
         :returns: 2-ary tuple: (era height, block height).
 
         """
-        block: dict = self.get_block()
+        block: dict = self.client.get_block()
 
         return block["header"]["era_id"], block["header"]["height"]
 

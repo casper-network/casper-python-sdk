@@ -1,11 +1,11 @@
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.clients.rest import ServerClient as RestServerClient
-from pycspr.api.clients.rpc import ServerClient as RpcServerClient
-from pycspr.api.clients.sse import ServerClient as SseServerClient
+from pycspr.api.rest import Client as RestApiClient
+from pycspr.api.rpc import Client as RpcApiClient
+from pycspr.api.sse import Client as SseApiClient
 
 
 class NodeClient():
-    """Exposes a set of (categorised) functions for interacting  with a node.
+    """Node client that wraps sub-clients to expose a single interface for interacting  with a node.
 
     """
     def __init__(self, connection_info: NodeConnectionInfo):
@@ -14,10 +14,10 @@ class NodeClient():
         :param connection: Information required to connect to a node.
 
         """
-        self._rest_client = RestServerClient(connection_info)
-        self._rpc_client = RpcServerClient(connection_info)
+        self._rest_client = RestApiClient(connection_info)
+        self._rpc_client = RpcApiClient(connection_info)
         # self._rpc_speculative_client = RpcSpeculativeServerClient(connection_info)
-        self._sse_client = SseServerClient(connection_info)
+        self._sse_client = SseApiClient(connection_info, self._rpc_client)
 
         # REST server function set.
         self.get_node_metrics = self._rest_client.get_node_metrics
@@ -53,7 +53,7 @@ class NodeClient():
         self.send_deploy = self._rpc_client.account_put_deploy
 
         # RPC server (speculative) function set.
-        self._get_speculative_rpc_response = connection_info.get_speculative_rpc_response
+        # self._get_speculative_rpc_response = connection_info.get_speculative_rpc_response
 
         # SSE server function set.
         self.await_n_blocks = self._sse_client.ext.await_n_blocks

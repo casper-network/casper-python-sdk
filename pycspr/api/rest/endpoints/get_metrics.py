@@ -1,4 +1,4 @@
-from pycspr.api.rest.utils.proxy import Proxy
+from pycspr.api.rest.proxy import Proxy
 
 
 _ENDPOINT: str = "metrics"

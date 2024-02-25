@@ -1,6 +1,6 @@
 from pycspr import serialisation
 from pycspr.api import constants
-from pycspr.api.rpc.utils.proxy import Proxy
+from pycspr.api.rpc.proxy import Proxy
 from pycspr.types import Deploy
 from pycspr.types import DeployID
 

@@ -1,31 +1,27 @@
 import typing
 
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.servers.sse.proxy import Proxy
-from pycspr.api.servers.sse.types import NodeEventChannel
-from pycspr.api.servers.sse.types import NodeEventInfo
-from pycspr.api.servers.sse.types import NodeEventType
+from pycspr.api.rpc import Client as RpcClient
+from pycspr.api.sse.proxy import Proxy
+from pycspr.api.sse.types import NodeEventChannel
+from pycspr.api.sse.types import NodeEventInfo
+from pycspr.api.sse.types import NodeEventType
+from pycspr.api.sse.types import SSE_CHANNEL_TO_SSE_EVENT
 
 
-# SSE event callback signature.
-EventHandler = typing.Callable[[NodeEventChannel, NodeEventType, int, dict], None]
-
-
-class ServerClient():
+class Client():
     """Node SSE server client.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo):
+    def __init__(self, connection_info: NodeConnectionInfo, rpc_client: RpcClient = None):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node.
+        :param rpc_client: Node RPC client.
 
         """
-        self.ext = ServerClientExtensions(self)
-        self.proxy = Proxy(
-            host=connection_info.host,
-            port=connection_info.port_sse
-        )        
+        self.ext = ClientExtensions(self, rpc_client or RpcClient(connection_info))
+        self.proxy = Proxy(connection_info.host, connection_info.port_sse)
 
     def yield_events(
         self,
@@ -40,21 +36,28 @@ class ServerClient():
         :param eid: Identifier of event from which to start stream listening.
 
         """
+        if echannel not in SSE_CHANNEL_TO_SSE_EVENT:
+            raise ValueError(f"Unsupported SSE channel: {echannel.name}.")
+        if etype is not None and etype not in SSE_CHANNEL_TO_SSE_EVENT[echannel]:
+            raise ValueError(f"Unsupported channel/event: {echannel.name}:{etype.name}.")
+
         for einfo in self.proxy.yield_events(echannel, etype, eid):
             yield einfo
 
 
-class ServerClientExtensions():
+class ClientExtensions():
     """Node SSE server client extensions, i.e. 2nd order functions.
 
     """
-    def __init__(self, client: ServerClient):
+    def __init__(self, client: Client, rpc_client: RpcClient):
         """Instance constructor.
 
-        :param client: Node REST client.
+        :param client: Node SSE client.
+        :param rpc_client: Node RPC client.
 
         """
         self.client = client
+        self.rpc_client = rpc_client
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -101,7 +104,7 @@ class ServerClientExtensions():
         :returns: On-chain block information at block N blocks.
 
         """
-        _, block_height_current = self.get_chain_heights()
+        _, block_height_current = self.rpc_client.ext.get_chain_heights()
         offset = block_height - block_height_current
         if offset > 0:
             await self.await_n_blocks(offset)
@@ -113,7 +116,7 @@ class ServerClientExtensions():
         :returns: On-chain era information N eras in the future.
 
         """
-        era_height_current, _ = self.get_chain_heights()
+        era_height_current, _ = self.rpc_client.ext.get_chain_heights()
         offset = era_height - era_height_current
         if offset > 0:
             await self.await_n_eras(offset)

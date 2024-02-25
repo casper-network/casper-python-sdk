@@ -1,6 +1,6 @@
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rest import endpoints
-from pycspr.api.rest.utils.proxy import Proxy
+from pycspr.api.rest.proxy import Proxy
 
 
 class Client():

@@ -1,16 +1,7 @@
 import argparse
 import typing
 
-import pycspr
-from pycspr import NodeClient
-from pycspr import NodeConnectionInfo
-from pycspr.types import CL_URef
-from pycspr.types import GlobalStateID
-from pycspr.types import GlobalStateIDType
-from pycspr.types import PurseID
-from pycspr.types import PurseIDType
-
-from pycspr.api.rest.client import Client as NodeRestClient
+from pycspr.api.rest import Client as NodeRestClient
 from pycspr import NodeConnectionInfo
 
 
