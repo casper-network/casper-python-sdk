@@ -66,32 +66,6 @@ class NodeConnectionInfo:
         """Instance string representation."""
         return self.host
 
-    def get_rest_response(self, endpoint: str) -> dict:
-        """Invokes remote REST API and returns parsed response.
-
-        :endpoint: Target endpoint to invoke.
-        :returns: Parsed REST API response.
-
-        """
-        endpoint = f"{self.address_rest}/{endpoint}"
-        response = requests.get(endpoint)
-
-        return response.content.decode("utf-8")
-
-    def get_rpc_response(self, endpoint: str, params: dict = None) -> dict:
-        """Invokes remote JSON-RPC API and returns parsed response.
-
-        :endpoint: Target endpoint to invoke.
-        :params: Endpoints parameters.
-        :returns: Parsed JSON-RPC response.
-
-        """
-        return self._get_rpc_response(
-            self.address_rpc,
-            endpoint,
-            params
-        )
-
     def get_speculative_rpc_response(self, endpoint: str, params: dict = None) -> dict:
         """Invokes remote speculative JSON-RPC API and returns parsed response.
 
