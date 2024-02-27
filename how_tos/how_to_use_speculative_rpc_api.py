@@ -6,24 +6,24 @@ import random
 import typing
 
 import pycspr
-from pycspr import NodeClient
-from pycspr import NodeConnectionInfo
+from pycspr.api import NodeConnectionInfo
+from pycspr.api import NodeSpeculativeRpcClient
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
-from pycspr.types import Deploy
 from pycspr.types import PublicKey
+from pycspr.types import Deploy
 
 
-# Path to NCTL assets.
-_PATH_TO_NCTL_ASSETS = pathlib.Path(os.getenv("NCTL")) / "assets" / "net-1"
+# Path to CCTL assets.
+_PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("Illustration of how to execute native transfers.")
 
-# CLI argument: path to cp1 secret key - defaults to NCTL user 1.
+# CLI argument: path to cp1 secret key - defaults to CCTL user 1.
 _ARGS.add_argument(
     "--cp1-secret-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "users" / "user-1" / "secret_key.pem",
+    default=_PATH_TO_CCTL_ASSETS / "users" / "user-1" / "secret_key.pem",
     dest="path_to_cp1_secret_key",
     help="Path to counter-party one's secret_key.pem file.",
     type=str,
@@ -38,25 +38,25 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: path to cp2 account key - defaults to NCTL user 2.
+# CLI argument: path to cp2 account key - defaults to CCTL user 2.
 _ARGS.add_argument(
     "--cp2-account-key-path",
-    default=_PATH_TO_NCTL_ASSETS / "users" / "user-2" / "public_key_hex",
+    default=_PATH_TO_CCTL_ASSETS / "users" / "user-2" / "public_key_hex",
     dest="path_to_cp2_account_key",
     help="Path to counter-party two's public_key_hex file.",
     type=str,
     )
 
-# CLI argument: name of target chain - defaults to NCTL chain.
+# CLI argument: name of target chain - defaults to CCTL chain.
 _ARGS.add_argument(
     "--chain",
-    default="casper-net-1",
+    default="cspr-dev-cctl",
     dest="chain_name",
     help="Name of target chain.",
     type=str,
     )
 
-# CLI argument: host address of target node - defaults to NCTL node 1.
+# CLI argument: host address of target node - defaults to CCTL node 1.
 _ARGS.add_argument(
     "--node-host",
     default="localhost",
@@ -65,16 +65,7 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-rpc",
-    default=11101,
-    dest="node_port_rpc",
-    help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
-    type=int,
-    )
-
-# CLI argument: Node API speculative JSON-RPC port - defaults to 25101 @ NCTL node 1.
+# CLI argument: Node API speculative JSON-RPC port - defaults to 25101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-rpc-speculative",
     default=25101,
@@ -82,16 +73,6 @@ _ARGS.add_argument(
     help="Node API speculative JSON-RPC port.  Typically 7778 on most nodes.",
     type=int,
     )
-
-# CLI argument: Node API SSE port - defaults to 18101 @ NCTL node 1.
-_ARGS.add_argument(
-    "--node-port-sse",
-    default=18101,
-    dest="node_port_sse",
-    help="Node API SSE port.  Typically 9999 on most nodes.",
-    type=int,
-    )
-
 
 async def _main(args: argparse.Namespace):
     """Main entry point.
@@ -111,21 +92,21 @@ async def _main(args: argparse.Namespace):
     # Approve deploy.
     deploy.approve(cp1)
 
+    print(deploy)
+
     # Dispatch deploy to a node.
     r = client.speculative_exec(deploy)
 
     print(r)
 
 
-def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
+def _get_client(args: argparse.Namespace) -> NodeSpeculativeRpcClient:
+    """Returns a pycspr speculative RPC client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
+    return NodeSpeculativeRpcClient(NodeConnectionInfo(
         host=args.node_host,
-        port_rpc=args.node_port_rpc,
         port_rpc_speculative=args.node_port_rpc_speculative,
-        port_sse=args.node_port_sse
     ))
 
 
@@ -159,7 +140,7 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_key,
-        correlation_id=random.randint(1, 1e6)
+        correlation_id=random.randint(1, int(1e6))
         )
 
     return deploy

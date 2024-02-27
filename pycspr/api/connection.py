@@ -1,20 +1,6 @@
 import dataclasses
 
-import jsonrpcclient
-import requests
-
 from pycspr.api import constants
-
-
-class NodeAPIError(Exception):
-    """Node API error wrapper.
-
-    """
-    def __init__(self, msg):
-        """Instance constructor.
-
-        """
-        super(NodeAPIError, self).__init__(msg)
 
 
 @dataclasses.dataclass
@@ -23,7 +9,7 @@ class NodeConnectionInfo:
 
     """
     # Host address.
-    host: str = "localhost"
+    host: str = constants.DEFAULT_HOST
 
     # Number of exposed REST port.
     port_rest: int = constants.DEFAULT_PORT_REST
@@ -37,62 +23,6 @@ class NodeConnectionInfo:
     # Number of exposed SSE port.
     port_sse: int = constants.DEFAULT_PORT_SSE
 
-    @property
-    def address(self) -> str:
-        """A node's server base address."""
-        return f"http://{self.host}"
-
-    @property
-    def address_rest(self) -> str:
-        """A node's REST server base address."""
-        return f"{self.address}:{self.port_rest}"
-
-    @property
-    def address_rpc(self) -> str:
-        """A node's RPC server base address."""
-        return f"{self.address}:{self.port_rpc}/rpc"
-
-    @property
-    def address_rpc_speculative(self) -> str:
-        """A node's speculative RPC server base address."""
-        return f"{self.address}:{self.port_rpc_speculative}/rpc"
-
-    @property
-    def address_sse(self) -> str:
-        """A node's SSE server base address."""
-        return f"{self.address}:{self.port_sse}/events"
-
     def __str__(self):
         """Instance string representation."""
-        return self.host
-
-    def get_speculative_rpc_response(self, endpoint: str, params: dict = None) -> dict:
-        """Invokes remote speculative JSON-RPC API and returns parsed response.
-
-        :endpoint: Target endpoint to invoke.
-        :params: Endpoints parameters.
-        :returns: Parsed JSON-RPC response.
-
-        """
-        return self._get_rpc_response(
-            self.address_rpc_speculative,
-            endpoint,
-            params
-        )
-
-    def _get_rpc_response(self, address: str, endpoint: str, params: dict = None) -> dict:
-        """Invokes remote speculative JSON-RPC API and returns parsed response.
-
-        :address: Server address.
-        :endpoint: Target endpoint to invoke.
-        :params: Endpoints parameters.
-        :returns: Parsed JSON-RPC response.
-
-        """
-        request = jsonrpcclient.request(endpoint, params)
-        response = requests.post(address, json=request)
-        parsed = jsonrpcclient.parse(response.json())
-        if isinstance(parsed, jsonrpcclient.responses.Error):
-            raise NodeAPIError(parsed)
-
-        return parsed.result
+        return f"{self.host} :: REST @ {self.port_rest} :: RPC @ {self.port_rpc} :: RPC SPEC @ {self.port_rpc_speculative} :: SSE @ {self.port_sse}"

@@ -16,13 +16,15 @@ from pycspr import factory
 from pycspr import serialisation
 from pycspr import types
 
-from pycspr.api.client import NodeClient
-from pycspr.api.connection import NodeAPIError
-from pycspr.api.connection import NodeConnectionInfo
-
-from pycspr.api.sse.types import NodeEventChannel
-from pycspr.api.sse.types import NodeEventInfo
-from pycspr.api.sse.types import NodeEventType
+from pycspr.api import NodeClient
+from pycspr.api import NodeConnectionInfo
+from pycspr.api import NodeRestClient
+from pycspr.api import NodeRpcClient
+from pycspr.api import NodeSpeculativeRpcClient
+from pycspr.api import NodeSseClient
+from pycspr.api import NodeEventChannel
+from pycspr.api import NodeEventInfo
+from pycspr.api import NodeEventType
 
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO

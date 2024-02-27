@@ -65,9 +65,7 @@ _INTERFACE_OF_LIBRARY = {
         "KeyAlgorithm",
     },
     _has_constant: set(),
-    _has_exception: {
-        "NodeAPIError",
-    },
+    _has_exception: set(),
     _has_function: {
         "create_deploy",
         "create_deploy_approval",
