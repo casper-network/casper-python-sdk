@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import json
 import os
 import pathlib
 import random
@@ -7,7 +8,7 @@ import typing
 
 import pycspr
 from pycspr.api import NodeConnectionInfo
-from pycspr.api import NodeSpeculativeRpcClient
+from pycspr.api import NodeClient
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
@@ -81,7 +82,7 @@ async def _main(args: argparse.Namespace):
 
     """
     # Set node client.
-    client = _get_client(args)
+    client: NodeClient = _get_client(args)
 
     # Set counter-parties.
     cp1, cp2 = _get_counter_parties(args)
@@ -92,19 +93,17 @@ async def _main(args: argparse.Namespace):
     # Approve deploy.
     deploy.approve(cp1)
 
-    print(deploy)
-
     # Dispatch deploy to a node.
     r = client.speculative_exec(deploy)
 
-    print(r)
+    print(json.dumps(r, indent=4))
 
 
-def _get_client(args: argparse.Namespace) -> NodeSpeculativeRpcClient:
+def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr speculative RPC client instance.
 
     """
-    return NodeSpeculativeRpcClient(NodeConnectionInfo(
+    return NodeClient(NodeConnectionInfo(
         host=args.node_host,
         port_rpc_speculative=args.node_port_rpc_speculative,
     ))

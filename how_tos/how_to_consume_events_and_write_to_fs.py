@@ -74,23 +74,19 @@ def main(args: argparse.Namespace):
     # Set node client.
     client = _get_client(args)
 
+    # Write event stream to a file.
     with open(args.path_to_output, 'w') as fhandle:
         fhandle.write("[\n")
         fhandle.flush()
-
         try:
-
-            # Bind to node events.
             client.get_events(
-                callback=lambda x: _on_event(x, fhandle),
-                channel=NodeEventChannel[args.channel],
-                typeof=None if args.event == "all" else NodeEventType[args.event],
-                idx=0
+                on_event_callback=lambda x: _on_event(x, fhandle),
+                echannel=NodeEventChannel[args.channel],
+                etype=None if args.event == "all" else NodeEventType[args.event],
+                eid=0
             )
-
         except KeyboardInterrupt:
             pass
-
         finally:
             fhandle.write("\n]")
             fhandle.flush()

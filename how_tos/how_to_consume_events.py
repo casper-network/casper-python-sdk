@@ -67,10 +67,10 @@ def main(args: argparse.Namespace):
 
     # Bind to node events.
     client.get_events(
-        callback=_on_event,
-        channel=NodeEventChannel[args.channel],
-        typeof=None if args.event == "all" else NodeEventType[args.event],
-        idx=0
+        on_event_callback=_on_event_callback,
+        echannel=NodeEventChannel[args.channel],
+        etype=None if args.event == "all" else NodeEventType[args.event],
+        eid=0
     )
 
 
@@ -84,12 +84,12 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     ))
 
 
-def _on_event(event_info: NodeEventInfo):
+def _on_event_callback(event_info: NodeEventInfo):
     """Event callback handler.
 
     """
     print("-" * 74)
-    print(f"Event #{event_info.idx} :: {event_info.channel.name} :: {event_info.typeof.name}")
+    print(f"Event #{event_info.idx or 0} :: {event_info.channel} :: {event_info.typeof}")
     print("-" * 74)
     print(json.dumps(event_info.payload, indent=4))
     print("-" * 74)

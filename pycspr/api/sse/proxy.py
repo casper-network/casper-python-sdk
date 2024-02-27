@@ -44,30 +44,37 @@ class Proxy:
         :param eid: Identifier of event from which to start stream listening.
 
         """
+        def _get_client() -> sseclient.SSEClient:
+            url = f"{self.address}/{echannel.name.lower()}"
+            if eid:
+                url = f"{url}?start_from={eid}"
+
+            return sseclient.SSEClient(requests.get(url, stream=True))
+
         # Open client connection.
-        sse_client = self._get_client(echannel, eid)
+        sse_client = _get_client()
         try:
              # Iterate event stream.
             for event in sse_client.events():
-                # Set event payload.
+                # Set event data.
                 try:
-                    payload = json.loads(event.data)
+                    edata = json.loads(event.data)
                 except json.JSONDecodeError:
-                    payload = event.data
+                    edata = event.data
 
                 # Set event type.
-                if isinstance(payload, str):
-                    typeof = NodeEventType.Shutdown
+                if isinstance(edata, str):
+                    etype_in = NodeEventType.Shutdown
                 else:
-                    for typeof in NodeEventType:
-                        if typeof.name in payload:
+                    for etype_in in NodeEventType:
+                        if etype_in.name in edata:
                             break
                     else:
-                        raise ValueError(f"Unknown event type: {payload}")
+                        raise ValueError(f"Unknown event type: {edata}")
 
                 # If event type is in scope then yield event information.
-                if etype is None or etype == typeof:
-                    yield NodeEventInfo(echannel, etype, event.id, payload)
+                if etype is None or etype == etype_in:
+                    yield NodeEventInfo(echannel, etype_in, event.id, edata)
 
         # On error ensure that client connection is closed.
         except Exception as err:
@@ -78,16 +85,3 @@ class Proxy:
             finally:
                 raise err
 
-    def _get_client(self, echannel: NodeEventChannel, eid: int = 0) -> sseclient.SSEClient:
-        """Returns an SSE client instant targeting appropriate event channel.
-        
-        :param echannel: Type of event channel to which to bind.
-        :param eid: Identifier of event from which to start stream listening.
-        :returns: Configured event channel instance.
-
-        """
-        url = f"{self.address}/{echannel.name.lower()}"
-        if eid:
-            url = f"{url}?start_from={eid}"
-
-        return sseclient.SSEClient(requests.get(url, stream=True))

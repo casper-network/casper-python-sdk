@@ -4,8 +4,6 @@ import asyncio
 from pycspr import NodeClient
 from pycspr import NodeConnectionInfo
 
-from pycspr.api.sse import Client as SseClient
-
 
 # CLI argument parser.
 _ARGS = argparse.ArgumentParser("How to consume node SSE events demo.")

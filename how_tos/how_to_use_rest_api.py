@@ -29,6 +29,7 @@ _ARGS.add_argument(
 
 class _Context():
     def __init__(self, args: argparse.Namespace):
+        # Use rest specific api client.
         self.client = NodeRestClient(NodeConnectionInfo(
             host=args.node_host,
             port_rest=args.node_port_rest,
