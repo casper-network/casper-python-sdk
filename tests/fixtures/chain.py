@@ -42,7 +42,7 @@ def state_root_hash(CLIENT) -> bytes:
     """Returns current state root hash.
 
     """
-    return CLIENT.get_state_root_hash()
+    return CLIENT.get_state_root()
 
 
 @pytest.fixture(scope="session")
