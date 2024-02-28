@@ -3,7 +3,7 @@ from pycspr import factory
 from pycspr.types import Deploy
 
 
-class InvalidDeployException():
+class InvalidDeployException(Exception):
     """Exception thrown when a deploy is deemed invalid.
 
     """

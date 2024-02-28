@@ -56,16 +56,28 @@ def _has_member(mod, member):
 _INTERFACE_OF_LIBRARY = {
     _has_class: {
         "NodeClient",
-        "NodeConnection",
+        "NodeConnectionInfo",
+        "NodeEventInfo",
+        "NodeRestClient",
+        "NodeRpcClient",
+        "NodeSpeculativeRpcClient",
+        "NodeSseClient",
+        "PublicKey",
+        "PrivateKey",
     },
     _has_enum: {
-        "NodeEventChannel",
-        "NodeEventType",
         "HashAlgorithm",
         "KeyAlgorithm",
+        "NodeEventChannel",
+        "NodeEventType",
     },
-    _has_constant: set(),
-    _has_exception: set(),
+    _has_constant: {
+        "DEFAULT_HASH_ALGO",
+        "DEFAULT_KEY_ALGO",
+    },
+    _has_exception: {
+        "InvalidDeployException",
+    },
     _has_function: {
         "create_deploy",
         "create_deploy_approval",
@@ -87,6 +99,7 @@ _INTERFACE_OF_LIBRARY = {
         "get_account_hash",
         "get_account_key",
         "get_account_key_algo",
+        "get_deploy_size_bytes",
         "get_hash",
         "read_deploy",
         "read_wasm",
@@ -97,13 +110,14 @@ _INTERFACE_OF_LIBRARY = {
     _has_member: {
         "crypto",
         "factory",
+        "serialisation",
         "types",
     }
 }
 
 
 def test_version_of_library():
-    assert pycspr.__version__ == "1.0.2"
+    assert pycspr.__version__ == "1.1.0"
 
 
 def test_exports_of_library():

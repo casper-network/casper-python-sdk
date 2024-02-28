@@ -47,7 +47,7 @@ class NodeClient():
         self.get_rpc_schema = self._rpc_client.get_rpc_schema
         self.get_state_item = self._rpc_client.get_state_item
         self.get_state_key_value = self._rpc_client.get_state_key_value
-        self.get_state_root = self._rpc_client.get_state_root
+        self.get_state_root = self.get_state_root_hash = self._rpc_client.get_state_root
         self.get_validator_changes = self._rpc_client.get_validator_changes
         self.get_rpc_endpoint = self._rpc_client.ext.get_rpc_endpoint
         self.get_rpc_endpoints = self._rpc_client.ext.get_rpc_endpoints

@@ -100,18 +100,10 @@ def _get_contract_data(client: NodeClient, contract_hash: CL_Key, key: str) -> b
     """Queries chain for data associated with a contract.
 
     """
-    value = client.get_state_item(f"hash-{contract_hash.identifier.hex()}", key)
+    state_key = f"hash-{contract_hash.identifier.hex()}"
+    value = client.get_state_item(state_key, key)
 
     return value["CLValue"]["parsed"]
-
-
-def _get_operator_key(args: argparse.Namespace) -> PublicKey:
-    """Returns the smart contract operator's public key.
-
-    """
-    return pycspr.parse_public_key(
-        args.path_to_operator_public_key,
-        )
 
 
 def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CL_Key:
@@ -123,6 +115,15 @@ def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CL_Key:
         raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
 
     return named_key
+
+
+def _get_operator_key(args: argparse.Namespace) -> PublicKey:
+    """Returns the smart contract operator's public key.
+
+    """
+    return pycspr.parse_public_key(
+        args.path_to_operator_public_key,
+        )
 
 
 # Entry point.

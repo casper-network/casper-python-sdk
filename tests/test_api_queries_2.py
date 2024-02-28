@@ -1,13 +1,13 @@
 import pycspr
 
 
-def test_get_state_root_hash(CLIENT):
+def test_get_state_root(CLIENT):
     def _assert(response):
         assert isinstance(response, bytes)
         assert len(response) == 32
 
     for block_id in (None, 1):
-        _assert(CLIENT.get_state_root_hash(block_id))
+        _assert(CLIENT.get_state_root(block_id))
 
 
 def test_get_account_info(CLIENT, account_key: bytes):
