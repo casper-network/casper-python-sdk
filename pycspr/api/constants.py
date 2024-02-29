@@ -1,12 +1,11 @@
-# Default host.
+# Default node host.
 DEFAULT_HOST = "localhost"
 
-# Default ports.
+# Default node ports.
 DEFAULT_PORT_REST = 8888
 DEFAULT_PORT_RPC = 7777
 DEFAULT_PORT_SPECULATIVE_RPC = 7778
 DEFAULT_PORT_SSE = 9999
-
 
 # Node RPC endpoints.
 RPC_ACCOUNT_PUT_DEPLOY = "account_put_deploy"
@@ -28,12 +27,6 @@ RPC_STATE_GET_AUCTION_INFO = "state_get_auction_info"
 RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
-
-# TODO: Mark as for deprecation.
-RPC_ENDPOINTS_FOR_DEPRECATION: set = {
-    RPC_STATE_GET_BALANCE,
-    RPC_STATE_GET_ITEM,
-    }
 
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
@@ -63,17 +56,5 @@ REST_GET_RPC_SCHEMA = "rpc-schema"
 REST_GET_STATUS = "status"
 REST_GET_VALIDATOR_CHANGES = "validator-changes"
 
-REST_ENDPOINTS: set = {
-    REST_GET_CHAINSPEC,
-    REST_GET_METRICS,
-    REST_GET_RPC_SCHEMA,
-    REST_GET_STATUS,
-    REST_GET_VALIDATOR_CHANGES,
-    }
-
 # Node RPC endpoints.
 SPECULATIVE_RPC_EXEC_DEPLOY = "speculative_exec"
-
-SPECULATIVE_RPC_ENDPOINTS: set = {
-    SPECULATIVE_RPC_EXEC_DEPLOY,
-    }
