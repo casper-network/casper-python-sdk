@@ -123,18 +123,18 @@ class ClientExtensions():
 
     def get_events(
         self,
-        on_event_callback: typing.Callable[[NodeEventInfo], None],
+        ecallback: typing.Callable[[NodeEventInfo], None],
         echannel: NodeEventChannel,
         etype: NodeEventType = None,
         eid: int = 0
     ):
         """Binds to a node's event stream - events are passed to callback for processing.
 
-        :param on_event_callback: Callback to invoke whenever an event of relevant type is received.
+        :param ecallback: Callback to invoke whenever an event of relevant type is received.
         :param echannel: Type of event channel to which to bind.
         :param etype: Type of event type to listen for (all if unspecified).
         :param eid: Identifier of event from which to start stream listening.
 
         """
         for einfo in self.client.yield_events(echannel, etype, eid):
-            on_event_callback(einfo)
+            ecallback(einfo)

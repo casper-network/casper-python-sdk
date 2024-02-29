@@ -13,6 +13,9 @@ def exec(proxy: Proxy, block_id: BlockID = None) -> dict:
 
     """
     params: dict = get_block_id(block_id, False)
-    response: dict = proxy.get_response(constants.RPC_CHAIN_GET_BLOCK, params)
 
-    return response["block"]
+    return proxy.get_response(
+        constants.RPC_CHAIN_GET_BLOCK,
+        params,
+        "block"
+        )

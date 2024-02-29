@@ -1,7 +1,7 @@
 import pycspr
 
 
-def test_get_state_root(CLIENT):
+def test_get_state_root(CLIENT: pycspr.NodeClient):
     def _assert(response):
         assert isinstance(response, bytes)
         assert len(response) == 32
@@ -10,7 +10,7 @@ def test_get_state_root(CLIENT):
         _assert(CLIENT.get_state_root(block_id))
 
 
-def test_get_account_info(CLIENT, account_key: bytes):
+def test_get_account_info(CLIENT: pycspr.NodeClient, account_key: bytes):
     def _assert(response):
         # e.g. docs/api_reponses/rpc_state_get_item.account.json
         assert isinstance(response, dict)
@@ -31,7 +31,7 @@ def test_get_account_info(CLIENT, account_key: bytes):
     _assert(CLIENT.get_account_info(account_key))
 
 
-def test_get_account_main_purse_uref(CLIENT, account_key: bytes):
+def test_get_account_main_purse_uref(CLIENT: pycspr.NodeClient, account_key: bytes):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
         assert isinstance(response, pycspr.types.CL_URef)

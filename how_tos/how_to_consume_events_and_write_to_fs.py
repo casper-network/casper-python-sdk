@@ -80,7 +80,7 @@ def main(args: argparse.Namespace):
         fhandle.flush()
         try:
             client.get_events(
-                on_event_callback=lambda x: _on_event(x, fhandle),
+                ecallback=lambda x: _on_event(x, fhandle),
                 echannel=NodeEventChannel[args.channel],
                 etype=None if args.event == "all" else NodeEventType[args.event],
                 eid=0

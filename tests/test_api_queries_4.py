@@ -1,30 +1,31 @@
-def test_get_auction_info(CLIENT):
-    def _assert(response):
-        assert isinstance(response, dict)
-
-    _assert(CLIENT.get_auction_info())
+import pycspr
+from pycspr.api.rpc import types as rpc_types
 
 
-# def test_get_era_info(CLIENT, switch_block_hash):
-#     def _assert(response):
-#         assert isinstance(response, dict)
-
-#     _assert(CLIENT.get_era_info(switch_block_hash))
-
-
-def test_get_era_summary(CLIENT, block_hash):
-    def _assert(response):
-        assert isinstance(response, dict)
-
-    _assert(CLIENT.get_era_summary(block_hash))
+def test_get_auction_info_with_rpc_client(RPC_CLIENT: pycspr.NodeRpcClient):
+    assert isinstance(
+        RPC_CLIENT.get_auction_info(),
+        rpc_types.AuctionState
+        )
+    assert isinstance(
+        RPC_CLIENT.get_auction_info(decode=False),
+        dict
+        )
 
 
-def test_get_state_item(CLIENT, account_hash, state_root_hash):
-    def _assert(response):
-        assert isinstance(response, dict)
+def test_get_era_info_by_switch_block_with_rpc_client(RPC_CLIENT: pycspr.NodeRpcClient, switch_block_hash: str):
+    assert isinstance(
+        RPC_CLIENT.get_era_info_by_switch_block(switch_block_hash),
+        dict
+        )
 
-    _assert(CLIENT.get_state_item(
-        f"account-hash-{account_hash.hex()}",
-        [],
-        state_root_hash)
+
+def test_get_era_summary_with_rpc_client(RPC_CLIENT: pycspr.NodeRpcClient, block_hash: str):
+    assert isinstance(
+        RPC_CLIENT.get_era_summary(block_hash),
+        rpc_types.EraSummary
+        )
+    assert isinstance(
+        RPC_CLIENT.get_era_summary(block_hash, decode=False),
+        dict
         )

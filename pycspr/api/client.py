@@ -13,6 +13,7 @@ class NodeClient():
         """Instance constructor.
 
         :param connection: Information required to connect to a node.
+        :param decode: Flag indicating whether to decode API responses.
 
         """
         self._rest_client = RestClient(connection_info)
@@ -29,7 +30,7 @@ class NodeClient():
         self.get_account_info = self._rpc_client.get_account_info
         self.get_account_main_purse_uref = self._rpc_client.ext.get_account_main_purse_uref
         self.get_account_named_key = self._rpc_client.ext.get_account_main_purse_uref
-        self.get_auction_info = self._rpc_client.get_auction_info
+        self.get_auction_info = self.get_auction_state = self._rpc_client.get_auction_info
         self.get_block = self._rpc_client.get_block
         self.get_block_at_era_switch = self._rpc_client.ext.get_block_at_era_switch
         self.get_block_height = self._rpc_client.ext.get_block_height
@@ -44,13 +45,13 @@ class NodeClient():
         self.get_era_summary = self._rpc_client.get_era_summary
         self.get_node_peers = self._rpc_client.get_node_peers
         self.get_node_status = self._rpc_client.get_node_status
+        self.get_rpc_endpoint = self._rpc_client.ext.get_rpc_endpoint
+        self.get_rpc_endpoints = self._rpc_client.ext.get_rpc_endpoints
         self.get_rpc_schema = self._rpc_client.get_rpc_schema
         self.get_state_item = self._rpc_client.get_state_item
         self.get_state_key_value = self._rpc_client.get_state_key_value
         self.get_state_root = self.get_state_root_hash = self._rpc_client.get_state_root
         self.get_validator_changes = self._rpc_client.get_validator_changes
-        self.get_rpc_endpoint = self._rpc_client.ext.get_rpc_endpoint
-        self.get_rpc_endpoints = self._rpc_client.ext.get_rpc_endpoints
         self.send_deploy = self._rpc_client.account_put_deploy
 
         # RPC server (speculative) function set.

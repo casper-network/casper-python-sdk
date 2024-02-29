@@ -7,6 +7,7 @@ DEFAULT_PORT_RPC = 7777
 DEFAULT_PORT_SPECULATIVE_RPC = 7778
 DEFAULT_PORT_SSE = 9999
 
+
 # Node RPC endpoints.
 RPC_ACCOUNT_PUT_DEPLOY = "account_put_deploy"
 RPC_CHAIN_GET_BLOCK = "chain_get_block"

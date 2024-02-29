@@ -67,7 +67,7 @@ def main(args: argparse.Namespace):
 
     # Bind to node events.
     client.get_events(
-        on_event_callback=_on_event_callback,
+        ecallback=_on_event_callback,
         echannel=NodeEventChannel[args.channel],
         etype=None if args.event == "all" else NodeEventType[args.event],
         eid=0

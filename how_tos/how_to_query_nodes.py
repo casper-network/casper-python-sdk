@@ -191,12 +191,12 @@ def _get_chain_auction_info(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        auction_info: bytes = ctx.client.get_auction_info(block_id)
+        auction_info: bytes = ctx.client.get_auction_state(block_id)
         assert isinstance(auction_info, dict)
         print(f"SUCCESS :: get_auction_info :: block-id={block_id}")
 
-    assert ctx.client.get_auction_info(block["hash"]) == \
-           ctx.client.get_auction_info(block["header"]["height"])
+    assert ctx.client.get_auction_state(block["hash"]) == \
+           ctx.client.get_auction_state(block["header"]["height"])
     print("SUCCESS :: get_auction_info - by equivalent block height & hash")
 
     # Validator changes.
