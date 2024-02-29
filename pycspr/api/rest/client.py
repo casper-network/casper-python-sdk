@@ -13,8 +13,12 @@ class Client():
         :param connection: Information required to connect to a node.
 
         """
-        self.ext = ClientExtensions(self)
         self.proxy = Proxy(connection_info.host, connection_info.port_rest)
+
+        # Extension methods -> 2nd order functions.
+        ext = ClientExtensions(self)
+        self.get_node_metric = ext.get_node_metric
+
 
     def get_chainspec(self) -> list:
         """Returns network chainspec.

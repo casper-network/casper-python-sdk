@@ -36,15 +36,15 @@ class Client():
         )
 
         # Extension methods -> 2nd order functions.
-        self.ext = ClientExtensions(self)
-        self.get_account_main_purse_uref = self.ext.get_account_main_purse_uref
-        self.get_account_named_key = self.ext.get_account_named_key
-        self.get_block_at_era_switch = self.ext.get_block_at_era_switch
-        self.get_block_height = self.ext.get_block_height
-        self.get_chain_heights = self.ext.get_chain_heights
-        self.get_era_height = self.ext.get_era_height
-        self.get_rpc_endpoint = self.ext.get_rpc_endpoint
-        self.get_rpc_endpoints = self.ext.get_rpc_endpoints
+        ext = ClientExtensions(self)
+        self.get_account_main_purse_uref = ext.get_account_main_purse_uref
+        self.get_account_named_key = ext.get_account_named_key
+        self.get_block_at_era_switch = ext.get_block_at_era_switch
+        self.get_block_height = ext.get_block_height
+        self.get_chain_heights = ext.get_chain_heights
+        self.get_era_height = ext.get_era_height
+        self.get_rpc_endpoint = ext.get_rpc_endpoint
+        self.get_rpc_endpoints = ext.get_rpc_endpoints
 
 
     def account_put_deploy(self, deploy: Deploy) -> DeployID:

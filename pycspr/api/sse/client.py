@@ -20,8 +20,16 @@ class Client():
         :param rpc_client: Node RPC client.
 
         """
-        self.ext = ClientExtensions(self, rpc_client or RpcClient(connection_info))
         self.proxy = Proxy(connection_info.host, connection_info.port_sse)
+
+        # Extension methods -> 2nd order functions.
+        ext = ClientExtensions(self, rpc_client or RpcClient(connection_info))
+        self.await_n_blocks = ext.await_n_blocks
+        self.await_n_eras = ext.await_n_eras
+        self.await_n_events = ext.await_n_events
+        self.await_until_block_n = ext.await_until_block_n
+        self.await_until_era_n = ext.await_until_era_n
+        self.get_events = ext.get_events
 
     def yield_events(
         self,
