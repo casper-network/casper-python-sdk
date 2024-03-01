@@ -1,4 +1,5 @@
 import pycspr
+from pycspr.api.rpc import types as rpc_types
 
 
 def test_get_node_peers(RPC_CLIENT: pycspr.NodeRpcClient):    
@@ -20,4 +21,4 @@ def test_get_validator_changes(RPC_CLIENT: pycspr.NodeRpcClient):
 
     assert isinstance(data, list)
     for item in data:
-        assert isinstance(item, dict)
+        assert isinstance(item, rpc_types.ValidatorChanges)

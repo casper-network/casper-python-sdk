@@ -1,5 +1,4 @@
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.rest import endpoints
 from pycspr.api.rest.proxy import Proxy
 
 
@@ -20,14 +19,13 @@ class Client():
         self.get_node_metric = ext.get_node_metric
 
 
-    def get_chainspec(self) -> list:
+    def get_chainspec(self) -> dict:
         """Returns network chainspec.
 
         :returns: Network chainspec.
 
         """
-        return endpoints.get_chainspec(self.proxy)
-
+        return self.proxy.get_chainspec()
 
     def get_node_metrics(self) -> list:
         """Returns set of node metrics.
@@ -35,7 +33,7 @@ class Client():
         :returns: Node metrics information.
 
         """
-        return endpoints.get_metrics(self.proxy)
+        return self.proxy.get_node_metrics()
 
     def get_node_status(self) -> dict:
         """Returns node status information.
@@ -43,15 +41,15 @@ class Client():
         :returns: Node status information.
 
         """
-        return endpoints.get_status(self.proxy)
+        return self.proxy.get_node_status()
 
-    def get_node_rpc_schema(self) -> list:
+    def get_node_rpc_schema(self) -> dict:
         """Returns node RPC API schema.
 
         :returns: Node RPC API schema.
 
         """
-        return endpoints.get_rpc_schema(self.proxy)
+        return self.proxy.get_rpc_schema()
 
     def get_validator_changes(self) -> list:
         """Returns validator change information.
@@ -59,7 +57,7 @@ class Client():
         :returns: Validator change information.
 
         """
-        return endpoints.get_validator_changes(self.proxy)
+        return self.proxy.get_validator_changes()
 
 
 class ClientExtensions():

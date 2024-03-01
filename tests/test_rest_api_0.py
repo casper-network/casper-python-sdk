@@ -23,6 +23,10 @@ def test_get_node_metric(REST_CLIENT: NodeRestClient):
     assert isinstance(data, list)
     assert len(data) == 1
 
+    data = REST_CLIENT.get_node_metric("xxxxxxxxxxxxxxxxxxxxx")
+    assert isinstance(data, list)
+    assert len(data) == 0
+
 
 def test_get_node_status(REST_CLIENT: NodeRestClient):
     data = REST_CLIENT.get_node_status()
