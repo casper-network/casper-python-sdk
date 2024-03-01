@@ -12,4 +12,4 @@ def exec(proxy: Proxy) -> list:
     :returns: Network chainspec.
 
     """
-    return json.loads(proxy.get_response(_ENDPOINT))
+    return json.loads(proxy.get_response(_ENDPOINT))["chainspec_bytes"]

@@ -12,4 +12,4 @@ def exec(proxy: Proxy) -> list:
     :returns: Validator change information.
 
     """
-    return json.loads(proxy.get_response(_ENDPOINT))
+    return json.loads(proxy.get_response(_ENDPOINT))["changes"]

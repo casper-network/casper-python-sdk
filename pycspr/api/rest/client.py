@@ -37,7 +37,7 @@ class Client():
         """
         return endpoints.get_metrics(self.proxy)
 
-    def get_node_status(self) -> list:
+    def get_node_status(self) -> dict:
         """Returns node status information.
 
         :returns: Node status information.

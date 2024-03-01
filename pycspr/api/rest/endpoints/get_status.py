@@ -6,7 +6,7 @@ from pycspr.api.rest.proxy import Proxy
 _ENDPOINT: str = "status"
 
 
-def exec(proxy: Proxy) -> list:
+def exec(proxy: Proxy) -> dict:
     """Returns set of node metrics.
 
     :returns: Node metrics information.
