@@ -62,3 +62,10 @@ async def test_get_events(SSE_CLIENT: NodeSseClient, RPC_CLIENT: NodeRpcClient) 
         pass
     else:
         raise ValueError("Event capture error")
+
+
+@pytest.mark.asyncio
+async def test_yield_events(SSE_CLIENT: NodeSseClient, RPC_CLIENT: NodeRpcClient) -> None:
+    for einfo in SSE_CLIENT.yield_events(NodeEventChannel.main, NodeEventType.BlockAdded):
+        assert isinstance(einfo, NodeEventInfo)
+        break
