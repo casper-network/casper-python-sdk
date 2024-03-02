@@ -1,5 +1,3 @@
-import pycspr
-
 from pycspr import NodeRestClient
 
 

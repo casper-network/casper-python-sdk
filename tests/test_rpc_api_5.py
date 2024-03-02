@@ -1,43 +1,41 @@
 from pycspr import NodeRpcClient
 from pycspr.types import CL_URef
-from pycspr.types import CL_URefAccessRights
+from pycspr.types import GlobalStateID
+from pycspr.types import PurseID
+from pycspr.types import PurseIDType
 
 
-def test_get_state_root(RPC_CLIENT: NodeRpcClient):
-    def _assert(response):
-        assert isinstance(response, bytes)
-        assert len(response) == 32
+def test_get_account_balance_under_purse_uref(
+    RPC_CLIENT: NodeRpcClient,
+    account_main_purse_uref: CL_URef,
+    global_state_id: GlobalStateID
+):
+    purse_id = PurseID(account_main_purse_uref, PurseIDType.UREF)
+    data = RPC_CLIENT.get_account_balance(purse_id, global_state_id)
 
-    for block_id in (None, 1):
-        _assert(RPC_CLIENT.get_state_root(block_id))
-
-
-def test_get_account_info(RPC_CLIENT: NodeRpcClient, account_key: bytes):
-    def _assert(response):
-        # e.g. docs/api_reponses/rpc_state_get_item.account.json
-        assert isinstance(response, dict)
-        # TODO: use jsonschema derived from RPC schema
-        assert "account_hash" in response
-        assert "action_thresholds" in response
-        assert "deployment" in response["action_thresholds"]
-        assert "key_management" in response["action_thresholds"]
-        assert "associated_keys" in response
-        assert len(response["associated_keys"]) >= 1
-        for key in response["associated_keys"]:
-            assert "account_hash" in key
-            assert "weight" in key
-        assert "main_purse" in response
-        assert "named_keys" in response
-        assert isinstance(response["named_keys"], list)
-
-    _assert(RPC_CLIENT.get_account_info(account_key))
+    assert isinstance(data, int)
+    assert data >= 0
 
 
-def test_get_account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes):
-    def _assert(response):
-        # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
-        assert isinstance(response, CL_URef)
-        assert len(response.address) == 32
-        assert response.access_rights == CL_URefAccessRights.READ_ADD_WRITE
+def test_get_account_balance_under_account_hash(
+    RPC_CLIENT: NodeRpcClient,
+    account_hash: bytes,
+    global_state_id: GlobalStateID
+):
+    purse_id = PurseID(account_hash, PurseIDType.ACCOUNT_HASH)
+    data = RPC_CLIENT.get_account_balance(purse_id, global_state_id)
 
-    _assert(RPC_CLIENT.get_account_main_purse_uref(account_key))
+    assert isinstance(data, int)
+    assert data >= 0
+
+
+def test_get_account_balance_under_account_key(
+    RPC_CLIENT: NodeRpcClient,
+    account_key: bytes,
+    global_state_id: GlobalStateID
+):
+    purse_id = PurseID(account_key, PurseIDType.PUBLIC_KEY)
+    data = RPC_CLIENT.get_account_balance(purse_id, global_state_id)
+
+    assert isinstance(data, int)
+    assert data >= 0
