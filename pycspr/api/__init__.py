@@ -7,3 +7,4 @@ from pycspr.api.sse import Client as NodeSseClient
 from pycspr.api.sse import NodeEventChannel
 from pycspr.api.sse import NodeEventInfo
 from pycspr.api.sse import NodeEventType
+from pycspr.api.sse import SSE_CHANNEL_TO_SSE_EVENT

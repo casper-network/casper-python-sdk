@@ -25,6 +25,7 @@ from pycspr.api import NodeSseClient
 from pycspr.api import NodeEventChannel
 from pycspr.api import NodeEventInfo
 from pycspr.api import NodeEventType
+from pycspr.api import SSE_CHANNEL_TO_SSE_EVENT
 
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO

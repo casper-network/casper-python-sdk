@@ -105,27 +105,27 @@ class ClientExtensions():
             if count == offset:
                 return einfo.payload
 
-    async def await_until_block_n(self, block_height: int) -> dict:
+    async def await_until_block_n(self, future: int) -> dict:
         """Awaits until linear block chain has advanced to block N.
 
-        :param block_height: Hieght of block to await.
-        :returns: On-chain block information at block N blocks.
+        :param future: Height of a future block to await.
+        :returns: On-chain block information N block in the future.
 
         """
-        _, block_height_current = self.rpc_client.ext.get_chain_heights()
-        offset = block_height - block_height_current
+        _, current = self.rpc_client.get_chain_heights()
+        offset = future - current
         if offset > 0:
             await self.await_n_blocks(offset)
 
-    async def await_until_era_n(self, era_height: int) -> dict:
+    async def await_until_era_n(self, future: int) -> dict:
         """Awaits until consensus has advanced to era N.
 
-        :param era_height: Height of era to await.
+        :param future: Height of a future era to await.
         :returns: On-chain era information N eras in the future.
 
         """
-        era_height_current, _ = self.rpc_client.ext.get_chain_heights()
-        offset = era_height - era_height_current
+        current, _ = self.rpc_client.get_chain_heights()
+        offset = future - current
         if offset > 0:
             await self.await_n_eras(offset)
 

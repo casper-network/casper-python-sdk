@@ -74,6 +74,7 @@ _INTERFACE_OF_LIBRARY = {
     _has_constant: {
         "DEFAULT_HASH_ALGO",
         "DEFAULT_KEY_ALGO",
+        "SSE_CHANNEL_TO_SSE_EVENT",
     },
     _has_exception: {
         "InvalidDeployException",
