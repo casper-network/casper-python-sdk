@@ -89,7 +89,7 @@ poetry install
         * port of sse server exposed by test node
         * default =  18101
 
-    * PYCSPR_TEST_NODE_PORT_SPEC_EXEC
+    * PYCSPR_TEST_NODE_PORT_RPC_SPECULATIVE
 
         * port of speculative execution server exposed by test node
         * default =  25101

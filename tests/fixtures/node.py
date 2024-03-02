@@ -36,35 +36,37 @@ def NODE_HOST() -> str:
 
 
 @pytest.fixture(scope="session")
-def NODE_PORT_REST() -> str:
-    return os.getenv("PYCSPR_TEST_NODE_PORT_REST", 14101)
+def NODE_PORT_REST() -> int:
+    return int(os.getenv("PYCSPR_TEST_NODE_PORT_REST", 14101))
 
 
 @pytest.fixture(scope="session")
-def NODE_PORT_RPC() -> str:
-    return os.getenv("PYCSPR_TEST_NODE_PORT_RPC", 11101)
+def NODE_PORT_RPC() -> int:
+    return int(os.getenv("PYCSPR_TEST_NODE_PORT_RPC", 11101))
 
 
 @pytest.fixture(scope="session")
-def NODE_PORT_SSE() -> str:
-    return os.getenv("PYCSPR_TEST_NODE_PORT_SSE", 18101)
+def NODE_PORT_SSE() -> int:
+    return int(os.getenv("PYCSPR_TEST_NODE_PORT_SSE", 18101))
 
 
 @pytest.fixture(scope="session")
-def NODE_PORT_SPEC_EXEC() -> str:
-    return os.getenv("PYCSPR_TEST_NODE_PORT_SPEC_EXEC", 25101)
+def NODE_PORT_RPC_SPECULATIVE() -> int:
+    return int(os.getenv("PYCSPR_TEST_NODE_PORT_RPC_SPECULATIVE", 25101))
 
 
 @pytest.fixture(scope="session")
 def NODE_CONNECTION(
-    NODE_HOST,
-    NODE_PORT_REST,
-    NODE_PORT_RPC,
-    NODE_PORT_SSE
+    NODE_HOST: str,
+    NODE_PORT_REST: str,
+    NODE_PORT_RPC: str,
+    NODE_PORT_RPC_SPECULATIVE: str,
+    NODE_PORT_SSE: str,
 ) -> pycspr.NodeConnectionInfo:
     return pycspr.NodeConnectionInfo(
         host=NODE_HOST,
         port_rest=NODE_PORT_REST,
         port_rpc=NODE_PORT_RPC,
-        port_sse=NODE_PORT_SSE
+        port_rpc_speculative=NODE_PORT_RPC_SPECULATIVE,
+        port_sse=NODE_PORT_SSE,
     )

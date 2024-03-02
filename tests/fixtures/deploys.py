@@ -119,7 +119,6 @@ def create_deploy_params(
     chain_id = chain_id or create_chain_id()
     timestamp = timestamp or create_timestamp()
     ttl_humanized = ttl_humanized or create_deploy_ttl_humanized()
-    print(123, ttl_humanized)
 
     return pycspr.create_deploy_parameters(
             account=pycspr.factory.create_public_key(

@@ -33,6 +33,7 @@ from tests.fixtures.node import NODE_CONNECTION
 from tests.fixtures.node import NODE_HOST
 from tests.fixtures.node import NODE_PORT_REST
 from tests.fixtures.node import NODE_PORT_RPC
+from tests.fixtures.node import NODE_PORT_RPC_SPECULATIVE
 from tests.fixtures.node import NODE_PORT_SSE
 from tests.fixtures.vectors import cl_types as cl_types_vector
 from tests.fixtures.vectors import cl_values as cl_values_vector
