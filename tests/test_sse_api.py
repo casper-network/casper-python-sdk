@@ -8,17 +8,19 @@ from pycspr import SSE_CHANNEL_TO_SSE_EVENT
 @pytest.mark.asyncio
 async def test_await_n_blocks(SSE_CLIENT: NodeSseClient, RPC_CLIENT: NodeRpcClient) -> None:
     offset = 2
-    block_height = RPC_CLIENT.get_block_height()
+    current = RPC_CLIENT.get_block_height()
+    future = current + offset
     await SSE_CLIENT.await_n_blocks(offset)
-    assert RPC_CLIENT.get_block_height() == block_height + offset
+    assert RPC_CLIENT.get_block_height() == future
 
 
 @pytest.mark.asyncio
 async def test_await_n_eras(SSE_CLIENT: NodeSseClient, RPC_CLIENT: NodeRpcClient) -> None:
     offset = 1
-    era_height = RPC_CLIENT.get_era_height()
+    current = RPC_CLIENT.get_era_height()
+    future = current + offset
     await SSE_CLIENT.await_n_eras(offset)
-    assert RPC_CLIENT.get_era_height() == era_height + offset
+    assert RPC_CLIENT.get_era_height() == future
 
 
 @pytest.mark.asyncio
