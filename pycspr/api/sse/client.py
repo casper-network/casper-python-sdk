@@ -73,7 +73,7 @@ class ClientExtensions():
         :param offset: Number of blocks to await.
 
         """
-        await self.await_n_events(NodeEventChannel.main, NodeEventType.BlockAdded, offset)
+        await self.await_n_events(offset, NodeEventChannel.main, NodeEventType.BlockAdded)
 
     async def await_n_eras(self, offset: int):
         """Awaits until consensus has advanced by N eras.
@@ -81,20 +81,20 @@ class ClientExtensions():
         :param offset: Number of eras to await.
 
         """
-        await self.await_n_events(NodeEventChannel.main, NodeEventType.Step, offset)
+        await self.await_n_events(offset, NodeEventChannel.main, NodeEventType.Step)
         await self.await_n_blocks(1)
 
     async def await_n_events(
         self,
+        offset: int,
         echannel: NodeEventChannel,
-        etype: NodeEventType,
-        offset: int
+        etype: NodeEventType = None
     ) -> dict:
         """Awaits emission of N events of a certain type over a certain channel.
 
+        :param offset: Number of events to await.
         :param echannel: Type of event channel to which to bind.
         :param etype: Type of event type to listen for (all if unspecified).
-        :param offset: Number of events to await.
         :returns: Event payload N events into the future.
 
         """
