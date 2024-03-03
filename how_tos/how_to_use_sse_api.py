@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 
-from pycspr import NodeClient
+from pycspr import NodeSseClient as NodeClient
 from pycspr import NodeConnectionInfo
 
 

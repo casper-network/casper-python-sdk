@@ -1,6 +1,6 @@
 import argparse
 
-from pycspr import NodeClient
+from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 
 # CLI argument parser.
@@ -34,13 +34,13 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
     print("PYCSPR :: How To Get Chainspec")
     print("")
-    print("Illustrates usage of pycspr.NodeClient.get_chain_spec function.")
+    print("Illustrates usage of pycspr.NodeClient.get_chainspec function.")
     print("-" * 74)
 
     # Set node client.
     client = _get_client(args)
 
-    data: dict = client.get_chain_spec()
+    data: dict = client.get_chainspec()
 
     print("-" * 74)
     print("Chain specification as pure bytes")

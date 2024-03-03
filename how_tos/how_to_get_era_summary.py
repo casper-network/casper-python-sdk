@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from pycspr import NodeClient
+from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 
 # CLI argument parser.
@@ -35,7 +35,7 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
     print("PYCSPR :: How To Get Chain Era Summary")
     print("")
-    print("Illustrates usage of pycspr.NodeClient.get_era_summary function.")
+    print("Illustrates usage of NodeClient.get_era_summary function.")
     print("-" * 74)
 
     # Set node client.

@@ -8,7 +8,7 @@ import typing
 
 import pycspr
 from pycspr.api import NodeConnectionInfo
-from pycspr.api import NodeClient
+from pycspr.api import NodeSpeculativeRpcClient as NodeClient
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey

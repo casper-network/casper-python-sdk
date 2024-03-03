@@ -4,7 +4,7 @@ import pathlib
 import typing
 
 import pycspr
-from pycspr import NodeClient
+from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import PrivateKey
@@ -95,7 +95,7 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
 
     # Set node client.
-    client = _get_client(args)
+    client: NodeClient = _get_client(args)
 
     # Set counter-parties.
     delegator, validator = _get_counter_parties(args)

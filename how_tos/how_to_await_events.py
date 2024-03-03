@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 
-from pycspr import NodeClient
+from pycspr import NodeSseClient as NodeClient
 from pycspr import NodeConnectionInfo
 
 
@@ -49,7 +49,7 @@ async def main(args: argparse.Namespace):
     print("-" * 74)
 
     # Set node client.
-    client = _get_client(args)
+    client: NodeClient = _get_client(args)
 
     # Await until 2 blocks have been added to linear chain.
     print("awaiting 2 blocks ...")

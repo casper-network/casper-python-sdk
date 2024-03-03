@@ -3,7 +3,7 @@ import os
 import pathlib
 
 import pycspr
-from pycspr import NodeClient
+from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy

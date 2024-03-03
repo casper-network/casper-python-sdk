@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from pycspr import NodeClient
+from pycspr import NodeSseClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr import NodeEventChannel
 from pycspr import NodeEventInfo
@@ -63,7 +63,7 @@ def main(args: argparse.Namespace):
     print("-" * 74)
 
     # Set node client.
-    client = _get_client(args)
+    client: NodeClient = _get_client(args)
 
     # Bind to node events.
     client.get_events(

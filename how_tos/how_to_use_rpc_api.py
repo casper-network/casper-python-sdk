@@ -4,7 +4,7 @@ import pathlib
 import typing
 
 import pycspr
-from pycspr import NodeClient
+from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.api.rpc import types as types
 from pycspr.api.rpc import types as rpc_types

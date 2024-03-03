@@ -1,7 +1,7 @@
 import argparse
 import json
 
-from pycspr import NodeClient
+from pycspr import NodeSseClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr import NodeEventChannel
 from pycspr import NodeEventInfo
