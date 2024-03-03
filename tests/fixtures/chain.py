@@ -1,24 +1,25 @@
 import pytest
 
+from pycspr import NodeRpcClient
 from pycspr.types import CL_URef
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
 
 
 @pytest.fixture(scope="session")
-def account_main_purse_uref(CLIENT, account_key: bytes) -> CL_URef:
+def account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes) -> CL_URef:
     """Returns an on-chain account's main purse unforgeable reference.
 
     """
-    return CLIENT.get_account_main_purse_uref(account_key)
+    return RPC_CLIENT.get_account_main_purse_uref(account_key)
 
 
 @pytest.fixture(scope="session")
-def block(CLIENT) -> dict:
+def block(RPC_CLIENT: NodeRpcClient) -> dict:
     """Returns most recent block.
 
     """
-    return CLIENT.get_block()
+    return RPC_CLIENT.get_block()
 
 
 @pytest.fixture(scope="session")
@@ -38,19 +39,19 @@ def global_state_id(state_root_hash) -> GlobalStateID:
 
 
 @pytest.fixture(scope="session")
-def state_root_hash(CLIENT) -> bytes:
+def state_root_hash(RPC_CLIENT: NodeRpcClient) -> bytes:
     """Returns current state root hash.
 
     """
-    return CLIENT.get_state_root()
+    return RPC_CLIENT.get_state_root()
 
 
 @pytest.fixture(scope="session")
-def switch_block(CLIENT) -> dict:
+def switch_block(RPC_CLIENT: NodeRpcClient) -> dict:
     """Returns hash of most recent switch block.
 
     """
-    return CLIENT.get_block_at_era_switch()
+    return RPC_CLIENT.get_block_at_era_switch()
 
 
 @pytest.fixture(scope="session")

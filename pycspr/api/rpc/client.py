@@ -19,7 +19,6 @@ from pycspr.types import StateRootID
 
 
 
-
 class Client():
     """Node RPC server client.
 
@@ -34,6 +33,11 @@ class Client():
             host=connection_info.host,
             port=connection_info.port_rpc,
         )
+
+        # Alias methods.
+        self.get_auction_state = self.get_auction_info
+        self.get_era_info = self.get_era_info_by_switch_block
+        self.get_state_root_hash = self.get_state_root
 
         # Extension methods -> 2nd order functions.
         ext = ClientExtensions(self)

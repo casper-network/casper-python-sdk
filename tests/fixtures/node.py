@@ -6,11 +6,6 @@ import pycspr
 
 
 @pytest.fixture(scope="session")
-def CLIENT(NODE_CONNECTION: pycspr.NodeConnectionInfo) -> pycspr.NodeClient:
-    return pycspr.NodeClient(NODE_CONNECTION)
-
-
-@pytest.fixture(scope="session")
 def RPC_CLIENT(NODE_CONNECTION: pycspr.NodeConnectionInfo) -> pycspr.NodeRpcClient:
     return pycspr.NodeRpcClient(NODE_CONNECTION)
 

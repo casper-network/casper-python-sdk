@@ -24,7 +24,6 @@ from tests.fixtures.deploys import deploy_params
 from tests.fixtures.deploys import deploy_params_static
 from tests.fixtures.deploys import a_deploy
 from tests.fixtures.iterator_deploy_entities import yield_entities as deploy_entities_iterator
-from tests.fixtures.node import CLIENT
 from tests.fixtures.node import RPC_CLIENT
 from tests.fixtures.node import REST_CLIENT
 from tests.fixtures.node import SSE_CLIENT
