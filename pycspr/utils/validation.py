@@ -17,17 +17,17 @@ def validate_deploy(deploy: Deploy):
     :deploy: Deploy to be validated.
 
     """
-    # Validate body hash.
+    # Validate digest of deploy body.
     body_hash: bytes = factory.create_digest_of_deploy_body(deploy.payment, deploy.session)
     if deploy.header.body_hash != body_hash:
         raise InvalidDeployException("Invalid deploy body hash")
 
-    # Validate deploy hash.
+    # Validate digest of deploy header.
     deploy_hash: bytes = factory.create_digest_of_deploy(deploy.header)
     if deploy.hash != deploy_hash:
         raise InvalidDeployException("Invalid deploy hash")
 
-    # Validate signatures.
+    # Validate deploy approval signatures.
     for approval in deploy.approvals:
         if not crypto.is_signature_valid(
             deploy.hash,
