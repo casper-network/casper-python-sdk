@@ -12,41 +12,41 @@ pip3 install pycspr
 
 ### Cryptography
 
-* [How To: Hash data ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/cryptography/how_to_hash_data.py)
+* [How To: Hash data ?](how_tos/cryptography/how_to_hash_data.py)
 
-* [How To: Create Key Pairs ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/cryptography/how_to_create_key_pairs.py)
+* [How To: Create Key Pairs ?](how_tos/cryptography/how_to_create_key_pairs.py)
 
-* [How To: Apply a checksum ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/cryptography/how_to_apply_a_checksum.py)
+* [How To: Apply a checksum ?](how_tos/cryptography/how_to_apply_a_checksum.py)
 
 ### Deploys
 
-* [How To: Transfer funds between 2 accounts ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/deploys/how_to_transfer.py)
+* [How To: Transfer funds between 2 accounts ?](how_tos/deploys/how_to_transfer.py)
 
-* [How To: Delegate funds to a validator ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/deploys/how_to_delegate.py)
+* [How To: Delegate funds to a validator ?](how_tos/deploys/how_to_delegate.py)
 
-* [How To: Undelegate funds from a validator ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/deploys/how_to_undelegate.py)
+* [How To: Undelegate funds from a validator ?](how_tos/deploys/how_to_undelegate.py)
 
-* [How To: Stake funds as a validator ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/deploys/how_to_stake.py)
+* [How To: Stake funds as a validator ?](how_tos/deploys/how_to_stake.py)
 
-* [How To: Unstake funds as a validator ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/deploys/how_to_unstake.py)
+* [How To: Unstake funds as a validator ?](how_tos/deploys/how_to_unstake.py)
 
 ### Smart Contracts
 
-* [How To: Install a smart contract ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/smart_contracts/how_to_install.py)
+* [How To: Install a smart contract ?](how_tos/smart_contracts/how_to_install.py)
 
-* [How To: Invoke a smart contract ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/smart_contracts/how_to_invoke.py)
+* [How To: Invoke a smart contract ?](how_tos/smart_contracts/how_to_invoke.py)
 
-* [How To: Query a smart contract ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/smart_contracts/how_to_query.py)
+* [How To: Query a smart contract ?](how_tos/smart_contracts/how_to_query.py)
 
 ### Node APIs
 
 * [How To: Use REST API ?](how_tos/node_apis/how_to_use_rest_client.py)
 
-* [How To: Use RPC API ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/node_apis/how_to_use_rpc_client.py)
+* [How To: Use RPC API ?](how_tos/node_apis/how_to_use_rpc_client.py)
 
-* [How To: Use Speculative RPC API ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/node_apis/how_to_use_speculative_rpc_client.py)
+* [How To: Use Speculative RPC API ?](how_tos/node_apis/how_to_use_speculative_rpc_client.py)
 
-* [How To: Use SSE API ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/node_apis/how_to_use_sse_client.py)
+* [How To: Use SSE API ?](how_tos/node_apis/how_to_use_sse_client.py)
 
 ##  Development
 
