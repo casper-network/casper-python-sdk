@@ -85,7 +85,7 @@ def _main(args: argparse.Namespace):
 
     """
     print("-" * 74)
-    print("PYCSPR :: How To Query A Node")
+    print("PYCSPR :: How To Use Node RPC Client")
     print("-" * 74)
 
     ctx = _Context(args)
@@ -99,11 +99,52 @@ def _main(args: argparse.Namespace):
         _get_chain_era_summary,
         _get_chain_auction_state,
         _get_chain_validator_changes,
+        _get_chain_specification,
         _get_chain_state_root_hash,
         _get_chain_account_info,
     ]:
         func(ctx)
         print("-" * 74)
+
+
+def _get_chain_account_info(ctx: _Context):
+    state_root_hash: bytes = ctx.client.get_state_root()
+
+    # Query: get_account_info.
+    account_info: dict = ctx.client.get_account_info(ctx.user_public_key.account_key)
+    assert isinstance(account_info, dict)
+    print("SUCCESS :: get_account_info")
+
+    # Query: get_account_main_purse_uref.
+    account_main_purse: CL_URef = \
+        ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
+    assert isinstance(account_main_purse, CL_URef)
+    print("SUCCESS :: get_account_main_purse_uref")
+
+    # Query: get_account_balance.
+    global_state_id = GlobalStateID(state_root_hash, GlobalStateIDType.STATE_ROOT_HASH)
+    purse_id = PurseID(account_main_purse, PurseIDType.UREF)
+    account_balance: int = ctx.client.get_account_balance(purse_id, global_state_id)
+    assert isinstance(account_balance, int)
+    print("SUCCESS :: get_account_balance")
+
+
+def _get_chain_auction_state(ctx: _Context):
+    block: dict = ctx.client.get_block()
+
+    for block_id in {
+        None,
+        block["hash"],
+        block["header"]["height"]
+    }:
+        # Invoke API.
+        obj: rpc_types.AuctionState = ctx.client.get_auction_state(block_id)
+        assert isinstance(obj, rpc_types.AuctionState)
+        print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
+
+    assert ctx.client.get_auction_state(block["hash"]) == \
+           ctx.client.get_auction_state(block["header"]["height"])
+    print("SUCCESS :: get_auction_state - by equivalent block height & hash")
 
 
 def _get_chain_block(ctx: _Context):
@@ -146,6 +187,72 @@ def _get_chain_block_transfers(ctx: _Context):
     print("SUCCESS :: invoked get_block_transfers - by block height")
 
 
+def _get_chain_era_info(ctx: _Context):
+    print("POLLING :: get_block_at_era_switch - may take some time")
+    block: dict = ctx.client.get_block_at_era_switch()
+
+    for block_id in {
+        None,
+        block["hash"],
+        block["header"]["height"]
+    }:
+        era_info: dict = ctx.client.get_era_info(block_id)
+        assert isinstance(era_info, dict)
+        print(f"SUCCESS :: get_era_info :: block-id={block_id}")
+        assert era_info == ctx.client.get_era_info_by_switch_block(block_id)
+
+    assert ctx.client.get_era_info(block["hash"]) == \
+           ctx.client.get_era_info(block["header"]["height"])
+    print("SUCCESS :: get_era_info - by equivalent block height & hash")
+
+
+def _get_chain_era_summary(ctx: _Context):
+    block: dict = ctx.client.get_block()
+
+    for block_id in {
+        None,
+        block["hash"],
+        block["header"]["height"]
+    }:
+        entity: types.EraSummary = ctx.client.get_era_summary(block_id)
+        assert isinstance(entity, types.EraSummary)
+        print(f"SUCCESS :: get_era_summary :: block-id={block_id}")
+
+    assert ctx.client.get_era_summary(block["hash"]) == \
+           ctx.client.get_era_summary(block["header"]["height"])
+    print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
+
+
+def _get_chain_specification(ctx: _Context):
+    chainspec: dict = ctx.client.get_chainspec()
+    assert isinstance(chainspec, dict)
+
+
+def _get_chain_state_root_hash(ctx: _Context):
+    block: dict = ctx.client.get_block()
+
+    for block_id in {
+        None,
+        block["hash"],
+        block["header"]["height"]
+    }:
+        state_root_hash: bytes = ctx.client.get_state_root(block_id)
+        assert isinstance(state_root_hash, bytes)
+        print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
+
+    assert ctx.client.get_state_root(block["hash"]) == \
+           ctx.client.get_state_root(block["header"]["height"])
+    print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
+
+
+def _get_chain_validator_changes(ctx: _Context):
+    validator_changes: typing.List[rpc_types.ValidatorChanges] = ctx.client.get_validator_changes()
+    assert isinstance(validator_changes, list)
+    for item in validator_changes:
+        assert isinstance(item, types.ValidatorChanges)
+    print("SUCCESS :: get_validator_changes")
+
+
 def _get_node_ops(ctx: _Context):
     # get_node_metrics.
     node_metrics: typing.List[str] = ctx.client.get_node_metrics()
@@ -184,107 +291,6 @@ def _get_node_rpc(ctx: _Context):
         rpc_endpoint_schema: dict = ctx.client.get_rpc_endpoint("account_put_deploy")
         assert isinstance(rpc_endpoint_schema, dict)
     print("SUCCESS :: get_rpc_endpoint")
-
-
-def _get_chain_auction_state(ctx: _Context):
-    block: dict = ctx.client.get_block()
-
-    for block_id in {
-        None,
-        block["hash"],
-        block["header"]["height"]
-    }:
-        # Invoke API.
-        obj: rpc_types.AuctionState = ctx.client.get_auction_state(block_id)
-        assert isinstance(obj, rpc_types.AuctionState)
-        print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
-
-    assert ctx.client.get_auction_state(block["hash"]) == \
-           ctx.client.get_auction_state(block["header"]["height"])
-    print("SUCCESS :: get_auction_state - by equivalent block height & hash")
-
-
-def _get_chain_validator_changes(ctx: _Context):
-    validator_changes: typing.List[rpc_types.ValidatorChanges] = ctx.client.get_validator_changes()
-    assert isinstance(validator_changes, list)
-    for item in validator_changes:
-        assert isinstance(item, types.ValidatorChanges)
-    print("SUCCESS :: get_validator_changes")
-
-
-def _get_chain_era_info(ctx: _Context):
-    print("POLLING :: get_block_at_era_switch - may take some time")
-    block: dict = ctx.client.get_block_at_era_switch()
-
-    for block_id in {
-        None,
-        block["hash"],
-        block["header"]["height"]
-    }:
-        era_info: dict = ctx.client.get_era_info(block_id)
-        assert isinstance(era_info, dict)
-        print(f"SUCCESS :: get_era_info :: block-id={block_id}")
-        assert era_info == ctx.client.get_era_info_by_switch_block(block_id)
-
-    assert ctx.client.get_era_info(block["hash"]) == \
-           ctx.client.get_era_info(block["header"]["height"])
-    print("SUCCESS :: get_era_info - by equivalent block height & hash")
-
-
-def _get_chain_era_summary(ctx: _Context):
-    block: dict = ctx.client.get_block()
-
-    for block_id in {
-        None,
-        block["hash"],
-        block["header"]["height"]
-    }:
-        entity: types.EraSummary = ctx.client.get_era_summary(block_id)
-        assert isinstance(entity, types.EraSummary)
-        print(f"SUCCESS :: get_era_summary :: block-id={block_id}")
-
-    assert ctx.client.get_era_summary(block["hash"]) == \
-           ctx.client.get_era_summary(block["header"]["height"])
-    print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
-
-
-def _get_chain_state_root_hash(ctx: _Context):
-    block: dict = ctx.client.get_block()
-
-    for block_id in {
-        None,
-        block["hash"],
-        block["header"]["height"]
-    }:
-        state_root_hash: bytes = ctx.client.get_state_root(block_id)
-        assert isinstance(state_root_hash, bytes)
-        print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
-
-    assert ctx.client.get_state_root(block["hash"]) == \
-           ctx.client.get_state_root(block["header"]["height"])
-    print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
-
-
-def _get_chain_account_info(ctx: _Context):
-    state_root_hash: bytes = ctx.client.get_state_root()
-
-    # Query: get_account_info.
-    account_info: dict = ctx.client.get_account_info(ctx.user_public_key.account_key)
-    assert isinstance(account_info, dict)
-    print("SUCCESS :: get_account_info")
-
-    # Query: get_account_main_purse_uref.
-    account_main_purse: CL_URef = \
-        ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
-    assert isinstance(account_main_purse, CL_URef)
-    print("SUCCESS :: get_account_main_purse_uref")
-
-    # Query: get_account_balance.
-    global_state_id = GlobalStateID(state_root_hash, GlobalStateIDType.STATE_ROOT_HASH)
-    purse_id = PurseID(account_main_purse, PurseIDType.UREF)
-    account_balance: int = ctx.client.get_account_balance(purse_id, global_state_id)
-    assert isinstance(account_balance, int)
-    print("SUCCESS :: get_account_balance")
 
 
 # Entry point.
