@@ -38,6 +38,7 @@ class Client():
         self.get_auction_state = self.get_auction_info
         self.get_era_info = self.get_era_info_by_switch_block
         self.get_state_root_hash = self.get_state_root
+        self.send_deploy = self.account_put_deploy
 
         # Extension methods -> 2nd order functions.
         ext = ClientExtensions(self)
