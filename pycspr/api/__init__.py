@@ -1,4 +1,3 @@
-from pycspr.api.client import NodeClient
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rest import Client as NodeRestClient
 from pycspr.api.rpc import Client as NodeRpcClient

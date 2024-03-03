@@ -30,14 +30,16 @@ import pytest
 import pycspr
 import tests.utils.cctl as cctl
 
+from pycspr import NodeRpcClient
+
 
 @dataclasses.dataclass
 class TestContext():
     __test__ = False
 
-    client: pycspr.NodeClient = None
+    client: NodeRpcClient = None
 
-    def __init__(self, client: pycspr.NodeClient):
+    def __init__(self, client: NodeRpcClient):
         self.client = client
 
 

@@ -55,7 +55,6 @@ def _has_member(mod, member):
 # Expected interface.
 _INTERFACE_OF_LIBRARY = {
     _has_class: {
-        "NodeClient",
         "NodeConnectionInfo",
         "NodeEventInfo",
         "NodeRestClient",

@@ -16,7 +16,6 @@ from pycspr import factory
 from pycspr import serialisation
 from pycspr import types
 
-from pycspr.api import NodeClient
 from pycspr.api import NodeConnectionInfo
 from pycspr.api import NodeRestClient
 from pycspr.api import NodeRpcClient
