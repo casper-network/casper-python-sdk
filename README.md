@@ -40,7 +40,7 @@ pip3 install pycspr
 
 ### Node APIs
 
-* [How To: Use REST API ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/node_apis/how_to_use_rest_client.py)
+* [How To: Use REST API ?](how_tos/node_apis/how_to_use_rest_client.py)
 
 * [How To: Use RPC API ?](https://github.com/casper-network/casper-python-sdk/blob/main/how_tos/node_apis/how_to_use_rpc_client.py)
 
