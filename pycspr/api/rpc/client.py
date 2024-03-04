@@ -131,7 +131,7 @@ class Client():
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        return endpoints.info_get_chainspec(self.proxy)
+        return self.proxy.info_get_chainspec()
 
     def get_deploy(self, deploy_id: DeployID) -> dict:
         """Returns on-chain deploy information.

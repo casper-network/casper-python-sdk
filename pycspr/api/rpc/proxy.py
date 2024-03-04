@@ -143,6 +143,13 @@ class Proxy:
         """
         return self.get_response(constants.RPC_DISCOVER, field="schema")
 
+    def info_get_chainspec(self) -> dict:
+        """Returns canonical network state information.
+
+        :returns: Chain spec, genesis accounts and global state information.
+
+        """
+        return self.get_response(constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
 
 class ProxyError(Exception):
     """Node API error wrapper.

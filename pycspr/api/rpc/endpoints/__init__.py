@@ -1,5 +1,4 @@
 from pycspr.api.rpc.endpoints.chain_get_state_root_hash import exec as chain_get_state_root_hash
-from pycspr.api.rpc.endpoints.info_get_chainspec import exec as info_get_chainspec
 from pycspr.api.rpc.endpoints.info_get_deploy import exec as info_get_deploy
 from pycspr.api.rpc.endpoints.info_get_peers import exec as info_get_peers
 from pycspr.api.rpc.endpoints.info_get_status import exec as info_get_status
