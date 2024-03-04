@@ -16,6 +16,7 @@ from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
 from pycspr.types import PurseID
 from pycspr.types import PurseIDType
+from pycspr.types import StateRootID
 
 
 # Map: global state identifier type to JSON-RPC paramater name.
