@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pycspr"
-version = "1.1.1"
+version = "1.1.2"
 authors = ["Mark A. Greenslade <asladeofgreen@gmail.com>"]
 classifiers = [
     "Development Status :: 4 - Beta",
