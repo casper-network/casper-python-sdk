@@ -90,8 +90,8 @@ def _main(args: argparse.Namespace):
 
     ctx = _Context(args)
     for func in [
-        _get_node_rpc,
-        # _get_node_ops,
+        # _get_node_rpc,
+        _get_node_ops,
         # _get_chain_block,
         # _get_chain_block_at_era_switch,
         # _get_chain_block_transfers,

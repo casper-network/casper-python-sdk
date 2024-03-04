@@ -185,7 +185,7 @@ class Client():
         :returns: Node peer information.
 
         """
-        return endpoints.info_get_peers(self.proxy)
+        return self.proxy.info_get_peers()
 
     def get_node_status(self) -> dict:
         """Returns node status information.

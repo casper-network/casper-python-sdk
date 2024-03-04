@@ -151,6 +151,14 @@ class Proxy:
         """
         return self.get_response(constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
 
+    def info_get_peers(self) -> typing.List[dict]:
+        """Returns node peer information.
+
+        :returns: Node peer information.
+
+        """
+        return self.get_response(constants.RPC_INFO_GET_PEERS, field="peers")
+
 class ProxyError(Exception):
     """Node API error wrapper.
 
