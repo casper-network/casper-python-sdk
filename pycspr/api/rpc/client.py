@@ -59,7 +59,7 @@ class Client():
         :returns: Deploy identifier.
 
         """
-        return endpoints.account_put_deploy(self.proxy, deploy)
+        return self.proxy.account_put_deploy(deploy)
 
     def get_account_balance(
         self,
@@ -201,7 +201,7 @@ class Client():
         :returns: Node JSON-RPC API schema.
 
         """
-        return endpoints.discover(self.proxy)
+        return self.proxy.discover()
 
     def get_state_item(
         self,

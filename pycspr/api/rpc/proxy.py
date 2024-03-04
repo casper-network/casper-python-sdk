@@ -4,10 +4,13 @@ import typing
 import jsonrpcclient
 import requests
 
+from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc.codec import decoder
 from pycspr.api.rpc.utils import params as param_utils
 from pycspr.types import BlockID
+from pycspr.types import Deploy
+from pycspr.types import DeployID
 from pycspr.types import StateRootID
 
 
@@ -56,7 +59,20 @@ class Proxy:
             return response_parsed.result
         else:
             return response_parsed.result[field]
-        
+
+    def account_put_deploy(self, deploy: Deploy) -> DeployID:
+        """Dispatches a deploy to a node for processing.
+
+        :param deploy: A deploy to be processed at a node.
+        :returns: Deploy identifier.
+
+        """
+        params: dict = {
+            "deploy": serialisation.to_json(deploy),
+        }
+
+        return self.get_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params, "deploy_hash")
+
     def chain_get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
 
@@ -118,6 +134,14 @@ class Proxy:
                 "state_root_hash"
                 )
             )
+
+    def discover(self) -> dict:
+        """Returns RPC schema.
+
+        :returns: Node JSON-RPC API schema.
+
+        """
+        return self.get_response(constants.RPC_DISCOVER, field="schema")
 
 
 class ProxyError(Exception):
