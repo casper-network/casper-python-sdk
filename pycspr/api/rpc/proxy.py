@@ -151,6 +151,17 @@ class Proxy:
         """
         return self.get_response(constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
 
+    def info_get_deploy(self, deploy_id: DeployID) -> dict:
+        """Returns on-chain deploy information.
+
+        :param deploy_id: Identifier of a deploy processed by network.
+        :returns: On-chain deploy information.
+
+        """
+        params: dict = param_utils.get_deploy_id(deploy_id)
+
+        return self.get_response(constants.RPC_INFO_GET_DEPLOY, params, "deploy")
+
     def info_get_peers(self) -> typing.List[dict]:
         """Returns node peer information.
 

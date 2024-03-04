@@ -140,7 +140,7 @@ class Client():
         :returns: On-chain deploy information.
 
         """
-        return endpoints.info_get_deploy(self.proxy, deploy_id)
+        return self.proxy.info_get_deploy(deploy_id)
 
     def get_dictionary_item(
         self,
