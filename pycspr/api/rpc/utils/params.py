@@ -1,12 +1,29 @@
+import typing
+
 from pycspr import serialisation
 from pycspr.crypto import cl_checksum
 from pycspr.types import AccountID
 from pycspr.types import BlockID
+from pycspr.types import CL_Key
 from pycspr.types import DeployID
+from pycspr.types import DICTIONARY_ID_VARIANTS
+from pycspr.types import DictionaryID
+from pycspr.types import DictionaryID_AccountNamedKey
+from pycspr.types import DictionaryID_ContractNamedKey
+from pycspr.types import DictionaryID_SeedURef
+from pycspr.types import DictionaryID_UniqueKey
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
 from pycspr.types import PurseID
 from pycspr.types import PurseIDType
+
+
+# Map: global state identifier type to JSON-RPC paramater name.
+_GLOBAL_STATE_ID_PARAM_NAME: typing.Dict[GlobalStateIDType, str] = {
+    GlobalStateIDType.BLOCK_HASH: "BlockHash",
+    GlobalStateIDType.BLOCK_HEIGHT: "BlockHeight",
+    GlobalStateIDType.STATE_ROOT_HASH: "StateRootHash",
+}        
 
 
 def get_block_id(block_id: BlockID, allow_none=True) -> dict:
@@ -82,4 +99,62 @@ def get_global_state_id(global_state_id: GlobalStateID) -> dict:
 
     return {
         id_type: id
+    }
+
+
+def get_params_for_query_global_state(key: CL_Key, path: typing.List[str], state_id: GlobalStateID) -> dict:
+    try:
+        state_id_type = _GLOBAL_STATE_ID_PARAM_NAME[state_id.id_type]
+    except KeyError:
+        raise ValueError(f"Invalid global state identifier type: {state_id.id_type}")
+
+    if isinstance(state_id.identifier, bytes):
+        state_id = state_id.identifier.hex()
+    else:
+        state_id = state_id.identifier
+
+    return {
+        "key": serialisation.cl_value_to_parsed(key),
+        "path": path,
+        "state_identifier": {
+            state_id_type: state_id
+        }
+    }
+
+
+def get_params_for_state_get_dictionary_item(identifier: DictionaryID, state_root_hash: StateRootID) -> dict:
+    def get_dictionary_param():
+        if not isinstance(identifier, DICTIONARY_ID_VARIANTS):
+            raise ValueError("Unrecognized dictionary item type.")
+        elif isinstance(identifier, DictionaryID_AccountNamedKey):
+            return {
+                "AccountNamedKey": {
+                    "dictionary_item_key": identifier.dictionary_item_key,
+                    "dictionary_name": identifier.dictionary_name,
+                    "key": f"hash-{cl_checksum.encode_account_id(identifier.account_key)}"
+                }
+            }
+        elif isinstance(identifier, DictionaryID_ContractNamedKey):
+            return {
+                "ContractNamedKey": {
+                    "dictionary_item_key": identifier.dictionary_item_key,
+                    "dictionary_name": identifier.dictionary_name,
+                    "key": f"hash-{cl_checksum.encode_contract_id(identifier.contract_key)}"
+                }
+            }
+        elif isinstance(identifier, DictionaryID_SeedURef):
+            return {
+                "URef": {
+                    "dictionary_item_key": identifier.dictionary_item_key,
+                    "seed_uref": identifier.dictionary_name
+                }
+            }
+        elif isinstance(identifier, DictionaryID_UniqueKey):
+            return {
+                "Dictionary": identifier.seed_uref.as_string()
+            }
+
+    return {
+        "dictionary_identifier": get_dictionary_param(),
+        "state_root_hash": state_root_hash.hex(),
     }

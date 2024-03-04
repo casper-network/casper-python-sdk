@@ -6,12 +6,12 @@ import requests
 
 from pycspr import serialisation
 from pycspr.api import constants
-from pycspr.api.rpc.codec import decoder
 from pycspr.api.rpc.utils import params as param_utils
 from pycspr.types import AccountID
 from pycspr.types import BlockID
 from pycspr.types import Deploy
 from pycspr.types import DeployID
+from pycspr.types import DictionaryID
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
 from pycspr.types import PurseID
@@ -213,6 +213,30 @@ class Proxy:
             self.get_response(constants.RPC_QUERY_BALANCE, params, "balance")
         )
 
+    def query_global_state(
+        self,
+        key: str,
+        path: typing.List[str],
+        state_id: GlobalStateID = None
+    ) -> bytes:
+        """Returns results of a query to global state at a specified block or state root hash.
+
+        :param key: Key of an item stored within global state.
+        :param path: Identifier of a path within item.
+        :param state_id: Identifier of global state leaf.
+        :returns: Results of a global state query.
+
+        """        
+        if state_id is None:
+            state_id: GlobalStateID = GlobalStateID(
+                self.chain_get_state_root_hash(),
+                GlobalStateIDType.STATE_ROOT_HASH
+                )
+
+        params: dict = param_utils.get_params_for_query_global_state(key, path, state_id)
+
+        return self.get_response(constants.RPC_QUERY_GLOBAL_STATE, params)
+
     def state_get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
 
@@ -237,6 +261,22 @@ class Proxy:
         params: dict = param_utils.get_block_id(block_id, False)
 
         return self.get_response(constants.RPC_STATE_GET_AUCTION_INFO, params, "auction_state")
+
+    def state_get_dictionary_item(self, identifier: DictionaryID, state_root_hash: StateRootID = None) -> dict:
+        """Returns on-chain data stored under a dictionary item.
+
+        :param identifier: Identifier required to query a dictionary item.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: On-chain data stored under a dictionary item.
+
+        """
+        if state_root_hash is None:
+            state_root_hash = self.chain_get_state_root_hash()
+
+        params: dict = param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
+
+        return self.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
+
 
 class ProxyError(Exception):
     """Node API error wrapper.

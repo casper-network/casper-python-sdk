@@ -149,11 +149,12 @@ class Client():
     ) -> dict:
         """Returns current auction system contract information.
 
-        :param block_id: Identifier of a finalised block.
-        :returns: Current auction system contract information.
+        :param identifier: Identifier required to query a dictionary item.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: On-chain data stored under a dictionary item.
 
         """
-        return endpoints.state_get_dictionary_item(self.proxy, identifier, state_root_hash)
+        return self.proxy.state_get_dictionary_item(identifier, state_root_hash)
 
     def get_era_summary(
         self,
@@ -233,7 +234,7 @@ class Client():
         :returns: Results of a global state query.
 
         """
-        return endpoints.query_global_state(self.proxy, key, path, state_id)
+        return self.proxy.query_global_state(key, path, state_id)
 
     def get_state_root(self, block_id: BlockID = None) -> StateRootID:
         """Returns an root hash of global state at a specified block.
