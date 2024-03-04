@@ -227,6 +227,17 @@ class Proxy:
 
         return self.get_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params, "account")
 
+    def state_get_auction_info(self, block_id: BlockID = None) -> dict:
+        """Returns current auction system contract information.
+
+        :param block_id: Identifier of a finalised block.
+        :returns: Current auction system contract information.
+
+        """
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return self.get_response(constants.RPC_STATE_GET_AUCTION_INFO, params, "auction_state")
+
 class ProxyError(Exception):
     """Node API error wrapper.
 

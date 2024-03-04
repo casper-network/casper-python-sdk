@@ -96,7 +96,7 @@ class Client():
         :returns: Current auction system contract information.
 
         """
-        obj: dict = endpoints.state_get_auction_info(self.proxy, block_id)
+        obj: dict = self.proxy.state_get_auction_info(block_id)
 
         return obj if decode is False else decoder.decode(rpc_types.AuctionState, obj)
 
