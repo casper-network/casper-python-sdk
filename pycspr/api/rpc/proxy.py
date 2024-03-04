@@ -159,6 +159,14 @@ class Proxy:
         """
         return self.get_response(constants.RPC_INFO_GET_PEERS, field="peers")
 
+    def info_get_status(self) -> dict:
+        """Returns node status information.
+
+        :returns: Node status information.
+
+        """
+        return self.get_response(constants.RPC_INFO_GET_STATUS)
+
 class ProxyError(Exception):
     """Node API error wrapper.
 

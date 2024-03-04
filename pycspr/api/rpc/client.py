@@ -193,7 +193,7 @@ class Client():
         :returns: Node status information.
 
         """
-        return endpoints.info_get_status(self.proxy)
+        return self.proxy.info_get_status()
 
     def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
