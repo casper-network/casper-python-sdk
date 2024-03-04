@@ -178,6 +178,14 @@ class Proxy:
         """
         return self.get_response(constants.RPC_INFO_GET_STATUS)
 
+    def info_get_validator_changes(self) -> typing.List[dict]:
+        """Returns validator change set.
+
+        :returns: Validator change set.
+
+        """
+        return self.get_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES, field="changes")
+
 class ProxyError(Exception):
     """Node API error wrapper.
 

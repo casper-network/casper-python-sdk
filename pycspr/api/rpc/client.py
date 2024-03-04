@@ -254,7 +254,7 @@ class Client():
         :returns: Status changes of active validators.
 
         """
-        obj = endpoints.info_get_validator_changes(self.proxy)
+        obj = self.proxy.info_get_validator_changes()
 
         return obj if decode is False else decoder.decode(rpc_types.ValidatorChanges, obj)
 
