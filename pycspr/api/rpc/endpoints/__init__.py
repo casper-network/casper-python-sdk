@@ -1,6 +1,4 @@
 from pycspr.api.rpc.endpoints.account_put_deploy import exec as account_put_deploy
-from pycspr.api.rpc.endpoints.chain_get_era_info_by_switch_block \
-    import exec as chain_get_era_info_by_switch_block
 from pycspr.api.rpc.endpoints.chain_get_state_root_hash import exec as chain_get_state_root_hash
 from pycspr.api.rpc.endpoints.discover import exec as discover
 from pycspr.api.rpc.endpoints.info_get_chainspec import exec as info_get_chainspec

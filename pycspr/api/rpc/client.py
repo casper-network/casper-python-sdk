@@ -170,7 +170,6 @@ class Client():
     
         return obj if decode is False else decoder.decode(rpc_types.EraSummary, obj)
 
-
     def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
 
@@ -178,7 +177,7 @@ class Client():
         :returns: Era information.
 
         """
-        return endpoints.chain_get_era_info_by_switch_block(self.proxy, block_id)
+        return self.proxy.chain_get_era_info_by_switch_block(block_id)
 
     def get_node_peers(self) -> dict:
         """Returns node peer information.

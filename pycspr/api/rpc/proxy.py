@@ -79,6 +79,17 @@ class Proxy:
 
         return self.get_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
+    def chain_get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
+        """Returns consensus era information scoped by block id.
+
+        :param block_id: Identifier of a block.
+        :returns: Era information.
+
+        """
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return self.get_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+
     def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
 
