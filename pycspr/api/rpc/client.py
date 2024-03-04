@@ -83,7 +83,7 @@ class Client():
         :returns: Account information in JSON format.
 
         """
-        return endpoints.state_get_account_info(self.proxy, account_id, block_id)
+        return self.proxy.state_get_account_info(account_id, block_id)
 
     def get_auction_info(
         self,

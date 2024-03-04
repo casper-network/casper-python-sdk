@@ -8,6 +8,7 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc.codec import decoder
 from pycspr.api.rpc.utils import params as param_utils
+from pycspr.types import AccountID
 from pycspr.types import BlockID
 from pycspr.types import Deploy
 from pycspr.types import DeployID
@@ -211,6 +212,20 @@ class Proxy:
         return int(
             self.get_response(constants.RPC_QUERY_BALANCE, params, "balance")
         )
+
+    def state_get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
+        """Returns account information at a certain global state root hash.
+
+        :param account_id: An account holder's public key prefixed with a key type identifier.
+        :param block_id: Identifier of a finalised block.
+        :returns: Account information in JSON format.
+
+        """
+        params: dict = \
+            param_utils.get_account_key(account_id) | \
+            param_utils.get_block_id(block_id)
+
+        return self.get_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params, "account")
 
 class ProxyError(Exception):
     """Node API error wrapper.
