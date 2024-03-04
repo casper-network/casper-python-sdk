@@ -8,6 +8,7 @@ from pycspr.api import constants
 from pycspr.api.rpc.codec import decoder
 from pycspr.api.rpc.utils import params as param_utils
 from pycspr.types import BlockID
+from pycspr.types import StateRootID
 
 
 @dataclasses.dataclass
@@ -100,6 +101,23 @@ class Proxy:
         params: dict = param_utils.get_block_id(block_id, False)
 
         return self.get_response(constants.RPC_CHAIN_GET_ERA_SUMMARY, params, "era_summary")
+
+    def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootID:
+        """Returns root hash of global state at a finalised block.
+
+        :param block_id: Identifier of a finalised block.
+        :returns: State root hash at finalised block.
+
+        """
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return bytes.fromhex(
+            self.get_response(
+                constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
+                params,
+                "state_root_hash"
+                )
+            )
 
 
 class ProxyError(Exception):

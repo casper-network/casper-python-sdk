@@ -242,7 +242,7 @@ class Client():
         :returns: State root hash at specified block.
 
         """
-        return endpoints.chain_get_state_root_hash(self.proxy, block_id)
+        return self.proxy.chain_get_state_root_hash(block_id)
 
     def get_validator_changes(
         self,
