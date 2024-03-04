@@ -121,7 +121,7 @@ class Client():
         :returns: On-chain block transfers information.
 
         """
-        obj: dict = endpoints.chain_get_block_transfers(self.proxy, block_id)
+        obj: dict = self.proxy.chain_get_block_transfers(block_id)
 
         return obj if decode is False else decoder.decode(rpc_types.BlockTransfers, obj)
 

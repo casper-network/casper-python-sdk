@@ -1,11 +1,13 @@
 import dataclasses
-import os
+import typing
 
 import jsonrpcclient
 import requests
 
 from pycspr.api import constants
 from pycspr.api.rpc.codec import decoder
+from pycspr.api.rpc.utils import params as param_utils
+from pycspr.types import BlockID
 
 
 @dataclasses.dataclass
@@ -54,6 +56,17 @@ class Proxy:
         else:
             return response_parsed.result[field]
 
+    def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
+        """Returns on-chain block transfers information.
+
+        :param block_id: Identifier of a finalised block.
+        :param decode: Flag indicating whether to decode API response.
+        :returns: On-chain block transfers information.
+
+        """    
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return self.get_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
 class ProxyError(Exception):
     """Node API error wrapper.
