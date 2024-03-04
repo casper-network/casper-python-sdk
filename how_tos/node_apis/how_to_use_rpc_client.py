@@ -90,18 +90,18 @@ def _main(args: argparse.Namespace):
 
     ctx = _Context(args)
     for func in [
-        # _get_node_rpc,
-        # _get_node_ops,
-        # _get_chain_block,
-        # _get_chain_block_at_era_switch,
-        # _get_chain_block_transfers,
-        # _get_chain_era_info,
-        # _get_chain_era_summary,
+        _get_node_rpc,
+        _get_node_ops,
+        _get_chain_block,
+        _get_chain_block_at_era_switch,
+        _get_chain_block_transfers,
+        _get_chain_era_info,
+        _get_chain_era_summary,
         _get_chain_auction_state,
-        # _get_chain_validator_changes,
-        # _get_chain_specification,
-        # _get_chain_state_root_hash,
-        # _get_chain_account_info,
+        _get_chain_validator_changes,
+        _get_chain_specification,
+        _get_chain_state_root_hash,
+        _get_chain_account_info,
     ]:
         func(ctx)
         print("-" * 74)
@@ -258,16 +258,6 @@ def _get_chain_validator_changes(ctx: _Context):
 
 
 def _get_node_ops(ctx: _Context):
-    # get_node_metrics.
-    node_metrics: typing.List[str] = ctx.client.get_node_metrics()
-    assert isinstance(node_metrics, list)
-    print("SUCCESS :: get_node_metrics")
-
-    # get_node_metric.
-    node_metric: typing.List[str] = ctx.client.get_node_metric("mem_deploy_gossiper")
-    assert isinstance(node_metric, list)
-    print("SUCCESS :: get_node_metric")
-
     # get_node_peers.
     node_peers: typing.List[dict] = ctx.client.get_node_peers()
     assert isinstance(node_peers, list)

@@ -38,32 +38,6 @@ class Proxy:
         """Instance string representation."""
         return self.address
 
-    def get_response(
-        self,
-        endpoint: str,
-        params: dict = None,
-        field: str = None,
-    ) -> dict:
-        """Invokes remote speculative JSON-RPC API and returns parsed response.
-
-        :endpoint: Target endpoint to invoke.
-        :params: Endpoint parameters.
-        :field: Inner response field.
-        :returns: Parsed JSON-RPC response.
-
-        """
-        request = jsonrpcclient.request(endpoint, params)
-        response_raw = requests.post(self.address, json=request)
-
-        response_parsed = jsonrpcclient.parse(response_raw.json())
-        if isinstance(response_parsed, jsonrpcclient.responses.Error):
-            raise ProxyError(response_parsed)
-
-        if field is None:
-            return response_parsed.result
-        else:
-            return response_parsed.result[field]
-
     def account_put_deploy(self, deploy: Deploy) -> DeployID:
         """Dispatches a deploy to a node for processing.
 
@@ -75,7 +49,7 @@ class Proxy:
             "deploy": serialisation.to_json(deploy),
         }
 
-        return self.get_response(constants.RPC_ACCOUNT_PUT_DEPLOY, params, "deploy_hash")
+        return _get_response(self.address, constants.RPC_ACCOUNT_PUT_DEPLOY, params, "deploy_hash")
 
     def chain_get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
@@ -86,7 +60,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return self.get_response(constants.RPC_CHAIN_GET_BLOCK, params, "block")        
+        return _get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")        
 
     def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
@@ -98,7 +72,7 @@ class Proxy:
         """    
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return self.get_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+        return _get_response(self.address, constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
     def chain_get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
@@ -109,7 +83,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return self.get_response(constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+        return _get_response(self.address, constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
 
     def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
@@ -120,7 +94,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return self.get_response(constants.RPC_CHAIN_GET_ERA_SUMMARY, params, "era_summary")
+        return _get_response(self.address, constants.RPC_CHAIN_GET_ERA_SUMMARY, params, "era_summary")
 
     def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootID:
         """Returns root hash of global state at a finalised block.
@@ -130,14 +104,10 @@ class Proxy:
 
         """
         params: dict = param_utils.get_block_id(block_id, False)
+        response: str = \
+            _get_response(self.address, constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params, "state_root_hash")
 
-        return bytes.fromhex(
-            self.get_response(
-                constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
-                params,
-                "state_root_hash"
-                )
-            )
+        return bytes.fromhex(response)
 
     def discover(self) -> dict:
         """Returns RPC schema.
@@ -145,7 +115,7 @@ class Proxy:
         :returns: Node JSON-RPC API schema.
 
         """
-        return self.get_response(constants.RPC_DISCOVER, field="schema")
+        return _get_response(self.address, constants.RPC_DISCOVER, field="schema")
 
     def info_get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -153,7 +123,7 @@ class Proxy:
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        return self.get_response(constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
+        return _get_response(self.address, constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
 
     def info_get_deploy(self, deploy_id: DeployID) -> dict:
         """Returns on-chain deploy information.
@@ -164,7 +134,7 @@ class Proxy:
         """
         params: dict = param_utils.get_deploy_id(deploy_id)
 
-        return self.get_response(constants.RPC_INFO_GET_DEPLOY, params, "deploy")
+        return _get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params, "deploy")
 
     def info_get_peers(self) -> typing.List[dict]:
         """Returns node peer information.
@@ -172,7 +142,7 @@ class Proxy:
         :returns: Node peer information.
 
         """
-        return self.get_response(constants.RPC_INFO_GET_PEERS, field="peers")
+        return _get_response(self.address, constants.RPC_INFO_GET_PEERS, field="peers")
 
     def info_get_status(self) -> dict:
         """Returns node status information.
@@ -180,7 +150,7 @@ class Proxy:
         :returns: Node status information.
 
         """
-        return self.get_response(constants.RPC_INFO_GET_STATUS)
+        return _get_response(self.address, constants.RPC_INFO_GET_STATUS)
 
     def info_get_validator_changes(self) -> typing.List[dict]:
         """Returns validator change set.
@@ -188,7 +158,7 @@ class Proxy:
         :returns: Validator change set.
 
         """
-        return self.get_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES, field="changes")
+        return _get_response(self.address, constants.RPC_INFO_GET_VALIDATOR_CHANGES, field="changes")
 
     def query_balance(self, purse_id: PurseID, global_state_id: GlobalStateID = None) -> int:
         """Returns account balance at a certain point in global state history.
@@ -210,7 +180,7 @@ class Proxy:
             param_utils.get_purse_id(purse_id)
         
         return int(
-            self.get_response(constants.RPC_QUERY_BALANCE, params, "balance")
+            _get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
         )
 
     def query_global_state(
@@ -235,7 +205,7 @@ class Proxy:
 
         params: dict = param_utils.get_params_for_query_global_state(key, path, state_id)
 
-        return self.get_response(constants.RPC_QUERY_GLOBAL_STATE, params)
+        return _get_response(self.address, constants.RPC_QUERY_GLOBAL_STATE, params)
 
     def state_get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
@@ -249,7 +219,7 @@ class Proxy:
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
 
-        return self.get_response(constants.RPC_STATE_GET_ACCOUNT_INFO, params, "account")
+        return _get_response(self.address, constants.RPC_STATE_GET_ACCOUNT_INFO, params, "account")
 
     def state_get_auction_info(self, block_id: BlockID = None) -> dict:
         """Returns current auction system contract information.
@@ -260,7 +230,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return self.get_response(constants.RPC_STATE_GET_AUCTION_INFO, params, "auction_state")
+        return _get_response(self.address, constants.RPC_STATE_GET_AUCTION_INFO, params, "auction_state")
 
     def state_get_dictionary_item(self, identifier: DictionaryID, state_root_hash: StateRootID = None) -> dict:
         """Returns on-chain data stored under a dictionary item.
@@ -275,7 +245,7 @@ class Proxy:
 
         params: dict = param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
 
-        return self.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
+        return _get_response(self.address, constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
     def state_get_item(
         self,
@@ -297,7 +267,7 @@ class Proxy:
 
         params: dict = param_utils.get_params_for_state_get_item(key, path, state_root_hash)
 
-        return self.get_response(constants.RPC_STATE_GET_ITEM, params, "stored_value")
+        return _get_response(self.address, constants.RPC_STATE_GET_ITEM, params, "stored_value")
 
 
 class ProxyError(Exception):
@@ -309,3 +279,31 @@ class ProxyError(Exception):
 
         """
         super(ProxyError, self).__init__(msg)
+
+
+def _get_response(
+    address: str,
+    endpoint: str,
+    params: dict = None,
+    field: str = None,
+) -> dict:
+    """Invokes JSON-RPC API & returns parsed response.
+
+    :address: Host address.
+    :endpoint: Endpoint to invoke.
+    :params: Endpoint Parameters.
+    :field: Inner response field.
+    :returns: Parsed JSON-RPC response.
+
+    """
+    request = jsonrpcclient.request(endpoint, params)
+    response_raw = requests.post(address, json=request)
+
+    response_parsed = jsonrpcclient.parse(response_raw.json())
+    if isinstance(response_parsed, jsonrpcclient.responses.Error):
+        raise ProxyError(response_parsed)
+
+    if field is None:
+        return response_parsed.result
+    else:
+        return response_parsed.result[field]
