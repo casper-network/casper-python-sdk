@@ -73,7 +73,7 @@ class Client():
         :returns: Account balance in motes (if purse exists).
 
         """
-        return endpoints.query_balance(self.proxy, purse_id, global_state_id)
+        return self.proxy.query_balance(purse_id, global_state_id)
 
     def get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.

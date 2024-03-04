@@ -11,6 +11,9 @@ from pycspr.api.rpc.utils import params as param_utils
 from pycspr.types import BlockID
 from pycspr.types import Deploy
 from pycspr.types import DeployID
+from pycspr.types import GlobalStateID
+from pycspr.types import GlobalStateIDType
+from pycspr.types import PurseID
 from pycspr.types import StateRootID
 
 
@@ -185,6 +188,29 @@ class Proxy:
 
         """
         return self.get_response(constants.RPC_INFO_GET_VALIDATOR_CHANGES, field="changes")
+
+    def query_balance(self, purse_id: PurseID, global_state_id: GlobalStateID = None) -> int:
+        """Returns account balance at a certain point in global state history.
+
+        :param proxy: Remote RPC server proxy.
+        :param purse_id: Identifier of purse being queried.
+        :param global_state_id: Identifier of global state root at some point in time.
+        :returns: Account balance in motes (if purse exists).
+
+        """
+        if global_state_id is None:
+            global_state_id = GlobalStateID(
+                self.chain_get_state_root_hash(),
+                GlobalStateIDType.STATE_ROOT_HASH
+            )
+
+        params: dict = \
+            param_utils.get_global_state_id(global_state_id) | \
+            param_utils.get_purse_id(purse_id)
+        
+        return int(
+            self.get_response(constants.RPC_QUERY_BALANCE, params, "balance")
+        )
 
 class ProxyError(Exception):
     """Node API error wrapper.
