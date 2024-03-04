@@ -18,7 +18,6 @@ class Client():
         ext = ClientExtensions(self)
         self.get_node_metric = ext.get_node_metric
 
-
     def get_chainspec(self) -> dict:
         """Returns network chainspec.
 

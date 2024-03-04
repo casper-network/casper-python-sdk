@@ -35,7 +35,7 @@ class Proxy:
         """
         return requests.get(f"{self.address}/{endpoint}").content.decode("utf-8")
 
-    def get_chainspec(self) -> dict:        
+    def get_chainspec(self) -> dict:
         """Returns network chainspec.
 
         :returns: Network chainspec.

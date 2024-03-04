@@ -5,26 +5,26 @@ import typing
 
 @dataclasses.dataclass
 class ExecutionResult:
-    """Base class for execution results emitted by a node's execution engine upon execution of a deploy.
+    """Execution results emitted by a node's execution engine upon deploy execution.
 
     """
-	pass
+    pass
 
 
 @dataclasses.dataclass
 class ExecutionResultFailure:
-    """Encapsulates information emitted by a node's execution engine upon failed execution of a deploy.
+    """Information emitted by a node's execution engine upon failed execution of a deploy.
 
     """
-	pass
+    pass
 
 
 @dataclasses.dataclass
 class ExecutionResultSuccess:
-    """Encapsulates information emitted by a node's execution engine upon successful execution of a deploy.
+    """Information emitted by a node's execution engine upon successful execution of a deploy.
 
     """
-	pass
+    pass
 
 
 @dataclasses.dataclass
@@ -40,14 +40,14 @@ class OperationKind(enum.Enum):
 
 @dataclasses.dataclass
 class Operation:
-    """Encapsulates information pertaining to an operation performed by a node's execution engine during the course of executing a deploy.
+    """Information pertaining to an operation performed by a node's execution engine.
 
     """
     # The formatted string of the operation 'Key'.
     key: str
 
-	# The kind of operation being executed.
-	kind: OperationKind
+    # The kind of operation being executed.
+    kind: OperationKind
 
 
 @dataclasses.dataclass
@@ -71,5 +71,5 @@ class ExecutionEffect:
     # Set of operations performed by execution engine during the course of executing a deploy.
     operations: typing.List[Operation]
 
-    # Set of global state transformations committed by execution engine during the course of executing a deploy.
+    # Set of global state transformations committed by execution engine.
     transforms: typing.List[Operation]

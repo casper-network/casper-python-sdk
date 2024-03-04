@@ -30,6 +30,7 @@ PublicKey = typing.Union[bytes, str]
 # Root id of a node's global state.
 StateRootID = typing.Union[bytes, str]
 
+
 @dataclasses.dataclass
 class PurseID():
     # Purse identifier - account id | public key | uref.

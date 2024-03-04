@@ -5,8 +5,6 @@ import pathlib
 import pycspr
 
 
-
-
 _NAME_OF_CCTL_EVAR = "CCTL"
 
 COUNT_OF_USERS = 10
@@ -33,6 +31,7 @@ _cache = {
     "keys": {}
 }
 
+
 def get_evar():
     return os.getenv(_NAME_OF_CCTL_EVAR)
 
@@ -58,11 +57,19 @@ def get_path_to_private_key_of_user(account_idx: int) -> pathlib.Path:
 
 
 def get_path_to_public_key_of_validator(account_idx: int) -> pathlib.Path:
-    return _get_path_to_asymmetric_key(AsymmetricKeyType.PUBLIC, AccountType.VALIDATOR, account_idx)
+    return _get_path_to_asymmetric_key(
+        AsymmetricKeyType.PUBLIC,
+        AccountType.VALIDATOR,
+        account_idx
+        )
 
 
 def get_path_to_private_key_of_validator(account_idx: int) -> pathlib.Path:
-    return _get_path_to_asymmetric_key(AsymmetricKeyType.PRIVATE, AccountType.VALIDATOR, account_idx)
+    return _get_path_to_asymmetric_key(
+        AsymmetricKeyType.PRIVATE,
+        AccountType.VALIDATOR,
+        account_idx
+        )
 
 
 def get_public_key_of_faucet() -> pycspr.PublicKey:
@@ -95,7 +102,7 @@ def _get_asymmetric_key(
     account_idx: None
 ) -> pathlib.Path:
     cache_key = f"{key_type}-{account_type}-{account_idx}"
-    if not cache_key in _cache["keys"]:
+    if cache_key not in _cache["keys"]:
         _cache["keys"][cache_key] = \
             _get_parsed_asymmetric_key(
                 key_type,

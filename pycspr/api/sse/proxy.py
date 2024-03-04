@@ -37,7 +37,7 @@ class Proxy:
         etype: NodeEventType = None,
         eid: int = 0
     ) -> typing.Generator[NodeEventInfo, None, None]:
-        """Returns a generator that will yield (filterable) events emitted by a node's event stream.
+        """Returns generator yielding (filterable) events emitted by a node's event stream.
 
         :param echannel: Type of event channel to which to bind.
         :param etype: Type of event type to listen for (all if unspecified).
@@ -54,7 +54,7 @@ class Proxy:
         # Open client connection.
         sse_client = _get_client()
         try:
-             # Iterate event stream.
+            # Iterate event stream.
             for event in sse_client.events():
                 # Set event data.
                 try:
@@ -84,4 +84,3 @@ class Proxy:
                 print(f"Ignoring error raised on closing SSE connection: {inner_err}.")
             finally:
                 raise err
-

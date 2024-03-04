@@ -49,7 +49,12 @@ class Proxy:
             "deploy": serialisation.to_json(deploy),
         }
 
-        return _get_response(self.address, constants.RPC_ACCOUNT_PUT_DEPLOY, params, "deploy_hash")
+        return _get_response(
+            self.address,
+            constants.RPC_ACCOUNT_PUT_DEPLOY,
+            params,
+            "deploy_hash"
+            )
 
     def chain_get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
@@ -60,7 +65,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return _get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")        
+        return _get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")
 
     def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
@@ -69,7 +74,7 @@ class Proxy:
         :param decode: Flag indicating whether to decode API response.
         :returns: On-chain block transfers information.
 
-        """    
+        """
         params: dict = param_utils.get_block_id(block_id, False)
 
         return _get_response(self.address, constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
@@ -83,7 +88,11 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return _get_response(self.address, constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK, params)
+        return _get_response(
+            self.address,
+            constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
+            params
+            )
 
     def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
@@ -94,7 +103,12 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return _get_response(self.address, constants.RPC_CHAIN_GET_ERA_SUMMARY, params, "era_summary")
+        return _get_response(
+            self.address,
+            constants.RPC_CHAIN_GET_ERA_SUMMARY,
+            params,
+            "era_summary"
+            )
 
     def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootID:
         """Returns root hash of global state at a finalised block.
@@ -105,7 +119,12 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
         response: str = \
-            _get_response(self.address, constants.RPC_CHAIN_GET_STATE_ROOT_HASH, params, "state_root_hash")
+            _get_response(
+                self.address,
+                constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
+                params,
+                "state_root_hash"
+                )
 
         return bytes.fromhex(response)
 
@@ -123,7 +142,11 @@ class Proxy:
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        return _get_response(self.address, constants.RPC_INFO_GET_CHAINSPEC, field="chainspec_bytes")
+        return _get_response(
+            self.address,
+            constants.RPC_INFO_GET_CHAINSPEC,
+            field="chainspec_bytes"
+            )
 
     def info_get_deploy(self, deploy_id: DeployID) -> dict:
         """Returns on-chain deploy information.
@@ -158,7 +181,11 @@ class Proxy:
         :returns: Validator change set.
 
         """
-        return _get_response(self.address, constants.RPC_INFO_GET_VALIDATOR_CHANGES, field="changes")
+        return _get_response(
+            self.address,
+            constants.RPC_INFO_GET_VALIDATOR_CHANGES,
+            field="changes"
+            )
 
     def query_balance(self, purse_id: PurseID, global_state_id: GlobalStateID = None) -> int:
         """Returns account balance at a certain point in global state history.
@@ -178,7 +205,7 @@ class Proxy:
         params: dict = \
             param_utils.get_global_state_id(global_state_id) | \
             param_utils.get_purse_id(purse_id)
-        
+
         return int(
             _get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
         )
@@ -196,7 +223,7 @@ class Proxy:
         :param state_id: Identifier of global state leaf.
         :returns: Results of a global state query.
 
-        """        
+        """
         if state_id is None:
             state_id: GlobalStateID = GlobalStateID(
                 self.chain_get_state_root_hash(),
@@ -219,7 +246,12 @@ class Proxy:
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
 
-        return _get_response(self.address, constants.RPC_STATE_GET_ACCOUNT_INFO, params, "account")
+        return _get_response(
+            self.address,
+            constants.RPC_STATE_GET_ACCOUNT_INFO,
+            params,
+            "account"
+            )
 
     def state_get_auction_info(self, block_id: BlockID = None) -> dict:
         """Returns current auction system contract information.
@@ -230,9 +262,18 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return _get_response(self.address, constants.RPC_STATE_GET_AUCTION_INFO, params, "auction_state")
+        return _get_response(
+            self.address,
+            constants.RPC_STATE_GET_AUCTION_INFO,
+            params,
+            "auction_state"
+            )
 
-    def state_get_dictionary_item(self, identifier: DictionaryID, state_root_hash: StateRootID = None) -> dict:
+    def state_get_dictionary_item(
+        self,
+        identifier: DictionaryID,
+        state_root_hash: StateRootID = None
+    ) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
         :param identifier: Identifier required to query a dictionary item.
@@ -243,7 +284,8 @@ class Proxy:
         if state_root_hash is None:
             state_root_hash = self.chain_get_state_root_hash()
 
-        params: dict = param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
+        params: dict = \
+            param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
 
         return _get_response(self.address, constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 

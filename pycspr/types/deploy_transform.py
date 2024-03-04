@@ -1,11 +1,10 @@
 import dataclasses
-import enum
 import typing
 
 
 @dataclasses.dataclass
 class NamedKey:
-	pass
+    pass
 
 
 @dataclasses.dataclass
@@ -13,7 +12,7 @@ class Transform:
     """Base class for a state transformation occurring as an execution side effect.
 
     """
-	pass
+    pass
 
 
 @dataclasses.dataclass
@@ -44,7 +43,7 @@ class AddUInt256(Transform):
 @dataclasses.dataclass
 class AddUInt512(Transform):
     value: int
-    
+
 
 @dataclasses.dataclass
 class Failure(Transform):
@@ -53,7 +52,7 @@ class Failure(Transform):
 
 @dataclasses.dataclass
 class Identity(Transform):
-	pass
+    pass
 
 
 @dataclasses.dataclass

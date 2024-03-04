@@ -17,7 +17,6 @@ from pycspr.types import PurseID
 from pycspr.types import StateRootID
 
 
-
 class Client():
     """Node RPC server client.
 
@@ -49,7 +48,6 @@ class Client():
         self.get_era_height = ext.get_era_height
         self.get_rpc_endpoint = ext.get_rpc_endpoint
         self.get_rpc_endpoints = ext.get_rpc_endpoints
-
 
     def account_put_deploy(self, deploy: Deploy) -> DeployID:
         """Dispatches a deploy to a node for processing.
@@ -112,7 +110,7 @@ class Client():
         self,
         block_id: BlockID = None,
         decode: bool = True
-        ) -> typing.Union[dict, rpc_types.BlockTransfers]:
+    ) -> typing.Union[dict, rpc_types.BlockTransfers]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -167,7 +165,7 @@ class Client():
 
         """
         obj: dict = self.proxy.chain_get_era_summary(block_id)
-    
+
         return obj if decode is False else decoder.decode(rpc_types.EraSummary, obj)
 
     def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:

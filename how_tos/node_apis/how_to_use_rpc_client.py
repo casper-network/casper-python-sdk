@@ -8,7 +8,6 @@ from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.api.rpc import types as types
 from pycspr.api.rpc import types as rpc_types
-from pycspr.api.rpc.codec import decode as decoder
 from pycspr.types import CL_URef
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
@@ -250,7 +249,8 @@ def _get_chain_state_root_hash(ctx: _Context):
 
 
 def _get_chain_validator_changes(ctx: _Context):
-    validator_changes: typing.List[rpc_types.ValidatorChanges] = ctx.client.get_validator_changes()
+    validator_changes: typing.List[rpc_types.ValidatorChanges] = \
+        ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)
     for item in validator_changes:
         assert isinstance(item, types.ValidatorChanges)

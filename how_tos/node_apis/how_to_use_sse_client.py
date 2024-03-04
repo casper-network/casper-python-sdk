@@ -131,6 +131,7 @@ def _on_event_callback(event_info: NodeEventInfo):
     print(json.dumps(event_info.payload, indent=4))
     print("-" * 74)
 
+
 # Entry point.
 if __name__ == "__main__":
     asyncio.run(main(_ARGS.parse_args()))

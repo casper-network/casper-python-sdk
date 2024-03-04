@@ -1,6 +1,6 @@
 import dataclasses
 import enum
-import typing 
+import typing
 
 
 @dataclasses.dataclass
@@ -17,7 +17,7 @@ class AuctionState():
     block_height: int
     era_validators: "EraValidators"
     state_root: bytes
-    
+
 
 @dataclasses.dataclass
 class AuctionBidByValidator():

@@ -75,6 +75,7 @@ _ARGS.add_argument(
     type=int,
     )
 
+
 async def _main(args: argparse.Namespace):
     """Main entry point.
 

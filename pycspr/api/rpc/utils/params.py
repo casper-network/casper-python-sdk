@@ -24,7 +24,7 @@ _GLOBAL_STATE_ID_PARAM_NAME: typing.Dict[GlobalStateIDType, str] = {
     GlobalStateIDType.BLOCK_HASH: "BlockHash",
     GlobalStateIDType.BLOCK_HEIGHT: "BlockHeight",
     GlobalStateIDType.STATE_ROOT_HASH: "StateRootHash",
-}        
+}
 
 
 def get_block_id(block_id: BlockID, allow_none=True) -> dict:
@@ -103,7 +103,11 @@ def get_global_state_id(global_state_id: GlobalStateID) -> dict:
     }
 
 
-def get_params_for_query_global_state(key: CL_Key, path: typing.List[str], state_id: GlobalStateID) -> dict:
+def get_params_for_query_global_state(
+    key: CL_Key,
+    path: typing.List[str],
+    state_id: GlobalStateID
+) -> dict:
     try:
         state_id_type = _GLOBAL_STATE_ID_PARAM_NAME[state_id.id_type]
     except KeyError:
@@ -123,7 +127,10 @@ def get_params_for_query_global_state(key: CL_Key, path: typing.List[str], state
     }
 
 
-def get_params_for_state_get_dictionary_item(identifier: DictionaryID, state_root_hash: StateRootID) -> dict:
+def get_params_for_state_get_dictionary_item(
+    identifier: DictionaryID,
+    state_root_hash: StateRootID
+) -> dict:
     def get_dictionary_param():
         if not isinstance(identifier, DICTIONARY_ID_VARIANTS):
             raise ValueError("Unrecognized dictionary item type.")

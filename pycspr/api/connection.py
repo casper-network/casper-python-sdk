@@ -22,7 +22,3 @@ class NodeConnectionInfo:
 
     # Number of exposed SSE port.
     port_sse: int = constants.DEFAULT_PORT_SSE
-
-    def __str__(self):
-        """Instance string representation."""
-        return f"{self.host} :: REST @ {self.port_rest} :: RPC @ {self.port_rpc} :: RPC SPEC @ {self.port_rpc_speculative} :: SSE @ {self.port_sse}"

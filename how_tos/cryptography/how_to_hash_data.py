@@ -37,11 +37,11 @@ def _main(args: argparse.Namespace):
     # Iterate supported algos:
     for algo in pycspr.HashAlgorithm:
         # Create a digest - default size = 32.
-        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=32)        
+        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=32)
         assert isinstance(digest, bytes) and len(digest) == 32
 
         # Create a digest - size = 64.
-        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=64)        
+        digest: bytes = pycspr.get_hash(args.data, algo=algo, size=64)
         assert isinstance(digest, bytes) and len(digest) == 64
 
 

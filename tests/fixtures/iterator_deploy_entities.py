@@ -14,7 +14,7 @@ from pycspr.types.deploys import StoredContractByNameVersioned
 from pycspr.types.deploys import Transfer
 from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
-from tests.fixtures.deploys import create_deploy_header
+
 
 _TEST_ACCOUNT_KEY = \
     bytes.fromhex("011e0ee16a28b65e3cfa74d003eea4811b06173438e920fa38961ce60eb23548f4")

@@ -29,7 +29,7 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
     print("PYCSPR :: How To Create Key Pairs")
     print("")
-    print("Illustrates usage of pycspr.crypto.get_key_pair & pycspr.crypto.get_key_pair_from_* functions.")
+    print("Illustrates usage of get_key_pair & get_key_pair_from_* functions.")
     print("-" * 74)
 
     # Parse args.

@@ -11,7 +11,9 @@ def RPC_CLIENT(NODE_CONNECTION: pycspr.NodeConnectionInfo) -> pycspr.NodeRpcClie
 
 
 @pytest.fixture(scope="session")
-def SPECULATIVE_RPC_CLIENT(NODE_CONNECTION: pycspr.NodeConnectionInfo) -> pycspr.NodeSpeculativeRpcClient:
+def SPECULATIVE_RPC_CLIENT(
+    NODE_CONNECTION: pycspr.NodeConnectionInfo
+) -> pycspr.NodeSpeculativeRpcClient:
     return pycspr.NodeSpeculativeRpcClient(NODE_CONNECTION)
 
 
