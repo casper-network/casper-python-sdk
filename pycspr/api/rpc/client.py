@@ -107,7 +107,7 @@ class Client():
         :returns: On-chain block information.
 
         """
-        return endpoints.chain_get_block(self.proxy, block_id)
+        return self.proxy.chain_get_block(block_id)
 
     def get_block_transfers(
         self,
@@ -166,7 +166,7 @@ class Client():
         :returns: Era summary information.
 
         """
-        obj: dict = endpoints.chain_get_era_summary(self.proxy, block_id)
+        obj: dict = self.proxy.chain_get_era_summary(block_id)
     
         return obj if decode is False else decoder.decode(rpc_types.EraSummary, obj)
 

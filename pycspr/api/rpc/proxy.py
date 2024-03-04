@@ -55,6 +55,17 @@ class Proxy:
             return response_parsed.result
         else:
             return response_parsed.result[field]
+        
+    def chain_get_block(self, block_id: BlockID = None) -> dict:
+        """Returns on-chain block information.
+
+        :param block_id: Identifier of a finalised block.
+        :returns: On-chain block information.
+
+        """
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return self.get_response(constants.RPC_CHAIN_GET_BLOCK, params, "block")        
 
     def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
@@ -67,6 +78,18 @@ class Proxy:
         params: dict = param_utils.get_block_id(block_id, False)
 
         return self.get_response(constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+
+    def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
+        """Returns consensus era summary information.
+
+        :param block_id: Identifier of a block.
+        :returns: Era summary information.
+
+        """
+        params: dict = param_utils.get_block_id(block_id, False)
+
+        return self.get_response(constants.RPC_CHAIN_GET_ERA_SUMMARY, params, "era_summary")
+
 
 class ProxyError(Exception):
     """Node API error wrapper.
