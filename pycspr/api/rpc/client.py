@@ -2,7 +2,6 @@ import time
 import typing
 
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.rpc import endpoints
 from pycspr.api.rpc.codec import decoder
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.api.rpc import types as rpc_types
@@ -218,7 +217,7 @@ class Client():
         :returns: Item stored under passed key/path.
 
         """
-        return endpoints.state_get_item(self.proxy, key, path, state_root_hash)
+        return self.proxy.state_get_item(key, path, state_root_hash)
 
     def get_state_key_value(
         self,

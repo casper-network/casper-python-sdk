@@ -158,3 +158,15 @@ def get_params_for_state_get_dictionary_item(identifier: DictionaryID, state_roo
         "dictionary_identifier": get_dictionary_param(),
         "state_root_hash": state_root_hash.hex(),
     }
+
+
+def get_params_for_state_get_item(
+    key: str,
+    path: typing.Union[str, typing.List[str]],
+    state_root_hash: bytes
+) -> dict:
+    return {
+        "key": key,
+        "path": path,
+        "state_root_hash": state_root_hash.hex() if state_root_hash else None
+    }

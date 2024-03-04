@@ -277,6 +277,28 @@ class Proxy:
 
         return self.get_response(constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
+    def state_get_item(
+        self,
+        key: str,
+        path: typing.Union[str, typing.List[str]] = [],
+        state_root_hash: StateRootID = None
+    ) -> bytes:
+        """Returns results of a query to global state at a specified block or state root hash.
+
+        :param proxy: Remote RPC server proxy.
+        :param key: Key of an item stored within global state.
+        :param path: Identifier of a path within item.
+        :param state_root_hash: A node's root state hash at some point in chain time.
+        :returns: Results of a global state query.
+
+        """
+        path = path if isinstance(path, list) else [path]
+        state_root_hash = state_root_hash or self.chain_get_state_root_hash()
+
+        params: dict = param_utils.get_params_for_state_get_item(key, path, state_root_hash)
+
+        return self.get_response(constants.RPC_STATE_GET_ITEM, params, "stored_value")
+
 
 class ProxyError(Exception):
     """Node API error wrapper.
