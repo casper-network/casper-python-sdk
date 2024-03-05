@@ -4,11 +4,16 @@ from pycspr.api.rpc.types import AuctionBidByDelegator
 from pycspr.api.rpc.types import AuctionBidByValidator
 from pycspr.api.rpc.types import AuctionBidByValidatorInfo
 from pycspr.api.rpc.types import AuctionState
+from pycspr.api.rpc.types import Block
+from pycspr.api.rpc.types import BlockBody
+from pycspr.api.rpc.types import BlockHeader
+from pycspr.api.rpc.types import BlockSignature
 from pycspr.api.rpc.types import BlockTransfers
 from pycspr.api.rpc.types import EraInfo
 from pycspr.api.rpc.types import EraSummary
 from pycspr.api.rpc.types import EraValidators
 from pycspr.api.rpc.types import EraValidatorWeight
+from pycspr.api.rpc.types import ProtocolVersion
 from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
 from pycspr.api.rpc.types import SeigniorageAllocationForValidator
@@ -77,8 +82,55 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
     )
 
 
+def _decode_block(encoded: dict) -> Block:
+    return Block(
+        body=_decode_block_body(encoded["body"]),
+        hash=_decode_digest(encoded["hash"]),
+        header=_decode_block_header(encoded["header"]),
+        proofs=_map(_decode_block_signature, encoded["proofs"]),
+    )
+
+
+def _decode_block_body(encoded: dict) -> BlockBody:
+    return BlockBody(
+        proposer=_decode_public_key(encoded["proposer"]),
+        deploy_hashes=_map(_decode_digest, encoded["deploy_hashes"]),
+        transfer_hashes=_map(_decode_digest, encoded["transfer_hashes"]),
+    )
+
+
+def _decode_block_header(encoded: dict) -> BlockHeader:
+    return BlockHeader(
+        accumulated_seed=bytes.fromhex(encoded["accumulated_seed"]),
+        body_hash=_decode_digest(encoded["body_hash"]),
+        era_id=int(encoded["era_id"]),
+        height=int(encoded["height"]),
+        parent_hash=_decode_digest(encoded["parent_hash"]),
+        protocol_version=_decode_protocol_version(encoded["protocol_version"]),
+        random_bit=bool(encoded["random_bit"]),
+        state_root=_decode_state_root(encoded["state_root_hash"]),
+        )
+
+
+def _decode_protocol_version(encoded: str) -> ProtocolVersion:
+    major, minor, revision = encoded.split(".")
+
+    return ProtocolVersion(
+        major=int(major),
+        minor=int(minor),
+        revision=int(revision)
+        )
+
+
 def _decode_block_id(encoded: str) -> bytes:
     return encoded.encode("utf-8")
+
+
+def _decode_block_signature(encoded: dict) -> BlockSignature:
+    return BlockSignature(
+        public_key=_decode_public_key(encoded["public_key"]),
+        signature=_decode_signature(encoded["signature"])
+    )
 
 
 def _decode_block_transfers(encoded: dict) -> BlockTransfers:
@@ -86,6 +138,10 @@ def _decode_block_transfers(encoded: dict) -> BlockTransfers:
         block_hash=encoded["block_hash"].encode("utf-8"),
         transfers=_map(_decode_transfer, encoded["transfers"])
     )
+
+
+def _decode_digest(encoded: str) -> bytes:
+    return bytes.fromhex(encoded)
 
 
 def _decode_era_info(encoded: dict) -> EraInfo:
@@ -154,6 +210,10 @@ def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
         raise ValueError("decode_seigniorage_allocation")
 
 
+def _decode_signature(encoded: str) -> bytes:
+    return bytes.fromhex(encoded)
+
+
 def _decode_state_root(encoded: str) -> bytes:
     return bytes.fromhex(encoded)
 
@@ -202,11 +262,12 @@ def _decode_validator_changes(encoded: list) -> typing.List[ValidatorChanges]:
 
 _DECODERS = {
     AuctionState: _decode_auction_state,
+    Block: _decode_block,
     BlockTransfers: _decode_block_transfers,
     EraSummary: _decode_era_summary,
     ValidatorChanges: _decode_validator_changes
 }
 
 
-def _map(func, data) -> list:
+def _map(func: typing.Callable, data: list) -> list:
     return [func(i) for i in data]

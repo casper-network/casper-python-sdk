@@ -35,6 +35,39 @@ class AuctionBidByValidatorInfo():
 
 
 @dataclasses.dataclass
+class Block():
+    body: "BlockBody"
+    hash: bytes
+    header: "BlockHeader"
+    proofs: typing.List["BlockSignature"]
+
+
+@dataclasses.dataclass
+class BlockBody():
+    proposer: bytes
+    deploy_hashes: typing.List[bytes]
+    transfer_hashes: typing.List[bytes]
+
+
+@dataclasses.dataclass
+class BlockHeader():
+    accumulated_seed: bytes
+    body_hash: bytes
+    era_id: int
+    height: int
+    parent_hash: bytes
+    protocol_version: str
+    random_bit: bool
+    state_root: bytes
+
+
+@dataclasses.dataclass
+class BlockSignature():
+    public_key: bytes
+    signature: bytes
+
+
+@dataclasses.dataclass
 class BlockTransfers():
     block_hash: bytes
     transfers: typing.List["Transfer"]
@@ -64,6 +97,13 @@ class EraSummary():
     era_info: EraInfo
     merkle_proof: str
     state_root: bytes
+
+
+@dataclasses.dataclass
+class ProtocolVersion():
+    major: int
+    minor: int
+    revision: int
 
 
 @dataclasses.dataclass

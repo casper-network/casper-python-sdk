@@ -4,6 +4,18 @@ import typing
 
 
 @dataclasses.dataclass
+class ExecutionEffect:
+    """The side effect of executing a single deploy.
+
+    """
+    # Set of operations performed by execution engine during the course of executing a deploy.
+    operations: typing.List["Operation"]
+
+    # Set of global state transformations committed by execution engine.
+    transforms: typing.List["Operation"]
+
+
+@dataclasses.dataclass
 class ExecutionResult:
     """Execution results emitted by a node's execution engine upon deploy execution.
 
@@ -61,15 +73,3 @@ class Entry:
     key: str
 
     transform: Transform
-
-
-@dataclasses.dataclass
-class ExecutionEffect:
-    """The side effect of executing a single deploy.
-
-    """
-    # Set of operations performed by execution engine during the course of executing a deploy.
-    operations: typing.List[Operation]
-
-    # Set of global state transformations committed by execution engine.
-    transforms: typing.List[Operation]

@@ -97,14 +97,18 @@ class Client():
 
         return obj if decode is False else decoder.decode(rpc_types.AuctionState, obj)
 
-    def get_block(self, block_id: BlockID = None) -> dict:
+    def get_block(self, block_id: BlockID = None, decode=False) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
+        :param decode: Flag indicating whether to decode API response.
         :returns: On-chain block information.
 
         """
-        return self.proxy.chain_get_block(block_id)
+        obj: dict = self.proxy.chain_get_block(block_id)
+
+        return obj if decode is False else decoder.decode(rpc_types.Block, obj)
+
 
     def get_block_transfers(
         self,
