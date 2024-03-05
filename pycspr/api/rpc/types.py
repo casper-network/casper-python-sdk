@@ -1,15 +1,25 @@
+from __future__ import annotations
+
 import dataclasses
 import enum
 import typing
 
 
+# Identifiers.
+Address = AccountID = bytes
+Digest = bytes
+EraID = int
+PublicKey = bytes
+Signature = bytes
+
+
 @dataclasses.dataclass
 class AccountInfo():
-    account_hash: bytes
-    action_thresholds: "ActionThresholds"
-    associated_keys: typing.List["AssociatedKey"]
-    main_purse: int
-    named_keys: list
+    account_hash: AccountID
+    action_thresholds: ActionThresholds
+    associated_keys: typing.List[AssociatedKey]
+    main_purse: URef
+    named_keys: typing.List[NamedKey]
 
 
 @dataclasses.dataclass
@@ -20,104 +30,104 @@ class ActionThresholds():
 
 @dataclasses.dataclass
 class AssociatedKey():
-    account_hash: bytes
+    account_hash: AccountID
     weight: int
 
 
 @dataclasses.dataclass
 class AuctionBidByDelegator():
-    bonding_purse: "URef"
-    public_key: bytes
-    delegatee: bytes
+    bonding_purse: URef
+    public_key: PublicKey
+    delegatee: AccountID
     staked_amount: int
 
 
 @dataclasses.dataclass
 class AuctionState():
-    bids: typing.List["AuctionBidByValidator"]
+    bids: typing.List[AuctionBidByValidator]
     block_height: int
-    era_validators: "EraValidators"
-    state_root: bytes
+    era_validators: EraValidators
+    state_root: Digest
 
 
 @dataclasses.dataclass
 class AuctionBidByValidator():
-    public_key: bytes
-    bid: "AuctionBidByValidatorInfo"
+    public_key: PublicKey
+    bid: AuctionBidByValidatorInfo
 
 
 @dataclasses.dataclass
 class AuctionBidByValidatorInfo():
-    bonding_purse: "URef"
+    bonding_purse: URef
     delegation_rate: int
-    delegators: typing.List["AuctionBidByDelegator"]
+    delegators: typing.List[AuctionBidByDelegator]
     inactive: bool
     staked_amount: int
 
 
 @dataclasses.dataclass
 class Block():
-    body: "BlockBody"
-    hash: bytes
-    header: "BlockHeader"
-    proofs: typing.List["BlockSignature"]
+    body: BlockBody
+    hash: Digest
+    header: BlockHeader
+    proofs: typing.List[BlockSignature]
 
 
 @dataclasses.dataclass
 class BlockBody():
-    proposer: bytes
-    deploy_hashes: typing.List[bytes]
-    transfer_hashes: typing.List[bytes]
+    proposer: AccountID
+    deploy_hashes: typing.List[Digest]
+    transfer_hashes: typing.List[Digest]
 
 
 @dataclasses.dataclass
 class BlockHeader():
     accumulated_seed: bytes
-    body_hash: bytes
-    era_id: int
+    body_hash: Digest
+    era_id: EraID
     height: int
-    parent_hash: bytes
+    parent_hash: Digest
     protocol_version: str
     random_bit: bool
-    state_root: bytes
+    state_root: Digest
 
 
 @dataclasses.dataclass
 class BlockSignature():
-    public_key: bytes
-    signature: bytes
+    public_key: PublicKey
+    signature: Signature
 
 
 @dataclasses.dataclass
 class BlockTransfers():
-    block_hash: bytes
-    transfers: typing.List["Transfer"]
+    block_hash: Digest
+    transfers: typing.List[Transfer]
 
 
 @dataclasses.dataclass
 class Deploy():
-    approvals: typing.List["DeployApproval"]
-    hash: bytes
-    header: dict
+    approvals: typing.List[DeployApproval]
+    hash: Digest
+    header: DeployHeader
     payment: dict
     session: dict
 
 
 @dataclasses.dataclass
 class DeployApproval():
-    signer: bytes
-    signature: bytes
+    signer: PublicKey
+    signature: Signature
 
 
 @dataclasses.dataclass
 class DeployHeader():
     account: bytes
-    body_hash: bytes
+    body_hash: Digest
     chain_name: str
-    dependencies: typing.List[bytes]
+    dependencies: typing.List[Digest]
     gas_price: int
-    timestamp: "Timestamp"
-    ttl: "DeployTimeToLive"
+    timestamp: Timestamp
+    ttl: DeployTimeToLive
 
 
 @dataclasses.dataclass
@@ -128,28 +138,28 @@ class DeployTimeToLive():
 
 @dataclasses.dataclass
 class EraValidators():
-    era_id: int
-    validator_weights: typing.List["EraValidatorWeight"]
+    era_id: EraID
+    validator_weights: typing.List[EraValidatorWeight]
 
 
 @dataclasses.dataclass
 class EraValidatorWeight():
-    public_key: bytes
+    public_key: PublicKey
     weight: int
 
 
 @dataclasses.dataclass
 class EraInfo():
-    seigniorage_allocations: typing.List["SeigniorageAllocation"]
+    seigniorage_allocations: typing.List[SeigniorageAllocation]
 
 
 @dataclasses.dataclass
 class EraSummary():
-    block_hash: bytes
-    era_id: int
+    block_hash: Digest
+    era_id: EraID
     era_info: EraInfo
     merkle_proof: str
-    state_root: bytes
+    state_root: Digest
 
 
 @dataclasses.dataclass
@@ -172,25 +182,25 @@ class SeigniorageAllocation():
 
 @dataclasses.dataclass
 class SeigniorageAllocationForDelegator(SeigniorageAllocation):
-    delegator_public_key: bytes
-    validator_public_key: bytes
+    delegator_public_key: PublicKey
+    validator_public_key: PublicKey
 
 
 @dataclasses.dataclass
 class SeigniorageAllocationForValidator(SeigniorageAllocation):
-    validator_public_key: bytes
+    validator_public_key: PublicKey
 
 
 @dataclasses.dataclass
 class Transfer():
     amount: int
-    deploy_hash: bytes
-    from_: bytes
+    deploy_hash: Digest
+    from_: PublicKey
     gas: int
-    source: "URef"
-    target: "URef"
+    source: URef
+    target: URef
     correlation_id: int = None
-    to_: bytes = None
+    to_: PublicKey = None
 
 
 @dataclasses.dataclass
@@ -212,19 +222,19 @@ class URefAccessRights(enum.Enum):
 @dataclasses.dataclass
 class URef():
     access_rights: URefAccessRights
-    address: bytes
+    address: Address
 
 
 @dataclasses.dataclass
 class ValidatorChanges():
-    public_key: bytes
-    status_changes: typing.List["ValidatorStatusChange"]
+    public_key: PublicKey
+    status_changes: typing.List[ValidatorStatusChange]
 
 
 @dataclasses.dataclass
 class ValidatorStatusChange():
-    era_id: int
-    status_change: "ValidatorStatusChangeType"
+    era_id: EraID
+    status_change: ValidatorStatusChangeType
 
 
 class ValidatorStatusChangeType(enum.Enum):
