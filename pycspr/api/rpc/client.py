@@ -97,7 +97,11 @@ class Client():
 
         return obj if decode is False else decoder.decode(rpc_types.AuctionState, obj)
 
-    def get_block(self, block_id: BlockID = None, decode=False) -> dict:
+    def get_block(
+        self,
+        block_id: BlockID = None,
+        decode=False
+    ) -> typing.Union[dict, rpc_types.Block]:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
