@@ -27,7 +27,7 @@ class Proxy:
     def __str__(self):
         """Instance string representation."""
         return self.address
-    
+
     def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
         """Dispatches a deploy to a node for speculative execution.
 

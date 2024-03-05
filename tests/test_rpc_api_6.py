@@ -1,4 +1,5 @@
 from pycspr import NodeRpcClient
+from pycspr.api.rpc import types as rpc_types
 from pycspr.types import CL_URef
 from pycspr.types import CL_URefAccessRights
 
@@ -13,24 +14,11 @@ def test_get_state_root(RPC_CLIENT: NodeRpcClient):
 
 
 def test_get_account_info(RPC_CLIENT: NodeRpcClient, account_key: bytes):
-    def _assert(response):
-        # e.g. docs/api_reponses/rpc_state_get_item.account.json
-        assert isinstance(response, dict)
-        # TODO: use jsonschema derived from RPC schema
-        assert "account_hash" in response
-        assert "action_thresholds" in response
-        assert "deployment" in response["action_thresholds"]
-        assert "key_management" in response["action_thresholds"]
-        assert "associated_keys" in response
-        assert len(response["associated_keys"]) >= 1
-        for key in response["associated_keys"]:
-            assert "account_hash" in key
-            assert "weight" in key
-        assert "main_purse" in response
-        assert "named_keys" in response
-        assert isinstance(response["named_keys"], list)
+    data: dict = RPC_CLIENT.get_account_info(account_key, decode=False)
+    assert isinstance(data, dict)
 
-    _assert(RPC_CLIENT.get_account_info(account_key))
+    data: rpc_types.AccountInfo = RPC_CLIENT.get_account_info(account_key, decode=True)
+    assert isinstance(data, rpc_types.AccountInfo)
 
 
 def test_get_account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes):

@@ -178,31 +178,3 @@ def get_params_for_state_get_item(
         "path": path,
         "state_root_hash": state_root_hash.hex() if state_root_hash else None
     }
-
-
-def get_response(
-    address: str,
-    endpoint: str,
-    params: dict = None,
-    field: str = None,
-) -> dict:
-    """Invokes JSON-RPC API & returns parsed response.
-
-    :address: Host address.
-    :endpoint: Endpoint to invoke.
-    :params: Endpoint Parameters.
-    :field: Inner response field.
-    :returns: Parsed JSON-RPC response.
-
-    """
-    request = jsonrpcclient.request(endpoint, params)
-    response_raw = requests.post(address, json=request)
-
-    response_parsed = jsonrpcclient.parse(response_raw.json())
-    if isinstance(response_parsed, jsonrpcclient.responses.Error):
-        raise ProxyError(response_parsed)
-
-    if field is None:
-        return response_parsed.result
-    else:
-        return response_parsed.result[field]

@@ -4,6 +4,27 @@ import typing
 
 
 @dataclasses.dataclass
+class AccountInfo():
+    account_hash: bytes
+    action_thresholds: "ActionThresholds"
+    associated_keys: typing.List["AssociatedKey"]
+    main_purse: int
+    named_keys: list
+
+
+@dataclasses.dataclass
+class ActionThresholds():
+    deployment: int
+    key_management: int
+
+
+@dataclasses.dataclass
+class AssociatedKey():
+    account_hash: bytes
+    weight: int
+
+
+@dataclasses.dataclass
 class AuctionBidByDelegator():
     bonding_purse: "URef"
     public_key: bytes
@@ -97,6 +118,12 @@ class EraSummary():
     era_info: EraInfo
     merkle_proof: str
     state_root: bytes
+
+
+@dataclasses.dataclass
+class NamedKey():
+    key: str
+    name: str
 
 
 @dataclasses.dataclass

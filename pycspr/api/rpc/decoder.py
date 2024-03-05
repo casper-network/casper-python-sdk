@@ -1,5 +1,8 @@
 import typing
 
+from pycspr.api.rpc.types import AccountInfo
+from pycspr.api.rpc.types import ActionThresholds
+from pycspr.api.rpc.types import AssociatedKey
 from pycspr.api.rpc.types import AuctionBidByDelegator
 from pycspr.api.rpc.types import AuctionBidByValidator
 from pycspr.api.rpc.types import AuctionBidByValidatorInfo
@@ -13,6 +16,7 @@ from pycspr.api.rpc.types import EraInfo
 from pycspr.api.rpc.types import EraSummary
 from pycspr.api.rpc.types import EraValidators
 from pycspr.api.rpc.types import EraValidatorWeight
+from pycspr.api.rpc.types import NamedKey
 from pycspr.api.rpc.types import ProtocolVersion
 from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
@@ -44,6 +48,30 @@ def decode(typedef: type, encoded: dict) -> object:
 def _decode_account_id(encoded: str) -> bytes:
     # E.G. account-hash-2c4a11c062a8a337bfc97e27fd66291caeb2c65865dcb5d3ef3759c4c97efecb
     return encoded[13:].encode("utf-8")
+
+
+def _decode_account_info(encoded: dict) -> AccountInfo:
+    return AccountInfo(
+        account_hash=_decode_account_id(encoded["account_hash"]),
+        action_thresholds=_decode_action_thresholds(encoded["action_thresholds"]),
+        associated_keys=_map(_decode_associated_key, encoded["associated_keys"]),
+        main_purse=_decode_uref(encoded["main_purse"]),
+        named_keys=_map(_decode_named_key, encoded["named_keys"]),
+    )
+
+
+def _decode_action_thresholds(encoded: dict) -> ActionThresholds:
+    return ActionThresholds(
+        deployment=int(encoded["deployment"]),
+        key_management=int(encoded["key_management"]),
+    )
+
+
+def _decode_associated_key(encoded: dict) -> AssociatedKey:
+    return AssociatedKey(
+        account_hash=_decode_account_id(encoded["account_hash"]),
+        weight=int(encoded["weight"])
+        )
 
 
 def _decode_auction_bid_by_delegator(encoded: dict) -> AuctionBidByDelegator:
@@ -184,6 +212,13 @@ def _decode_motes(encoded: str) -> int:
     return int(encoded)
 
 
+def _decode_named_key(encoded: dict) -> NamedKey:
+    return NamedKey(
+        key=encoded["key"],
+        name=encoded["name"],
+    )
+
+
 def _decode_public_key(encoded: str) -> bytes:
     return bytes.fromhex(encoded)
 
@@ -261,6 +296,7 @@ def _decode_validator_changes(encoded: list) -> typing.List[ValidatorChanges]:
 
 
 _DECODERS = {
+    AccountInfo: _decode_account_info,
     AuctionState: _decode_auction_state,
     Block: _decode_block,
     BlockTransfers: _decode_block_transfers,

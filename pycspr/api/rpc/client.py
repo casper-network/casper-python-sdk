@@ -72,7 +72,12 @@ class Client():
         """
         return self.proxy.query_balance(purse_id, global_state_id)
 
-    def get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
+    def get_account_info(
+        self,
+        account_id: AccountID,
+        block_id: BlockID = None,
+        decode=False
+    ) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -80,7 +85,9 @@ class Client():
         :returns: Account information in JSON format.
 
         """
-        return self.proxy.state_get_account_info(account_id, block_id)
+        obj: dict = self.proxy.state_get_account_info(account_id, block_id)
+
+        return obj if decode is False else decoder.decode(rpc_types.AccountInfo, obj)
 
     def get_auction_info(
         self,
@@ -112,7 +119,6 @@ class Client():
         obj: dict = self.proxy.chain_get_block(block_id)
 
         return obj if decode is False else decoder.decode(rpc_types.Block, obj)
-
 
     def get_block_transfers(
         self,
