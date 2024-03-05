@@ -12,6 +12,10 @@ from pycspr.api.rpc.types import BlockBody
 from pycspr.api.rpc.types import BlockHeader
 from pycspr.api.rpc.types import BlockSignature
 from pycspr.api.rpc.types import BlockTransfers
+from pycspr.api.rpc.types import Deploy
+from pycspr.api.rpc.types import DeployApproval
+from pycspr.api.rpc.types import DeployHeader
+from pycspr.api.rpc.types import DeployTimeToLive
 from pycspr.api.rpc.types import EraInfo
 from pycspr.api.rpc.types import EraSummary
 from pycspr.api.rpc.types import EraValidators
@@ -22,11 +26,13 @@ from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
 from pycspr.api.rpc.types import SeigniorageAllocationForValidator
 from pycspr.api.rpc.types import Transfer
+from pycspr.api.rpc.types import Timestamp
 from pycspr.api.rpc.types import URef
 from pycspr.api.rpc.types import URefAccessRights
 from pycspr.api.rpc.types import ValidatorChanges
 from pycspr.api.rpc.types import ValidatorStatusChange
 from pycspr.api.rpc.types import ValidatorStatusChangeType
+from pycspr.utils import conversion
 
 
 def decode(typedef: type, encoded: dict) -> object:
@@ -138,6 +144,42 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
         random_bit=bool(encoded["random_bit"]),
         state_root=_decode_state_root(encoded["state_root_hash"]),
         )
+
+
+def _decode_deploy(encoded: dict) -> Deploy:
+    return Deploy(
+        approvals=_map(_decode_deploy_approval, encoded["approvals"]),
+        hash=_decode_digest(encoded["hash"]),
+        header=_decode_deploy_header(encoded["header"]),
+        payment=encoded["payment"],
+        session=encoded["session"]
+    )
+
+
+def _decode_deploy_approval(encoded: dict) -> DeployApproval:
+    return DeployApproval(
+        signer=_decode_public_key(encoded["signer"]),
+        signature=_decode_signature(encoded["signature"]),
+    )
+
+
+def _decode_deploy_header(encoded: dict) -> DeployHeader:
+    return DeployHeader(
+        account=_decode_public_key(encoded["account"]),
+        body_hash=_decode_digest(encoded["body_hash"]),
+        chain_name=encoded["chain_name"],
+        dependencies=_map(_decode_digest, encoded["dependencies"]),
+        gas_price=int(encoded["gas_price"]),
+        timestamp=_decode_timestamp(encoded["timestamp"]),
+        ttl=_decode_deploy_time_to_live(encoded["ttl"])
+    )
+
+
+def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
+    return DeployTimeToLive(
+        as_milliseconds=conversion.humanized_time_interval_to_milliseconds(encoded),
+        humanized=encoded
+    )
 
 
 def _decode_protocol_version(encoded: str) -> ProtocolVersion:
@@ -258,6 +300,12 @@ def _decode_stored_value(encoded: dict) -> typing.Union[EraInfo]:
         _decode_era_info(encoded["EraInfo"])
 
 
+def _decode_timestamp(encoded: str) -> Timestamp:
+    return Timestamp(
+        value=conversion.posix_timestamp_from_isoformat(encoded)
+    )
+
+
 def _decode_transfer(encoded: dict) -> Transfer:
     return Transfer(
         amount=_decode_motes(encoded["amount"]),
@@ -300,6 +348,7 @@ _DECODERS = {
     AuctionState: _decode_auction_state,
     Block: _decode_block,
     BlockTransfers: _decode_block_transfers,
+    Deploy: _decode_deploy,
     EraSummary: _decode_era_summary,
     ValidatorChanges: _decode_validator_changes
 }

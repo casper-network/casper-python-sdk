@@ -77,7 +77,7 @@ class Client():
         account_id: AccountID,
         block_id: BlockID = None,
         decode=False
-    ) -> dict:
+    ) -> typing.Union[dict, rpc_types.AccountInfo]:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -142,16 +142,24 @@ class Client():
         :returns: Chain spec, genesis accounts and global state information.
 
         """
+        # TODO: decode
         return self.proxy.info_get_chainspec()
 
-    def get_deploy(self, deploy_id: DeployID) -> dict:
+    def get_deploy(
+        self,
+        deploy_id: DeployID,
+        decode: bool = True
+    ) -> typing.Union[dict, rpc_types.Deploy]:
         """Returns on-chain deploy information.
 
         :param deploy_id: Identifier of a deploy processed by network.
+        :param decode: Flag indicating whether to decode API response.
         :returns: On-chain deploy information.
 
         """
-        return self.proxy.info_get_deploy(deploy_id)
+        obj: dict = self.proxy.info_get_deploy(deploy_id)
+
+        return obj if decode is False else decoder.decode(rpc_types.Deploy, obj)
 
     def get_dictionary_item(
         self,
@@ -165,6 +173,7 @@ class Client():
         :returns: On-chain data stored under a dictionary item.
 
         """
+        # TODO: decode
         return self.proxy.state_get_dictionary_item(identifier, state_root_hash)
 
     def get_era_summary(
@@ -189,6 +198,7 @@ class Client():
         :returns: Era information.
 
         """
+        # TODO: decode
         return self.proxy.chain_get_era_info_by_switch_block(block_id)
 
     def get_node_peers(self) -> dict:
@@ -197,6 +207,7 @@ class Client():
         :returns: Node peer information.
 
         """
+        # TODO: decode
         return self.proxy.info_get_peers()
 
     def get_node_status(self) -> dict:
@@ -205,6 +216,7 @@ class Client():
         :returns: Node status information.
 
         """
+        # TODO: decode
         return self.proxy.info_get_status()
 
     def get_rpc_schema(self) -> dict:
@@ -213,6 +225,7 @@ class Client():
         :returns: Node JSON-RPC API schema.
 
         """
+        # TODO: decode
         return self.proxy.discover()
 
     def get_state_item(
@@ -229,6 +242,7 @@ class Client():
         :returns: Item stored under passed key/path.
 
         """
+        # TODO: decode
         return self.proxy.state_get_item(key, path, state_root_hash)
 
     def get_state_key_value(
@@ -245,6 +259,7 @@ class Client():
         :returns: Results of a global state query.
 
         """
+        # TODO: decode
         return self.proxy.query_global_state(key, path, state_id)
 
     def get_state_root(self, block_id: BlockID = None) -> StateRootID:

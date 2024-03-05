@@ -95,6 +95,38 @@ class BlockTransfers():
 
 
 @dataclasses.dataclass
+class Deploy():
+    approvals: typing.List["DeployApproval"]
+    hash: bytes
+    header: dict
+    payment: dict
+    session: dict
+
+
+@dataclasses.dataclass
+class DeployApproval():
+    signer: bytes
+    signature: bytes
+
+
+@dataclasses.dataclass
+class DeployHeader():
+    account: bytes
+    body_hash: bytes
+    chain_name: str
+    dependencies: typing.List[bytes]
+    gas_price: int
+    timestamp: "Timestamp"
+    ttl: "DeployTimeToLive"
+
+
+@dataclasses.dataclass
+class DeployTimeToLive():
+    as_milliseconds: int
+    humanized: str
+
+
+@dataclasses.dataclass
 class EraValidators():
     era_id: int
     validator_weights: typing.List["EraValidatorWeight"]
@@ -159,6 +191,11 @@ class Transfer():
     target: "URef"
     correlation_id: int = None
     to_: bytes = None
+
+
+@dataclasses.dataclass
+class Timestamp():
+    value: float
 
 
 class URefAccessRights(enum.Enum):

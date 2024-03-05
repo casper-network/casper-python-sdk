@@ -1,3 +1,6 @@
+import datetime as dt
+
+
 # Millisecond durations of relevance.
 _MS_1_SECOND: int = 1000
 _MS_1_MINUTE: int = 60 * _MS_1_SECOND
@@ -72,3 +75,17 @@ def milliseconds_to_humanized_time_interval(interval: int) -> int:
             return f"{int(interval / timespan)}{typeof}"
 
     raise ValueError("Unsupported humanized time interval")
+
+
+def posix_timestamp_from_isoformat(ts: str) -> float:
+    """Converts ISO formatted timestamp to posix timestamp.
+
+    :param ts: ISO formatted timestamp.
+    :returns: Posix timestamp, i.e. milliseconds since epoch.
+
+    """
+    if ts.endswith("Z"):
+        ts = ts[:-1]
+        ts = f"{ts}+00:00"
+    
+    return dt.datetime.fromisoformat(ts).timestamp()
