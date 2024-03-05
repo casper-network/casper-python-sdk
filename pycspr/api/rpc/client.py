@@ -2,7 +2,7 @@ import time
 import typing
 
 from pycspr.api.connection import NodeConnectionInfo
-from pycspr.api.rpc.codec import decoder
+from pycspr.api.rpc import decoder
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.api.rpc import types as rpc_types
 from pycspr.types import AccountID

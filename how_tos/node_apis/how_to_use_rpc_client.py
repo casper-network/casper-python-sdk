@@ -6,7 +6,6 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
-from pycspr.api.rpc import types as types
 from pycspr.api.rpc import types as rpc_types
 from pycspr.types import CL_URef
 from pycspr.types import GlobalStateID
@@ -213,8 +212,8 @@ def _get_chain_era_summary(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        entity: types.EraSummary = ctx.client.get_era_summary(block_id, decode=True)
-        assert isinstance(entity, types.EraSummary)
+        entity: rpc_types.EraSummary = ctx.client.get_era_summary(block_id, decode=True)
+        assert isinstance(entity, rpc_types.EraSummary)
 
         entity: dict = ctx.client.get_era_summary(block_id, decode=False)
         assert isinstance(entity, dict)
@@ -253,7 +252,7 @@ def _get_chain_validator_changes(ctx: _Context):
         ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)
     for item in validator_changes:
-        assert isinstance(item, types.ValidatorChanges)
+        assert isinstance(item, rpc_types.ValidatorChanges)
     print("SUCCESS :: get_validator_changes")
 
 
