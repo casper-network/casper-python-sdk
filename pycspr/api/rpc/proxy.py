@@ -157,7 +157,7 @@ class Proxy:
         """
         params: dict = param_utils.get_deploy_id(deploy_id)
 
-        return get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params, "deploy")
+        return get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params)
 
     def info_get_peers(self) -> typing.List[dict]:
         """Returns node peer information.

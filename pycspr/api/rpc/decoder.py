@@ -17,8 +17,12 @@ from pycspr.api.rpc.types import BlockHeader
 from pycspr.api.rpc.types import BlockHeight
 from pycspr.api.rpc.types import BlockSignature
 from pycspr.api.rpc.types import BlockTransfers
+from pycspr.api.rpc.types import ContractID
+from pycspr.api.rpc.types import ContractVersion
 from pycspr.api.rpc.types import Deploy
 from pycspr.api.rpc.types import DeployApproval
+from pycspr.api.rpc.types import DeployArgument
+from pycspr.api.rpc.types import DeployExecutionInfo
 from pycspr.api.rpc.types import DeployExecutableItem
 from pycspr.api.rpc.types import DeployHeader
 from pycspr.api.rpc.types import DeployOfModuleBytes
@@ -45,7 +49,7 @@ from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
 from pycspr.api.rpc.types import SeigniorageAllocationForValidator
 from pycspr.api.rpc.types import Signature
-from pycspr.api.rpc.types import StoredContractDeploy
+from pycspr.api.rpc.types import DeployOfStoredContract
 from pycspr.api.rpc.types import Transfer
 from pycspr.api.rpc.types import Timestamp
 from pycspr.api.rpc.types import URef
@@ -53,6 +57,7 @@ from pycspr.api.rpc.types import URefAccessRights
 from pycspr.api.rpc.types import ValidatorChanges
 from pycspr.api.rpc.types import ValidatorStatusChange
 from pycspr.api.rpc.types import ValidatorStatusChangeType
+from pycspr.api.rpc.types import WasmModule
 from pycspr.api.rpc.types import Weight
 from pycspr.utils import conversion
 
@@ -205,6 +210,7 @@ def _decode_deploy(encoded: dict) -> Deploy:
         header=decode(encoded["header"], DeployHeader),
         payment=decode(encoded["payment"], DeployExecutableItem),
         session=decode(encoded["session"], DeployExecutableItem),
+        execution_info=decode(encoded["execution_info"], DeployExecutionInfo),
     )
 
 
@@ -215,19 +221,33 @@ def _decode_deploy_approval(encoded: dict) -> DeployApproval:
     )
 
 
+def _decode_deploy_argument(encoded: list) -> DeployArgument:
+    name, value = encoded
+    print(encoded)
+    return DeployArgument(
+        name=decode(name, str),
+        value=value,
+    )
+
+
+def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
+    print("TODO: _decode_deploy_execution_info")
+    return encoded
+
+
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
     if "ModuleBytes" in encoded:
-        return decode(encoded, DeployOfModuleBytes)
+        return decode(encoded["ModuleBytes"], DeployOfModuleBytes)
     elif "StoredContractByHash" in encoded:
-        return decode(encoded, DeployOfStoredContractByHash)
+        return decode(encoded["StoredContractByHash"], DeployOfStoredContractByHash)
     elif "StoredVersionedContractByHash" in encoded:
-        return decode(encoded, DeployOfStoredContractByHashVersioned)
+        return decode(encoded["StoredVersionedContractByHash"], DeployOfStoredContractByHashVersioned)
     elif "StoredContractByName" in encoded:
-        return decode(encoded, DeployOfStoredContractByName)
+        return decode(encoded["StoredContractByName"], DeployOfStoredContractByName)
     elif "StoredVersionedContractByName" in encoded:
-        return decode(encoded, DeployOfStoredContractByNameVersioned)
+        return decode(encoded["StoredVersionedContractByName"], DeployOfStoredContractByNameVersioned)
     elif "Transfer" in encoded:
-        return decode(encoded, DeployOfTransfer)
+        return decode(encoded["Transfer"], DeployOfTransfer)
     else:
         raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
@@ -245,31 +265,49 @@ def _decode_deploy_header(encoded: dict) -> DeployHeader:
 
 
 def _decode_deploy_of_module_bytes(encoded: dict) -> DeployOfModuleBytes:
-    return encoded
+    return DeployOfModuleBytes(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        module_bytes=decode(encoded["module_bytes"], WasmModule)
+    )
 
 
 def _decode_deploy_of_stored_contract_by_hash(encoded: dict) -> DeployOfStoredContractByHash:
-    return encoded
+    return DeployOfStoredContractByHash(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        hash=decode(encoded["hash"], Digest),
+    )
 
 
 def _decode_deploy_of_stored_contract_by_hash_versioned(
     encoded: dict
 ) -> DeployOfStoredContractByHashVersioned:
-    return encoded
-
+    return DeployOfStoredContractByNameVersioned(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        hash=decode(encoded["hash"], Digest),
+        version=decode(encoded["version"], ContractVersion),
+    )
 
 def _decode_deploy_of_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
-    return encoded
+    return DeployOfStoredContractByName(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        name=decode(encoded["name"], str),
+    )
 
 
 def _decode_deploy_of_stored_contract_by_name_versioned(
     encoded: dict
 ) -> DeployOfStoredContractByNameVersioned:
-    return encoded
+    return DeployOfStoredContractByNameVersioned(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        name=decode(encoded["name"], str),
+        version=decode(encoded["version"], ContractVersion),
+    )
 
 
 def _decode_deploy_of_transfer(encoded: dict) -> DeployOfTransfer:
-    return encoded
+    return DeployOfTransfer(
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+    )
 
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
@@ -440,19 +478,27 @@ def _decode_validator_changes(encoded: list) -> ValidatorChanges:
     )
 
 
+def _decode_wasm_module(encoded: str) -> WasmModule:
+    return decode(encoded, bytes)
+
+
 def _decode_weight(encoded: str):
     return _decode_int(encoded)
 
 
-_DECODERS = {
+_DECODERS_OF_PRIMITIVE_TYPES = {
     bool: _decode_bool,
     bytes: _decode_bytes,
     int: _decode_int,
     str: _decode_str,
-} | {
+}
+
+_DECODERS_OF_PRIMITIVE_TYPES_ALIASED = {
     AccountID: _decode_account_id,
     Address: _decode_address,
+    BlockHeight: _decode_block_height,
     Digest: _decode_digest,
+    EraID: _decode_era_id,
     Gas: _decode_gas,
     GasPrice: _decode_gas_price,
     PublicKey: _decode_public_key,
@@ -460,7 +506,10 @@ _DECODERS = {
     Motes: _decode_motes,
     Signature: _decode_signature,
     Weight: _decode_weight,
-} | {
+    WasmModule: _decode_wasm_module
+}
+
+_DECODERS_OF_COMPLEX_TYPES = {
     AccountInfo: _decode_account_info,
     ActionThresholds: _decode_action_thresholds,
     AssociatedKey: _decode_associated_key,
@@ -471,11 +520,12 @@ _DECODERS = {
     Block: _decode_block,
     BlockBody: _decode_block_body,
     BlockHeader: _decode_block_header,
-    BlockHeight: _decode_block_height,
     BlockSignature: _decode_block_signature,
     BlockTransfers: _decode_block_transfers,
     Deploy: _decode_deploy,
     DeployApproval: _decode_deploy_approval,
+    DeployArgument: _decode_deploy_argument,
+    DeployExecutionInfo: _decode_deploy_execution_info,
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
     DeployOfModuleBytes: _decode_deploy_of_module_bytes,
@@ -485,7 +535,6 @@ _DECODERS = {
     DeployOfStoredContractByNameVersioned: _decode_deploy_of_stored_contract_by_name_versioned,
     DeployOfTransfer: _decode_deploy_of_transfer,
     DeployTimeToLive: _decode_deploy_time_to_live,
-    EraID: _decode_era_id,
     EraInfo: _decode_era_info,
     EraValidators: _decode_era_validators,
     EraValidatorWeight: _decode_era_validator_weight,
@@ -500,3 +549,8 @@ _DECODERS = {
     ValidatorChanges: _decode_validator_changes,
     ValidatorStatusChange: _decode_validator_status_change,
 }
+
+_DECODERS = \
+    _DECODERS_OF_PRIMITIVE_TYPES | \
+    _DECODERS_OF_PRIMITIVE_TYPES_ALIASED | \
+    _DECODERS_OF_COMPLEX_TYPES

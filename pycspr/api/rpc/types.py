@@ -31,6 +31,8 @@ PublicKey = typing.NewType("Asymmetric public key associated with an account.", 
 
 Signature = typing.NewType("Cryptographic signature over data.", bytes)
 
+WasmModule = typing.NewType("WASM payload module.", bytes)
+
 Weight = typing.NewType("Some form of relative relevance measure.", int)
 
 
@@ -137,6 +139,7 @@ class Deploy():
     header: DeployHeader
     payment: dict
     session: dict
+    execution_info: DeployExecutionInfo = None
 
 
 @dataclasses.dataclass
@@ -149,6 +152,12 @@ class DeployApproval():
 class DeployArgument():
     name: str
     value: CL_Value
+
+
+@dataclasses.dataclass
+class DeployExecutionInfo():
+    block_hash: Digest
+    results: dict
 
 
 @dataclasses.dataclass
@@ -165,6 +174,41 @@ class DeployHeader():
     gas_price: GasPrice
     timestamp: Timestamp
     ttl: DeployTimeToLive
+
+
+@dataclasses.dataclass
+class DeployOfModuleBytes(DeployExecutableItem):
+    module_bytes: WasmModule
+
+
+@dataclasses.dataclass
+class DeployOfStoredContract(DeployExecutableItem):
+    pass
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByHash(DeployOfStoredContract):
+    hash: ContractID
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByHashVersioned(DeployOfStoredContractByHash):
+    version: ContractVersion
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByName(DeployOfStoredContract):
+    name: str
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByNameVersioned(DeployOfStoredContractByName):
+    version: ContractVersion
+
+
+@dataclasses.dataclass
+class DeployOfTransfer(DeployExecutableItem):
+    pass
 
 
 @dataclasses.dataclass
@@ -200,11 +244,6 @@ class EraSummary():
 
 
 @dataclasses.dataclass
-class DeployOfModuleBytes(DeployExecutableItem):
-    module_bytes: bytes
-
-
-@dataclasses.dataclass
 class NamedKey():
     key: str
     name: str
@@ -231,36 +270,6 @@ class SeigniorageAllocationForDelegator(SeigniorageAllocation):
 @dataclasses.dataclass
 class SeigniorageAllocationForValidator(SeigniorageAllocation):
     validator_public_key: PublicKey
-
-
-@dataclasses.dataclass
-class StoredContractDeploy(DeployExecutableItem):
-    pass
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByHash(StoredContractDeploy):
-    hash: ContractID
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByHashVersioned(DeployOfStoredContractByHash):
-    version: ContractVersion
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByName(StoredContractDeploy):
-    name: str
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByNameVersioned(DeployOfStoredContractByName):
-    version: ContractVersion
-
-
-@dataclasses.dataclass
-class DeployOfTransfer(DeployExecutableItem):
-    pass
 
 
 @dataclasses.dataclass

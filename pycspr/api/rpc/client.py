@@ -158,8 +158,9 @@ class Client():
 
         """
         obj: dict = self.proxy.info_get_deploy(deploy_id)
+        obj["deploy"]["execution_info"] = obj.get("execution_results", None)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.Deploy)
+        return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], rpc_types.Deploy)
 
     def get_dictionary_item(
         self,
