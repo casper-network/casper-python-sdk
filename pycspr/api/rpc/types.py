@@ -6,13 +6,32 @@ import typing
 
 
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
+
 AccountID = typing.NewType("Identifier of an on-chain account.", bytes)
+
+BlockHeight = typing.NewType("A specific location in a blockchain, measured by how many finalised blocks precede it.", int)
+
 ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
+
 ContractVersion = typing.NewType("Version of an on-chain smart contract.", int)
+
 Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
+
 EraID = typing.NewType("Identifier of an era in chain time.", int)
+
+Gas = typing.NewType("Atomic unit of constraint over node compute.", int)
+
+GasPrice = typing.NewType("Price of gas within an era in chain time.", int)
+
+MerkleProof = typing.NewType("Cryptographic proof over a merkle trie.", bytes)
+
+Motes = typing.NewType("Basic unit of crypto economic system.", int)
+
 PublicKey = typing.NewType("Asymmetric public key associated with an account.", bytes)
+
 Signature = typing.NewType("Cryptographic signature over data.", bytes)
+
+Weight = typing.NewType("Some form of relative relevance measure.", int)
 
 
 @dataclasses.dataclass
@@ -26,14 +45,14 @@ class AccountInfo():
 
 @dataclasses.dataclass
 class ActionThresholds():
-    deployment: int
-    key_management: int
+    deployment: Weight
+    key_management: Weight
 
 
 @dataclasses.dataclass
 class AssociatedKey():
     account_hash: AccountID
-    weight: int
+    weight: Weight
 
 
 @dataclasses.dataclass
@@ -41,13 +60,13 @@ class AuctionBidByDelegator():
     bonding_purse: URef
     public_key: PublicKey
     delegatee: AccountID
-    staked_amount: int
+    staked_amount: Motes
 
 
 @dataclasses.dataclass
 class AuctionState():
     bids: typing.List[AuctionBidByValidator]
-    block_height: int
+    block_height: BlockHeight
     era_validators: EraValidators
     state_root: Digest
 
@@ -64,7 +83,7 @@ class AuctionBidByValidatorInfo():
     delegation_rate: int
     delegators: typing.List[AuctionBidByDelegator]
     inactive: bool
-    staked_amount: int
+    staked_amount: Motes
 
 
 @dataclasses.dataclass
@@ -87,9 +106,9 @@ class BlockHeader():
     accumulated_seed: bytes
     body_hash: Digest
     era_id: EraID
-    height: int
+    height: BlockHeight
     parent_hash: Digest
-    protocol_version: str
+    protocol_version: ProtocolVersion
     random_bit: bool
     state_root: Digest
 
@@ -143,7 +162,7 @@ class DeployHeader():
     body_hash: Digest
     chain_name: str
     dependencies: typing.List[Digest]
-    gas_price: int
+    gas_price: GasPrice
     timestamp: Timestamp
     ttl: DeployTimeToLive
 
@@ -163,7 +182,7 @@ class EraValidators():
 @dataclasses.dataclass
 class EraValidatorWeight():
     public_key: PublicKey
-    weight: int
+    weight: Weight
 
 
 @dataclasses.dataclass
@@ -200,7 +219,7 @@ class ProtocolVersion():
 
 @dataclasses.dataclass
 class SeigniorageAllocation():
-    amount: int
+    amount: Motes
 
 
 @dataclasses.dataclass
@@ -246,10 +265,10 @@ class DeployOfTransfer(DeployExecutableItem):
 
 @dataclasses.dataclass
 class Transfer():
-    amount: int
+    amount: Motes
     deploy_hash: Digest
     from_: PublicKey
-    gas: int
+    gas: Gas
     source: URef
     target: URef
     correlation_id: int = None
