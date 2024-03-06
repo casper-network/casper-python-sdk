@@ -109,7 +109,7 @@ def _decode_associated_key(encoded: dict) -> AssociatedKey:
 def _decode_auction_bid_by_delegator(encoded: dict) -> AuctionBidByDelegator:
     return AuctionBidByDelegator(
         bonding_purse=decode(encoded["bonding_purse"], URef),
-        delegatee=decode(encoded["delegatee"], AccountID),
+        delegatee=decode(encoded["delegatee"], PublicKey),
         public_key=decode(encoded["public_key"], PublicKey),
         staked_amount=decode(encoded["staked_amount"], Motes),
     )
