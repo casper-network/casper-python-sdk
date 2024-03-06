@@ -20,7 +20,6 @@ def test_get_account_info(RPC_CLIENT: NodeRpcClient, account_key: bytes):
     data: rpc_types.AccountInfo = RPC_CLIENT.get_account_info(account_key, decode=True)
     assert isinstance(data, rpc_types.AccountInfo)
 
-
 def test_get_account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007

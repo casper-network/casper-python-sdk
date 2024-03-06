@@ -6,12 +6,21 @@ import typing
 
 
 # Identifier type aliases.
-Address = AccountID = ContractID = bytes
-ContractVersion = int
-Digest = bytes
-EraID = int
-PublicKey = bytes
-Signature = bytes
+# Address = ContractID = bytes
+# # Address = AccountID = ContractID = bytes
+# ContractVersion = int
+# Digest = bytes
+# EraID = int
+# PublicKey = bytes
+# Signature = bytes
+Address = typing.NewType("Identifier of an on-chain account address.", bytes)
+AccountID = typing.NewType("Identifier of an on-chain account.", bytes)
+ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
+ContractVersion = typing.NewType("Version of an on-chain smart contract.", int)
+Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
+EraID = typing.NewType("Identifier of an era in chain time.", int)
+PublicKey = typing.NewType("Asymmetric public key associated with an account.", bytes)
+Signature = typing.NewType("Cryptographic signature over data.", bytes)
 
 
 @dataclasses.dataclass

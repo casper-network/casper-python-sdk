@@ -1,5 +1,6 @@
 import typing
 
+from pycspr.api.rpc.types import AccountID
 from pycspr.api.rpc.types import AccountInfo
 from pycspr.api.rpc.types import ActionThresholds
 from pycspr.api.rpc.types import AssociatedKey
@@ -17,6 +18,7 @@ from pycspr.api.rpc.types import DeployApproval
 from pycspr.api.rpc.types import DeployExecutableItem
 from pycspr.api.rpc.types import DeployHeader
 from pycspr.api.rpc.types import DeployTimeToLive
+from pycspr.api.rpc.types import Digest
 from pycspr.api.rpc.types import EraInfo
 from pycspr.api.rpc.types import EraSummary
 from pycspr.api.rpc.types import EraValidators
@@ -59,14 +61,14 @@ def decode(encoded: dict, typedef: type) -> object:
         return decoder(encoded)
 
 
-def _decode_account_id(encoded: str) -> bytes:
+def _decode_account_id(encoded: str) -> AccountID:
     # E.G. account-hash-2c4a11c062a8a337bfc97e27fd66291caeb2c65865dcb5d3ef3759c4c97efecb
-    return encoded[13:].encode("utf-8")
+    return bytes.fromhex(encoded[13:])
 
 
 def _decode_account_info(encoded: dict) -> AccountInfo:
     return AccountInfo(
-        account_hash=_decode_account_id(encoded["account_hash"]),
+        account_hash=decode(encoded["account_hash"], AccountID),
         action_thresholds=decode(encoded["action_thresholds"], ActionThresholds),
         associated_keys=[decode(i, AssociatedKey) for i in encoded["associated_keys"]],
         main_purse=decode(encoded["main_purse"], URef),
@@ -83,7 +85,7 @@ def _decode_action_thresholds(encoded: dict) -> ActionThresholds:
 
 def _decode_associated_key(encoded: dict) -> AssociatedKey:
     return AssociatedKey(
-        account_hash=_decode_account_id(encoded["account_hash"]),
+        account_hash=decode(encoded["account_hash"], AccountID),
         weight=decode(encoded["weight"], int),
         )
 
@@ -118,7 +120,7 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
     return AuctionState(
         bids=[decode(i, AuctionBidByValidator) for i in encoded["bids"]],
         block_height=encoded["block_height"],
-        era_validators=_map(_decode_era_validators, encoded["era_validators"]),
+        era_validators=[decode(i, EraValidators) for i in encoded["era_validators"]],
         state_root=decode(encoded["state_root_hash"], bytes),
     )
 
@@ -128,15 +130,15 @@ def _decode_block(encoded: dict) -> Block:
         body=decode(encoded["body"], BlockBody),
         hash=decode(encoded["hash"], bytes),
         header=decode(encoded["header"], BlockHeader),
-        proofs=_map(_decode_block_signature, encoded["proofs"]),
+        proofs=[decode(i, BlockSignature) for i in encoded["proofs"]],
     )
 
 
 def _decode_block_body(encoded: dict) -> BlockBody:
     return BlockBody(
         proposer=decode(encoded["proposer"], bytes),
-        deploy_hashes=_map(_decode_digest, encoded["deploy_hashes"]),
-        transfer_hashes=_map(_decode_digest, encoded["transfer_hashes"]),
+        deploy_hashes=[decode(i, bytes) for i in encoded["deploy_hashes"]],
+        transfer_hashes=[decode(i, bytes) for i in encoded["transfer_hashes"]],
     )
 
 
@@ -358,12 +360,12 @@ def _decode_transfer(encoded: dict) -> Transfer:
     return Transfer(
         amount=decode(encoded["amount"], int),
         deploy_hash=bytes.fromhex(encoded["deploy_hash"]),
-        from_=_decode_account_id(encoded["from"]),
+        from_=decode(encoded["from"], AccountID),
         gas=int(encoded["gas"]),
         source=decode(encoded["source"], URef),
         target=decode(encoded["target"], URef),
         correlation_id=int(encoded["id"]),
-        to_=_decode_account_id(encoded["to"]),
+        to_=decode(encoded["to"], AccountID),
     )
 
 
@@ -393,6 +395,9 @@ def _decode_validator_changes(encoded: list) -> typing.List[ValidatorChanges]:
 
 
 _DECODERS = {
+    AccountID: _decode_account_id,
+    Digest: _decode_digest,    
+} | {
     AccountInfo: _decode_account_info,
     ActionThresholds: _decode_action_thresholds,
     AssociatedKey: _decode_associated_key,
@@ -403,6 +408,7 @@ _DECODERS = {
     Block: _decode_block,
     BlockBody: _decode_block_body,
     BlockHeader: _decode_block_header,
+    BlockSignature: _decode_block_signature,
     BlockTransfers: _decode_block_transfers,
     Deploy: _decode_deploy,
     DeployExecutableItem: _decode_deploy_executable_item,
@@ -415,6 +421,7 @@ _DECODERS = {
     DeployOfTransfer: _decode_deploy_of_transfer,
     DeployTimeToLive: _decode_deploy_time_to_live,
     EraInfo: _decode_era_info,
+    EraValidators: _decode_era_validators,
     NamedKey: _decode_named_key,
     EraSummary: _decode_era_summary,
     ProtocolVersion: _decode_protocol_version,
