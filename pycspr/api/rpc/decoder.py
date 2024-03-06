@@ -17,25 +17,26 @@ from pycspr.api.rpc.types import Deploy
 from pycspr.api.rpc.types import DeployApproval
 from pycspr.api.rpc.types import DeployExecutableItem
 from pycspr.api.rpc.types import DeployHeader
+from pycspr.api.rpc.types import DeployOfModuleBytes
+from pycspr.api.rpc.types import DeployOfStoredContractByHash
+from pycspr.api.rpc.types import DeployOfStoredContractByHashVersioned
+from pycspr.api.rpc.types import DeployOfStoredContractByName
+from pycspr.api.rpc.types import DeployOfStoredContractByNameVersioned
+from pycspr.api.rpc.types import DeployOfTransfer
 from pycspr.api.rpc.types import DeployTimeToLive
 from pycspr.api.rpc.types import Digest
 from pycspr.api.rpc.types import EraInfo
 from pycspr.api.rpc.types import EraSummary
 from pycspr.api.rpc.types import EraValidators
 from pycspr.api.rpc.types import EraValidatorWeight
-from pycspr.api.rpc.types import DeployOfModuleBytes
 from pycspr.api.rpc.types import NamedKey
 from pycspr.api.rpc.types import ProtocolVersion
+from pycspr.api.rpc.types import PublicKey
 from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
 from pycspr.api.rpc.types import SeigniorageAllocationForValidator
-from pycspr.api.rpc.types import DeployOfStoredContractByHash
-from pycspr.api.rpc.types import DeployOfStoredContractByHashVersioned
-from pycspr.api.rpc.types import DeployOfStoredContractByName
-from pycspr.api.rpc.types import DeployOfStoredContractByNameVersioned
 from pycspr.api.rpc.types import StoredContractDeploy
 from pycspr.api.rpc.types import Transfer
-from pycspr.api.rpc.types import DeployOfTransfer
 from pycspr.api.rpc.types import Timestamp
 from pycspr.api.rpc.types import URef
 from pycspr.api.rpc.types import URefAccessRights
@@ -61,7 +62,7 @@ def decode(encoded: dict, typedef: type) -> object:
         return decoder(encoded)
 
 
-def _decode_account_id(encoded: str) -> AccountID:
+def _decode_account_id(encoded: str) -> bytes:
     # E.G. account-hash-2c4a11c062a8a337bfc97e27fd66291caeb2c65865dcb5d3ef3759c4c97efecb
     return bytes.fromhex(encoded[13:])
 
@@ -157,7 +158,7 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
 
 def _decode_block_signature(encoded: dict) -> BlockSignature:
     return BlockSignature(
-        public_key=_decode_public_key(encoded["public_key"]),
+        public_key=decode(encoded["public_key"], PublicKey),
         signature=decode(encoded["signature"], bytes)
     )
 
@@ -165,13 +166,13 @@ def _decode_block_signature(encoded: dict) -> BlockSignature:
 def _decode_block_transfers(encoded: dict) -> BlockTransfers:
     return BlockTransfers(
         block_hash=encoded["block_hash"].encode("utf-8"),
-        transfers=_map(_decode_transfer, encoded["transfers"])
+        transfers=decode(encoded["transfers"], Transfer)
     )
 
 
 def _decode_deploy(encoded: dict) -> Deploy:
     return Deploy(
-        approvals=_map(_decode_deploy_approval, encoded["approvals"]),
+        approvals=[decode(i, DeployApproval) for i in encoded["approvals"]],
         hash=decode(encoded["hash"], bytes),
         header=decode(encoded["header"], DeployHeader),
         payment=decode(encoded["payment"], DeployExecutableItem),
@@ -181,7 +182,7 @@ def _decode_deploy(encoded: dict) -> Deploy:
 
 def _decode_deploy_approval(encoded: dict) -> DeployApproval:
     return DeployApproval(
-        signer=_decode_public_key(encoded["signer"]),
+        signer=decode(encoded["signer"], PublicKey),
         signature=decode(encoded["signature"], bytes)
     )
 
@@ -205,10 +206,10 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
 
 def _decode_deploy_header(encoded: dict) -> DeployHeader:
     return DeployHeader(
-        account=_decode_public_key(encoded["account"]),
+        account=decode(encoded["account"], PublicKey),
         body_hash=decode(encoded["body_hash"], bytes),
         chain_name=encoded["chain_name"],
-        dependencies=_map(_decode_digest, encoded["dependencies"]),
+        dependencies=[decode(i, Digest) for i in encoded["dependencies"]],
         gas_price=int(encoded["gas_price"]),
         timestamp=decode(encoded["timestamp"], Timestamp),
         ttl=decode(encoded["ttl"], DeployTimeToLive)
@@ -223,7 +224,9 @@ def _decode_deploy_of_stored_contract_by_hash(encoded: dict) -> DeployOfStoredCo
     return encoded
 
 
-def _decode_deploy_of_stored_contract_by_hash_versioned(encoded: dict) -> DeployOfStoredContractByHashVersioned:
+def _decode_deploy_of_stored_contract_by_hash_versioned(
+    encoded: dict
+) -> DeployOfStoredContractByHashVersioned:
     return encoded
 
 
@@ -231,7 +234,9 @@ def _decode_deploy_of_stored_contract_by_name(encoded: dict) -> DeployOfStoredCo
     return encoded
 
 
-def _decode_deploy_of_stored_contract_by_name_versioned(encoded: dict) -> DeployOfStoredContractByNameVersioned:
+def _decode_deploy_of_stored_contract_by_name_versioned(
+    encoded: dict
+) -> DeployOfStoredContractByNameVersioned:
     return encoded
 
 
@@ -261,13 +266,13 @@ def _decode_era_info(encoded: dict) -> EraInfo:
 def _decode_era_validators(encoded: dict) -> EraValidators:
     return EraValidators(
         era_id=encoded["era_id"],
-        validator_weights=_map(_decode_era_validator_weight, encoded["validator_weights"])
+        validator_weights=[decode(i, EraValidatorWeight) for i in encoded["validator_weights"]]
     )
 
 
 def _decode_era_validator_weight(encoded: dict) -> EraValidatorWeight:
     return EraValidatorWeight(
-        public_key=_decode_public_key(encoded["public_key"]),
+        public_key=decode(encoded["public_key"], PublicKey),
         weight=int(encoded["weight"])
     )
 
@@ -384,19 +389,21 @@ def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
     )
 
 
-def _decode_validator_changes(encoded: list) -> typing.List[ValidatorChanges]:
-    def _decode_changes(encoded: dict) -> ValidatorChanges:
-        return ValidatorChanges(
-            public_key=decode(encoded["public_key"], bytes),
-            status_changes=[decode(i, ValidatorStatusChange) for i in encoded["status_changes"]],
-        )
-
-    return _map(_decode_changes, encoded)
+def _decode_validator_changes(encoded: list) -> ValidatorChanges:
+    return ValidatorChanges(
+        public_key=decode(encoded["public_key"], bytes),
+        status_changes=[decode(i, ValidatorStatusChange) for i in encoded["status_changes"]],
+    )
 
 
 _DECODERS = {
+    bool: _decode_primitive_bool,
+    bytes: _decode_primitive_bytes,
+    int: _decode_primitive_int,
+} | {
     AccountID: _decode_account_id,
-    Digest: _decode_digest,    
+    Digest: _decode_digest,
+    PublicKey: _decode_public_key,
 } | {
     AccountInfo: _decode_account_info,
     ActionThresholds: _decode_action_thresholds,
@@ -411,6 +418,7 @@ _DECODERS = {
     BlockSignature: _decode_block_signature,
     BlockTransfers: _decode_block_transfers,
     Deploy: _decode_deploy,
+    DeployApproval: _decode_deploy_approval,
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
     DeployOfModuleBytes: _decode_deploy_of_module_bytes,
@@ -422,17 +430,15 @@ _DECODERS = {
     DeployTimeToLive: _decode_deploy_time_to_live,
     EraInfo: _decode_era_info,
     EraValidators: _decode_era_validators,
-    NamedKey: _decode_named_key,
+    EraValidatorWeight: _decode_era_validator_weight,
     EraSummary: _decode_era_summary,
+    NamedKey: _decode_named_key,
     ProtocolVersion: _decode_protocol_version,
     Timestamp: _decode_timestamp,
+    Transfer: _decode_transfer,
     URef: _decode_uref,
     ValidatorChanges: _decode_validator_changes,
     ValidatorStatusChange: _decode_validator_status_change,
-} | {
-    bool: _decode_primitive_bool,
-    bytes: _decode_primitive_bytes,
-    int: _decode_primitive_int,
 }
 
 

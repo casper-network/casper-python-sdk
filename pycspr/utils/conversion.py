@@ -87,5 +87,5 @@ def posix_timestamp_from_isoformat(ts: str) -> float:
     if ts.endswith("Z"):
         ts = ts[:-1]
         ts = f"{ts}+00:00"
-    
+
     return dt.datetime.fromisoformat(ts).timestamp()

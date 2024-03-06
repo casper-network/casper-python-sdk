@@ -283,7 +283,7 @@ class Client():
         """
         obj = self.proxy.info_get_validator_changes()
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.ValidatorChanges)
+        return obj if decode is False else [decoder.decode(i, rpc_types.ValidatorChanges) for i in obj]
 
 
 class ClientExtensions():

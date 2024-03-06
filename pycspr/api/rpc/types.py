@@ -5,14 +5,6 @@ import enum
 import typing
 
 
-# Identifier type aliases.
-# Address = ContractID = bytes
-# # Address = AccountID = ContractID = bytes
-# ContractVersion = int
-# Digest = bytes
-# EraID = int
-# PublicKey = bytes
-# Signature = bytes
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
 AccountID = typing.NewType("Identifier of an on-chain account.", bytes)
 ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
