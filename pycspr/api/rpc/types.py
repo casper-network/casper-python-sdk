@@ -5,8 +5,9 @@ import enum
 import typing
 
 
-# Identifiers.
-Address = AccountID = bytes
+# Identifier type aliases.
+Address = AccountID = ContractID = bytes
+ContractVersion = int
 Digest = bytes
 EraID = int
 PublicKey = bytes
@@ -105,6 +106,11 @@ class BlockTransfers():
 
 
 @dataclasses.dataclass
+class CL_Value():
+    pass
+
+
+@dataclasses.dataclass
 class Deploy():
     approvals: typing.List[DeployApproval]
     hash: Digest
@@ -117,6 +123,17 @@ class Deploy():
 class DeployApproval():
     signer: PublicKey
     signature: Signature
+
+
+@dataclasses.dataclass
+class DeployArgument():
+    name: str
+    value: CL_Value
+
+
+@dataclasses.dataclass
+class DeployExecutableItem():
+    args: typing.List[DeployArgument]
 
 
 @dataclasses.dataclass
@@ -163,6 +180,11 @@ class EraSummary():
 
 
 @dataclasses.dataclass
+class DeployOfModuleBytes(DeployExecutableItem):
+    module_bytes: bytes
+
+
+@dataclasses.dataclass
 class NamedKey():
     key: str
     name: str
@@ -189,6 +211,36 @@ class SeigniorageAllocationForDelegator(SeigniorageAllocation):
 @dataclasses.dataclass
 class SeigniorageAllocationForValidator(SeigniorageAllocation):
     validator_public_key: PublicKey
+
+
+@dataclasses.dataclass
+class StoredContractDeploy(DeployExecutableItem):
+    pass
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByHash(StoredContractDeploy):
+    hash: ContractID
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByHashVersioned(DeployOfStoredContractByHash):
+    version: ContractVersion
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByName(StoredContractDeploy):
+    name: str
+
+
+@dataclasses.dataclass
+class DeployOfStoredContractByNameVersioned(DeployOfStoredContractByName):
+    version: ContractVersion
+
+
+@dataclasses.dataclass
+class DeployOfTransfer(DeployExecutableItem):
+    pass
 
 
 @dataclasses.dataclass

@@ -87,7 +87,7 @@ class Client():
         """
         obj: dict = self.proxy.state_get_account_info(account_id, block_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.AccountInfo, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.AccountInfo)
 
     def get_auction_info(
         self,
@@ -102,7 +102,7 @@ class Client():
         """
         obj: dict = self.proxy.state_get_auction_info(block_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.AuctionState, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.AuctionState)
 
     def get_block(
         self,
@@ -118,7 +118,7 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_block(block_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.Block, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.Block)
 
     def get_block_transfers(
         self,
@@ -134,7 +134,7 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_block_transfers(block_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.BlockTransfers, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.BlockTransfers)
 
     def get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -159,7 +159,7 @@ class Client():
         """
         obj: dict = self.proxy.info_get_deploy(deploy_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.Deploy, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.Deploy)
 
     def get_dictionary_item(
         self,
@@ -189,7 +189,7 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_era_summary(block_id)
 
-        return obj if decode is False else decoder.decode(rpc_types.EraSummary, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.EraSummary)
 
     def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
@@ -283,7 +283,7 @@ class Client():
         """
         obj = self.proxy.info_get_validator_changes()
 
-        return obj if decode is False else decoder.decode(rpc_types.ValidatorChanges, obj)
+        return obj if decode is False else decoder.decode(obj, rpc_types.ValidatorChanges)
 
 
 class ClientExtensions():
