@@ -1,10 +1,10 @@
 from pycspr import crypto
 from pycspr import serialisation
-from pycspr.types import CL_PublicKey
-from pycspr.types import CL_U64
 from pycspr.types import CL_ByteArray
 from pycspr.types import CL_List
+from pycspr.types import CL_PublicKey
 from pycspr.types import CL_String
+from pycspr.types import CL_U64
 from pycspr.types import DeployExecutableItem
 from pycspr.types import DeployHeader
 

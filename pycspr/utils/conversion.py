@@ -1,4 +1,4 @@
-import datetime as dt
+from datetime import datetime as dt
 
 
 # Millisecond durations of relevance.
@@ -88,4 +88,16 @@ def posix_timestamp_from_isoformat(ts: str) -> float:
         ts = ts[:-1]
         ts = f"{ts}+00:00"
 
-    return dt.datetime.fromisoformat(ts).timestamp()
+    return dt.fromisoformat(ts).timestamp()
+
+
+def isoformat_from_posix_timestamp(ts: float) -> str:
+    """Converts ISO formatted timestamp to posix timestamp.
+
+    :param ts: ISO formatted timestamp.
+    :returns: Posix timestamp, i.e. milliseconds since epoch.
+
+    """
+    ts = dt.fromtimestamp(round(ts, 3), tz=dt.timezone.utc)
+
+    return f"{ts.isoformat()[:-9]}Z"

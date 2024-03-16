@@ -205,7 +205,7 @@ class Proxy:
         params: dict = \
             param_utils.get_global_state_id(global_state_id) | \
             param_utils.get_purse_id(purse_id)
-
+        
         return int(
             get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
         )
@@ -245,6 +245,8 @@ class Proxy:
         params: dict = \
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
+        
+        print(block_id)
 
         return get_response(
             self.address,

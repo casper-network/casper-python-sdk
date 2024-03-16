@@ -29,6 +29,7 @@ from pycspr.api import SSE_CHANNEL_TO_SSE_EVENT
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO
 from pycspr.crypto import get_account_hash
+from pycspr.crypto import get_account_hash as get_account_address
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_account_key_algo
 from pycspr.crypto import get_hash
