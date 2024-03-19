@@ -3,7 +3,7 @@ from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
 
 
 def decode(obj: dict):
-    """Decodes a CL value from a JSON object.
+    """Decoder: CL value <- JSON blob.
 
     :param obj: A CL value encoded as a JSON compatible dictionary.
     :returns: A CL value.

@@ -22,7 +22,7 @@ from pycspr.types import Transfer
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:
-    """Decodes a deploy from a byte array.
+    """Decoder: Domain entity <- an array of bytes.
 
     :param bstream: An array of bytes being decoded.
     :param typedef: Deploy related type definition.

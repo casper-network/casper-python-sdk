@@ -28,6 +28,7 @@ import requests
 import pytest
 
 import pycspr
+import pycctl
 import tests.utils.cctl as cctl
 
 from pycspr import NodeRpcClient
@@ -118,8 +119,8 @@ async def _test_sc_invocation_3(ctx: TestContext):
 
 
 @pytest.mark.asyncio
-async def test_01(CLIENT) -> None:
-    ctx = TestContext(CLIENT)
+async def test_01(RPC_CLIENT) -> None:
+    ctx = TestContext(RPC_CLIENT)
     for func in {
         _test_pre_requisites,
         _test_sc_installation,
@@ -129,4 +130,4 @@ async def test_01(CLIENT) -> None:
     }:
         await func(ctx)
 
-    raise TypeError()
+    # raise TypeError()

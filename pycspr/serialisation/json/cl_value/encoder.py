@@ -7,7 +7,7 @@ from pycspr.types import cl_values
 
 
 def encode(entity: cl_values.CL_Value) -> dict:
-    """Encodes a CL value as a JSON compatible dictionary.
+    """Encoder: CL value -> JSON blob.
 
     :param entity: A CL value to be encoded.
     :returns: A JSON compatible dictionary.

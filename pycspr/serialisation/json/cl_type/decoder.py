@@ -4,7 +4,7 @@ from pycspr.types import cl_types
 
 
 def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
-    """Decodes a CL type from a JSON string or object.
+    """Decoder: CL type info <- JSON blob.
 
     :param encoded: A CL type previously encoded as JSON.
     :returns: A CL type definition.

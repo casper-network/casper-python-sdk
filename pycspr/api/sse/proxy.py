@@ -44,17 +44,14 @@ class Proxy:
         :param eid: Identifier of event from which to start stream listening.
 
         """
-        def _get_client() -> sseclient.SSEClient:
-            url = f"{self.address}/{echannel.name.lower()}"
-            if eid:
-                url = f"{url}?start_from={eid}"
+        # Set client.
+        url = f"{self.address}/{echannel.name.lower()}"
+        if eid:
+            url = f"{url}?start_from={eid}"
+        sse_client = sseclient.SSEClient(requests.get(url, stream=True))
 
-            return sseclient.SSEClient(requests.get(url, stream=True))
-
-        # Open client connection.
-        sse_client = _get_client()
+        # Open connection & iterate event stream.
         try:
-            # Iterate event stream.
             for event in sse_client.events():
                 # Set event data.
                 try:
@@ -76,7 +73,7 @@ class Proxy:
                 if etype is None or etype == etype_in:
                     yield NodeEventInfo(echannel, etype_in, event.id, edata)
 
-        # On error ensure that client connection is closed.
+        # On error ensure that connection is closed.
         except Exception as err:
             try:
                 sse_client.close()

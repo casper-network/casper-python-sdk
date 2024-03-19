@@ -16,7 +16,7 @@ from pycspr.types.deploys import Transfer
 
 
 def encode(entity: object) -> dict:
-    """Encodes a deploy related type instance as a JSON compatible dictionary.
+    """Encoder: Domain entity instance -> JSON blob.
 
     :param entity: A deploy related type instance to be encoded.
     :returns: A JSON compatible dictionary.

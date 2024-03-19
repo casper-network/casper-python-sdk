@@ -1,25 +1,25 @@
 import typing
 
-from pycspr.serialisation.json import cl_type as cl_type_serialiser
-from pycspr.serialisation.json import cl_value as cl_value_serialiser
-from pycspr.serialisation.json import deploy as deploy_serialiser
+from pycspr.serialisation.json import cl_type as serializer_of_cl_types
+from pycspr.serialisation.json import cl_value as serializer_of_cl_values
+from pycspr.serialisation.json import entity as serializer_of_entities
 from pycspr.types.cl_types import CL_Type
 from pycspr.types.cl_values import CL_Value
 
 
 def to_json(entity: object) -> typing.Union[str, dict]:
     if isinstance(entity, CL_Type):
-        return cl_type_serialiser.encode(entity)
+        return serializer_of_cl_types.encode(entity)
     elif isinstance(entity, CL_Value):
-        return cl_value_serialiser.encode(entity)
+        return serializer_of_cl_values.encode(entity)
     else:
-        return deploy_serialiser.encode(entity)
+        return serializer_of_entities.encode(entity)
 
 
 def from_json(obj: dict, typedef: object = None) -> object:
     if isinstance(typedef, type(None)):
-        return cl_type_serialiser.decode(obj)
+        return serializer_of_cl_types.decode(obj)
     elif issubclass(typedef, CL_Value):
-        return cl_value_serialiser.decode(obj)
+        return serializer_of_cl_values.decode(obj)
     else:
-        return deploy_serialiser.decode(obj, typedef)
+        return serializer_of_entities.decode(obj, typedef)

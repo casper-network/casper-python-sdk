@@ -10,19 +10,17 @@ def decode(
     bstream: bytes,
     cl_type: cl_types.CL_Type
 ) -> typing.Tuple[bytes, cl_values.CL_Value]:
-    """Decodes a CL value from a byte array.
+    """Decoder: CL value <- an array of bytes.
 
-    :param bstream: An array of bytes being decoded.
+    :param bstream: An array of bytes to be decoded.
     :param cl_type: CL type information.
     :returns: A CL value.
 
     """
-    try:
-        decoder = _DECODERS[cl_type.type_key]
-    except KeyError:
+    if cl_type.type_key not in _DECODERS:
         raise ValueError(f"Unsupported CL value type: {cl_type.type_key}")
-    else:
-        return decoder(bstream, cl_type)
+
+    return _DECODERS[cl_type.type_key](bstream, cl_type)
 
 
 def _decode_any(

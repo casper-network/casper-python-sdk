@@ -16,7 +16,7 @@ from pycspr.types import Timestamp
 
 
 def decode(obj: dict, typedef: object) -> object:
-    """Decodes a deploy related type from a JSON object.
+    """Decoder: Domain entity <- JSON blob.
 
     :param obj: A JSON compatible dictionary.
     :param typedef: Deploy related type definition.

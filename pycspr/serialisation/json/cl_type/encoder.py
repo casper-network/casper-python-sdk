@@ -5,7 +5,7 @@ from pycspr.types import CL_TypeKey
 
 
 def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
-    """Encodes a CL type as a JSON compatible string or dictionary.
+    """Encoder: CL type -> JSON blob.
 
     :param entity: A CL type to be encoded.
     :returns: A JSON compatible string or dictionary.
