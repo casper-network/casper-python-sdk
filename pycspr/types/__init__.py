@@ -77,6 +77,7 @@ from pycspr.types.identifiers import DictionaryID_AccountNamedKey
 from pycspr.types.identifiers import DictionaryID_ContractNamedKey
 from pycspr.types.identifiers import DictionaryID_SeedURef
 from pycspr.types.identifiers import DictionaryID_UniqueKey
+from pycspr.types.identifiers import Digest
 from pycspr.types.identifiers import GlobalStateID
 from pycspr.types.identifiers import GlobalStateIDType
 from pycspr.types.identifiers import PurseID

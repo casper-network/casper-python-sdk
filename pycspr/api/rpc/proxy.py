@@ -11,6 +11,7 @@ from pycspr.types import AccountID
 from pycspr.types import BlockID
 from pycspr.types import Deploy
 from pycspr.types import DeployID
+from pycspr.types import Digest
 from pycspr.types import DictionaryID
 from pycspr.types import GlobalStateID
 from pycspr.types import GlobalStateIDType
@@ -312,6 +313,19 @@ class Proxy:
         params: dict = param_utils.get_params_for_state_get_item(key, path, state_root_hash)
 
         return get_response(self.address, constants.RPC_STATE_GET_ITEM, params, "stored_value")
+
+    def state_get_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+        """Returns results of a query to global state trie store at a specified key.
+
+        :param trie_key: Key of an item stored within global state.
+        :returns:  A list of keys read under the specified prefix.
+
+        """
+        params: dict = {
+            "trie_key": trie_key.hex()
+        }
+
+        return get_response(self.address, constants.RPC_STATE_GET_TRIE, params, "maybe_trie_bytes")
 
 
 class ProxyError(Exception):

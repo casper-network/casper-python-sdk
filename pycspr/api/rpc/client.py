@@ -12,6 +12,7 @@ from pycspr.types import CL_URef
 from pycspr.types import DeployID
 from pycspr.types import Deploy
 from pycspr.types import DictionaryID
+from pycspr.types import Digest
 from pycspr.types import GlobalStateID
 from pycspr.types import PurseID
 from pycspr.types import StateRootID
@@ -271,6 +272,15 @@ class Client():
 
         """
         return self.proxy.chain_get_state_root_hash(block_id)
+
+    def get_state_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+        """Returns results of a query to global state trie store at a specified key.
+
+        :param trie_key: Key of an item stored within global state.
+        :returns:  A list of keys read under the specified prefix.
+
+        """
+        return self.proxy.state_get_trie(trie_key)
 
     def get_validator_changes(
         self,

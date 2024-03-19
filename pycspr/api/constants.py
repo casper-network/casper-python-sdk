@@ -27,6 +27,7 @@ RPC_STATE_GET_AUCTION_INFO = "state_get_auction_info"
 RPC_STATE_GET_BALANCE = "state_get_balance"
 RPC_STATE_GET_DICTIONARY_ITEM = "state_get_dictionary_item"
 RPC_STATE_GET_ITEM = "state_get_item"
+RPC_STATE_GET_TRIE = "state_get_trie"
 
 RPC_ENDPOINTS: set = {
     RPC_ACCOUNT_PUT_DEPLOY,
