@@ -2,7 +2,7 @@ import argparse
 
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
-from pycspr.types import DictionaryID_ContractNamedKey
+from pycspr.types.chain import DictionaryID_ContractNamedKey
 
 
 # CLI argument parser.

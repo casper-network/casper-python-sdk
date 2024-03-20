@@ -5,17 +5,17 @@ from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rpc import decoder
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.api.rpc import types as rpc_types
-from pycspr.types import AccountID
-from pycspr.types import BlockID
+from pycspr.types import Deploy
 from pycspr.types.cl import CL_Key
 from pycspr.types.cl import CL_URef
-from pycspr.types import DeployID
-from pycspr.types import Deploy
-from pycspr.types import DictionaryID
-from pycspr.types import Digest
-from pycspr.types import GlobalStateID
-from pycspr.types import PurseID
-from pycspr.types import StateRootID
+from pycspr.types.chain import AccountID
+from pycspr.types.chain import BlockID
+from pycspr.types.chain import DeployID
+from pycspr.types.chain import DictionaryID
+from pycspr.types.chain import Digest
+from pycspr.types.chain import GlobalStateID
+from pycspr.types.chain import PurseID
+from pycspr.types.chain import StateRootID
 
 
 class Client():

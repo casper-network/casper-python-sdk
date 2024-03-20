@@ -7,16 +7,16 @@ import requests
 from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
-from pycspr.types import AccountID
-from pycspr.types import BlockID
 from pycspr.types import Deploy
-from pycspr.types import DeployID
-from pycspr.types import Digest
-from pycspr.types import DictionaryID
-from pycspr.types import GlobalStateID
-from pycspr.types import GlobalStateIDType
-from pycspr.types import PurseID
-from pycspr.types import StateRootID
+from pycspr.types.chain import AccountID
+from pycspr.types.chain import BlockID
+from pycspr.types.chain import DeployID
+from pycspr.types.chain import Digest
+from pycspr.types.chain import DictionaryID
+from pycspr.types.chain import GlobalStateID
+from pycspr.types.chain import GlobalStateIDType
+from pycspr.types.chain import PurseID
+from pycspr.types.chain import StateRootID
 
 
 @dataclasses.dataclass
