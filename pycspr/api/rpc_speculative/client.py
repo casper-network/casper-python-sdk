@@ -1,7 +1,7 @@
 from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rpc_speculative.proxy import Proxy
-from pycspr.types import Deploy
 from pycspr.types.chain import BlockID
+from pycspr.types.chain import Deploy
 
 
 class Client():

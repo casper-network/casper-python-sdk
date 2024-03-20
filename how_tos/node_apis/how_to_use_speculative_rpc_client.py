@@ -10,9 +10,9 @@ import pycspr
 from pycspr.api import NodeConnectionInfo
 from pycspr.api import NodeSpeculativeRpcClient as NodeClient
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
-from pycspr.types import Deploy
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
+from pycspr.types.chain import Deploy
 
 
 # Path to CCTL assets.

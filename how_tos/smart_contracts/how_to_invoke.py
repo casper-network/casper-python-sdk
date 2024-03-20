@@ -9,12 +9,12 @@ from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types.cl import CL_ByteArray
 from pycspr.types.cl import CL_U256
-from pycspr.types import Deploy
-from pycspr.types import DeployParameters
-from pycspr.types import ModuleBytes
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
-from pycspr.types import StoredContractByHash
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import DeployParameters
+from pycspr.types.chain import ModuleBytes
+from pycspr.types.chain import StoredContractByHash
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
 
 
 # Path to CCTL network assets.

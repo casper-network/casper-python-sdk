@@ -3,23 +3,23 @@ import typing
 from pycspr.serialisation.binary.cl_type import encode as encode_cl_type
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import DeployApproval
+from pycspr.types.chain import DeployArgument
+from pycspr.types.chain import DeployBody
+from pycspr.types.chain import DeployHeader
+from pycspr.types.chain import ModuleBytes
+from pycspr.types.chain import StoredContractByHash
+from pycspr.types.chain import StoredContractByHashVersioned
+from pycspr.types.chain import StoredContractByName
+from pycspr.types.chain import StoredContractByNameVersioned
+from pycspr.types.chain import Transfer
 from pycspr.types.cl import CL_ByteArray
 from pycspr.types.cl import CL_U32
 from pycspr.types.cl import CL_U64
 from pycspr.types.cl import CL_List
 from pycspr.types.cl import CL_PublicKey
 from pycspr.types.cl import CL_String
-from pycspr.types.deploys import Deploy
-from pycspr.types.deploys import DeployApproval
-from pycspr.types.deploys import DeployArgument
-from pycspr.types.deploys import DeployBody
-from pycspr.types.deploys import DeployHeader
-from pycspr.types.deploys import ModuleBytes
-from pycspr.types.deploys import StoredContractByHash
-from pycspr.types.deploys import StoredContractByHashVersioned
-from pycspr.types.deploys import StoredContractByName
-from pycspr.types.deploys import StoredContractByNameVersioned
-from pycspr.types.deploys import Transfer
 
 
 def encode(entity: object) -> bytes:

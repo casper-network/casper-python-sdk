@@ -4,14 +4,14 @@ import pytest
 
 import pycspr
 from pycspr import types
-from pycspr.types.deploys import DeployApproval
-from pycspr.types.deploys import DeployArgument
-from pycspr.types.deploys import ModuleBytes
-from pycspr.types.deploys import StoredContractByHash
-from pycspr.types.deploys import StoredContractByHashVersioned
-from pycspr.types.deploys import StoredContractByName
-from pycspr.types.deploys import StoredContractByNameVersioned
-from pycspr.types.deploys import Transfer
+from pycspr.types.chain import DeployApproval
+from pycspr.types.chain import DeployArgument
+from pycspr.types.chain import ModuleBytes
+from pycspr.types.chain import StoredContractByHash
+from pycspr.types.chain import StoredContractByHashVersioned
+from pycspr.types.chain import StoredContractByName
+from pycspr.types.chain import StoredContractByNameVersioned
+from pycspr.types.chain import Transfer
 from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
 

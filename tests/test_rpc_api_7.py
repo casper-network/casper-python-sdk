@@ -1,5 +1,5 @@
 from pycspr import NodeRpcClient
-from pycspr.types import Deploy
+from pycspr.types.chain import Deploy
 
 
 def test_send_deploy(RPC_CLIENT: NodeRpcClient, a_deploy: Deploy):

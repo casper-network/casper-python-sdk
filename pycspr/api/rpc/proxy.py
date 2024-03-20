@@ -7,9 +7,9 @@ import requests
 from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
-from pycspr.types import Deploy
 from pycspr.types.chain import AccountID
 from pycspr.types.chain import BlockID
+from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployID
 from pycspr.types.chain import Digest
 from pycspr.types.chain import DictionaryID

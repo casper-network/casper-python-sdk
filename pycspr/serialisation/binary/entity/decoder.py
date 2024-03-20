@@ -4,26 +4,26 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
-from pycspr.types import Deploy
-from pycspr.types import DeployApproval
-from pycspr.types import DeployArgument
-from pycspr.types import DeployBody
-from pycspr.types import DeployExecutableItem
-from pycspr.types import DeployHeader
-from pycspr.types import DeployTimeToLive
-from pycspr.types import ModuleBytes
-from pycspr.types import StoredContractByHash
-from pycspr.types import StoredContractByHashVersioned
-from pycspr.types import StoredContractByName
-from pycspr.types import StoredContractByNameVersioned
-from pycspr.types import Timestamp
-from pycspr.types import Transfer
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import DeployApproval
+from pycspr.types.chain import DeployArgument
+from pycspr.types.chain import DeployBody
+from pycspr.types.chain import DeployExecutableItem
+from pycspr.types.chain import DeployHeader
+from pycspr.types.chain import DeployTimeToLive
+from pycspr.types.chain import ModuleBytes
+from pycspr.types.chain import StoredContractByHash
+from pycspr.types.chain import StoredContractByHashVersioned
+from pycspr.types.chain import StoredContractByName
+from pycspr.types.chain import StoredContractByNameVersioned
+from pycspr.types.chain import Transfer
 from pycspr.types.cl import CL_Type_ByteArray
 from pycspr.types.cl import CL_Type_U32
 from pycspr.types.cl import CL_Type_U64
 from pycspr.types.cl import CL_Type_List
 from pycspr.types.cl import CL_Type_PublicKey
 from pycspr.types.cl import CL_Type_String
+from pycspr.types.misc import Timestamp
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:

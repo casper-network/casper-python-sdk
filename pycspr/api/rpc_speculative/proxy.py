@@ -4,7 +4,7 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.proxy import get_response
-from pycspr.types import Deploy
+from pycspr.types.chain import Deploy
 from pycspr.types.chain import BlockID
 
 

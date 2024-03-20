@@ -2,8 +2,8 @@ import pathlib
 import typing
 
 from pycspr import crypto
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
 
 
 def create_private_key(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:

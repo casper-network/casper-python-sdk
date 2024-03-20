@@ -6,11 +6,11 @@ import pycctl
 import pycspr
 from pycctl.types import AccountType
 from pycspr.api.rpc import Client as NodeClient
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import ModuleBytes
 from pycspr.types.cl import CL_String
 from pycspr.types.cl import CL_U8
 from pycspr.types.cl import CL_U256
-from pycspr.types import Deploy
-from pycspr.types import ModuleBytes
 from pycctl.fsys import get_path_to_account_private_key
 
 

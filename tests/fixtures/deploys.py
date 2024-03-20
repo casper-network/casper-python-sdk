@@ -4,10 +4,11 @@ import random
 import pytest
 
 import pycspr
-from pycspr.types import Deploy
-from pycspr.types import DeployApproval
-from pycspr.types import DeployParameters
-from pycspr.types.deploys import DeployBody, DeployHeader
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import DeployApproval
+from pycspr.types.chain import DeployParameters
+from pycspr.types.chain import DeployBody
+from pycspr.types.chain import DeployHeader
 from tests.fixtures.accounts import create_account
 
 

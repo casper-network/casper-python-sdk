@@ -9,10 +9,10 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.types.cl import CL_String
 from pycspr.types.cl import CL_U8
 from pycspr.types.cl import CL_U256
-from pycspr.types import Deploy
-from pycspr.types import DeployParameters
-from pycspr.types import ModuleBytes
-from pycspr.types import PrivateKey
+from pycspr.types.chain import Deploy
+from pycspr.types.chain import DeployParameters
+from pycspr.types.chain import ModuleBytes
+from pycspr.types.misc import PrivateKey
 
 
 # Path to CCTL assets.

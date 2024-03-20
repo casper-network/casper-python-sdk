@@ -6,8 +6,8 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.types.cl import CL_Key
-from pycspr.types import PrivateKey
-from pycspr.types import PublicKey
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
 
 
 # Path to CCTL assets.

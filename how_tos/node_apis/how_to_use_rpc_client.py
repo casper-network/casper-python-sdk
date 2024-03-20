@@ -7,11 +7,11 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.api.rpc import types as rpc_types
-from pycspr.types.cl import CL_URef
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.chain import PurseID
 from pycspr.types.chain import PurseIDType
+from pycspr.types.cl import CL_URef
 
 
 # Path to CCTL assets.

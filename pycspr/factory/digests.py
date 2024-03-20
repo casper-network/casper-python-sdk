@@ -5,8 +5,8 @@ from pycspr.types.cl import CL_List
 from pycspr.types.cl import CL_PublicKey
 from pycspr.types.cl import CL_String
 from pycspr.types.cl import CL_U64
-from pycspr.types import DeployExecutableItem
-from pycspr.types import DeployHeader
+from pycspr.types.chain import DeployExecutableItem
+from pycspr.types.chain import DeployHeader
 
 
 def create_digest_of_deploy(header: DeployHeader) -> bytes:

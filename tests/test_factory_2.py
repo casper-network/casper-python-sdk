@@ -1,7 +1,7 @@
 import random
 
 import pycspr
-from pycspr.types import Deploy
+from pycspr.types.chain import Deploy
 
 
 def test_create_validator_auction_bid(deploy_params, a_test_account, path_to_wasm_auction_bid):

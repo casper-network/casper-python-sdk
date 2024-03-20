@@ -6,8 +6,8 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types import Deploy
-from pycspr.types import PrivateKey
+from pycspr.types.misc import PrivateKey
+from pycspr.types.chain import Deploy
 from pycspr.types.cl import CL_URef
 
 
