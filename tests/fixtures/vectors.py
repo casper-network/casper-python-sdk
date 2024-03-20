@@ -6,7 +6,7 @@ import typing
 import pytest
 
 import pycspr
-from pycspr.types.cl import CL_TypeKey
+from pycspr.types.cl import CLT_TypeKey
 from tests.fixtures.iterator_cl_types import yield_cl_types
 from tests.fixtures.iterator_cl_values import yield_cl_values
 
@@ -24,7 +24,7 @@ def cl_types() -> list:
         def __init__(self):
             self.fixtures = _read_vector("cl-types.json")
             for obj in self.fixtures:
-                obj["cl_type"] = CL_TypeKey[obj["cl_type"]]
+                obj["cl_type"] = CLT_TypeKey[obj["cl_type"]]
 
         def __iter__(self):
             return yield_cl_types(self.fixtures)
@@ -41,7 +41,7 @@ def cl_values() -> list:
         def __init__(self):
             self.fixtures = _read_vector("cl-values.json")
             for obj in self.fixtures:
-                obj["cl_type"] = CL_TypeKey[obj["cl_type"]]
+                obj["cl_type"] = CLT_TypeKey[obj["cl_type"]]
 
         def __iter__(self):
             return yield_cl_values(self.fixtures)

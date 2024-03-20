@@ -1,15 +1,15 @@
 import typing
 
-from pycspr.types.cl.types import CL_Type
-from pycspr.types.cl.types import CL_TypeKey
-from pycspr.types.cl.types import CL_Type_ByteArray
-from pycspr.types.cl.types import CL_Type_List
-from pycspr.types.cl.types import CL_Type_Map
-from pycspr.types.cl.types import CL_Type_Option
-from pycspr.types.cl.types import CL_Type_Tuple1
+from pycspr.types.cl.types import CLT_Type
+from pycspr.types.cl.types import CLT_TypeKey
+from pycspr.types.cl.types import CLT_Type_ByteArray
+from pycspr.types.cl.types import CLT_Type_List
+from pycspr.types.cl.types import CLT_Type_Map
+from pycspr.types.cl.types import CLT_Type_Option
+from pycspr.types.cl.types import CLT_Type_Tuple1
 
 
-def encode(entity: CL_Type) -> typing.Union[str, dict]:
+def encode(entity: CLT_Type) -> typing.Union[str, dict]:
     """Encoder: CL type -> JSON blob.
 
     :param entity: A CL type to be encoded.
@@ -24,19 +24,19 @@ def encode(entity: CL_Type) -> typing.Union[str, dict]:
         raise ValueError("Invalid CL type")
 
 
-def _encode_byte_array(entity: CL_Type_ByteArray):
+def _encode_byte_array(entity: CLT_Type_ByteArray):
     return {
         "ByteArray": entity.size
     }
 
 
-def _encode_list(entity: CL_Type_List):
+def _encode_list(entity: CLT_Type_List):
     return {
         "List": encode(entity.inner_type)
     }
 
 
-def _encode_map(entity: CL_Type_Map):
+def _encode_map(entity: CLT_Type_Map):
     return {
         "Map": {
             "key": encode(entity.key_type),
@@ -45,19 +45,19 @@ def _encode_map(entity: CL_Type_Map):
     }
 
 
-def _encode_option(entity: CL_Type_Option):
+def _encode_option(entity: CLT_Type_Option):
     return {
         "Option": encode(entity.inner_type)
     }
 
 
-def _encode_tuple_1(entity: CL_Type_Tuple1):
+def _encode_tuple_1(entity: CLT_Type_Tuple1):
     return {
         "Tuple1": encode(entity.t0_type)
     }
 
 
-def _encode_tuple_2(entity: CL_Type_Tuple1):
+def _encode_tuple_2(entity: CLT_Type_Tuple1):
     return {
         "Tuple2": [
             encode(entity.t0_type),
@@ -66,7 +66,7 @@ def _encode_tuple_2(entity: CL_Type_Tuple1):
     }
 
 
-def _encode_tuple_3(entity: CL_Type_Tuple1):
+def _encode_tuple_3(entity: CLT_Type_Tuple1):
     return {
         "Tuple3": [
             encode(entity.t0_type),
@@ -78,30 +78,30 @@ def _encode_tuple_3(entity: CL_Type_Tuple1):
 
 _ENCODERS: dict = {
     "complex": {
-        CL_TypeKey.BYTE_ARRAY: _encode_byte_array,
-        CL_TypeKey.LIST: _encode_list,
-        CL_TypeKey.MAP: _encode_map,
-        CL_TypeKey.OPTION: _encode_option,
-        CL_TypeKey.TUPLE_1: _encode_tuple_1,
-        CL_TypeKey.TUPLE_2: _encode_tuple_2,
-        CL_TypeKey.TUPLE_3: _encode_tuple_3,
+        CLT_TypeKey.BYTE_ARRAY: _encode_byte_array,
+        CLT_TypeKey.LIST: _encode_list,
+        CLT_TypeKey.MAP: _encode_map,
+        CLT_TypeKey.OPTION: _encode_option,
+        CLT_TypeKey.TUPLE_1: _encode_tuple_1,
+        CLT_TypeKey.TUPLE_2: _encode_tuple_2,
+        CLT_TypeKey.TUPLE_3: _encode_tuple_3,
     },
     "simple": {
-        CL_TypeKey.ANY: "Any",
-        CL_TypeKey.BOOL: "Bool",
-        CL_TypeKey.I32: "I32",
-        CL_TypeKey.I64: "I64",
-        CL_TypeKey.KEY: "Key",
-        CL_TypeKey.PUBLIC_KEY: "PublicKey",
-        CL_TypeKey.RESULT: "Result",
-        CL_TypeKey.STRING: "String",
-        CL_TypeKey.U8: "U8",
-        CL_TypeKey.U32: "U32",
-        CL_TypeKey.U64: "U64",
-        CL_TypeKey.U128: "U128",
-        CL_TypeKey.U256: "U256",
-        CL_TypeKey.U512: "U512",
-        CL_TypeKey.UNIT: "Unit",
-        CL_TypeKey.UREF: "URef",        
+        CLT_TypeKey.ANY: "Any",
+        CLT_TypeKey.BOOL: "Bool",
+        CLT_TypeKey.I32: "I32",
+        CLT_TypeKey.I64: "I64",
+        CLT_TypeKey.KEY: "Key",
+        CLT_TypeKey.PUBLIC_KEY: "PublicKey",
+        CLT_TypeKey.RESULT: "Result",
+        CLT_TypeKey.STRING: "String",
+        CLT_TypeKey.U8: "U8",
+        CLT_TypeKey.U32: "U32",
+        CLT_TypeKey.U64: "U64",
+        CLT_TypeKey.U128: "U128",
+        CLT_TypeKey.U256: "U256",
+        CLT_TypeKey.U512: "U512",
+        CLT_TypeKey.UNIT: "Unit",
+        CLT_TypeKey.UREF: "URef",        
     }
 }

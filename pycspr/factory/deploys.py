@@ -18,7 +18,7 @@ from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
-from pycspr.types.cl import CL_Type_U64
+from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
@@ -228,7 +228,7 @@ def create_transfer_session(
         args={
             "amount": CLV_U512(amount),
             "target": CLV_PublicKey.from_account_key(target),
-            "id": CLV_Option(CLV_U64(correlation_id), CL_Type_U64()),
+            "id": CLV_Option(CLV_U64(correlation_id), CLT_Type_U64()),
         }
     )
 

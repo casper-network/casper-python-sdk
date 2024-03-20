@@ -1,31 +1,31 @@
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl import CL_Type
-from pycspr.types.cl import CL_TypeKey
-from pycspr.types.cl import CL_Type_Any
-from pycspr.types.cl import CL_Type_Bool
-from pycspr.types.cl import CL_Type_ByteArray
-from pycspr.types.cl import CL_Type_I32
-from pycspr.types.cl import CL_Type_I64
-from pycspr.types.cl import CL_Type_U8
-from pycspr.types.cl import CL_Type_U32
-from pycspr.types.cl import CL_Type_U64
-from pycspr.types.cl import CL_Type_U128
-from pycspr.types.cl import CL_Type_U256
-from pycspr.types.cl import CL_Type_U512
-from pycspr.types.cl import CL_Type_Key
-from pycspr.types.cl import CL_Type_List
-from pycspr.types.cl import CL_Type_Map
-from pycspr.types.cl import CL_Type_Option
-from pycspr.types.cl import CL_Type_PublicKey
-from pycspr.types.cl import CL_Type_Result
-from pycspr.types.cl import CL_Type_String
-from pycspr.types.cl import CL_Type_Tuple1
-from pycspr.types.cl import CL_Type_Tuple2
-from pycspr.types.cl import CL_Type_Tuple3
-from pycspr.types.cl import CL_Type_Unit
-from pycspr.types.cl import CL_Type_URef
+from pycspr.types.cl import CLT_Type
+from pycspr.types.cl import CLT_TypeKey
+from pycspr.types.cl import CLT_Type_Any
+from pycspr.types.cl import CLT_Type_Bool
+from pycspr.types.cl import CLT_Type_ByteArray
+from pycspr.types.cl import CLT_Type_I32
+from pycspr.types.cl import CLT_Type_I64
+from pycspr.types.cl import CLT_Type_U8
+from pycspr.types.cl import CLT_Type_U32
+from pycspr.types.cl import CLT_Type_U64
+from pycspr.types.cl import CLT_Type_U128
+from pycspr.types.cl import CLT_Type_U256
+from pycspr.types.cl import CLT_Type_U512
+from pycspr.types.cl import CLT_Type_Key
+from pycspr.types.cl import CLT_Type_List
+from pycspr.types.cl import CLT_Type_Map
+from pycspr.types.cl import CLT_Type_Option
+from pycspr.types.cl import CLT_Type_PublicKey
+from pycspr.types.cl import CLT_Type_Result
+from pycspr.types.cl import CLT_Type_String
+from pycspr.types.cl import CLT_Type_Tuple1
+from pycspr.types.cl import CLT_Type_Tuple2
+from pycspr.types.cl import CLT_Type_Tuple3
+from pycspr.types.cl import CLT_Type_Unit
+from pycspr.types.cl import CLT_Type_URef
 from pycspr.types.cl import CLV_Value
 from pycspr.types.cl import CLV_Any
 from pycspr.types.cl import CLV_Bool
@@ -55,7 +55,7 @@ from pycspr.types.cl import CLV_URef
 
 def decode(
     bstream: bytes,
-    cl_type: CL_Type
+    cl_type: CLT_Type
 ) -> typing.Tuple[bytes, CLV_Value]:
     """Decoder: CL value <- an array of bytes.
 
@@ -72,19 +72,19 @@ def decode(
 
 def _decode_any(
     bstream: bytes,
-    cl_type: CL_Type_Any
+    cl_type: CLT_Type_Any
 ) -> typing.Tuple[bytes, CLV_Any]:
     raise NotImplementedError()
 
 
-def _decode_bool(bstream: bytes, _: CL_Type_Bool = None) -> CLV_Bool:
+def _decode_bool(bstream: bytes, _: CLT_Type_Bool = None) -> CLV_Bool:
     assert len(bstream) >= 1
     return bstream[1:], CLV_Bool(bool(bstream[0]))
 
 
 def _decode_byte_array(
     bstream: bytes,
-    cl_type: CL_Type_ByteArray
+    cl_type: CLT_Type_ByteArray
 ) -> typing.Tuple[bytes, CLV_ByteArray]:
     assert len(bstream) >= cl_type.size
     bstream, encoded = bstream[cl_type.size:], bstream[:cl_type.size]
@@ -106,21 +106,21 @@ def _decode_int(
 
 def _decode_i32(
     bstream: bytes,
-    _: CL_Type_I32 = None
+    _: CLT_Type_I32 = None
 ) -> typing.Tuple[bytes, CLV_I32]:
     return _decode_int(bstream, 4, CLV_I32, True)
 
 
 def _decode_i64(
     bstream: bytes,
-    _: CL_Type_I64 = None
+    _: CLT_Type_I64 = None
 ) -> typing.Tuple[bytes, CLV_I64]:
     return _decode_int(bstream, 8, CLV_I64, True)
 
 
 def _decode_key(
     bstream: bytes,
-    _: CL_Type_Key = None
+    _: CLT_Type_Key = None
 ) -> typing.Tuple[bytes, CLV_Key]:
     assert len(bstream) >= 33
     key_type = CLV_KeyType(bstream[0])
@@ -130,7 +130,7 @@ def _decode_key(
 
 def _decode_list(
     bstream: bytes,
-    cl_type: CL_Type_List
+    cl_type: CLT_Type_List
 ) -> typing.Tuple[bytes, CLV_List]:
     bstream, size = _decode_i32(bstream, None)
     vector = []
@@ -143,7 +143,7 @@ def _decode_list(
 
 def _decode_map(
     bstream: bytes,
-    cl_type: CL_Type_Map
+    cl_type: CLT_Type_Map
 ) -> typing.Tuple[bytes, CLV_Map]:
     bstream, size = _decode_i32(bstream, None)
     items = []
@@ -157,7 +157,7 @@ def _decode_map(
 
 def _decode_option(
     bstream: bytes,
-    cl_type: CL_Type_Option
+    cl_type: CLT_Type_Option
 ) -> typing.Tuple[bytes, CLV_Option]:
     assert len(bstream) >= 1
     if bool(bstream[0]):
@@ -171,7 +171,7 @@ def _decode_option(
 
 def _decode_public_key(
     bstream: bytes,
-    _: CL_Type_PublicKey
+    _: CLT_Type_PublicKey
 ) -> typing.Tuple[bytes, CLV_PublicKey]:
     assert len(bstream) >= 1
     bstream, algo = bstream[1:], crypto.KeyAlgorithm(bstream[0])
@@ -189,14 +189,14 @@ def _decode_public_key(
 
 def _decode_result(
     bstream: bytes,
-    cl_type: CL_Type_Result
+    cl_type: CLT_Type_Result
 ) -> typing.Tuple[bytes, CLV_Result]:
     raise NotImplementedError()
 
 
 def _decode_string(
     bstream: bytes,
-    _: CL_Type_String
+    _: CLT_Type_String
 ) -> typing.Tuple[bytes, CLV_String]:
     bstream, size = _decode_i32(bstream, None)
     assert len(bstream) >= size.value
@@ -207,7 +207,7 @@ def _decode_string(
 
 def _decode_tuple_1(
     bstream: bytes,
-    cl_type: CL_Type_Tuple1
+    cl_type: CLT_Type_Tuple1
 ) -> typing.Tuple[bytes, CLV_Tuple1]:
     bstream, v0 = decode(bstream, cl_type.t0_type)
 
@@ -216,7 +216,7 @@ def _decode_tuple_1(
 
 def _decode_tuple_2(
     bstream: bytes,
-    cl_type: CL_Type_Tuple2
+    cl_type: CLT_Type_Tuple2
 ) -> typing.Tuple[bytes, CLV_Tuple2]:
     bstream, v0 = decode(bstream, cl_type.t0_type)
     bstream, v1 = decode(bstream, cl_type.t1_type)
@@ -226,7 +226,7 @@ def _decode_tuple_2(
 
 def _decode_tuple_3(
     bstream: bytes,
-    cl_type: CL_Type_Tuple3
+    cl_type: CLT_Type_Tuple3
 ) -> typing.Tuple[bytes, CLV_Tuple3]:
     bstream, v0 = decode(bstream, cl_type.t0_type)
     bstream, v1 = decode(bstream, cl_type.t1_type)
@@ -237,28 +237,28 @@ def _decode_tuple_3(
 
 def _decode_u8(
     bstream: bytes,
-    _: CL_Type_U8 = None
+    _: CLT_Type_U8 = None
 ) -> typing.Tuple[bytes, CLV_U8]:
     return _decode_int(bstream, 1, CLV_U8, False)
 
 
 def _decode_u32(
     bstream: bytes,
-    _: CL_Type_U32 = None
+    _: CLT_Type_U32 = None
 ) -> typing.Tuple[bytes, CLV_U32]:
     return _decode_int(bstream, 4, CLV_U32, False)
 
 
 def _decode_u64(
     bstream: bytes,
-    _: CL_Type_U64 = None
+    _: CLT_Type_U64 = None
 ) -> typing.Tuple[bytes, CLV_U64]:
     return _decode_int(bstream, 8, CLV_U64, False)
 
 
 def _decode_u128(
     bstream: bytes,
-    _: CL_Type_U128 = None
+    _: CLT_Type_U128 = None
 ) -> typing.Tuple[bytes, CLV_U128]:
     assert len(bstream) >= 1
     bstream, length = bstream[1:], bstream[0]
@@ -268,7 +268,7 @@ def _decode_u128(
 
 def _decode_u256(
     bstream: bytes,
-    _: CL_Type_U256 = None
+    _: CLT_Type_U256 = None
 ) -> typing.Tuple[bytes, CLV_U256]:
     assert len(bstream) >= 1
     bstream, length = bstream[1:], bstream[0]
@@ -278,7 +278,7 @@ def _decode_u256(
 
 def _decode_u512(
     bstream: bytes,
-    _: CL_Type_U512 = None
+    _: CLT_Type_U512 = None
 ) -> typing.Tuple[bytes, CLV_U512]:
     assert len(bstream) >= 1
     bstream, length = bstream[1:], bstream[0]
@@ -288,14 +288,14 @@ def _decode_u512(
 
 def _decode_unit(
     bstream: bytes,
-    _: CL_Type_Unit = None
+    _: CLT_Type_Unit = None
 ) -> typing.Tuple[bytes, CLV_Unit]:
     return bstream, CLV_Unit()
 
 
 def _decode_uref(
     bstream: bytes,
-    _: CL_Type_URef = None
+    _: CLT_Type_URef = None
 ) -> typing.Tuple[bytes, CLV_URef]:
     assert len(bstream) >= 33
     bstream, encoded = bstream[33:], bstream[0:33]
@@ -305,27 +305,27 @@ def _decode_uref(
 
 
 _DECODERS = {
-    CL_TypeKey.ANY: _decode_any,
-    CL_TypeKey.BOOL: _decode_bool,
-    CL_TypeKey.BYTE_ARRAY: _decode_byte_array,
-    CL_TypeKey.I32: _decode_i32,
-    CL_TypeKey.I64: _decode_i64,
-    CL_TypeKey.KEY: _decode_key,
-    CL_TypeKey.LIST: _decode_list,
-    CL_TypeKey.OPTION: _decode_option,
-    CL_TypeKey.MAP: _decode_map,
-    CL_TypeKey.PUBLIC_KEY: _decode_public_key,
-    CL_TypeKey.RESULT: _decode_result,
-    CL_TypeKey.STRING: _decode_string,
-    CL_TypeKey.TUPLE_1: _decode_tuple_1,
-    CL_TypeKey.TUPLE_2: _decode_tuple_2,
-    CL_TypeKey.TUPLE_3: _decode_tuple_3,
-    CL_TypeKey.U8: _decode_u8,
-    CL_TypeKey.U32: _decode_u32,
-    CL_TypeKey.U64: _decode_u64,
-    CL_TypeKey.U128: _decode_u128,
-    CL_TypeKey.U256: _decode_u256,
-    CL_TypeKey.U512: _decode_u512,
-    CL_TypeKey.UNIT: _decode_unit,
-    CL_TypeKey.UREF: _decode_uref,
+    CLT_TypeKey.ANY: _decode_any,
+    CLT_TypeKey.BOOL: _decode_bool,
+    CLT_TypeKey.BYTE_ARRAY: _decode_byte_array,
+    CLT_TypeKey.I32: _decode_i32,
+    CLT_TypeKey.I64: _decode_i64,
+    CLT_TypeKey.KEY: _decode_key,
+    CLT_TypeKey.LIST: _decode_list,
+    CLT_TypeKey.OPTION: _decode_option,
+    CLT_TypeKey.MAP: _decode_map,
+    CLT_TypeKey.PUBLIC_KEY: _decode_public_key,
+    CLT_TypeKey.RESULT: _decode_result,
+    CLT_TypeKey.STRING: _decode_string,
+    CLT_TypeKey.TUPLE_1: _decode_tuple_1,
+    CLT_TypeKey.TUPLE_2: _decode_tuple_2,
+    CLT_TypeKey.TUPLE_3: _decode_tuple_3,
+    CLT_TypeKey.U8: _decode_u8,
+    CLT_TypeKey.U32: _decode_u32,
+    CLT_TypeKey.U64: _decode_u64,
+    CLT_TypeKey.U128: _decode_u128,
+    CLT_TypeKey.U256: _decode_u256,
+    CLT_TypeKey.U512: _decode_u512,
+    CLT_TypeKey.UNIT: _decode_unit,
+    CLT_TypeKey.UREF: _decode_uref,
 }

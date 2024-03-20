@@ -3,12 +3,12 @@ import typing
 from pycspr.serialisation.json import cl_type as serializer_of_cl_types
 from pycspr.serialisation.json import cl_value as serializer_of_cl_values
 from pycspr.serialisation.json import entity as serializer_of_entities
-from pycspr.types.cl import CL_Type
+from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLV_Value
 
 
 def to_json(entity: object) -> typing.Union[str, dict]:
-    if isinstance(entity, CL_Type):
+    if isinstance(entity, CLT_Type):
         return serializer_of_cl_types.encode(entity)
     elif isinstance(entity, CLV_Value):
         return serializer_of_cl_values.encode(entity)

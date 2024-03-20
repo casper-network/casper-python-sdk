@@ -1,32 +1,32 @@
 import typing
 
-from pycspr.types.cl.types import CL_Type
-from pycspr.types.cl.types import CL_Type_Any
-from pycspr.types.cl.types import CL_Type_Bool
-from pycspr.types.cl.types import CL_Type_ByteArray
-from pycspr.types.cl.types import CL_Type_I32
-from pycspr.types.cl.types import CL_Type_I64
-from pycspr.types.cl.types import CL_Type_U8
-from pycspr.types.cl.types import CL_Type_U32
-from pycspr.types.cl.types import CL_Type_U64
-from pycspr.types.cl.types import CL_Type_U128
-from pycspr.types.cl.types import CL_Type_U256
-from pycspr.types.cl.types import CL_Type_U512
-from pycspr.types.cl.types import CL_Type_Key
-from pycspr.types.cl.types import CL_Type_List
-from pycspr.types.cl.types import CL_Type_Map
-from pycspr.types.cl.types import CL_Type_Option
-from pycspr.types.cl.types import CL_Type_PublicKey
-from pycspr.types.cl.types import CL_Type_Result
-from pycspr.types.cl.types import CL_Type_String
-from pycspr.types.cl.types import CL_Type_Tuple1
-from pycspr.types.cl.types import CL_Type_Tuple2
-from pycspr.types.cl.types import CL_Type_Tuple3
-from pycspr.types.cl.types import CL_Type_Unit
-from pycspr.types.cl.types import CL_Type_URef
+from pycspr.types.cl.types import CLT_Type
+from pycspr.types.cl.types import CLT_Type_Any
+from pycspr.types.cl.types import CLT_Type_Bool
+from pycspr.types.cl.types import CLT_Type_ByteArray
+from pycspr.types.cl.types import CLT_Type_I32
+from pycspr.types.cl.types import CLT_Type_I64
+from pycspr.types.cl.types import CLT_Type_U8
+from pycspr.types.cl.types import CLT_Type_U32
+from pycspr.types.cl.types import CLT_Type_U64
+from pycspr.types.cl.types import CLT_Type_U128
+from pycspr.types.cl.types import CLT_Type_U256
+from pycspr.types.cl.types import CLT_Type_U512
+from pycspr.types.cl.types import CLT_Type_Key
+from pycspr.types.cl.types import CLT_Type_List
+from pycspr.types.cl.types import CLT_Type_Map
+from pycspr.types.cl.types import CLT_Type_Option
+from pycspr.types.cl.types import CLT_Type_PublicKey
+from pycspr.types.cl.types import CLT_Type_Result
+from pycspr.types.cl.types import CLT_Type_String
+from pycspr.types.cl.types import CLT_Type_Tuple1
+from pycspr.types.cl.types import CLT_Type_Tuple2
+from pycspr.types.cl.types import CLT_Type_Tuple3
+from pycspr.types.cl.types import CLT_Type_Unit
+from pycspr.types.cl.types import CLT_Type_URef
 
 
-def decode(encoded: typing.Union[str, dict]) -> CL_Type:
+def decode(encoded: typing.Union[str, dict]) -> CLT_Type:
     """Decoder: CL type info <- JSON blob.
 
     :param encoded: A CL type previously encoded as JSON.
@@ -54,37 +54,37 @@ def decode(encoded: typing.Union[str, dict]) -> CL_Type:
 
 
 def _decode_byte_array(obj: dict):
-    return CL_Type_ByteArray(obj["ByteArray"])
+    return CLT_Type_ByteArray(obj["ByteArray"])
 
 
 def _decode_list(obj: dict):
-    return CL_Type_List(decode(obj["List"]))
+    return CLT_Type_List(decode(obj["List"]))
 
 
 def _decode_map(obj: dict):
-    return CL_Type_Map(
+    return CLT_Type_Map(
         decode(obj["Map"]["key"]),
         decode(obj["Map"]["value"])
         )
 
 
 def _decode_option(obj: dict):
-    return CL_Type_Option(decode(obj["Option"]))
+    return CLT_Type_Option(decode(obj["Option"]))
 
 
 def _decode_tuple_1(obj: dict):
-    return CL_Type_Tuple1(decode(obj["Tuple1"]))
+    return CLT_Type_Tuple1(decode(obj["Tuple1"]))
 
 
 def _decode_tuple_2(obj: dict):
-    return CL_Type_Tuple2(
+    return CLT_Type_Tuple2(
         decode(obj["Tuple2"][0]),
         decode(obj["Tuple2"][1])
         )
 
 
 def _decode_tuple_3(obj: dict):
-    return CL_Type_Tuple3(
+    return CLT_Type_Tuple3(
         decode(obj["Tuple3"][0]),
         decode(obj["Tuple3"][1]),
         decode(obj["Tuple3"][2])
@@ -92,20 +92,20 @@ def _decode_tuple_3(obj: dict):
 
 
 _SIMPLE_TYPES = {
-    "Any": CL_Type_Any,
-    "Bool": CL_Type_Bool,
-    "I32": CL_Type_I32,
-    "I64": CL_Type_I64,
-    "Key": CL_Type_Key,
-    "PublicKey": CL_Type_PublicKey,
-    "Result": CL_Type_Result,
-    "String": CL_Type_String,
-    "U8": CL_Type_U8,
-    "U32": CL_Type_U32,
-    "U64": CL_Type_U64,
-    "U128": CL_Type_U128,
-    "U256": CL_Type_U256,
-    "U512": CL_Type_U512,
-    "Unit": CL_Type_Unit,
-    "URef": CL_Type_URef,
+    "Any": CLT_Type_Any,
+    "Bool": CLT_Type_Bool,
+    "I32": CLT_Type_I32,
+    "I64": CLT_Type_I64,
+    "Key": CLT_Type_Key,
+    "PublicKey": CLT_Type_PublicKey,
+    "Result": CLT_Type_Result,
+    "String": CLT_Type_String,
+    "U8": CLT_Type_U8,
+    "U32": CLT_Type_U32,
+    "U64": CLT_Type_U64,
+    "U128": CLT_Type_U128,
+    "U256": CLT_Type_U256,
+    "U512": CLT_Type_U512,
+    "Unit": CLT_Type_Unit,
+    "URef": CLT_Type_URef,
 }

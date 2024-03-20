@@ -3,7 +3,7 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl.types import CL_Type
+from pycspr.types.cl.types import CLT_Type
 from pycspr.types.misc import PublicKey
 
 
@@ -152,7 +152,7 @@ class CLV_Option(CLV_Value):
     value: typing.Union[None, CLV_Value]
 
     # Associated optional type.
-    option_type: CL_Type
+    option_type: CLT_Type
 
     def __eq__(self, other) -> bool:
         return self.value == other.value and self.option_type == other.option_type
