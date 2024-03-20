@@ -6,7 +6,6 @@ from pycspr.types import AccountID
 from pycspr.types import BlockID
 from pycspr.types.cl import CL_Key
 from pycspr.types import DeployID
-from pycspr.types import DICTIONARY_ID_VARIANTS
 from pycspr.types import DictionaryID
 from pycspr.types import DictionaryID_AccountNamedKey
 from pycspr.types import DictionaryID_ContractNamedKey
@@ -132,9 +131,7 @@ def get_params_for_state_get_dictionary_item(
     state_root_hash: StateRootID
 ) -> dict:
     def get_dictionary_param():
-        if not isinstance(identifier, DICTIONARY_ID_VARIANTS):
-            raise ValueError("Unrecognized dictionary item type.")
-        elif isinstance(identifier, DictionaryID_AccountNamedKey):
+        if isinstance(identifier, DictionaryID_AccountNamedKey):
             return {
                 "AccountNamedKey": {
                     "dictionary_item_key": identifier.dictionary_item_key,
@@ -161,6 +158,9 @@ def get_params_for_state_get_dictionary_item(
             return {
                 "Dictionary": identifier.seed_uref.as_string()
             }
+        else:
+            raise ValueError("Unrecognized dictionary item type.")
+
 
     return {
         "dictionary_identifier": get_dictionary_param(),

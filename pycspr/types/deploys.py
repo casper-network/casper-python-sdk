@@ -7,7 +7,7 @@ from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey
 from pycspr.types.identifiers import ContractID
 from pycspr.types.identifiers import ContractVersion
-from pycspr.types.timestamp import Timestamp
+from pycspr.types.misc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
 

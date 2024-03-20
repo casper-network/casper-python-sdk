@@ -1,4 +1,5 @@
 from pycspr.types import cl
+from pycspr.types import misc
 
 from pycspr.types.deploys import Deploy
 from pycspr.types.deploys import DeployApproval
@@ -35,22 +36,3 @@ from pycspr.types.identifiers import StateRootID
 
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey
-
-from pycspr.types.timestamp import Timestamp
-
-
-DEPLOY_EXECUTABLE_ITEM_VARIANTS = (
-    ModuleBytes,
-    StoredContractByHash,
-    StoredContractByHashVersioned,
-    StoredContractByName,
-    StoredContractByNameVersioned,
-    Transfer,
-)
-
-DICTIONARY_ID_VARIANTS = (
-    DictionaryID_AccountNamedKey,
-    DictionaryID_ContractNamedKey,
-    DictionaryID_SeedURef,
-    DictionaryID_UniqueKey
-)

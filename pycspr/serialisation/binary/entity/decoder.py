@@ -4,7 +4,6 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
-from pycspr.types import Timestamp
 from pycspr.types import Deploy
 from pycspr.types import DeployApproval
 from pycspr.types import DeployArgument
@@ -18,6 +17,7 @@ from pycspr.types import StoredContractByHashVersioned
 from pycspr.types import StoredContractByName
 from pycspr.types import StoredContractByNameVersioned
 from pycspr.types import Transfer
+from pycspr.types.misc import Timestamp
 from pycspr.types.cl import CL_Type_ByteArray
 from pycspr.types.cl import CL_Type_U32
 from pycspr.types.cl import CL_Type_U64
