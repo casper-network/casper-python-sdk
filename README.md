@@ -12,11 +12,11 @@ pip3 install pycspr
 
 ### Cryptography
 
-* [How To: Hash data ?](how_tos/cryptography/how_to_hash_data.py)
+* [How To: Hash data ?](how_tos/crypto/how_to_hash_data.py)
 
-* [How To: Create Key Pairs ?](how_tos/cryptography/how_to_create_key_pairs.py)
+* [How To: Create Key Pairs ?](how_tos/crypto/how_to_create_key_pairs.py)
 
-* [How To: Apply a checksum ?](how_tos/cryptography/how_to_apply_a_checksum.py)
+* [How To: Apply a checksum ?](how_tos/crypto/how_to_apply_a_checksum.py)
 
 ### Deploys
 
