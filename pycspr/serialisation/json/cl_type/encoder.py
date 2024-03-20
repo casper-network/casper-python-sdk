@@ -16,15 +16,12 @@ def encode(entity: CL_Type) -> typing.Union[str, dict]:
     :returns: A JSON compatible string or dictionary.
 
     """
-    try:
-        encoder = _ENCODERS_COMPLEX[entity.type_key]
-    except KeyError:
-        try:
-            return _ENCODERS_SIMPLE[entity.type_key]
-        except KeyError:
-            raise ValueError("Invalid CL type")
+    if entity.type_key in _ENCODERS["complex"]:
+        return _ENCODERS["complex"][entity.type_key](entity)
+    elif entity.type_key in _ENCODERS["simple"]:
+        return _ENCODERS["simple"][entity.type_key]
     else:
-        return encoder(entity)
+        raise ValueError("Invalid CL type")
 
 
 def _encode_byte_array(entity: CL_Type_ByteArray):
@@ -79,31 +76,32 @@ def _encode_tuple_3(entity: CL_Type_Tuple1):
     }
 
 
-_ENCODERS_COMPLEX: dict = {
-    CL_TypeKey.BYTE_ARRAY: _encode_byte_array,
-    CL_TypeKey.LIST: _encode_list,
-    CL_TypeKey.MAP: _encode_map,
-    CL_TypeKey.OPTION: _encode_option,
-    CL_TypeKey.TUPLE_1: _encode_tuple_1,
-    CL_TypeKey.TUPLE_2: _encode_tuple_2,
-    CL_TypeKey.TUPLE_3: _encode_tuple_3,
-}
-
-_ENCODERS_SIMPLE: dict = {
-    CL_TypeKey.ANY: "Any",
-    CL_TypeKey.BOOL: "Bool",
-    CL_TypeKey.I32: "I32",
-    CL_TypeKey.I64: "I64",
-    CL_TypeKey.KEY: "Key",
-    CL_TypeKey.PUBLIC_KEY: "PublicKey",
-    CL_TypeKey.RESULT: "Result",
-    CL_TypeKey.STRING: "String",
-    CL_TypeKey.U8: "U8",
-    CL_TypeKey.U32: "U32",
-    CL_TypeKey.U64: "U64",
-    CL_TypeKey.U128: "U128",
-    CL_TypeKey.U256: "U256",
-    CL_TypeKey.U512: "U512",
-    CL_TypeKey.UNIT: "Unit",
-    CL_TypeKey.UREF: "URef",
+_ENCODERS: dict = {
+    "complex": {
+        CL_TypeKey.BYTE_ARRAY: _encode_byte_array,
+        CL_TypeKey.LIST: _encode_list,
+        CL_TypeKey.MAP: _encode_map,
+        CL_TypeKey.OPTION: _encode_option,
+        CL_TypeKey.TUPLE_1: _encode_tuple_1,
+        CL_TypeKey.TUPLE_2: _encode_tuple_2,
+        CL_TypeKey.TUPLE_3: _encode_tuple_3,
+    },
+    "simple": {
+        CL_TypeKey.ANY: "Any",
+        CL_TypeKey.BOOL: "Bool",
+        CL_TypeKey.I32: "I32",
+        CL_TypeKey.I64: "I64",
+        CL_TypeKey.KEY: "Key",
+        CL_TypeKey.PUBLIC_KEY: "PublicKey",
+        CL_TypeKey.RESULT: "Result",
+        CL_TypeKey.STRING: "String",
+        CL_TypeKey.U8: "U8",
+        CL_TypeKey.U32: "U32",
+        CL_TypeKey.U64: "U64",
+        CL_TypeKey.U128: "U128",
+        CL_TypeKey.U256: "U256",
+        CL_TypeKey.U512: "U512",
+        CL_TypeKey.UNIT: "Unit",
+        CL_TypeKey.UREF: "URef",        
+    }
 }

@@ -1,11 +1,6 @@
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.types.cl import CL_Type
 from pycspr.types.cl import CL_TypeKey
-from pycspr.types.cl import CL_Type_ByteArray
-from pycspr.types.cl import CL_Type_List
-from pycspr.types.cl import CL_Type_Map
-from pycspr.types.cl import CL_Type_Option
-from pycspr.types.cl import CL_Type_Tuple1
 from pycspr.types.cl import CL_U32
 
 
@@ -24,43 +19,15 @@ def encode(entity: CL_Type) -> bytes:
         raise ValueError("Unrecognized cl type")
 
 
-def _encode_byte_array(entity: CL_Type_ByteArray):
-    return encode_cl_value(CL_U32(entity.size))
-
-
-def _encode_list(entity: CL_Type_List):
-    return encode(entity.inner_type)
-
-
-def _encode_map(entity: CL_Type_Map):
-    return encode(entity.key_type) + encode(entity.value_type)
-
-
-def _encode_option(entity: CL_Type_Option):
-    return encode(entity.inner_type)
-
-
-def _encode_tuple_1(entity: CL_Type_Tuple1):
-    return encode(entity.t0_type)
-
-
-def _encode_tuple_2(entity: CL_Type_Tuple1):
-    return encode(entity.t0_type) + encode(entity.t1_type)
-
-
-def _encode_tuple_3(entity: CL_Type_Tuple1):
-    return encode(entity.t0_type) + encode(entity.t1_type) + encode(entity.t2_type)
-
-
 _ENCODERS: dict = {
     "complex": {
-        CL_TypeKey.BYTE_ARRAY: _encode_byte_array,
-        CL_TypeKey.LIST: _encode_list,
-        CL_TypeKey.MAP: _encode_map,
-        CL_TypeKey.OPTION: _encode_option,
-        CL_TypeKey.TUPLE_1: _encode_tuple_1,
-        CL_TypeKey.TUPLE_2: _encode_tuple_2,
-        CL_TypeKey.TUPLE_3: _encode_tuple_3,
+        CL_TypeKey.BYTE_ARRAY: lambda x: encode_cl_value(CL_U32(x.size)),
+        CL_TypeKey.LIST: lambda x: encode(x.inner_type),
+        CL_TypeKey.MAP: lambda x: encode(x.key_type) + encode(x.value_type),
+        CL_TypeKey.OPTION: lambda x: encode(x.inner_type),
+        CL_TypeKey.TUPLE_1: lambda x: encode(x.t0_type),
+        CL_TypeKey.TUPLE_2: lambda x: encode(x.t0_type) + encode(x.t1_type),
+        CL_TypeKey.TUPLE_3: lambda x: encode(x.t0_type) + encode(x.t1_type) + encode(x.t2_type),
     },
     "simple": {
         CL_TypeKey.ANY,
