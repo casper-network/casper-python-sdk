@@ -1,4 +1,4 @@
-from pycspr.api.connection import NodeConnectionInfo
+from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
 
 
@@ -6,13 +6,13 @@ class Client():
     """Node REST server client.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo):
+    def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
         :param connection: Information required to connect to a node.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port_rest)
+        self.proxy = Proxy(connection_info.host, connection_info.port)
 
         # Extension methods -> 2nd order functions.
         ext = ClientExtensions(self)

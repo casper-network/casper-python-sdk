@@ -1,11 +1,11 @@
 import argparse
 import json
 
-from pycspr import NodeSseClient as NodeClient
-from pycspr import NodeConnectionInfo
 from pycspr import NodeEventChannel
 from pycspr import NodeEventInfo
 from pycspr import NodeEventType
+from pycspr import NodeSseClient as NodeClient
+from pycspr import NodeSseConnectionInfo as NodeConnectionInfo
 
 
 # CLI argument parser.
@@ -95,10 +95,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
-        host=args.node_host,
-        port_sse=args.node_port_sse
-    ))
+    return NodeClient(NodeConnectionInfo(args.node_host, args.node_port_sse))
 
 
 def _on_event(event_info: NodeEventInfo, fhandle):

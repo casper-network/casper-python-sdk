@@ -1,7 +1,8 @@
 import typing
 
-from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rpc import Client as RpcClient
+from pycspr.api.rpc import ConnectionInfo as RpcClientConnectionInfo
+from pycspr.api.sse.connection import ConnectionInfo
 from pycspr.api.sse.proxy import Proxy
 from pycspr.api.sse.types import NodeEventChannel
 from pycspr.api.sse.types import NodeEventInfo
@@ -13,17 +14,21 @@ class Client():
     """Node SSE server client.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo, rpc_client: RpcClient = None):
+    def __init__(self, connection_info: ConnectionInfo, rpc_client: RpcClient = None):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node.
         :param rpc_client: Node RPC client.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port_sse)
+        self.proxy = Proxy(connection_info.host, connection_info.port)
 
         # Extension methods -> 2nd order functions.
-        ext = ClientExtensions(self, rpc_client or RpcClient(connection_info))
+        ext = ClientExtensions(self, rpc_client or \
+            RpcClient(
+                RpcClientConnectionInfo(connection_info.host, connection_info.port_rpc)
+            )
+        )
         self.await_n_blocks = ext.await_n_blocks
         self.await_n_eras = ext.await_n_eras
         self.await_n_events = ext.await_n_events

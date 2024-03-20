@@ -16,11 +16,14 @@ from pycspr import factory
 from pycspr import serialisation
 from pycspr import types
 
-from pycspr.api import NodeConnectionInfo
 from pycspr.api import NodeRestClient
+from pycspr.api import NodeRestConnectionInfo
 from pycspr.api import NodeRpcClient
+from pycspr.api import NodeRpcConnectionInfo
 from pycspr.api import NodeSpeculativeRpcClient
+from pycspr.api import NodeSpeculativeRpcConnectionInfo
 from pycspr.api import NodeSseClient
+from pycspr.api import NodeSseConnectionInfo
 from pycspr.api import NodeEventChannel
 from pycspr.api import NodeEventInfo
 from pycspr.api import NodeEventType

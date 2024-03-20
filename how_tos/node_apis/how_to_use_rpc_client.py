@@ -5,7 +5,7 @@ import typing
 
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
-from pycspr import NodeConnectionInfo
+from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.api.rpc import types as rpc_types
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
@@ -68,11 +68,7 @@ _ARGS.add_argument(
 
 class _Context():
     def __init__(self, args: argparse.Namespace):
-        self.client = NodeClient(NodeConnectionInfo(
-            host=args.node_host,
-            port_rest=args.node_port_rest,
-            port_rpc=args.node_port_rpc,
-        ))
+        self.client = NodeClient(NodeConnectionInfo(args.node_host, args.node_port_rpc))
         self.user_public_key = pycspr.parse_public_key(args.path_to_account_key)
 
 

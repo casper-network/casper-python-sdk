@@ -55,12 +55,15 @@ def _has_member(mod, member):
 # Expected interface.
 _INTERFACE_OF_LIBRARY = {
     _has_class: {
-        "NodeConnectionInfo",
         "NodeEventInfo",
         "NodeRestClient",
+        "NodeRestConnectionInfo",
         "NodeRpcClient",
+        "NodeRpcConnectionInfo",
         "NodeSpeculativeRpcClient",
+        "NodeSpeculativeRpcConnectionInfo",
         "NodeSseClient",
+        "NodeSseConnectionInfo",
         "PublicKey",
         "PrivateKey",
     },
@@ -123,7 +126,11 @@ def test_version_of_library():
 def test_exports_of_library():
     for assertor, members in _INTERFACE_OF_LIBRARY.items():
         for member in members:
-            assertor(pycspr, member)
+            try:
+                assertor(pycspr, member)
+            except Exception as err:
+                print(err)
+                raise err
 
 
 def _test_exports(module, interface):

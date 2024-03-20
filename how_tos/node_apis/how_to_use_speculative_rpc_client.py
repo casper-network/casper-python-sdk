@@ -7,8 +7,8 @@ import random
 import typing
 
 import pycspr
-from pycspr.api import NodeConnectionInfo
 from pycspr.api import NodeSpeculativeRpcClient as NodeClient
+from pycspr.api import NodeSpeculativeRpcConnectionInfo as NodeConnection
 from pycspr.crypto import KeyAlgorithm
 from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
@@ -104,10 +104,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr speculative RPC client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
-        host=args.node_host,
-        port_rpc_speculative=args.node_port_rpc_speculative,
-    ))
+    return NodeClient(NodeConnection(args.node_host, args.node_port_rpc_speculative))
 
 
 def _get_counter_parties(args: argparse.Namespace) -> typing.Tuple[PrivateKey, PublicKey]:

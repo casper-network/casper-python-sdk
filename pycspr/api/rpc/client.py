@@ -1,8 +1,8 @@
 import time
 import typing
 
-from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rpc import decoder
+from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.api.rpc import types as rpc_types
 from pycspr.types.chain import AccountID
@@ -23,7 +23,7 @@ class Client():
     """Node RPC server client.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo):
+    def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
         :param connection: Information required to connect to a node.
@@ -31,7 +31,7 @@ class Client():
         """
         self.proxy = Proxy(
             host=connection_info.host,
-            port=connection_info.port_rpc,
+            port=connection_info.port,
         )
 
         # Alias methods.

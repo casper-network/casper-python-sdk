@@ -1,8 +1,8 @@
 import argparse
 import typing
 
-from pycspr.api.rest import Client as NodeRestClient
-from pycspr import NodeConnectionInfo
+from pycspr import NodeRestClient as NodeClient
+from pycspr import NodeRestConnectionInfo as NodeConnectionInfo
 
 
 # CLI argument parser.
@@ -29,11 +29,7 @@ _ARGS.add_argument(
 
 class _Context():
     def __init__(self, args: argparse.Namespace):
-        # Use rest specific api client.
-        self.client = NodeRestClient(NodeConnectionInfo(
-            host=args.node_host,
-            port_rest=args.node_port_rest,
-        ))
+        self.client = NodeClient(NodeConnectionInfo(args.node_host, args.node_port_rest))
 
 
 def _main(args: argparse.Namespace):

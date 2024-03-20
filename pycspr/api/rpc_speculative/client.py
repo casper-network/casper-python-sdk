@@ -1,4 +1,4 @@
-from pycspr.api.connection import NodeConnectionInfo
+from pycspr.api.rpc_speculative.connection import ConnectionInfo
 from pycspr.api.rpc_speculative.proxy import Proxy
 from pycspr.types.chain import BlockID
 from pycspr.types.chain import Deploy
@@ -8,13 +8,13 @@ class Client():
     """Node speculative RPC server client.
 
     """
-    def __init__(self, connection_info: NodeConnectionInfo) -> dict:
+    def __init__(self, connection_info: ConnectionInfo) -> dict:
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port_rpc_speculative)
+        self.proxy = Proxy(connection_info.host, connection_info.port)
 
     def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
         """Dispatches a deploy to a node for speculative execution.

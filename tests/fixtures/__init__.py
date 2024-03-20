@@ -24,16 +24,19 @@ from tests.fixtures.deploys import deploy_params
 from tests.fixtures.deploys import deploy_params_static
 from tests.fixtures.deploys import a_deploy
 from tests.fixtures.iterator_deploy_entities import yield_entities as deploy_entities_iterator
+from tests.fixtures.node import CONNECTION_REST
+from tests.fixtures.node import CONNECTION_RPC
+from tests.fixtures.node import CONNECTION_RPC_SPECULATIVE
+from tests.fixtures.node import CONNECTION_SSE
 from tests.fixtures.node import RPC_CLIENT
 from tests.fixtures.node import REST_CLIENT
 from tests.fixtures.node import SSE_CLIENT
 from tests.fixtures.node import SPECULATIVE_RPC_CLIENT
-from tests.fixtures.node import NODE_CONNECTION
 from tests.fixtures.node import NODE_HOST
-from tests.fixtures.node import NODE_PORT_REST
-from tests.fixtures.node import NODE_PORT_RPC
-from tests.fixtures.node import NODE_PORT_RPC_SPECULATIVE
-from tests.fixtures.node import NODE_PORT_SSE
+from tests.fixtures.node import PORT_REST
+from tests.fixtures.node import PORT_RPC
+from tests.fixtures.node import PORT_RPC_SPECULATIVE
+from tests.fixtures.node import PORT_SSE
 from tests.fixtures.vectors import cl_types as cl_types_vector
 from tests.fixtures.vectors import cl_values as cl_values_vector
 from tests.fixtures.vectors import crypto_checksums

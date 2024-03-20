@@ -1,4 +1,5 @@
 from pycspr.api.sse.client import Client
+from pycspr.api.sse.connection import ConnectionInfo
 from pycspr.api.sse.types import NodeEventChannel
 from pycspr.api.sse.types import NodeEventInfo
 from pycspr.api.sse.types import NodeEventType

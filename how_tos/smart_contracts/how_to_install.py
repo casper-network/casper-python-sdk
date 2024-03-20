@@ -4,7 +4,7 @@ import pathlib
 
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
-from pycspr import NodeConnectionInfo
+from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.crypto import PrivateKey
 from pycspr.types.cl import CLV_String
@@ -155,10 +155,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     """Returns a pycspr client instance.
 
     """
-    return NodeClient(NodeConnectionInfo(
-        host=args.node_host,
-        port_rpc=args.node_port_rpc,
-    ))
+    return NodeClient(NodeConnectionInfo(args.node_host, args.node_port_rpc))
 
 
 def _get_operator_key(args: argparse.Namespace) -> PrivateKey:
