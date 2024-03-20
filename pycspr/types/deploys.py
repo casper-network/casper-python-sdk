@@ -3,10 +3,10 @@ import typing
 
 from pycspr import crypto
 from pycspr.types.cl import CL_Value
-from pycspr.types.keys import PrivateKey
-from pycspr.types.keys import PublicKey
 from pycspr.types.identifiers import ContractID
 from pycspr.types.identifiers import ContractVersion
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
 from pycspr.types.misc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion

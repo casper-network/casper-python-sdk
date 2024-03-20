@@ -17,6 +17,7 @@ from pycspr.types import DeployExecutableItem
 from pycspr.types import ModuleBytes
 from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
+from pycspr.types import Timestamp
 from pycspr.types import Transfer
 from pycspr.types.cl import CL_Option
 from pycspr.types.cl import CL_PublicKey
@@ -26,7 +27,6 @@ from pycspr.types.cl import CL_U64
 from pycspr.types.cl import CL_U512
 from pycspr.types.cl import CL_URef
 from pycspr.types.cl import CL_Value
-from pycspr.types.misc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io

@@ -34,5 +34,6 @@ from pycspr.types.identifiers import PurseID
 from pycspr.types.identifiers import PurseIDType
 from pycspr.types.identifiers import StateRootID
 
-from pycspr.types.keys import PrivateKey
-from pycspr.types.keys import PublicKey
+from pycspr.types.misc import PrivateKey
+from pycspr.types.misc import PublicKey
+from pycspr.types.misc import Timestamp

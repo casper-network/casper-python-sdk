@@ -16,8 +16,8 @@ from pycspr.types import StoredContractByHash
 from pycspr.types import StoredContractByHashVersioned
 from pycspr.types import StoredContractByName
 from pycspr.types import StoredContractByNameVersioned
+from pycspr.types import Timestamp
 from pycspr.types import Transfer
-from pycspr.types.misc import Timestamp
 from pycspr.types.cl import CL_Type_ByteArray
 from pycspr.types.cl import CL_Type_U32
 from pycspr.types.cl import CL_Type_U64
