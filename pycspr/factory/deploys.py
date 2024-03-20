@@ -6,13 +6,14 @@ from pycspr import crypto
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types import CL_Option
-from pycspr.types import CL_PublicKey
-from pycspr.types import CL_Type_U64
-from pycspr.types import CL_U8
-from pycspr.types import CL_U64
-from pycspr.types import CL_U512
-from pycspr.types import CL_URef
+from pycspr.types.cl import CL_Option
+from pycspr.types.cl import CL_PublicKey
+from pycspr.types.cl import CL_Type_U64
+from pycspr.types.cl import CL_U8
+from pycspr.types.cl import CL_U64
+from pycspr.types.cl import CL_U512
+from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CL_Value
 from pycspr.types import Deploy
 from pycspr.types import DeployArgument
 from pycspr.types import DeployApproval
@@ -26,7 +27,6 @@ from pycspr.types import PrivateKey
 from pycspr.types import PublicKey
 from pycspr.types import Timestamp
 from pycspr.types import Transfer
-from pycspr.types.cl_values import CL_Value
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io

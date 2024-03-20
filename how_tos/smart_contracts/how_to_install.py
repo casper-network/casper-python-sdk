@@ -6,9 +6,9 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types import CL_String
-from pycspr.types import CL_U8
-from pycspr.types import CL_U256
+from pycspr.types.cl import CL_String
+from pycspr.types.cl import CL_U8
+from pycspr.types.cl import CL_U256
 from pycspr.types import Deploy
 from pycspr.types import DeployParameters
 from pycspr.types import ModuleBytes

@@ -7,8 +7,8 @@ from pycspr.api.rpc.proxy import Proxy
 from pycspr.api.rpc import types as rpc_types
 from pycspr.types import AccountID
 from pycspr.types import BlockID
-from pycspr.types import CL_Key
-from pycspr.types import CL_URef
+from pycspr.types.cl import CL_Key
+from pycspr.types.cl import CL_URef
 from pycspr.types import DeployID
 from pycspr.types import Deploy
 from pycspr.types import DictionaryID

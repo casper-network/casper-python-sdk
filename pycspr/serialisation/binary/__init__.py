@@ -1,8 +1,8 @@
 from pycspr.serialisation.binary import cl_type as serialiser_of_cl_types
 from pycspr.serialisation.binary import cl_value as serialiser_of_cl_values
 from pycspr.serialisation.binary import entity as serialiser_of_entites
-from pycspr.types.cl_types import CL_Type
-from pycspr.types.cl_values import CL_Value
+from pycspr.types.cl import CL_Type
+from pycspr.types.cl import CL_Value
 
 
 def to_bytes(entity: object) -> bytes:

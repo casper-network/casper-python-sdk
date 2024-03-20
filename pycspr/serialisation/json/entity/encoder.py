@@ -2,7 +2,7 @@ import typing
 
 from pycspr.crypto import cl_checksum
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
-from pycspr.types.cl_values import CL_Value
+from pycspr.types.cl import CL_Value
 from pycspr.types.deploys import Deploy
 from pycspr.types.deploys import DeployApproval
 from pycspr.types.deploys import DeployArgument

@@ -1,8 +1,32 @@
 from pycspr.crypto import cl_checksum
-from pycspr.types import cl_values
+from pycspr.types.cl import CL_Value
+from pycspr.types.cl import CL_Any
+from pycspr.types.cl import CL_Bool
+from pycspr.types.cl import CL_ByteArray
+from pycspr.types.cl import CL_I32
+from pycspr.types.cl import CL_I64
+from pycspr.types.cl import CL_U8
+from pycspr.types.cl import CL_U32
+from pycspr.types.cl import CL_U64
+from pycspr.types.cl import CL_U128
+from pycspr.types.cl import CL_U256
+from pycspr.types.cl import CL_U512
+from pycspr.types.cl import CL_Key
+from pycspr.types.cl import CL_KeyType
+from pycspr.types.cl import CL_List
+from pycspr.types.cl import CL_Map
+from pycspr.types.cl import CL_Option
+from pycspr.types.cl import CL_PublicKey
+from pycspr.types.cl import CL_Result
+from pycspr.types.cl import CL_String
+from pycspr.types.cl import CL_Tuple1
+from pycspr.types.cl import CL_Tuple2
+from pycspr.types.cl import CL_Tuple3
+from pycspr.types.cl import CL_Unit
+from pycspr.types.cl import CL_URef
 
 
-def encode(entity: cl_values.CL_Value) -> object:
+def encode(entity: CL_Value) -> object:
     """Encodes a CL value as value interpretable by humans.
 
     :param entity: A CL value to be encoded.
@@ -17,76 +41,76 @@ def encode(entity: cl_values.CL_Value) -> object:
         return encoder(entity)
 
 
-def _encode_any(entity: cl_values.CL_Any) -> object:
+def _encode_any(entity: CL_Any) -> object:
     raise NotImplementedError()
 
 
-def _encode_key(entity: cl_values.CL_Key) -> bytes:
-    if entity.key_type == cl_values.CL_KeyType.ACCOUNT:
+def _encode_key(entity: CL_Key) -> bytes:
+    if entity.key_type == CL_KeyType.ACCOUNT:
         return {
             "Account": f"account-hash-{cl_checksum.encode(entity.identifier)}"
         }
-    elif entity.key_type == cl_values.CL_KeyType.HASH:
+    elif entity.key_type == CL_KeyType.HASH:
         return {
             "Hash": f"hash-{cl_checksum.encode(entity.identifier)}"
         }
-    elif entity.key_type == cl_values.CL_KeyType.UREF:
+    elif entity.key_type == CL_KeyType.UREF:
         return {
             "URef": f"uref-{cl_checksum.encode(entity.identifier)}"
         }
 
 
-def _encode_result(entity: cl_values.CL_Result) -> bytes:
+def _encode_result(entity: CL_Result) -> bytes:
     raise NotImplementedError()
 
 
 _ENCODERS = {
-    cl_values.CL_Any:
+    CL_Any:
         _encode_any,
-    cl_values.CL_Bool:
+    CL_Bool:
         lambda x: str(x.value),
-    cl_values.CL_ByteArray:
+    CL_ByteArray:
         lambda x: cl_checksum.encode(x.value),
-    cl_values.CL_I32:
+    CL_I32:
         lambda x: x.value,
-    cl_values.CL_I64:
+    CL_I64:
         lambda x: x.value,
-    cl_values.CL_Key:
+    CL_Key:
         _encode_key,
-    cl_values.CL_List:
+    CL_List:
         lambda x: [encode(i) for i in x.vector],
-    cl_values.CL_Map:
+    CL_Map:
         lambda x: [{"key": encode(k), "value": encode(v)} for (k, v) in x.value],
-    cl_values.CL_Map:
+    CL_Map:
         lambda x: x,
-    cl_values.CL_Option:
+    CL_Option:
         lambda x: "" if x.value is None else encode(x.value),
-    cl_values.CL_PublicKey:
+    CL_PublicKey:
         lambda x: cl_checksum.encode_account_key(x.account_key),
-    cl_values.CL_Result:
+    CL_Result:
         _encode_result,
-    cl_values.CL_String:
+    CL_String:
         lambda x: x.value,
-    cl_values.CL_Tuple1:
+    CL_Tuple1:
         lambda x: (encode(x.v0),),
-    cl_values.CL_Tuple2:
+    CL_Tuple2:
         lambda x: (encode(x.v0), encode(x.v1)),
-    cl_values.CL_Tuple3:
+    CL_Tuple3:
         lambda x: (encode(x.v0), encode(x.v1), encode(x.v2)),
-    cl_values.CL_U8:
+    CL_U8:
         lambda x: x.value,
-    cl_values.CL_U32:
+    CL_U32:
         lambda x: x.value,
-    cl_values.CL_U64:
+    CL_U64:
         lambda x: x.value,
-    cl_values.CL_U128:
+    CL_U128:
         lambda x: str(x.value),
-    cl_values.CL_U256:
+    CL_U256:
         lambda x: str(x.value),
-    cl_values.CL_U512:
+    CL_U512:
         lambda x: str(x.value),
-    cl_values.CL_Unit:
+    CL_Unit:
         lambda x: "",
-    cl_values.CL_URef:
+    CL_URef:
         lambda x: f"uref-{cl_checksum.encode(x.address)}-{x.access_rights.value:03}",
 }

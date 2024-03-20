@@ -2,7 +2,7 @@ import dataclasses
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl_values import CL_Value
+from pycspr.types.cl import CL_Value
 from pycspr.types.keys import PrivateKey
 from pycspr.types.keys import PublicKey
 from pycspr.types.identifiers import ContractID

@@ -2,7 +2,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.types.cl_values import CL_URef
+from pycspr.types.cl import CL_URef
 
 
 # The output of a one way hashing function - 32 bytes.

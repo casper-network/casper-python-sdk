@@ -45,14 +45,14 @@ def yield_entities() -> typing.Iterator[object]:
 
 
 def _create_deploy_argument() -> DeployArgument:
-    return DeployArgument("test-arg", types.CL_U64(1000000))
+    return DeployArgument("test-arg", types.cl.CL_U64(1000000))
 
 
 def _create_deploy_argument_set() -> typing.List[DeployArgument]:
     return [
-        DeployArgument("test-arg-1", types.CL_U64(1000001)),
-        DeployArgument("test-arg-2", types.CL_U64(1000002)),
-        DeployArgument("test-arg-3", types.CL_U64(1000003)),
+        DeployArgument("test-arg-1", types.cl.CL_U64(1000001)),
+        DeployArgument("test-arg-2", types.cl.CL_U64(1000002)),
+        DeployArgument("test-arg-3", types.cl.CL_U64(1000003)),
     ]
 
 

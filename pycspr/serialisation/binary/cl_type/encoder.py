@@ -1,10 +1,15 @@
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
-from pycspr.types import cl_types
-from pycspr.types import cl_values
-from pycspr.types import CL_TypeKey
+from pycspr.types.cl import CL_Type
+from pycspr.types.cl import CL_TypeKey
+from pycspr.types.cl import CL_Type_ByteArray
+from pycspr.types.cl import CL_Type_List
+from pycspr.types.cl import CL_Type_Map
+from pycspr.types.cl import CL_Type_Option
+from pycspr.types.cl import CL_Type_Tuple1
+from pycspr.types.cl import CL_U32
 
 
-def encode(entity: cl_types.CL_Type) -> bytes:
+def encode(entity: CL_Type) -> bytes:
     """Encoder: CL type -> an array of bytes.
 
     :param entity: A CL type to be encoded.
@@ -19,31 +24,31 @@ def encode(entity: cl_types.CL_Type) -> bytes:
         raise ValueError("Unrecognized cl type")
 
 
-def _encode_byte_array(entity: cl_types.CL_Type_ByteArray):
-    return encode_cl_value(cl_values.CL_U32(entity.size))
+def _encode_byte_array(entity: CL_Type_ByteArray):
+    return encode_cl_value(CL_U32(entity.size))
 
 
-def _encode_list(entity: cl_types.CL_Type_List):
+def _encode_list(entity: CL_Type_List):
     return encode(entity.inner_type)
 
 
-def _encode_map(entity: cl_types.CL_Type_Map):
+def _encode_map(entity: CL_Type_Map):
     return encode(entity.key_type) + encode(entity.value_type)
 
 
-def _encode_option(entity: cl_types.CL_Type_Option):
+def _encode_option(entity: CL_Type_Option):
     return encode(entity.inner_type)
 
 
-def _encode_tuple_1(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_1(entity: CL_Type_Tuple1):
     return encode(entity.t0_type)
 
 
-def _encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_2(entity: CL_Type_Tuple1):
     return encode(entity.t0_type) + encode(entity.t1_type)
 
 
-def _encode_tuple_3(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_3(entity: CL_Type_Tuple1):
     return encode(entity.t0_type) + encode(entity.t1_type) + encode(entity.t2_type)
 
 

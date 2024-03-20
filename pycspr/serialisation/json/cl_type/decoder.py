@@ -1,9 +1,32 @@
 import typing
 
-from pycspr.types import cl_types
+from pycspr.types.cl.types import CL_Type
+from pycspr.types.cl.types import CL_Type_Any
+from pycspr.types.cl.types import CL_Type_Bool
+from pycspr.types.cl.types import CL_Type_ByteArray
+from pycspr.types.cl.types import CL_Type_I32
+from pycspr.types.cl.types import CL_Type_I64
+from pycspr.types.cl.types import CL_Type_U8
+from pycspr.types.cl.types import CL_Type_U32
+from pycspr.types.cl.types import CL_Type_U64
+from pycspr.types.cl.types import CL_Type_U128
+from pycspr.types.cl.types import CL_Type_U256
+from pycspr.types.cl.types import CL_Type_U512
+from pycspr.types.cl.types import CL_Type_Key
+from pycspr.types.cl.types import CL_Type_List
+from pycspr.types.cl.types import CL_Type_Map
+from pycspr.types.cl.types import CL_Type_Option
+from pycspr.types.cl.types import CL_Type_PublicKey
+from pycspr.types.cl.types import CL_Type_Result
+from pycspr.types.cl.types import CL_Type_String
+from pycspr.types.cl.types import CL_Type_Tuple1
+from pycspr.types.cl.types import CL_Type_Tuple2
+from pycspr.types.cl.types import CL_Type_Tuple3
+from pycspr.types.cl.types import CL_Type_Unit
+from pycspr.types.cl.types import CL_Type_URef
 
 
-def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
+def decode(encoded: typing.Union[str, dict]) -> CL_Type:
     """Decoder: CL type info <- JSON blob.
 
     :param encoded: A CL type previously encoded as JSON.
@@ -31,37 +54,37 @@ def decode(encoded: typing.Union[str, dict]) -> cl_types.CL_Type:
 
 
 def _decode_byte_array(obj: dict):
-    return cl_types.CL_Type_ByteArray(obj["ByteArray"])
+    return CL_Type_ByteArray(obj["ByteArray"])
 
 
 def _decode_list(obj: dict):
-    return cl_types.CL_Type_List(decode(obj["List"]))
+    return CL_Type_List(decode(obj["List"]))
 
 
 def _decode_map(obj: dict):
-    return cl_types.CL_Type_Map(
+    return CL_Type_Map(
         decode(obj["Map"]["key"]),
         decode(obj["Map"]["value"])
         )
 
 
 def _decode_option(obj: dict):
-    return cl_types.CL_Type_Option(decode(obj["Option"]))
+    return CL_Type_Option(decode(obj["Option"]))
 
 
 def _decode_tuple_1(obj: dict):
-    return cl_types.CL_Type_Tuple1(decode(obj["Tuple1"]))
+    return CL_Type_Tuple1(decode(obj["Tuple1"]))
 
 
 def _decode_tuple_2(obj: dict):
-    return cl_types.CL_Type_Tuple2(
+    return CL_Type_Tuple2(
         decode(obj["Tuple2"][0]),
         decode(obj["Tuple2"][1])
         )
 
 
 def _decode_tuple_3(obj: dict):
-    return cl_types.CL_Type_Tuple3(
+    return CL_Type_Tuple3(
         decode(obj["Tuple3"][0]),
         decode(obj["Tuple3"][1]),
         decode(obj["Tuple3"][2])
@@ -69,20 +92,20 @@ def _decode_tuple_3(obj: dict):
 
 
 _SIMPLE_TYPES = {
-    "Any": cl_types.CL_Type_Any,
-    "Bool": cl_types.CL_Type_Bool,
-    "I32": cl_types.CL_Type_I32,
-    "I64": cl_types.CL_Type_I64,
-    "Key": cl_types.CL_Type_Key,
-    "PublicKey": cl_types.CL_Type_PublicKey,
-    "Result": cl_types.CL_Type_Result,
-    "String": cl_types.CL_Type_String,
-    "U8": cl_types.CL_Type_U8,
-    "U32": cl_types.CL_Type_U32,
-    "U64": cl_types.CL_Type_U64,
-    "U128": cl_types.CL_Type_U128,
-    "U256": cl_types.CL_Type_U256,
-    "U512": cl_types.CL_Type_U512,
-    "Unit": cl_types.CL_Type_Unit,
-    "URef": cl_types.CL_Type_URef,
+    "Any": CL_Type_Any,
+    "Bool": CL_Type_Bool,
+    "I32": CL_Type_I32,
+    "I64": CL_Type_I64,
+    "Key": CL_Type_Key,
+    "PublicKey": CL_Type_PublicKey,
+    "Result": CL_Type_Result,
+    "String": CL_Type_String,
+    "U8": CL_Type_U8,
+    "U32": CL_Type_U32,
+    "U64": CL_Type_U64,
+    "U128": CL_Type_U128,
+    "U256": CL_Type_U256,
+    "U512": CL_Type_U512,
+    "Unit": CL_Type_Unit,
+    "URef": CL_Type_URef,
 }

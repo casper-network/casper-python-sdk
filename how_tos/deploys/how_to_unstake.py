@@ -8,7 +8,7 @@ from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types import Deploy
 from pycspr.types import PrivateKey
-from pycspr.types import CL_URef
+from pycspr.types.cl import CL_URef
 
 
 # Path to CCTL assets.

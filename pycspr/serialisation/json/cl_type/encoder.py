@@ -1,10 +1,15 @@
 import typing
 
-from pycspr.types import cl_types
-from pycspr.types import CL_TypeKey
+from pycspr.types.cl.types import CL_Type
+from pycspr.types.cl.types import CL_TypeKey
+from pycspr.types.cl.types import CL_Type_ByteArray
+from pycspr.types.cl.types import CL_Type_List
+from pycspr.types.cl.types import CL_Type_Map
+from pycspr.types.cl.types import CL_Type_Option
+from pycspr.types.cl.types import CL_Type_Tuple1
 
 
-def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
+def encode(entity: CL_Type) -> typing.Union[str, dict]:
     """Encoder: CL type -> JSON blob.
 
     :param entity: A CL type to be encoded.
@@ -22,19 +27,19 @@ def encode(entity: cl_types.CL_Type) -> typing.Union[str, dict]:
         return encoder(entity)
 
 
-def _encode_byte_array(entity: cl_types.CL_Type_ByteArray):
+def _encode_byte_array(entity: CL_Type_ByteArray):
     return {
         "ByteArray": entity.size
     }
 
 
-def _encode_list(entity: cl_types.CL_Type_List):
+def _encode_list(entity: CL_Type_List):
     return {
         "List": encode(entity.inner_type)
     }
 
 
-def _encode_map(entity: cl_types.CL_Type_Map):
+def _encode_map(entity: CL_Type_Map):
     return {
         "Map": {
             "key": encode(entity.key_type),
@@ -43,19 +48,19 @@ def _encode_map(entity: cl_types.CL_Type_Map):
     }
 
 
-def _encode_option(entity: cl_types.CL_Type_Option):
+def _encode_option(entity: CL_Type_Option):
     return {
         "Option": encode(entity.inner_type)
     }
 
 
-def _encode_tuple_1(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_1(entity: CL_Type_Tuple1):
     return {
         "Tuple1": encode(entity.t0_type)
     }
 
 
-def _encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_2(entity: CL_Type_Tuple1):
     return {
         "Tuple2": [
             encode(entity.t0_type),
@@ -64,7 +69,7 @@ def _encode_tuple_2(entity: cl_types.CL_Type_Tuple1):
     }
 
 
-def _encode_tuple_3(entity: cl_types.CL_Type_Tuple1):
+def _encode_tuple_3(entity: CL_Type_Tuple1):
     return {
         "Tuple3": [
             encode(entity.t0_type),

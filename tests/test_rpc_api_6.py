@@ -1,7 +1,7 @@
 from pycspr import NodeRpcClient
 from pycspr.api.rpc import types as rpc_types
-from pycspr.types import CL_URef
-from pycspr.types import CL_URefAccessRights
+from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CL_URefAccessRights
 
 
 def test_get_state_root(RPC_CLIENT: NodeRpcClient):

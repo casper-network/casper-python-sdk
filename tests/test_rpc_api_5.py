@@ -1,5 +1,5 @@
 from pycspr import NodeRpcClient
-from pycspr.types import CL_URef
+from pycspr.types.cl import CL_URef
 from pycspr.types import GlobalStateID
 from pycspr.types import PurseID
 from pycspr.types import PurseIDType

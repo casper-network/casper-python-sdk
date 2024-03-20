@@ -3,8 +3,8 @@ import typing
 from pycspr.serialisation.json import cl_type as serializer_of_cl_types
 from pycspr.serialisation.json import cl_value as serializer_of_cl_values
 from pycspr.serialisation.json import entity as serializer_of_entities
-from pycspr.types.cl_types import CL_Type
-from pycspr.types.cl_values import CL_Value
+from pycspr.types.cl import CL_Type
+from pycspr.types.cl import CL_Value
 
 
 def to_json(entity: object) -> typing.Union[str, dict]:

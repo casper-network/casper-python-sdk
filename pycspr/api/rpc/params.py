@@ -4,7 +4,7 @@ from pycspr import serialisation
 from pycspr.crypto import cl_checksum
 from pycspr.types import AccountID
 from pycspr.types import BlockID
-from pycspr.types import CL_Key
+from pycspr.types.cl import CL_Key
 from pycspr.types import DeployID
 from pycspr.types import DICTIONARY_ID_VARIANTS
 from pycspr.types import DictionaryID
