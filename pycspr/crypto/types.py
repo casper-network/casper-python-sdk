@@ -1,6 +1,21 @@
 import dataclasses
+import enum
 
-from pycspr import crypto
+
+class KeyAlgorithm(enum.Enum):
+    """Enumeration over set of supported key algorithms.
+
+    """
+    ED25519 = 1
+    SECP256K1 = 2
+
+
+class HashAlgorithm(enum.Enum):
+    """Enumeration over set of supported hash algorithms.
+
+    """
+    BLAKE2B = enum.auto()
+    BLAKE3 = enum.auto()
 
 
 @dataclasses.dataclass
@@ -9,7 +24,7 @@ class PublicKey():
 
     """
     # Algorithm used to generate ECC key pair.
-    algo: crypto.KeyAlgorithm
+    algo: KeyAlgorithm
 
     # Public key as raw bytes.
     pbk: bytes
@@ -17,12 +32,16 @@ class PublicKey():
     @property
     def account_hash(self) -> bytes:
         """Returns on-chain account hash."""
-        return crypto.get_account_hash(self.account_key)
+        from pycspr.crypto.cl_operations import get_account_hash
+
+        return get_account_hash(self.account_key)
 
     @property
     def account_key(self) -> bytes:
         """Returns on-chain account key."""
-        return crypto.get_account_key(self.algo, self.pbk)
+        from pycspr.crypto.cl_operations import get_account_key
+        
+        return get_account_key(self.algo, self.pbk)
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
@@ -46,7 +65,7 @@ class PrivateKey:
     pbk: bytes
 
     # Algorithm used to generate ECC key pair.
-    algo: crypto.KeyAlgorithm = crypto.KeyAlgorithm.ED25519
+    algo: KeyAlgorithm = KeyAlgorithm.ED25519
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pvk == other.pvk and self.pbk == other.pbk
@@ -68,19 +87,23 @@ class PrivateKey:
         return self.pbk
 
     @property
-    def key_algo(self) -> crypto.KeyAlgorithm:
+    def key_algo(self) -> KeyAlgorithm:
         """Associated key algorithm synonym."""
         return self.algo
 
     @property
     def account_hash(self) -> bytes:
         """Gets derived on-chain account hash - i.e. address."""
-        return crypto.get_account_hash(self.account_key)
+        from pycspr.crypto.cl_operations import get_account_hash
+
+        return get_account_hash(self.account_key)
 
     @property
     def account_key(self) -> bytes:
         """Gets on-chain account key."""
-        return crypto.get_account_key(self.algo, self.pbk)
+        from pycspr.crypto.cl_operations import get_account_key
+
+        return get_account_key(self.algo, self.pbk)
 
     @property
     def as_public_key(self) -> PublicKey:
@@ -92,5 +115,7 @@ class PrivateKey:
     def get_signature(self, data: bytes) -> bytes:
         """Get signature over payload.
 
-        """
-        return crypto.get_signature(data, self.pvk, self.algo)
+        """ 
+        from pycspr.crypto.ecc import get_signature        
+        
+        return get_signature(data, self.pvk, self.algo)

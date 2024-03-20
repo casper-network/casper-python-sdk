@@ -1,12 +1,13 @@
 import dataclasses
 import typing
 
-from pycspr import crypto
+from pycspr.crypto import get_signature_for_deploy_approval
+from pycspr.crypto import verify_deploy_approval_signature
+from pycspr.crypto import PrivateKey
+from pycspr.crypto import PublicKey
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.chain.identifiers import ContractID
 from pycspr.types.chain.identifiers import ContractVersion
-from pycspr.types.misc.crypto import PrivateKey
-from pycspr.types.misc.crypto import PublicKey
 from pycspr.types.misc.time import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -236,7 +237,7 @@ class Deploy():
         :params approver: Private key of entity approving the deploy.
 
         """
-        sig = crypto.get_signature_for_deploy_approval(
+        sig = get_signature_for_deploy_approval(
             self.hash, approver.private_key, approver.key_algo
             )
         approval = DeployApproval(approver.as_public_key, sig)
@@ -248,7 +249,7 @@ class Deploy():
         :params approval: An approval to be associated with the deploy.
 
         """
-        if not crypto.verify_deploy_approval_signature(
+        if not verify_deploy_approval_signature(
             self.hash, approval.signature, approval.signer.account_key
         ):
             raise ValueError("Invalid signature - please review your processes.")

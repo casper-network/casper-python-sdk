@@ -4,7 +4,6 @@ import typing
 
 from pycspr import crypto
 from pycspr.types.cl.types import CLT_Type
-from pycspr.types.misc import PublicKey
 
 
 @dataclasses.dataclass
@@ -187,7 +186,7 @@ class CLV_PublicKey(CLV_Value):
         return CLV_PublicKey(crypto.KeyAlgorithm(key[0]), key[1:])
 
     @staticmethod
-    def from_public_key(key: PublicKey) -> "CLV_PublicKey":
+    def from_public_key(key: crypto.PublicKey) -> "CLV_PublicKey":
         return CLV_PublicKey(key.algo, key.pbk)
 
 

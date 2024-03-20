@@ -1,8 +1,8 @@
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
-from pycspr.crypto.enums import HashAlgorithm
-from pycspr.crypto.enums import KeyAlgorithm
 from pycspr.crypto.hashifier import get_hash
+from pycspr.crypto.types import HashAlgorithm
+from pycspr.crypto.types import KeyAlgorithm
 
 
 # Desired length of hash digest.

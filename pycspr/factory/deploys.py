@@ -3,6 +3,9 @@ import random
 import typing
 
 from pycspr import crypto
+from pycspr.crypto import PrivateKey
+from pycspr.crypto import PublicKey
+from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
@@ -24,8 +27,6 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
-from pycspr.types.misc import PrivateKey
-from pycspr.types.misc import PublicKey
 from pycspr.types.misc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -69,9 +70,11 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
 
     return DeployApproval(
         approver.as_public_key,
-        crypto.get_signature_for_deploy_approval(
-            deploy_hash, approver.private_key, approver.key_algo
-            )
+        get_signature_for_deploy_approval(
+            deploy_hash,
+            approver.private_key,
+            approver.key_algo
+        )
     )
 
 

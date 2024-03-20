@@ -35,6 +35,8 @@ from pycspr.crypto import get_account_key_algo
 from pycspr.crypto import get_hash
 from pycspr.crypto import HashAlgorithm
 from pycspr.crypto import KeyAlgorithm
+from pycspr.crypto import PublicKey
+from pycspr.crypto import PrivateKey
 
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
@@ -56,9 +58,6 @@ from pycspr.serialisation import to_bytes
 from pycspr.serialisation import to_json
 from pycspr.serialisation import from_bytes
 from pycspr.serialisation import from_json
-
-from pycspr.types.misc import PublicKey
-from pycspr.types.misc import PrivateKey
 
 from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_deploy

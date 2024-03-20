@@ -1,12 +1,14 @@
 import pathlib
 import typing
 
-from pycspr import crypto
-from pycspr.types.misc import PrivateKey
-from pycspr.types.misc import PublicKey
+from pycspr.crypto import KeyAlgorithm
+from pycspr.crypto import PrivateKey
+from pycspr.crypto import PublicKey
+from pycspr.crypto import get_key_pair_from_bytes
+from pycspr.crypto import get_key_pair_from_pem_file
 
 
-def create_private_key(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:
+def create_private_key(algo: KeyAlgorithm, pvk: bytes, pbk: bytes) -> PrivateKey:
     """Returns an account holder's private key.
 
     :param algo: ECC key algorithm identifier.
@@ -15,12 +17,12 @@ def create_private_key(algo: crypto.KeyAlgorithm, pvk: bytes, pbk: bytes) -> Pri
 
     """
     if isinstance(algo, str):
-        algo = crypto.KeyAlgorithm[algo]
+        algo = KeyAlgorithm[algo]
 
     return PrivateKey(pvk, pbk, algo)
 
 
-def create_public_key(algo: crypto.KeyAlgorithm, pbk: bytes) -> PublicKey:
+def create_public_key(algo: KeyAlgorithm, pbk: bytes) -> PublicKey:
     """Returns an account holder's public key.
 
     :param algo: ECC key algorithm identifier.
@@ -37,12 +39,12 @@ def create_public_key_from_account_key(account_key: bytes) -> PublicKey:
     :returns: A public key.
 
     """
-    return create_public_key(crypto.KeyAlgorithm(account_key[0]), account_key[1:])
+    return create_public_key(KeyAlgorithm(account_key[0]), account_key[1:])
 
 
 def parse_private_key(
     fpath: pathlib.Path,
-    algo: typing.Union[str, crypto.KeyAlgorithm] = crypto.KeyAlgorithm.ED25519
+    algo: typing.Union[str, KeyAlgorithm] = KeyAlgorithm.ED25519
 ) -> PrivateKey:
     """Returns on-chain account information deserialised from a secret key held on file system.
 
@@ -51,15 +53,15 @@ def parse_private_key(
     :returns: On-chain account information wrapper.
 
     """
-    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
-    (pvk, pbk) = crypto.get_key_pair_from_pem_file(fpath, algo)
+    algo = KeyAlgorithm[algo] if isinstance(algo, str) else algo
+    (pvk, pbk) = get_key_pair_from_pem_file(fpath, algo)
 
     return create_private_key(algo, pvk, pbk)
 
 
 def parse_private_key_bytes(
     pvk: bytes,
-    algo: typing.Union[str, crypto.KeyAlgorithm] = crypto.KeyAlgorithm.ED25519
+    algo: typing.Union[str, KeyAlgorithm] = KeyAlgorithm.ED25519
 ) -> PrivateKey:
     """Returns a user's private key deserialised from a secret key.
 
@@ -68,8 +70,8 @@ def parse_private_key_bytes(
     :returns: Private key wrapper.
 
     """
-    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
-    (pvk, pbk) = crypto.get_key_pair_from_bytes(pvk, algo)
+    algo = KeyAlgorithm[algo] if isinstance(algo, str) else algo
+    (pvk, pbk) = get_key_pair_from_bytes(pvk, algo)
 
     return create_private_key(algo, pvk, pbk)
 
@@ -89,7 +91,7 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
 
 def parse_public_key_bytes(
     pbk: bytes,
-    algo: typing.Union[str, crypto.KeyAlgorithm]
+    algo: typing.Union[str, KeyAlgorithm]
 ) -> PublicKey:
     """Returns an account holder's public key.
 
@@ -98,6 +100,6 @@ def parse_public_key_bytes(
     :returns: A public key.
 
     """
-    algo = crypto.KeyAlgorithm[algo] if isinstance(algo, str) else algo
+    algo = KeyAlgorithm[algo] if isinstance(algo, str) else algo
 
     return create_public_key(algo, pbk)

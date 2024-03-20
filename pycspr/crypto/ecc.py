@@ -5,7 +5,7 @@ import typing
 from pycspr.crypto import ecc_ed25519 as ed25519
 from pycspr.crypto import ecc_secp256k1 as secp256k1
 from pycspr.crypto.defaults import DEFAULT_KEY_ALGO
-from pycspr.crypto.enums import KeyAlgorithm
+from pycspr.crypto.types import KeyAlgorithm
 
 
 # Map: ECC Algo Type -> ECC Algo Implementation.
