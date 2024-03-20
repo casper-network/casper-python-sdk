@@ -2,7 +2,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.types.cl.values import CL_URef
+from pycspr.types.cl.values import CLV_URef
 
 
 # The output of a one way hashing function - 32 bytes.
@@ -34,7 +34,7 @@ StateRootID = typing.Union[bytes, str]
 @dataclasses.dataclass
 class PurseID():
     # Purse identifier - account id | public key | uref.
-    identifier: typing.Union[AccountID, PublicKey, CL_URef]
+    identifier: typing.Union[AccountID, PublicKey, CLV_URef]
 
     # Type of identifier.
     id_type: "PurseIDType"

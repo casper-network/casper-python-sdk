@@ -15,7 +15,7 @@ from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.chain import PurseID
 from pycspr.types.chain import PurseIDType
 from pycspr.types.chain import StateRootID
-from pycspr.types.cl import CL_Key
+from pycspr.types.cl import CLV_Key
 
 
 # Map: global state identifier type to JSON-RPC paramater name.
@@ -103,7 +103,7 @@ def get_global_state_id(global_state_id: GlobalStateID) -> dict:
 
 
 def get_params_for_query_global_state(
-    key: CL_Key,
+    key: CLV_Key,
     path: typing.List[str],
     state_id: GlobalStateID
 ) -> dict:

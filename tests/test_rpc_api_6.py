@@ -1,7 +1,7 @@
 from pycspr import NodeRpcClient
 from pycspr.api.rpc import types as rpc_types
-from pycspr.types.cl import CL_URef
-from pycspr.types.cl import CL_URefAccessRights
+from pycspr.types.cl import CLV_URef
+from pycspr.types.cl import CLV_URefAccessRights
 
 
 def test_get_state_root(RPC_CLIENT: NodeRpcClient):
@@ -24,8 +24,8 @@ def test_get_account_info(RPC_CLIENT: NodeRpcClient, account_key: bytes):
 def test_get_account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes):
     def _assert(response):
         # e.g. uref-827d5984270fed5aaaf076e1801733414a307ed8c5d85cad8ebe6265ba887b3a-007
-        assert isinstance(response, CL_URef)
+        assert isinstance(response, CLV_URef)
         assert len(response.address) == 32
-        assert response.access_rights == CL_URefAccessRights.READ_ADD_WRITE
+        assert response.access_rights == CLV_URefAccessRights.READ_ADD_WRITE
 
     _assert(RPC_CLIENT.get_account_main_purse_uref(account_key))

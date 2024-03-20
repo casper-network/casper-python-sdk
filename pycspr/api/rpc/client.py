@@ -15,8 +15,8 @@ from pycspr.types.chain import Digest
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import PurseID
 from pycspr.types.chain import StateRootID
-from pycspr.types.cl import CL_Key
-from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CLV_Key
+from pycspr.types.cl import CLV_URef
 
 
 class Client():
@@ -314,7 +314,7 @@ class ClientExtensions():
         self,
         account_id: AccountID,
         block_id: BlockID = None
-    ) -> CL_URef:
+    ) -> CLV_URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -324,14 +324,14 @@ class ClientExtensions():
         """
         account_info = self.client.get_account_info(account_id, block_id)
 
-        return CL_URef.from_string(account_info["main_purse"])
+        return CLV_URef.from_string(account_info["main_purse"])
 
     def get_account_named_key(
         self,
         account_id: AccountID,
         key_name: str,
         block_id: BlockID = None
-    ) -> CL_Key:
+    ) -> CLV_Key:
         """Returns a key stored under an account's storage under a specific name.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -343,7 +343,7 @@ class ClientExtensions():
         account_info = self.client.get_account_info(account_id, block_id)
         for named_key in account_info["named_keys"]:
             if named_key["name"] == key_name:
-                return CL_Key.from_string(named_key["key"])
+                return CLV_Key.from_string(named_key["key"])
 
     def get_block_at_era_switch(
         self,

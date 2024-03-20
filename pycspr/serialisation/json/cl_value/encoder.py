@@ -3,10 +3,10 @@ from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.json.cl_type import encode as encode_cl_type
 from pycspr.serialisation.utils import cl_value_to_cl_type
 from pycspr.serialisation.utils import cl_value_to_parsed
-from pycspr.types.cl import CL_Value
+from pycspr.types.cl import CLV_Value
 
 
-def encode(entity: CL_Value) -> dict:
+def encode(entity: CLV_Value) -> dict:
     """Encoder: CL value -> JSON blob.
 
     :param entity: A CL value to be encoded.

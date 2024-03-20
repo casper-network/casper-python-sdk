@@ -6,9 +6,9 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types.cl import CL_String
-from pycspr.types.cl import CL_U8
-from pycspr.types.cl import CL_U256
+from pycspr.types.cl import CLV_String
+from pycspr.types.cl import CLV_U8
+from pycspr.types.cl import CLV_U256
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import ModuleBytes
@@ -190,10 +190,10 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
     session: ModuleBytes = ModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args={
-            "token_decimals": CL_U8(args.token_decimals),
-            "token_name": CL_String(args.token_name),
-            "token_symbol": CL_String(args.token_symbol),
-            "token_total_supply": CL_U256(args.token_total_supply),
+            "token_decimals": CLV_U8(args.token_decimals),
+            "token_name": CLV_String(args.token_name),
+            "token_symbol": CLV_String(args.token_symbol),
+            "token_total_supply": CLV_U256(args.token_total_supply),
         }
     )
 

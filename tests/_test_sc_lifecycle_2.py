@@ -8,9 +8,9 @@ from pycctl.types import AccountType
 from pycspr.api.rpc import Client as NodeClient
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import ModuleBytes
-from pycspr.types.cl import CL_String
-from pycspr.types.cl import CL_U8
-from pycspr.types.cl import CL_U256
+from pycspr.types.cl import CLV_String
+from pycspr.types.cl import CLV_U8
+from pycspr.types.cl import CLV_U256
 from pycctl.fsys import get_path_to_account_private_key
 
 
@@ -64,10 +64,10 @@ async def _get_tx() -> Deploy:
         ModuleBytes(
             module_bytes=pycspr.read_wasm(sc_binary_path),
             args={
-                "token_decimals": CL_U8(_TOKEN_DECIMALS),
-                "token_name": CL_String(_TOKEN_NAME),
-                "token_symbol": CL_String(_TOKEN_SYMBOL),
-                "token_total_supply": CL_U256(_TOKEN_SUPPLY),
+                "token_decimals": CLV_U8(_TOKEN_DECIMALS),
+                "token_name": CLV_String(_TOKEN_NAME),
+                "token_symbol": CLV_String(_TOKEN_SYMBOL),
+                "token_total_supply": CLV_U256(_TOKEN_SUPPLY),
             }
         )
 

@@ -1,7 +1,7 @@
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.types.cl import CL_Type
 from pycspr.types.cl import CL_TypeKey
-from pycspr.types.cl import CL_U32
+from pycspr.types.cl import CLV_U32
 
 
 def encode(entity: CL_Type) -> bytes:
@@ -21,7 +21,7 @@ def encode(entity: CL_Type) -> bytes:
 
 _ENCODERS: dict = {
     "complex": {
-        CL_TypeKey.BYTE_ARRAY: lambda x: encode_cl_value(CL_U32(x.size)),
+        CL_TypeKey.BYTE_ARRAY: lambda x: encode_cl_value(CLV_U32(x.size)),
         CL_TypeKey.LIST: lambda x: encode(x.inner_type),
         CL_TypeKey.MAP: lambda x: encode(x.key_type) + encode(x.value_type),
         CL_TypeKey.OPTION: lambda x: encode(x.inner_type),

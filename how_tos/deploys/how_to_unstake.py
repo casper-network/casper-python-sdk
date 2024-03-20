@@ -8,7 +8,7 @@ from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.types.misc import PrivateKey
 from pycspr.types.chain import Deploy
-from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CLV_URef
 
 
 # Path to CCTL assets.
@@ -103,7 +103,7 @@ def _main(args: argparse.Namespace):
         )
 
     # Set validator unbond purse.
-    validator_purse_uref: CL_URef = \
+    validator_purse_uref: CLV_URef = \
         client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
@@ -131,7 +131,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
 def _get_deploy(
     args: argparse.Namespace,
     validator: PrivateKey,
-    validator_purse_uref: CL_URef
+    validator_purse_uref: CLV_URef
 ) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 

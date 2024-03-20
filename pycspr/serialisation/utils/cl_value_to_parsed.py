@@ -1,32 +1,32 @@
 from pycspr.crypto import cl_checksum
-from pycspr.types.cl import CL_Value
-from pycspr.types.cl import CL_Any
-from pycspr.types.cl import CL_Bool
-from pycspr.types.cl import CL_ByteArray
-from pycspr.types.cl import CL_I32
-from pycspr.types.cl import CL_I64
-from pycspr.types.cl import CL_U8
-from pycspr.types.cl import CL_U32
-from pycspr.types.cl import CL_U64
-from pycspr.types.cl import CL_U128
-from pycspr.types.cl import CL_U256
-from pycspr.types.cl import CL_U512
-from pycspr.types.cl import CL_Key
-from pycspr.types.cl import CL_KeyType
-from pycspr.types.cl import CL_List
-from pycspr.types.cl import CL_Map
-from pycspr.types.cl import CL_Option
-from pycspr.types.cl import CL_PublicKey
-from pycspr.types.cl import CL_Result
-from pycspr.types.cl import CL_String
-from pycspr.types.cl import CL_Tuple1
-from pycspr.types.cl import CL_Tuple2
-from pycspr.types.cl import CL_Tuple3
-from pycspr.types.cl import CL_Unit
-from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CLV_Value
+from pycspr.types.cl import CLV_Any
+from pycspr.types.cl import CLV_Bool
+from pycspr.types.cl import CLV_ByteArray
+from pycspr.types.cl import CLV_I32
+from pycspr.types.cl import CLV_I64
+from pycspr.types.cl import CLV_U8
+from pycspr.types.cl import CLV_U32
+from pycspr.types.cl import CLV_U64
+from pycspr.types.cl import CLV_U128
+from pycspr.types.cl import CLV_U256
+from pycspr.types.cl import CLV_U512
+from pycspr.types.cl import CLV_Key
+from pycspr.types.cl import CLV_KeyType
+from pycspr.types.cl import CLV_List
+from pycspr.types.cl import CLV_Map
+from pycspr.types.cl import CLV_Option
+from pycspr.types.cl import CLV_PublicKey
+from pycspr.types.cl import CLV_Result
+from pycspr.types.cl import CLV_String
+from pycspr.types.cl import CLV_Tuple1
+from pycspr.types.cl import CLV_Tuple2
+from pycspr.types.cl import CLV_Tuple3
+from pycspr.types.cl import CLV_Unit
+from pycspr.types.cl import CLV_URef
 
 
-def encode(entity: CL_Value) -> object:
+def encode(entity: CLV_Value) -> object:
     """Encodes a CL value as value interpretable by humans.
 
     :param entity: A CL value to be encoded.
@@ -41,76 +41,76 @@ def encode(entity: CL_Value) -> object:
         return encoder(entity)
 
 
-def _encode_any(entity: CL_Any) -> object:
+def _encode_any(entity: CLV_Any) -> object:
     raise NotImplementedError()
 
 
-def _encode_key(entity: CL_Key) -> bytes:
-    if entity.key_type == CL_KeyType.ACCOUNT:
+def _encode_key(entity: CLV_Key) -> bytes:
+    if entity.key_type == CLV_KeyType.ACCOUNT:
         return {
             "Account": f"account-hash-{cl_checksum.encode(entity.identifier)}"
         }
-    elif entity.key_type == CL_KeyType.HASH:
+    elif entity.key_type == CLV_KeyType.HASH:
         return {
             "Hash": f"hash-{cl_checksum.encode(entity.identifier)}"
         }
-    elif entity.key_type == CL_KeyType.UREF:
+    elif entity.key_type == CLV_KeyType.UREF:
         return {
             "URef": f"uref-{cl_checksum.encode(entity.identifier)}"
         }
 
 
-def _encode_result(entity: CL_Result) -> bytes:
+def _encode_result(entity: CLV_Result) -> bytes:
     raise NotImplementedError()
 
 
 _ENCODERS = {
-    CL_Any:
+    CLV_Any:
         _encode_any,
-    CL_Bool:
+    CLV_Bool:
         lambda x: str(x.value),
-    CL_ByteArray:
+    CLV_ByteArray:
         lambda x: cl_checksum.encode(x.value),
-    CL_I32:
+    CLV_I32:
         lambda x: x.value,
-    CL_I64:
+    CLV_I64:
         lambda x: x.value,
-    CL_Key:
+    CLV_Key:
         _encode_key,
-    CL_List:
+    CLV_List:
         lambda x: [encode(i) for i in x.vector],
-    CL_Map:
+    CLV_Map:
         lambda x: [{"key": encode(k), "value": encode(v)} for (k, v) in x.value],
-    CL_Map:
+    CLV_Map:
         lambda x: x,
-    CL_Option:
+    CLV_Option:
         lambda x: "" if x.value is None else encode(x.value),
-    CL_PublicKey:
+    CLV_PublicKey:
         lambda x: cl_checksum.encode_account_key(x.account_key),
-    CL_Result:
+    CLV_Result:
         _encode_result,
-    CL_String:
+    CLV_String:
         lambda x: x.value,
-    CL_Tuple1:
+    CLV_Tuple1:
         lambda x: (encode(x.v0),),
-    CL_Tuple2:
+    CLV_Tuple2:
         lambda x: (encode(x.v0), encode(x.v1)),
-    CL_Tuple3:
+    CLV_Tuple3:
         lambda x: (encode(x.v0), encode(x.v1), encode(x.v2)),
-    CL_U8:
+    CLV_U8:
         lambda x: x.value,
-    CL_U32:
+    CLV_U32:
         lambda x: x.value,
-    CL_U64:
+    CLV_U64:
         lambda x: x.value,
-    CL_U128:
+    CLV_U128:
         lambda x: str(x.value),
-    CL_U256:
+    CLV_U256:
         lambda x: str(x.value),
-    CL_U512:
+    CLV_U512:
         lambda x: str(x.value),
-    CL_Unit:
+    CLV_Unit:
         lambda x: "",
-    CL_URef:
+    CLV_URef:
         lambda x: f"uref-{cl_checksum.encode(x.address)}-{x.access_rights.value:03}",
 }

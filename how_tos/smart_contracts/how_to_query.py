@@ -5,7 +5,7 @@ import pathlib
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
-from pycspr.types.cl import CL_Key
+from pycspr.types.cl import CLV_Key
 from pycspr.types.misc import PrivateKey
 from pycspr.types.misc import PublicKey
 
@@ -70,7 +70,7 @@ def _main(args: argparse.Namespace):
     operator = _get_operator_key(args)
 
     # Set contract hash.
-    contract_hash: CL_Key = _get_contract_hash(client, operator)
+    contract_hash: CLV_Key = _get_contract_hash(client, operator)
 
     # Issue queries.
     token_decimals = _get_contract_data(client, contract_hash, "decimals")
@@ -96,7 +96,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     ))
 
 
-def _get_contract_data(client: NodeClient, contract_hash: CL_Key, key: str) -> bytes:
+def _get_contract_data(client: NodeClient, contract_hash: CLV_Key, key: str) -> bytes:
     """Queries chain for data associated with a contract.
 
     """
@@ -106,7 +106,7 @@ def _get_contract_data(client: NodeClient, contract_hash: CL_Key, key: str) -> b
     return value["CLValue"]["parsed"]
 
 
-def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CL_Key:
+def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CLV_Key:
     """Returns on-chain contract identifier.
 
     """

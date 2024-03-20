@@ -2,7 +2,7 @@ import dataclasses
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl.values import CL_Value
+from pycspr.types.cl.values import CLV_Value
 from pycspr.types.chain.identifiers import ContractID
 from pycspr.types.chain.identifiers import ContractVersion
 from pycspr.types.misc.crypto import PrivateKey
@@ -42,7 +42,7 @@ class DeployArgument():
     name: str
 
     # Argument cl type system value.
-    value: CL_Value
+    value: CLV_Value
 
     def __eq__(self, other) -> bool:
         return self.name == other.name and self.value == other.value
@@ -54,7 +54,7 @@ class DeployExecutableItem():
 
     """
     # Set of arguments mapped to endpoint parameters.
-    args: typing.Union[typing.List[DeployArgument], typing.Dict[str, CL_Value]]
+    args: typing.Union[typing.List[DeployArgument], typing.Dict[str, CLV_Value]]
 
     def __eq__(self, other) -> bool:
         return self.arguments == other.arguments

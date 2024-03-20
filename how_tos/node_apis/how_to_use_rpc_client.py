@@ -11,7 +11,7 @@ from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.chain import PurseID
 from pycspr.types.chain import PurseIDType
-from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CLV_URef
 
 
 # Path to CCTL assets.
@@ -114,9 +114,9 @@ def _get_chain_account_info(ctx: _Context):
     print("SUCCESS :: get_account_info")
 
     # Query: get_account_main_purse_uref.
-    account_main_purse: CL_URef = \
+    account_main_purse: CLV_URef = \
         ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
-    assert isinstance(account_main_purse, CL_URef)
+    assert isinstance(account_main_purse, CLV_URef)
     print("SUCCESS :: get_account_main_purse_uref")
 
     # Query: get_account_balance.

@@ -16,14 +16,14 @@ from pycspr.types.chain import DeployTimeToLive
 from pycspr.types.chain import DeployExecutableItem
 from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import Transfer
-from pycspr.types.cl import CL_Option
-from pycspr.types.cl import CL_PublicKey
+from pycspr.types.cl import CLV_Option
+from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CL_Type_U64
-from pycspr.types.cl import CL_U8
-from pycspr.types.cl import CL_U64
-from pycspr.types.cl import CL_U512
-from pycspr.types.cl import CL_URef
-from pycspr.types.cl import CL_Value
+from pycspr.types.cl import CLV_U8
+from pycspr.types.cl import CLV_U64
+from pycspr.types.cl import CLV_U512
+from pycspr.types.cl import CLV_URef
+from pycspr.types.cl import CLV_Value
 from pycspr.types.misc import PrivateKey
 from pycspr.types.misc import PublicKey
 from pycspr.types.misc import Timestamp
@@ -75,7 +75,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
     )
 
 
-def create_deploy_arguments(args: typing.Dict[str, CL_Value]) -> typing.List[DeployArgument]:
+def create_deploy_arguments(args: typing.Dict[str, CLV_Value]) -> typing.List[DeployArgument]:
     """Returns a collection of deploy arguments for interpretation by a node.
 
     :param args: Dictionary of argument name & cl-value pairs.
@@ -181,7 +181,7 @@ def create_standard_payment(
     """
     return ModuleBytes(
         args={
-            "amount": CL_U512(amount)
+            "amount": CLV_U512(amount)
         },
         module_bytes=bytes([])
         )
@@ -226,9 +226,9 @@ def create_transfer_session(
     correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
     return Transfer(
         args={
-            "amount": CL_U512(amount),
-            "target": CL_PublicKey.from_account_key(target),
-            "id": CL_Option(CL_U64(correlation_id), CL_Type_U64()),
+            "amount": CLV_U512(amount),
+            "target": CLV_PublicKey.from_account_key(target),
+            "id": CLV_Option(CLV_U64(correlation_id), CL_Type_U64()),
         }
     )
 
@@ -254,9 +254,9 @@ def create_validator_auction_bid(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CL_U512(amount),
-            "delegation_rate": CL_U8(delegation_rate),
-            "public_key": CL_PublicKey.from_public_key(public_key),
+            "amount": CLV_U512(amount),
+            "delegation_rate": CLV_U8(delegation_rate),
+            "public_key": CLV_PublicKey.from_public_key(public_key),
         }
     )
 
@@ -268,7 +268,7 @@ def create_validator_auction_bid_withdrawal(
     amount: int,
     public_key: PublicKey,
     path_to_wasm: str,
-    unbond_purse_ref: typing.Union[CL_URef, str],
+    unbond_purse_ref: typing.Union[CLV_URef, str],
 ) -> Deploy:
     """Returns an auction bid withdraw delegation deploy.
 
@@ -284,11 +284,11 @@ def create_validator_auction_bid_withdrawal(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CL_U512(amount),
-            "public_key": CL_PublicKey.from_public_key(public_key),
+            "amount": CLV_U512(amount),
+            "public_key": CLV_PublicKey.from_public_key(public_key),
             "unbond_purse":
-                unbond_purse_ref if isinstance(unbond_purse_ref, CL_URef) else
-                CL_URef.from_string(unbond_purse_ref)
+                unbond_purse_ref if isinstance(unbond_purse_ref, CLV_URef) else
+                CLV_URef.from_string(unbond_purse_ref)
         }
     )
 
@@ -318,15 +318,15 @@ def create_validator_delegation(
         args=[
             DeployArgument(
                 "amount",
-                CL_U512(amount)
+                CLV_U512(amount)
                 ),
             DeployArgument(
                 "delegator",
-                CL_PublicKey.from_public_key(public_key_of_delegator)
+                CLV_PublicKey.from_public_key(public_key_of_delegator)
                 ),
             DeployArgument(
                 "validator",
-                CL_PublicKey.from_public_key(public_key_of_validator)
+                CLV_PublicKey.from_public_key(public_key_of_validator)
                 ),
         ]
     )
@@ -355,9 +355,9 @@ def create_validator_delegation_withdrawal(
     session = ModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CL_U512(amount),
-            "delegator": CL_PublicKey.from_public_key(public_key_of_delegator),
-            "validator": CL_PublicKey.from_public_key(public_key_of_validator)
+            "amount": CLV_U512(amount),
+            "delegator": CLV_PublicKey.from_public_key(public_key_of_delegator),
+            "validator": CLV_PublicKey.from_public_key(public_key_of_validator)
         }
     )
 

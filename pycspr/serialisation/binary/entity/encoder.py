@@ -14,12 +14,12 @@ from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
-from pycspr.types.cl import CL_ByteArray
-from pycspr.types.cl import CL_U32
-from pycspr.types.cl import CL_U64
-from pycspr.types.cl import CL_List
-from pycspr.types.cl import CL_PublicKey
-from pycspr.types.cl import CL_String
+from pycspr.types.cl import CLV_ByteArray
+from pycspr.types.cl import CLV_U32
+from pycspr.types.cl import CLV_U64
+from pycspr.types.cl import CLV_List
+from pycspr.types.cl import CLV_PublicKey
+from pycspr.types.cl import CLV_String
 
 
 def encode(entity: object) -> bytes:
@@ -56,13 +56,13 @@ def _encode_deploy_approval(entity: DeployApproval) -> bytes:
 
 def _encode_deploy_approval_set(entities: typing.List[DeployApproval]) -> bytes:
     return \
-        encode_cl_value(CL_U32(len(entities))) + \
+        encode_cl_value(CLV_U32(len(entities))) + \
         bytes([i for j in map(encode, entities) for i in j])
 
 
 def _encode_deploy_argument(entity: DeployArgument) -> bytes:
     return \
-        encode_cl_value(CL_String(entity.name)) + \
+        encode_cl_value(CLV_String(entity.name)) + \
         _u8_array_to_bytes(encode_cl_value(entity.value)) + \
         encode_cl_type(cl_value_to_cl_type(entity.value))
 
@@ -74,25 +74,25 @@ def _encode_deploy_body(entity: DeployBody) -> bytes:
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
     result = bytes([])
     result += encode_cl_value(
-        CL_PublicKey.from_public_key(entity.account_public_key)
+        CLV_PublicKey.from_public_key(entity.account_public_key)
     )
     result += encode_cl_value(
-        CL_U64(int(entity.timestamp.value * 1000))
+        CLV_U64(int(entity.timestamp.value * 1000))
     )
     result += encode_cl_value(
-        CL_U64(entity.ttl.as_milliseconds)
+        CLV_U64(entity.ttl.as_milliseconds)
     )
     result += encode_cl_value(
-        CL_U64(entity.gas_price)
+        CLV_U64(entity.gas_price)
     )
     result += encode_cl_value(
-        CL_ByteArray(entity.body_hash)
+        CLV_ByteArray(entity.body_hash)
     )
     result += encode_cl_value(
-        CL_List(entity.dependencies)
+        CLV_List(entity.dependencies)
     )
     result += encode_cl_value(
-        CL_String(entity.chain_name)
+        CLV_String(entity.chain_name)
     )
 
     return result
@@ -108,34 +108,34 @@ def _encode_module_bytes(entity: ModuleBytes) -> bytes:
 def _encode_stored_contract_by_hash(entity: StoredContractByHash) -> bytes:
     return \
         bytes([1]) + \
-        encode_cl_value(CL_ByteArray(entity.hash)) + \
-        encode_cl_value(CL_String(entity.entry_point)) + \
+        encode_cl_value(CLV_ByteArray(entity.hash)) + \
+        encode_cl_value(CLV_String(entity.entry_point)) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
 def _encode_stored_contract_by_hash_versioned(entity: StoredContractByHashVersioned) -> bytes:
     return \
         bytes([2]) + \
-        encode_cl_value(CL_ByteArray(entity.hash)) + \
-        encode_cl_value(CL_U32(entity.version)) + \
-        encode_cl_value(CL_String(entity.entry_point)) + \
+        encode_cl_value(CLV_ByteArray(entity.hash)) + \
+        encode_cl_value(CLV_U32(entity.version)) + \
+        encode_cl_value(CLV_String(entity.entry_point)) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
 def _encode_stored_contract_by_name(entity: StoredContractByName) -> bytes:
     return \
         bytes([3]) + \
-        encode_cl_value(CL_String(entity.name)) + \
-        encode_cl_value(CL_String(entity.entry_point)) + \
+        encode_cl_value(CLV_String(entity.name)) + \
+        encode_cl_value(CLV_String(entity.entry_point)) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
 def _encode_stored_contract_by_name_versioned(entity: StoredContractByNameVersioned) -> bytes:
     return \
         bytes([4]) + \
-        encode_cl_value(CL_String(entity.name)) + \
-        encode_cl_value(CL_U32(entity.version)) + \
-        encode_cl_value(CL_String(entity.entry_point)) + \
+        encode_cl_value(CLV_String(entity.name)) + \
+        encode_cl_value(CLV_U32(entity.version)) + \
+        encode_cl_value(CLV_String(entity.entry_point)) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
@@ -146,12 +146,12 @@ def _encode_transfer(entity: Transfer) -> bytes:
 
 
 def _u8_array_to_bytes(value: typing.List[int]) -> bytes:
-    return encode_cl_value(CL_U32(len(value))) + bytes(value)
+    return encode_cl_value(CLV_U32(len(value))) + bytes(value)
 
 
 def _vector_to_bytes(value: typing.List) -> bytes:
     return \
-        encode_cl_value(CL_U32(len(value))) + \
+        encode_cl_value(CLV_U32(len(value))) + \
         bytes([i for j in value for i in j])
 
 

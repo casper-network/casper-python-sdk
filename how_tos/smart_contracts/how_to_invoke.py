@@ -7,8 +7,8 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
-from pycspr.types.cl import CL_ByteArray
-from pycspr.types.cl import CL_U256
+from pycspr.types.cl import CLV_ByteArray
+from pycspr.types.cl import CLV_U256
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import ModuleBytes
@@ -194,8 +194,8 @@ def _get_deploy(
         entry_point="transfer",
         hash=contract_hash,
         args={
-            "amount": CL_U256(args.amount),
-            "recipient": CL_ByteArray(user.account_hash)
+            "amount": CLV_U256(args.amount),
+            "recipient": CLV_ByteArray(user.account_hash)
         }
     )
 

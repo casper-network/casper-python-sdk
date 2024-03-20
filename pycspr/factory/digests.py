@@ -1,10 +1,10 @@
 from pycspr import crypto
 from pycspr import serialisation
-from pycspr.types.cl import CL_ByteArray
-from pycspr.types.cl import CL_List
-from pycspr.types.cl import CL_PublicKey
-from pycspr.types.cl import CL_String
-from pycspr.types.cl import CL_U64
+from pycspr.types.cl import CLV_ByteArray
+from pycspr.types.cl import CLV_List
+from pycspr.types.cl import CLV_PublicKey
+from pycspr.types.cl import CLV_String
+from pycspr.types.cl import CLV_U64
 from pycspr.types.chain import DeployExecutableItem
 from pycspr.types.chain import DeployHeader
 
@@ -18,25 +18,25 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     """
     return crypto.get_hash(
         serialisation.to_bytes(
-            CL_PublicKey.from_public_key(header.account_public_key)
+            CLV_PublicKey.from_public_key(header.account_public_key)
         ) +
         serialisation.to_bytes(
-            CL_U64(int(header.timestamp.value * 1000))
+            CLV_U64(int(header.timestamp.value * 1000))
         ) +
         serialisation.to_bytes(
-            CL_U64(header.ttl.as_milliseconds)
+            CLV_U64(header.ttl.as_milliseconds)
         ) +
         serialisation.to_bytes(
-            CL_U64(header.gas_price)
+            CLV_U64(header.gas_price)
         ) +
         serialisation.to_bytes(
-            CL_ByteArray(header.body_hash)
+            CLV_ByteArray(header.body_hash)
         ) +
         serialisation.to_bytes(
-            CL_List(header.dependencies)
+            CLV_List(header.dependencies)
         ) +
         serialisation.to_bytes(
-            CL_String(header.chain_name)
+            CLV_String(header.chain_name)
         )
     )
 

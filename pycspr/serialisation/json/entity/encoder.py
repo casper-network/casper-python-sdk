@@ -12,7 +12,7 @@ from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
-from pycspr.types.cl import CL_Value
+from pycspr.types.cl import CLV_Value
 
 
 def encode(entity: object) -> dict:
@@ -47,7 +47,7 @@ def _encode_deploy_approval(entity: DeployApproval) -> dict:
     }
 
 
-def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CL_Value]:
+def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CLV_Value]:
     return (entity.name, encode_cl_value(entity.value))
 
 

@@ -8,7 +8,7 @@ from pycspr.types.misc import PublicKey
 
 
 @dataclasses.dataclass
-class CL_Value():
+class CLV_Value():
     """Represents a CL type value.
 
     """
@@ -16,7 +16,7 @@ class CL_Value():
 
 
 @dataclasses.dataclass
-class CL_Any(CL_Value):
+class CLV_Any(CLV_Value):
     """Represents a CL type value: any = arbitrary data.
 
     """
@@ -28,7 +28,7 @@ class CL_Any(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_Bool(CL_Value):
+class CLV_Bool(CLV_Value):
     """Represents a CL type value: boolean.
 
     """
@@ -40,7 +40,7 @@ class CL_Bool(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_ByteArray(CL_Value):
+class CLV_ByteArray(CLV_Value):
     """Represents a CL type value: byte array.
 
     """
@@ -55,7 +55,7 @@ class CL_ByteArray(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_Int(CL_Value):
+class CLV_Int(CLV_Value):
     """Represents a CL type value: integer.
 
     """
@@ -67,7 +67,7 @@ class CL_Int(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_I32(CL_Int):
+class CLV_I32(CLV_Int):
     """Represents a CL type value: I32.
 
     """
@@ -75,14 +75,14 @@ class CL_I32(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_I64(CL_Int):
+class CLV_I64(CLV_Int):
     """Represents a CL type value: I64.
 
     """
     pass
 
 
-class CL_KeyType(enum.Enum):
+class CLV_KeyType(enum.Enum):
     """Enumeration over set of global state key types.
 
     """
@@ -92,7 +92,7 @@ class CL_KeyType(enum.Enum):
 
 
 @dataclasses.dataclass
-class CL_Key(CL_Value):
+class CLV_Key(CLV_Value):
     """Represents a CL type value: state storage key.
 
     """
@@ -100,56 +100,56 @@ class CL_Key(CL_Value):
     identifier: bytes
 
     # Key type identifier.
-    key_type: CL_KeyType
+    key_type: CLV_KeyType
 
     def __eq__(self, other) -> bool:
         return self.identifier == other.identifier and self.key_type == other.key_type
 
     @staticmethod
-    def from_string(value: str) -> "CL_Key":
+    def from_string(value: str) -> "CLV_Key":
         """Factory method: parses input string & returns type instance.
         """
         identifier = bytes.fromhex(value.split("-")[-1])
         if value.startswith("account-hash-"):
-            key_type = CL_KeyType.ACCOUNT
+            key_type = CLV_KeyType.ACCOUNT
         elif value.startswith("hash-"):
-            key_type = CL_KeyType.HASH
+            key_type = CLV_KeyType.HASH
         elif value.startswith("uref-"):
-            key_type = CL_KeyType.UREF
+            key_type = CLV_KeyType.UREF
         else:
             raise ValueError(f"Invalid CL key: {value}")
 
-        return CL_Key(identifier, key_type)
+        return CLV_Key(identifier, key_type)
 
 
 @dataclasses.dataclass
-class CL_List(CL_Value):
+class CLV_List(CLV_Value):
     """Represents a CL type value: array of items of identical type.
 
     """
     # Set of associated items.
-    vector: typing.List[CL_Value]
+    vector: typing.List[CLV_Value]
 
     def __eq__(self, other) -> bool:
         return self.vector == other.vector
 
 
 @dataclasses.dataclass
-class CL_Map(CL_Value):
+class CLV_Map(CLV_Value):
     """Represents a CL type value: key-value hash map.
 
     """
     # A map of data represented as a vector of 2 member tuples.
-    value: typing.List[typing.Tuple[CL_Value, CL_Value]]
+    value: typing.List[typing.Tuple[CLV_Value, CLV_Value]]
 
 
 @dataclasses.dataclass
-class CL_Option(CL_Value):
+class CLV_Option(CLV_Value):
     """Represents a CL type value: optional value.
 
     """
     # Associated value.
-    value: typing.Union[None, CL_Value]
+    value: typing.Union[None, CLV_Value]
 
     # Associated optional type.
     option_type: CL_Type
@@ -159,7 +159,7 @@ class CL_Option(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_PublicKey(CL_Value):
+class CLV_PublicKey(CLV_Value):
     """Represents a CL type value: account holder's public key.
 
     """
@@ -183,16 +183,16 @@ class CL_PublicKey(CL_Value):
         return self.algo == other.algo and self.pbk == other.pbk
 
     @staticmethod
-    def from_account_key(key: bytes) -> "CL_PublicKey":
-        return CL_PublicKey(crypto.KeyAlgorithm(key[0]), key[1:])
+    def from_account_key(key: bytes) -> "CLV_PublicKey":
+        return CLV_PublicKey(crypto.KeyAlgorithm(key[0]), key[1:])
 
     @staticmethod
-    def from_public_key(key: PublicKey) -> "CL_PublicKey":
-        return CL_PublicKey(key.algo, key.pbk)
+    def from_public_key(key: PublicKey) -> "CLV_PublicKey":
+        return CLV_PublicKey(key.algo, key.pbk)
 
 
 @dataclasses.dataclass
-class CL_Result(CL_Value):
+class CLV_Result(CLV_Value):
     """Represents a CL type value: function invocation result.
 
     """
@@ -204,7 +204,7 @@ class CL_Result(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_String(CL_Value):
+class CLV_String(CLV_Value):
     """Represents a CL type value: string.
 
     """
@@ -216,52 +216,52 @@ class CL_String(CL_Value):
 
 
 @dataclasses.dataclass
-class CL_Tuple1(CL_Value):
+class CLV_Tuple1(CLV_Value):
     """Represents a CL type value: a 1-ary tuple.
 
     """
     # 1st value within 1-ary tuple value.
-    v0: CL_Value
+    v0: CLV_Value
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0
 
 
 @dataclasses.dataclass
-class CL_Tuple2(CL_Value):
+class CLV_Tuple2(CLV_Value):
     """Represents a CL type value: a 2-ary tuple.
 
     """
     # 1st value within 2-ary tuple value.
-    v0: CL_Value
+    v0: CLV_Value
 
     # 2nd value within 2-ary tuple value.
-    v1: CL_Value
+    v1: CLV_Value
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0 and self.v1 == other.v1
 
 
 @dataclasses.dataclass
-class CL_Tuple3(CL_Value):
+class CLV_Tuple3(CLV_Value):
     """Represents a CL type value: a 3-ary tuple.
 
     """
     # 1st value within 3-ary tuple value.
-    v0: CL_Value
+    v0: CLV_Value
 
     # 2nd value within 3-ary tuple value.
-    v1: CL_Value
+    v1: CLV_Value
 
     # 3rd value within 3-ary tuple value.
-    v2: CL_Value
+    v2: CLV_Value
 
     def __eq__(self, other) -> bool:
         return self.v0 == other.v0 and self.v1 == other.v1 and self.v2 == other.v2
 
 
 @dataclasses.dataclass
-class CL_U8(CL_Int):
+class CLV_U8(CLV_Int):
     """Represents a CL type value: U8.
 
     """
@@ -269,7 +269,7 @@ class CL_U8(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_U32(CL_Int):
+class CLV_U32(CLV_Int):
     """Represents a CL type value: U32.
 
     """
@@ -277,7 +277,7 @@ class CL_U32(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_U64(CL_Int):
+class CLV_U64(CLV_Int):
     """Represents a CL type value: U64.
 
     """
@@ -285,7 +285,7 @@ class CL_U64(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_U128(CL_Int):
+class CLV_U128(CLV_Int):
     """Represents a CL type value: U128.
 
     """
@@ -293,7 +293,7 @@ class CL_U128(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_U256(CL_Int):
+class CLV_U256(CLV_Int):
     """Represents a CL type value: U256.
 
     """
@@ -301,7 +301,7 @@ class CL_U256(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_U512(CL_Int):
+class CLV_U512(CLV_Int):
     """Represents a CL type value: U512.
 
     """
@@ -309,7 +309,7 @@ class CL_U512(CL_Int):
 
 
 @dataclasses.dataclass
-class CL_Unit(CL_Value):
+class CLV_Unit(CLV_Value):
     """Represents a CL type value: unit, i.e. a null value.
 
     """
@@ -317,7 +317,7 @@ class CL_Unit(CL_Value):
         return True
 
 
-class CL_URefAccessRights(enum.Enum):
+class CLV_URefAccessRights(enum.Enum):
     """Enumeration over set of CL item access rights.
 
     """
@@ -332,12 +332,12 @@ class CL_URefAccessRights(enum.Enum):
 
 
 @dataclasses.dataclass
-class CL_URef(CL_Value):
+class CLV_URef(CLV_Value):
     """Represents a CL type value: unforgeable reference.
 
     """
     # Access rights granted by issuer.
-    access_rights: CL_URefAccessRights
+    access_rights: CLV_URefAccessRights
 
     # Uref on-chain identifier.
     address: bytes
@@ -347,9 +347,9 @@ class CL_URef(CL_Value):
                self.address == other.address
 
     @staticmethod
-    def from_string(as_string: str) -> "CL_URef":
+    def from_string(as_string: str) -> "CLV_URef":
         _, address, access_rights = as_string.split("-")
-        return CL_URef(
-            CL_URefAccessRights(int(access_rights)),
+        return CLV_URef(
+            CLV_URefAccessRights(int(access_rights)),
             bytes.fromhex(address)
             )

@@ -3,11 +3,11 @@ import pytest
 from pycspr import NodeRpcClient
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
-from pycspr.types.cl import CL_URef
+from pycspr.types.cl import CLV_URef
 
 
 @pytest.fixture(scope="session")
-def account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes) -> CL_URef:
+def account_main_purse_uref(RPC_CLIENT: NodeRpcClient, account_key: bytes) -> CLV_URef:
     """Returns an on-chain account's main purse unforgeable reference.
 
     """
