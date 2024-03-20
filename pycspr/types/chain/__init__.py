@@ -29,3 +29,4 @@ from pycspr.types.chain.identifiers import GlobalStateIDType
 from pycspr.types.chain.identifiers import PurseID
 from pycspr.types.chain.identifiers import PurseIDType
 from pycspr.types.chain.identifiers import StateRootID
+from pycspr.types.chain.identifiers import Timestamp

@@ -8,7 +8,7 @@ from pycspr.crypto import PublicKey
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.chain.identifiers import ContractID
 from pycspr.types.chain.identifiers import ContractVersion
-from pycspr.types.misc.time import Timestamp
+from pycspr.types.chain.identifiers import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
 

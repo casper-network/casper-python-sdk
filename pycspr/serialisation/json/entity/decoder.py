@@ -1,6 +1,5 @@
 from pycspr.factory import create_public_key_from_account_key
 from pycspr.serialisation.json.cl_value import decode as decode_cl_value
-from pycspr.types.misc import Timestamp
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployArgument
@@ -12,6 +11,7 @@ from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
+from pycspr.types.chain import Timestamp
 from pycspr.types.chain import Transfer
 
 
