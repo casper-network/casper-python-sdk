@@ -4,6 +4,12 @@ import dataclasses
 import enum
 import typing
 
+from pycspr.crypto import Digest
+from pycspr.crypto import MerkleProofBytes
+from pycspr.crypto import PrivateKeyBytes
+from pycspr.crypto import PublicKeyBytes
+from pycspr.crypto import SignatureBytes
+
 
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
 
@@ -15,25 +21,15 @@ ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
 
 ContractVersion = typing.NewType("Version of an on-chain smart contract.", int)
 
-Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
-
 EraID = typing.NewType("Identifier of an era in chain time.", int)
 
 Gas = typing.NewType("Atomic unit of constraint over node compute.", int)
 
 GasPrice = typing.NewType("Price of gas within an era in chain time.", int)
 
-MerkleProof = typing.NewType("Cryptographic proof over a merkle trie.", bytes)
-
 Motes = typing.NewType("Basic unit of crypto economic system.", int)
 
-PrivateKey = typing.NewType("Asymmetric private key associated with an account.", bytes)
-
-PublicKey = typing.NewType("Asymmetric public key associated with an account.", bytes)
-
-Signature = typing.NewType("Cryptographic signature over data.", bytes)
-
-WasmModule = typing.NewType("WASM payload module.", bytes)
+WasmModule = typing.NewType("WASM module payload.", bytes)
 
 Weight = typing.NewType("Some form of relative relevance measure.", int)
 
@@ -62,7 +58,7 @@ class AssociatedKey():
 @dataclasses.dataclass
 class AuctionBidByDelegator():
     bonding_purse: URef
-    public_key: PublicKey
+    public_key: PublicKeyBytes
     delegatee: AccountID
     staked_amount: Motes
 
@@ -77,7 +73,7 @@ class AuctionState():
 
 @dataclasses.dataclass
 class AuctionBidByValidator():
-    public_key: PublicKey
+    public_key: PublicKeyBytes
     bid: AuctionBidByValidatorInfo
 
 
@@ -119,8 +115,8 @@ class BlockHeader():
 
 @dataclasses.dataclass
 class BlockSignature():
-    public_key: PublicKey
-    signature: Signature
+    public_key: PublicKeyBytes
+    signature: SignatureBytes
 
 
 @dataclasses.dataclass
@@ -146,8 +142,8 @@ class Deploy():
 
 @dataclasses.dataclass
 class DeployApproval():
-    signer: PublicKey
-    signature: Signature
+    signer: PublicKeyBytes
+    signature: SignatureBytes
 
 
 @dataclasses.dataclass
@@ -227,7 +223,7 @@ class EraValidators():
 
 @dataclasses.dataclass
 class EraValidatorWeight():
-    public_key: PublicKey
+    public_key: PublicKeyBytes
     weight: Weight
 
 
@@ -265,25 +261,25 @@ class SeigniorageAllocation():
 
 @dataclasses.dataclass
 class SeigniorageAllocationForDelegator(SeigniorageAllocation):
-    delegator_public_key: PublicKey
-    validator_public_key: PublicKey
+    delegator_public_key: PublicKeyBytes
+    validator_public_key: PublicKeyBytes
 
 
 @dataclasses.dataclass
 class SeigniorageAllocationForValidator(SeigniorageAllocation):
-    validator_public_key: PublicKey
+    validator_public_key: PublicKeyBytes
 
 
 @dataclasses.dataclass
 class Transfer():
     amount: Motes
     deploy_hash: Digest
-    from_: PublicKey
+    from_: PublicKeyBytes
     gas: Gas
     source: URef
     target: URef
     correlation_id: int = None
-    to_: PublicKey = None
+    to_: PublicKeyBytes = None
 
 
 @dataclasses.dataclass
@@ -310,7 +306,7 @@ class URef():
 
 @dataclasses.dataclass
 class ValidatorChanges():
-    public_key: PublicKey
+    public_key: PublicKeyBytes
     status_changes: typing.List[ValidatorStatusChange]
 
 

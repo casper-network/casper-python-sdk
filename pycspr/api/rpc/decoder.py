@@ -40,15 +40,12 @@ from pycspr.api.rpc.types import EraValidators
 from pycspr.api.rpc.types import EraValidatorWeight
 from pycspr.api.rpc.types import Gas
 from pycspr.api.rpc.types import GasPrice
-from pycspr.api.rpc.types import MerkleProof
 from pycspr.api.rpc.types import Motes
 from pycspr.api.rpc.types import NamedKey
 from pycspr.api.rpc.types import ProtocolVersion
-from pycspr.api.rpc.types import PublicKey
 from pycspr.api.rpc.types import SeigniorageAllocation
 from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
 from pycspr.api.rpc.types import SeigniorageAllocationForValidator
-from pycspr.api.rpc.types import Signature
 from pycspr.api.rpc.types import DeployOfStoredContract
 from pycspr.api.rpc.types import Transfer
 from pycspr.api.rpc.types import Timestamp
@@ -59,6 +56,10 @@ from pycspr.api.rpc.types import ValidatorStatusChange
 from pycspr.api.rpc.types import ValidatorStatusChangeType
 from pycspr.api.rpc.types import WasmModule
 from pycspr.api.rpc.types import Weight
+from pycspr.crypto import Digest
+from pycspr.crypto import MerkleProofBytes
+from pycspr.crypto import PublicKeyBytes
+from pycspr.crypto import SignatureBytes
 from pycspr.utils import conversion
 
 
@@ -105,15 +106,15 @@ def _decode_associated_key(encoded: dict) -> AssociatedKey:
 def _decode_auction_bid_by_delegator(encoded: dict) -> AuctionBidByDelegator:
     return AuctionBidByDelegator(
         bonding_purse=decode(encoded["bonding_purse"], URef),
-        delegatee=decode(encoded["delegatee"], PublicKey),
-        public_key=decode(encoded["public_key"], PublicKey),
+        delegatee=decode(encoded["delegatee"], PublicKeyBytes),
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
         staked_amount=decode(encoded["staked_amount"], Motes),
     )
 
 
 def _decode_auction_bid_by_validator(encoded: dict) -> AuctionBidByValidator:
     return AuctionBidByValidator(
-        public_key=decode(encoded["public_key"], PublicKey),
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
         bid=decode(encoded["bid"], AuctionBidByValidatorInfo),
     )
 
@@ -149,7 +150,7 @@ def _decode_block(encoded: dict) -> Block:
 
 def _decode_block_body(encoded: dict) -> BlockBody:
     return BlockBody(
-        proposer=decode(encoded["proposer"], PublicKey),
+        proposer=decode(encoded["proposer"], PublicKeyBytes),
         deploy_hashes=[decode(i, Digest) for i in encoded["deploy_hashes"]],
         transfer_hashes=[decode(i, Digest) for i in encoded["transfer_hashes"]],
     )
@@ -170,8 +171,8 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
 
 def _decode_block_signature(encoded: dict) -> BlockSignature:
     return BlockSignature(
-        public_key=decode(encoded["public_key"], PublicKey),
-        signature=decode(encoded["signature"], Signature)
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
+        signature=decode(encoded["signature"], SignatureBytes)
     )
 
 
@@ -195,8 +196,8 @@ def _decode_deploy(encoded: dict) -> Deploy:
 
 def _decode_deploy_approval(encoded: dict) -> DeployApproval:
     return DeployApproval(
-        signer=decode(encoded["signer"], PublicKey),
-        signature=decode(encoded["signature"], Signature)
+        signer=decode(encoded["signer"], PublicKeyBytes),
+        signature=decode(encoded["signature"], SignatureBytes)
     )
 
 
@@ -233,7 +234,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
 
 def _decode_deploy_header(encoded: dict) -> DeployHeader:
     return DeployHeader(
-        account=decode(encoded["account"], PublicKey),
+        account=decode(encoded["account"], PublicKeyBytes),
         body_hash=decode(encoded["body_hash"], Digest),
         chain_name=decode(encoded["chain_name"], str),
         dependencies=[decode(i, Digest) for i in encoded["dependencies"]],
@@ -313,7 +314,7 @@ def _decode_era_validators(encoded: dict) -> EraValidators:
 
 def _decode_era_validator_weight(encoded: dict) -> EraValidatorWeight:
     return EraValidatorWeight(
-        public_key=decode(encoded["public_key"], PublicKey),
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
         weight=decode(encoded["weight"], Weight)
     )
 
@@ -323,7 +324,7 @@ def _decode_era_summary(encoded: dict) -> EraSummary:
         block_hash=decode(encoded["block_hash"], Digest),
         era_id=decode(encoded["era_id"], EraID),
         era_info=decode(encoded["stored_value"]["EraInfo"], EraInfo),
-        merkle_proof=decode(encoded["merkle_proof"], MerkleProof),
+        merkle_proof=decode(encoded["merkle_proof"], MerkleProofBytes),
         state_root=decode(encoded["state_root_hash"], Digest),
     )
 
@@ -349,14 +350,14 @@ def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
     def decode_delegator_seigniorage_allocation(encoded: dict):
         return SeigniorageAllocationForDelegator(
             amount=decode(encoded["amount"], Motes),
-            delegator_public_key=decode(encoded["delegator_public_key"], PublicKey),
-            validator_public_key=decode(encoded["validator_public_key"], PublicKey),
+            delegator_public_key=decode(encoded["delegator_public_key"], PublicKeyBytes),
+            validator_public_key=decode(encoded["validator_public_key"], PublicKeyBytes),
         )
 
     def decode_validator_seigniorage_allocation(encoded: dict):
         return SeigniorageAllocationForValidator(
             amount=decode(encoded["amount"], Motes),
-            validator_public_key=decode(encoded["validator_public_key"], PublicKey),
+            validator_public_key=decode(encoded["validator_public_key"], PublicKeyBytes),
         )
 
     if "Delegator" in encoded:
@@ -412,7 +413,7 @@ def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
 
 def _decode_validator_changes(encoded: list) -> ValidatorChanges:
     return ValidatorChanges(
-        public_key=decode(encoded["public_key"], PublicKey),
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
         status_changes=[decode(i, ValidatorStatusChange) for i in encoded["status_changes"]],
     )
 
@@ -434,10 +435,10 @@ _DECODERS = {
     EraID: lambda x: decode(x, int),
     Gas: lambda x: decode(x, int),
     GasPrice: lambda x: decode(x, int),
-    PublicKey: lambda x: decode(x, bytes),
-    MerkleProof: lambda x: decode(x, bytes),
+    PublicKeyBytes: lambda x: decode(x, bytes),
+    MerkleProofBytes: lambda x: decode(x, bytes),
     Motes: lambda x: decode(x, int),
-    Signature: lambda x: decode(x, bytes),
+    SignatureBytes: lambda x: decode(x, bytes),
     Weight: lambda x: decode(x, int),
     WasmModule: _decode_wasm_module
 } | {
