@@ -15,11 +15,13 @@ class KeyAlgorithm(enum.Enum):
     SECP256K1 = 2
 
 
+# Map: Key algo Type -> Key algo Implementation.
 ALGOS = {
     KeyAlgorithm.ED25519: ed25519,
     KeyAlgorithm.SECP256K1: secp256k1,
 }
 
+# Default key algorithm.
 DEFAULT_KEY_ALGO = KeyAlgorithm.ED25519
 
 
