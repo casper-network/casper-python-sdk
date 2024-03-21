@@ -2,6 +2,7 @@ import enum
 
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
+from pycspr.crypto.types import Digest
 
 
 class HashAlgorithm(enum.Enum):
@@ -29,13 +30,13 @@ def get_hash(
     data: bytes,
     size: int = DEFAULT_DIGEST_LENGTH,
     algo: HashAlgorithm = DEFAULT_HASH_ALGO
-) -> bytes:
+) -> Digest:
     """Maps input to a hash function output.
 
     :param data: Data to be hashed.
     :param size: Desired hashing output length.
     :param algo: Type of hashing algo to apply.
-    :returns: Hash of input data.
+    :returns: Digest of input data.
 
     """
     return ALGOS[algo](data, size)
