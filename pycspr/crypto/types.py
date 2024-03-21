@@ -38,11 +38,13 @@ class PublicKey():
         """Returns on-chain account hash."""
         from pycspr.crypto.cl_operations import get_account_hash
 
-        return get_account_hash(self.account_key)
+        return get_account_hash(self.to_account_key())
 
-    @property
-    def account_key(self) -> bytes:
-        """Returns on-chain account key."""
+    def to_account_key(self) -> bytes:
+        """Returns on-chain account key.
+        
+        """
+        # JIT import to avoid circular references.
         from pycspr.crypto.cl_operations import get_account_key
         
         return get_account_key(self.algo, self.pbk)
@@ -51,10 +53,10 @@ class PublicKey():
         return self.algo == other.algo and self.pbk == other.pbk
 
     def __hash__(self) -> bytes:
-        return hash(self.account_key)
+        return hash(self.to_account_key())
 
     def __len__(self) -> int:
-        return len(self.account_key)
+        return len(self.to_account_key())
 
 
 @dataclasses.dataclass

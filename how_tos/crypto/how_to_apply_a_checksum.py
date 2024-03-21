@@ -25,9 +25,8 @@ def _main(args: argparse.Namespace):
         pycspr.crypto.get_key_pair(algo=pycspr.KeyAlgorithm.ED25519)
     pbk: bytes = key_pair[1]
 
-    # Map raw public key to account key.
-    account_key: bytes = \
-        pycspr.crypto.get_account_key(pycspr.KeyAlgorithm.ED25519, pbk)
+    # Map raw public key -> raw account key.
+    account_key: bytes = pycspr.get_account_key(pycspr.KeyAlgorithm.ED25519, pbk)
 
     # Map account key to checksummed hexadecimal.
     account_key_checksum: str = pycspr.crypto.cl_checksum.encode_account_key(account_key)

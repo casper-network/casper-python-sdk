@@ -43,7 +43,7 @@ def _encode_deploy(entity: Deploy) -> dict:
 def _encode_deploy_approval(entity: DeployApproval) -> dict:
     return {
         "signature": cl_checksum.encode_signature(entity.signature),
-        "signer": cl_checksum.encode_account_key(entity.signer.account_key)
+        "signer": cl_checksum.encode_account_key(entity.signer.to_account_key())
     }
 
 
@@ -53,7 +53,7 @@ def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CLV_Val
 
 def _encode_deploy_header(entity: DeployHeader) -> dict:
     return {
-        "account": cl_checksum.encode_account_key(entity.account_public_key.account_key),
+        "account": cl_checksum.encode_account_key(entity.account_public_key.to_account_key()),
         "body_hash": cl_checksum.encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,

@@ -247,8 +247,6 @@ class Proxy:
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
         
-        print(block_id)
-
         return get_response(
             self.address,
             constants.RPC_STATE_GET_ACCOUNT_INFO,

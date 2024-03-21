@@ -250,7 +250,9 @@ class Deploy():
 
         """
         if not verify_deploy_approval_signature(
-            self.hash, approval.signature, approval.signer.account_key
+            self.hash,
+            approval.signature,
+            approval.signer.to_account_key()
         ):
             raise ValueError("Invalid signature - please review your processes.")
 
