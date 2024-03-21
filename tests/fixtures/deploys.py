@@ -67,7 +67,7 @@ def a_deploy(deploy_params, cp1, cp2):
         deploy_params,
         amount=2500000000,
         correlation_id=1,
-        target=cp2.account_key,
+        target=cp2.to_account_key(),
         )
     deploy.set_approval(pycspr.create_deploy_approval(deploy, cp1))
 
@@ -91,7 +91,7 @@ def create_transfer() -> Deploy:
         params=params,
         amount=2500000000,
         correlation_id=1,
-        target=cp2.account_key,
+        target=cp2.to_account_key(),
         )
     deploy.set_approval(pycspr.create_deploy_approval(deploy, cp1))
 

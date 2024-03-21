@@ -240,7 +240,7 @@ class Deploy():
         sig = get_signature_for_deploy_approval(
             self.hash, approver.private_key, approver.key_algo
             )
-        approval = DeployApproval(approver.as_public_key, sig)
+        approval = DeployApproval(approver.to_public_key(), sig)
         self._append_approval(approval)
 
     def set_approval(self, approval: DeployApproval):

@@ -1,24 +1,10 @@
 import dataclasses
-import enum
 import typing
 
-
-class KeyAlgorithm(enum.Enum):
-    """Enumeration over set of supported key algorithms.
-
-    """
-    ED25519 = 1
-    SECP256K1 = 2
+from pycspr.crypto.ecc import KeyAlgorithm
 
 
-class HashAlgorithm(enum.Enum):
-    """Enumeration over set of supported hash algorithms.
-
-    """
-    BLAKE2B = enum.auto()
-    BLAKE3 = enum.auto()
-
-
+# Cryptographic fingerprint of data.
 Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
 
 
@@ -33,9 +19,10 @@ class PublicKey():
     # Public key as raw bytes.
     pbk: bytes
 
-    @property
-    def account_hash(self) -> bytes:
-        """Returns on-chain account hash."""
+    def to_account_hash(self) -> bytes:
+        """Returns on-chain account address.
+        
+        """
         from pycspr.crypto.cl_operations import get_account_hash
 
         return get_account_hash(self.to_account_key())
@@ -97,22 +84,21 @@ class PrivateKey:
         """Associated key algorithm synonym."""
         return self.algo
 
-    @property
-    def account_hash(self) -> bytes:
-        """Gets derived on-chain account hash - i.e. address."""
+    def to_account_hash(self) -> bytes:
+        """Gets derived on-chain account hash - i.e. address.
+        
+        """
         from pycspr.crypto.cl_operations import get_account_hash
 
-        return get_account_hash(self.account_key)
+        return get_account_hash(self.to_account_key())
 
-    @property
-    def account_key(self) -> bytes:
+    def to_account_key(self) -> bytes:
         """Gets on-chain account key."""
         from pycspr.crypto.cl_operations import get_account_key
 
         return get_account_key(self.algo, self.pbk)
 
-    @property
-    def as_public_key(self) -> PublicKey:
+    def to_public_key(self) -> PublicKey:
         """Returns public key representation.
 
         """

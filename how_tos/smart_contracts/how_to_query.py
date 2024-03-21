@@ -107,7 +107,7 @@ def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CLV_Key:
     """Returns on-chain contract identifier.
 
     """
-    named_key = client.get_account_named_key(operator.account_key, "ERC20")
+    named_key = client.get_account_named_key(operator.to_account_key(), "ERC20")
     if named_key is None:
         raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
 

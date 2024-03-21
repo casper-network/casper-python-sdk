@@ -1,7 +1,15 @@
+import enum
+
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
-from pycspr.crypto.defaults import DEFAULT_HASH_ALGO
-from pycspr.crypto.types import HashAlgorithm
+
+
+class HashAlgorithm(enum.Enum):
+    """Enumeration over set of supported hash algorithms.
+
+    """
+    BLAKE2B = enum.auto()
+    BLAKE3 = enum.auto()
 
 
 # Map: Hash Algo Type -> Hash Algo Implementation.
@@ -11,12 +19,15 @@ ALGOS = {
 }
 
 # Default length of a hash digest.
-DIGEST_LENGTH = 32
+DEFAULT_DIGEST_LENGTH = 32
+
+# Default hash algo.
+DEFAULT_HASH_ALGO = HashAlgorithm.BLAKE2B
 
 
 def get_hash(
     data: bytes,
-    size: int = DIGEST_LENGTH,
+    size: int = DEFAULT_DIGEST_LENGTH,
     algo: HashAlgorithm = DEFAULT_HASH_ALGO
 ) -> bytes:
     """Maps input to a hash function output.

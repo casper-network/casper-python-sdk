@@ -104,7 +104,7 @@ def _main(args: argparse.Namespace):
 
     # Set validator unbond purse.
     validator_purse_uref: CLV_URef = \
-        client.get_account_main_purse_uref(validator.account_key)
+        client.get_account_main_purse_uref(validator.to_account_key())
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, validator, validator_purse_uref)
@@ -143,7 +143,7 @@ def _get_deploy(
     deploy = pycspr.create_validator_auction_bid_withdrawal(
         params=deploy_params,
         amount=args.amount,
-        public_key=validator.as_public_key,
+        public_key=validator.to_public_key(),
         path_to_wasm=args.path_to_wasm,
         unbond_purse_ref=validator_purse_uref,
         )
