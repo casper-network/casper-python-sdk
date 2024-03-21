@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import typing
 
 
 class KeyAlgorithm(enum.Enum):
@@ -16,6 +17,9 @@ class HashAlgorithm(enum.Enum):
     """
     BLAKE2B = enum.auto()
     BLAKE3 = enum.auto()
+
+
+Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
 
 
 @dataclasses.dataclass

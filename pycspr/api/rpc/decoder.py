@@ -62,10 +62,10 @@ from pycspr.api.rpc.types import Weight
 from pycspr.utils import conversion
 
 
-def decode(encoded: dict, typedef: type) -> object:
+def decode(encoded: typing.Union[dict, str], typedef: type) -> object:
     """Decodes a domain entity from a JSON object.
 
-    :param obj: A JSON compatible dictionary.
+    :param encoded: JSON encoded data.
     :param typedef: Domain entity type definition.
     :returns: A domain entity.
 
@@ -76,11 +76,6 @@ def decode(encoded: dict, typedef: type) -> object:
         raise ValueError(f"Cannot decode {typedef} from json object")
     else:
         return decoder(encoded)
-
-
-def _decode_account_id(encoded: str) -> AccountID:
-    # E.G. account-hash-2c4a11c062a8a337bfc97e27fd66291caeb2c65865dcb5d3ef3759c4c97efecb
-    return bytes.fromhex(encoded[13:])
 
 
 def _decode_account_info(encoded: dict) -> AccountInfo:
@@ -98,10 +93,6 @@ def _decode_action_thresholds(encoded: dict) -> ActionThresholds:
         deployment=decode(encoded["deployment"], Weight),
         key_management=decode(encoded["key_management"], Weight),
     )
-
-
-def _decode_address(encoded: str) -> Address:
-    return bytes.fromhex(encoded)
 
 
 def _decode_associated_key(encoded: dict) -> AssociatedKey:
@@ -147,10 +138,6 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
     )
 
 
-def _decode_bool(encoded: str) -> bool:
-    return bool(encoded)
-
-
 def _decode_block(encoded: dict) -> Block:
     return Block(
         body=decode(encoded["body"], BlockBody),
@@ -181,10 +168,6 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
         )
 
 
-def _decode_block_height(encoded: str) -> BlockHeight:
-    return decode(encoded, int)
-
-
 def _decode_block_signature(encoded: dict) -> BlockSignature:
     return BlockSignature(
         public_key=decode(encoded["public_key"], PublicKey),
@@ -197,10 +180,6 @@ def _decode_block_transfers(encoded: dict) -> BlockTransfers:
         block_hash=decode(encoded["block_hash"], Digest),
         transfers=decode(encoded["transfers"], Transfer)
     )
-
-
-def _decode_bytes(encoded: str) -> bytes:
-    return bytes.fromhex(encoded)
 
 
 def _decode_deploy(encoded: dict) -> Deploy:
@@ -317,14 +296,6 @@ def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     )
 
 
-def _decode_digest(encoded: str) -> bytes:
-    return decode(encoded, bytes)
-
-
-def _decode_era_id(encoded: str) -> EraID:
-    return decode(encoded, int)
-
-
 def _decode_era_info(encoded: dict) -> EraInfo:
     return EraInfo(
         seigniorage_allocations=[
@@ -357,26 +328,6 @@ def _decode_era_summary(encoded: dict) -> EraSummary:
     )
 
 
-def _decode_gas(encoded: str) -> Gas:
-    return decode(encoded, int)
-
-
-def _decode_gas_price(encoded: str) -> GasPrice:
-    return decode(encoded, int)
-
-
-def _decode_int(encoded: str) -> int:
-    return int(encoded)
-
-
-def _decode_merkle_proof(encoded: str) -> MerkleProof:
-    return decode(encoded, bytes)
-
-
-def _decode_motes(encoded: str) -> Motes:
-    return int(encoded)
-
-
 def _decode_named_key(encoded: dict) -> NamedKey:
     return NamedKey(
         key=decode(encoded["key"], str),
@@ -392,10 +343,6 @@ def _decode_protocol_version(encoded: str) -> ProtocolVersion:
         minor=int(minor),
         revision=int(revision)
         )
-
-
-def _decode_public_key(encoded: str) -> PublicKey:
-    return decode(encoded, bytes)
 
 
 def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
@@ -420,17 +367,9 @@ def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
         raise ValueError("decode_seigniorage_allocation")
 
 
-def _decode_signature(encoded: str) -> Signature:
-    return decode(encoded, bytes)
-
-
 def _decode_stored_value(encoded: dict) -> typing.Union[EraInfo]:
     if "EraInfo" in encoded:
         _decode_era_info(encoded["EraInfo"])
-
-
-def _decode_str(encoded: str) -> str:
-    return encoded.strip()
 
 
 def _decode_timestamp(encoded: str) -> Timestamp:
@@ -482,34 +421,26 @@ def _decode_wasm_module(encoded: str) -> WasmModule:
     return decode(encoded, bytes)
 
 
-def _decode_weight(encoded: str):
-    return _decode_int(encoded)
-
-
-_DECODERS_OF_PRIMITIVE_TYPES = {
-    bool: _decode_bool,
-    bytes: _decode_bytes,
-    int: _decode_int,
-    str: _decode_str,
-}
-
-_DECODERS_OF_PRIMITIVE_TYPES_ALIASED = {
-    AccountID: _decode_account_id,
-    Address: _decode_address,
-    BlockHeight: _decode_block_height,
-    Digest: _decode_digest,
-    EraID: _decode_era_id,
-    Gas: _decode_gas,
-    GasPrice: _decode_gas_price,
-    PublicKey: _decode_public_key,
-    MerkleProof: _decode_merkle_proof,
-    Motes: _decode_motes,
-    Signature: _decode_signature,
-    Weight: _decode_weight,
+_DECODERS = {
+    bool: bool,
+    bytes: lambda x: bytes.fromhex(x),
+    int: int,
+    str: lambda x: x.strip(),
+} | {
+    AccountID: lambda x: decode(x[13:], bytes),
+    Address: lambda x: decode(x, bytes),
+    BlockHeight: lambda x: decode(x, int),
+    Digest: lambda x: decode(x, bytes),
+    EraID: lambda x: decode(x, int),
+    Gas: lambda x: decode(x, int),
+    GasPrice: lambda x: decode(x, int),
+    PublicKey: lambda x: decode(x, bytes),
+    MerkleProof: lambda x: decode(x, bytes),
+    Motes: lambda x: decode(x, int),
+    Signature: lambda x: decode(x, bytes),
+    Weight: lambda x: decode(x, int),
     WasmModule: _decode_wasm_module
-}
-
-_DECODERS_OF_COMPLEX_TYPES = {
+} | {
     AccountInfo: _decode_account_info,
     ActionThresholds: _decode_action_thresholds,
     AssociatedKey: _decode_associated_key,
@@ -549,8 +480,3 @@ _DECODERS_OF_COMPLEX_TYPES = {
     ValidatorChanges: _decode_validator_changes,
     ValidatorStatusChange: _decode_validator_status_change,
 }
-
-_DECODERS = \
-    _DECODERS_OF_PRIMITIVE_TYPES | \
-    _DECODERS_OF_PRIMITIVE_TYPES_ALIASED | \
-    _DECODERS_OF_COMPLEX_TYPES

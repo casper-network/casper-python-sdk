@@ -171,15 +171,15 @@ def _get_contract_hash(
 def _get_deploy(
     args: argparse.Namespace,
     contract_hash: bytes,
-    operator: PrivateKey,
-    user: PublicKey
+    key_of_operator: PrivateKey,
+    key_of_user: PublicKey
 ) -> Deploy:
     """Returns delegation deploy to be dispatched to a node.
 
     """
     # Set standard deploy parameters.
     params: DeployParameters = pycspr.create_deploy_parameters(
-        account=operator,
+        account=key_of_operator,
         chain_name=args.chain_name
         )
 
@@ -192,7 +192,7 @@ def _get_deploy(
         hash=contract_hash,
         args={
             "amount": CLV_U256(args.amount),
-            "recipient": CLV_ByteArray(user.account_hash)
+            "recipient": CLV_ByteArray(key_of_user.account_hash)
         }
     )
 

@@ -27,6 +27,8 @@ MerkleProof = typing.NewType("Cryptographic proof over a merkle trie.", bytes)
 
 Motes = typing.NewType("Basic unit of crypto economic system.", int)
 
+PrivateKey = typing.NewType("Asymmetric private key associated with an account.", bytes)
+
 PublicKey = typing.NewType("Asymmetric public key associated with an account.", bytes)
 
 Signature = typing.NewType("Cryptographic signature over data.", bytes)
