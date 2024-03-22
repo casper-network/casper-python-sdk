@@ -5,10 +5,10 @@ import pytest
 
 import pycspr
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
+from pycspr.types.rpc import DeployApproval
 from tests.fixtures.accounts import create_account
 
 

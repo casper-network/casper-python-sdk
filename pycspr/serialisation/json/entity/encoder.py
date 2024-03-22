@@ -3,16 +3,16 @@ import typing
 from pycspr.crypto import cl_checksum
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Value
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc import DeployOfStoredContractByName
 from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
 from pycspr.utils import conversion as convertor
 
 
@@ -115,7 +115,7 @@ def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNa
     }
 
 
-def _encode_transfer(entity: Transfer) -> dict:
+def _encode_transfer(entity: DeployOfTransfer) -> dict:
     return {
         "Transfer": {
             "args": [encode(i) for i in entity.arguments],
@@ -133,5 +133,5 @@ _ENCODERS = {
     DeployOfStoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _encode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-    Transfer: _encode_transfer,
+    DeployOfTransfer: _encode_transfer,
 }

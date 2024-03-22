@@ -2,8 +2,8 @@ import random
 
 import pycspr
 from pycspr import serialisation
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployParameters
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 
 
@@ -75,7 +75,7 @@ def test_create_transfer_session(a_test_account):
             correlation_id=random.randint(0, int(1e9)),
             target=a_test_account.to_account_key(),
             ),
-        pycspr.types.chain.Transfer
+        pycspr.types.rpc.DeployOfTransfer
         )
 
 

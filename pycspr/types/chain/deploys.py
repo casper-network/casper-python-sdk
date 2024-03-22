@@ -5,6 +5,7 @@ from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.crypto import verify_deploy_approval_signature
 from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
+from pycspr.crypto import SignatureBytes
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.rpc import ContractID
 from pycspr.types.rpc import ContractVersion
@@ -27,7 +28,7 @@ class DeployApproval:
 
     # The digital signatutre signalling approval of deploy processing.
     # It's length is 65 bytes: leading byte represents ECC algo type.
-    signature: bytes
+    signature: SignatureBytes
 
     def __eq__(self, other) -> bool:
         return self.signer == other.signer and self.signature == other.signature
@@ -235,63 +236,3 @@ class Deploy():
         self.approvals = [
             uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques
             ]
-
-
-@dataclasses.dataclass
-class DeployOfStoredContract_(DeployExecutableItem):
-    """Encapsulates information required to execute an on-chain smart contract.
-
-    """
-    # Name of a smart contract entry point to be executed.
-    entry_point: str
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.entry_point == other.entry_point
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByHashVersioned_(DeployOfStoredContractByHash):
-    """Encapsulates information required to execute a versioned on-chain smart
-    contract referenced by hash.
-
-    """
-    # Smart contract version identifier.
-    version: ContractVersion
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.version == other.version
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByName_(DeployOfStoredContract):
-    """Encapsulates information required to execute an on-chain
-       smart contract referenced by name.
-
-    """
-    # On-chain smart contract name - in scope when dispatch & contract accounts are synonmous.
-    name: str
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.name == other.name
-
-
-@dataclasses.dataclass
-class DeployOfStoredContractByNameVersioned_(DeployOfStoredContractByName_):
-    """Encapsulates information required to execute a versioned
-       on-chain smart contract referenced by name.
-
-    """
-    # Smart contract version identifier.
-    version: ContractVersion
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.version == other.version
-
-
-@dataclasses.dataclass
-class Transfer(DeployExecutableItem):
-    """Encapsulates information required to execute a host-side balance transfer.
-
-    """
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other)

@@ -1,10 +1,9 @@
 from pycspr.factory import create_public_key_from_account_key
 from pycspr.serialisation.json.cl_value import decode as decode_cl_value
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import Transfer
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import DeployOfModuleBytes
@@ -12,6 +11,7 @@ from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc import DeployOfStoredContractByName
 from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import conversion as convertor
 
@@ -65,7 +65,7 @@ def _decode_deploy_executable_item(obj: dict) -> DeployExecutableItem:
     elif "StoredVersionedContractByName" in obj:
         return decode(obj, DeployOfStoredContractByNameVersioned)
     elif "Transfer" in obj:
-        return decode(obj, Transfer)
+        return decode(obj, DeployOfTransfer)
     else:
         raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
@@ -123,8 +123,8 @@ def _decode_stored_contract_by_name_versioned(obj: dict) -> DeployOfStoredContra
     )
 
 
-def _decode_transfer(obj: dict) -> Transfer:
-    return Transfer(
+def _decode_transfer(obj: dict) -> DeployOfTransfer:
+    return DeployOfTransfer(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         )
 
@@ -143,7 +143,7 @@ def _get_parsed_json(typedef: object, obj: dict) -> dict:
         return obj["StoredContractByName"]
     elif typedef is DeployOfStoredContractByNameVersioned:
         return obj["StoredContractByNameVersioned"]
-    elif typedef is Transfer:
+    elif typedef is DeployOfTransfer:
         return obj["Transfer"]
     return obj
 
@@ -159,5 +159,5 @@ _DECODERS = {
     DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _decode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
-    Transfer: _decode_transfer
+    DeployOfTransfer: _decode_transfer
 }

@@ -4,14 +4,14 @@ import pytest
 
 import pycspr
 from pycspr import types
-from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import Transfer
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc import DeployOfStoredContractByName
 from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
 from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
 
@@ -104,7 +104,7 @@ def _create_stored_contract_by_name_versioned() -> DeployOfStoredContractByNameV
     )
 
 
-def _create_transfer() -> Transfer:
+def _create_transfer() -> DeployOfTransfer:
     return pycspr.factory.create_transfer_session(
         amount=int(1e14),
         correlation_id=123456,

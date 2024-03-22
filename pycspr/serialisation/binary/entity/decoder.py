@@ -5,17 +5,16 @@ from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import DeployOfModuleBytes
@@ -23,6 +22,7 @@ from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc import DeployOfStoredContractByName
 from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
 from pycspr.types.rpc import Timestamp
 
 
@@ -129,7 +129,7 @@ def _decode_deploy_executable_item(bstream: bytes) -> DeployExecutableItem:
     elif bstream[0] == 4:
         return decode(bstream, DeployOfStoredContractByNameVersioned)
     elif bstream[0] == 5:
-        return decode(bstream, Transfer)
+        return decode(bstream, DeployOfTransfer)
 
     raise ValueError("Invalid deploy executable item type tag")
 
@@ -241,11 +241,11 @@ def _decode_stored_contract_by_name_versioned(
         )
 
 
-def _decode_transfer(bstream: bytes) -> typing.Tuple[bytes, Transfer]:
+def _decode_transfer(bstream: bytes) -> typing.Tuple[bytes, DeployOfTransfer]:
     bstream = bstream[1:]
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, Transfer(args)
+    return bstream, DeployOfTransfer(args)
 
 
 _DECODERS = {
@@ -260,5 +260,5 @@ _DECODERS = {
     DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _decode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
-    Transfer: _decode_transfer
+    DeployOfTransfer: _decode_transfer
 }

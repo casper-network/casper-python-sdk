@@ -10,12 +10,10 @@ from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLT_Type_U64
@@ -24,9 +22,11 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfTransfer
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -217,7 +217,7 @@ def create_transfer_session(
     amount: int,
     target: bytes,
     correlation_id: int = None,
-) -> Transfer:
+) -> DeployOfTransfer:
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
@@ -227,7 +227,7 @@ def create_transfer_session(
 
     """
     correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
-    return Transfer(
+    return DeployOfTransfer(
         args={
             "amount": CLV_U512(amount),
             "target": CLV_PublicKey.from_account_key(target),

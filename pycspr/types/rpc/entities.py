@@ -122,6 +122,14 @@ class DeployApproval():
     signer: PublicKeyBytes
     signature: SignatureBytes
 
+    def __eq__(self, other) -> bool:
+        return self.signer == other.signer and self.signature == other.signature
+
+    @property
+    def sig(self) -> bytes:
+        """Returns signature denuded of leading byte (representing ECC algo)."""
+        return self.signature[1:]
+
 
 @dataclasses.dataclass
 class DeployArgument():
@@ -194,20 +202,30 @@ class DeployOfStoredContractByHash(DeployOfStoredContract):
 class DeployOfStoredContractByHashVersioned(DeployOfStoredContractByHash):
     version: ContractVersion
 
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.version == other.version
+
 
 @dataclasses.dataclass
 class DeployOfStoredContractByName(DeployOfStoredContract):
     name: str
+
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.name == other.name
 
 
 @dataclasses.dataclass
 class DeployOfStoredContractByNameVersioned(DeployOfStoredContractByName):
     version: ContractVersion
 
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.version == other.version
+
 
 @dataclasses.dataclass
 class DeployOfTransfer(DeployExecutableItem):
-    pass
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other)
 
 
 @dataclasses.dataclass

@@ -1,25 +1,26 @@
 import typing
 
+from pycspr.crypto import SignatureBytes
 from pycspr.serialisation.binary.cl_type import encode as encode_cl_type
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
+from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc import DeployOfStoredContractByName
 from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
 
 
 def encode(entity: object) -> bytes:
@@ -139,7 +140,7 @@ def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNa
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_transfer(entity: Transfer) -> bytes:
+def _encode_transfer(entity: DeployOfTransfer) -> bytes:
     return \
         bytes([5]) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
@@ -166,5 +167,5 @@ _ENCODERS = {
     DeployOfStoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _encode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
-    Transfer: _encode_transfer,
+    DeployOfTransfer: _encode_transfer,
 }
