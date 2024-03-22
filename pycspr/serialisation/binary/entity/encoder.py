@@ -7,10 +7,6 @@ from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import StoredContractByHash
-from pycspr.types.chain import StoredContractByHashVersioned
-from pycspr.types.chain import StoredContractByName
-from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
@@ -20,6 +16,10 @@ from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
 
 
 def encode(entity: object) -> bytes:
@@ -105,7 +105,7 @@ def _encode_module_bytes(entity: DeployOfModuleBytes) -> bytes:
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_hash(entity: StoredContractByHash) -> bytes:
+def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> bytes:
     return \
         bytes([1]) + \
         encode_cl_value(CLV_ByteArray(entity.hash)) + \
@@ -113,7 +113,7 @@ def _encode_stored_contract_by_hash(entity: StoredContractByHash) -> bytes:
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_hash_versioned(entity: StoredContractByHashVersioned) -> bytes:
+def _encode_stored_contract_by_hash_versioned(entity: DeployOfStoredContractByHashVersioned) -> bytes:
     return \
         bytes([2]) + \
         encode_cl_value(CLV_ByteArray(entity.hash)) + \
@@ -122,7 +122,7 @@ def _encode_stored_contract_by_hash_versioned(entity: StoredContractByHashVersio
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_name(entity: StoredContractByName) -> bytes:
+def _encode_stored_contract_by_name(entity: DeployOfStoredContractByName) -> bytes:
     return \
         bytes([3]) + \
         encode_cl_value(CLV_String(entity.name)) + \
@@ -130,7 +130,7 @@ def _encode_stored_contract_by_name(entity: StoredContractByName) -> bytes:
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_name_versioned(entity: StoredContractByNameVersioned) -> bytes:
+def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNameVersioned) -> bytes:
     return \
         bytes([4]) + \
         encode_cl_value(CLV_String(entity.name)) + \
@@ -162,9 +162,9 @@ _ENCODERS = {
     DeployBody: _encode_deploy_body,
     DeployHeader: _encode_deploy_header,
     DeployOfModuleBytes: _encode_module_bytes,
-    StoredContractByHash: _encode_stored_contract_by_hash,
-    StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-    StoredContractByName: _encode_stored_contract_by_name,
-    StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
+    DeployOfStoredContractByHash: _encode_stored_contract_by_hash,
+    DeployOfStoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
+    DeployOfStoredContractByName: _encode_stored_contract_by_name,
+    DeployOfStoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
     Transfer: _encode_transfer,
 }

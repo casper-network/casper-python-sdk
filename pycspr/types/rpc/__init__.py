@@ -17,6 +17,7 @@ from pycspr.types.rpc.entities import DeployExecutionInfo
 from pycspr.types.rpc.entities import DeployExecutableItem
 from pycspr.types.rpc.entities import DeployHeader
 from pycspr.types.rpc.entities import DeployOfModuleBytes
+from pycspr.types.rpc.entities import DeployOfStoredContract
 from pycspr.types.rpc.entities import DeployOfStoredContractByHash
 from pycspr.types.rpc.entities import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc.entities import DeployOfStoredContractByName

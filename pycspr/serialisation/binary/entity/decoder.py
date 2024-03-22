@@ -9,10 +9,6 @@ from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import StoredContractByHash
-from pycspr.types.chain import StoredContractByHashVersioned
-from pycspr.types.chain import StoredContractByName
-from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.cl import CLT_Type_U32
@@ -23,6 +19,10 @@ from pycspr.types.cl import CLT_Type_String
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.rpc import Timestamp
 
 
@@ -121,13 +121,13 @@ def _decode_deploy_executable_item(bstream: bytes) -> DeployExecutableItem:
     if bstream[0] == 0:
         return decode(bstream, DeployOfModuleBytes)
     elif bstream[0] == 1:
-        return decode(bstream, StoredContractByHash)
+        return decode(bstream, DeployOfStoredContractByHash)
     elif bstream[0] == 2:
-        return decode(bstream, StoredContractByHashVersioned)
+        return decode(bstream, DeployOfStoredContractByHashVersioned)
     elif bstream[0] == 3:
-        return decode(bstream, StoredContractByName)
+        return decode(bstream, DeployOfStoredContractByName)
     elif bstream[0] == 4:
-        return decode(bstream, StoredContractByNameVersioned)
+        return decode(bstream, DeployOfStoredContractByNameVersioned)
     elif bstream[0] == 5:
         return decode(bstream, Transfer)
 
@@ -181,13 +181,13 @@ def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, DeployOfModuleBy
     return bstream, DeployOfModuleBytes(args, module_bytes)
 
 
-def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, StoredContractByHash]:
+def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, DeployOfStoredContractByHash]:
     bstream = bstream[1:]
     bstream, contract_hash = decode_cl_value(bstream, CLT_Type_ByteArray(32))
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, StoredContractByHash(
+    return bstream, DeployOfStoredContractByHash(
         args=args,
         entry_point=entry_point.value,
         hash=contract_hash.value
@@ -196,14 +196,14 @@ def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, Store
 
 def _decode_stored_contract_by_hash_versioned(
     bstream: bytes
-) -> typing.Tuple[bytes, StoredContractByHashVersioned]:
+) -> typing.Tuple[bytes, DeployOfStoredContractByHashVersioned]:
     bstream = bstream[1:]
     bstream, contract_hash = decode_cl_value(bstream, CLT_Type_ByteArray(32))
     bstream, contract_version = decode_cl_value(bstream, CLT_Type_U32())
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, StoredContractByHashVersioned(
+    return bstream, DeployOfStoredContractByHashVersioned(
         args=args,
         entry_point=entry_point.value,
         hash=contract_hash.value,
@@ -211,13 +211,13 @@ def _decode_stored_contract_by_hash_versioned(
         )
 
 
-def _decode_stored_contract_by_name(bstream: bytes) -> typing.Tuple[bytes, StoredContractByName]:
+def _decode_stored_contract_by_name(bstream: bytes) -> typing.Tuple[bytes, DeployOfStoredContractByName]:
     bstream = bstream[1:]
     bstream, contract_name = decode_cl_value(bstream, CLT_Type_String())
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, StoredContractByName(
+    return bstream, DeployOfStoredContractByName(
         args=args,
         entry_point=entry_point.value,
         name=contract_name.value
@@ -226,14 +226,14 @@ def _decode_stored_contract_by_name(bstream: bytes) -> typing.Tuple[bytes, Store
 
 def _decode_stored_contract_by_name_versioned(
     bstream: bytes
-) -> typing.Tuple[bytes, StoredContractByNameVersioned]:
+) -> typing.Tuple[bytes, DeployOfStoredContractByNameVersioned]:
     bstream = bstream[1:]
     bstream, contract_name = decode_cl_value(bstream, CLT_Type_String())
     bstream, contract_version = decode_cl_value(bstream, CLT_Type_U32())
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, StoredContractByNameVersioned(
+    return bstream, DeployOfStoredContractByNameVersioned(
         args=args,
         entry_point=entry_point.value,
         name=contract_name.value,
@@ -256,9 +256,9 @@ _DECODERS = {
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
     DeployOfModuleBytes: _decode_module_bytes,
-    StoredContractByHash: _decode_stored_contract_by_hash,
-    StoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
-    StoredContractByName: _decode_stored_contract_by_name,
-    StoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
+    DeployOfStoredContractByHash: _decode_stored_contract_by_hash,
+    DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
+    DeployOfStoredContractByName: _decode_stored_contract_by_name,
+    DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
     Transfer: _decode_transfer
 }

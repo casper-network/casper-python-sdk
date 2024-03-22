@@ -10,6 +10,8 @@ from pycspr.types.rpc import ContractID
 from pycspr.types.rpc import ContractVersion
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
+from pycspr.types.rpc import DeployOfStoredContract
+from pycspr.types.rpc import DeployOfStoredContractByHash
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -236,19 +238,7 @@ class Deploy():
 
 
 @dataclasses.dataclass
-class DeployOfModuleBytes_(DeployExecutableItem):
-    """Encapsulates information required to execute an in-line wasm binary.
-
-    """
-    # Raw WASM payload.
-    module_bytes: bytes
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.module_bytes == other.module_bytes
-
-
-@dataclasses.dataclass
-class StoredContract(DeployExecutableItem):
+class DeployOfStoredContract_(DeployExecutableItem):
     """Encapsulates information required to execute an on-chain smart contract.
 
     """
@@ -260,20 +250,7 @@ class StoredContract(DeployExecutableItem):
 
 
 @dataclasses.dataclass
-class StoredContractByHash(StoredContract):
-    """Encapsulates information required to execute an on-chain
-       smart contract referenced by hash.
-
-    """
-    # On-chain smart contract address.
-    hash: ContractID
-
-    def __eq__(self, other) -> bool:
-        return super().__eq__(other) and self.hash == other.hash
-
-
-@dataclasses.dataclass
-class StoredContractByHashVersioned(StoredContractByHash):
+class DeployOfStoredContractByHashVersioned_(DeployOfStoredContractByHash):
     """Encapsulates information required to execute a versioned on-chain smart
     contract referenced by hash.
 
@@ -286,7 +263,7 @@ class StoredContractByHashVersioned(StoredContractByHash):
 
 
 @dataclasses.dataclass
-class StoredContractByName(StoredContract):
+class DeployOfStoredContractByName_(DeployOfStoredContract):
     """Encapsulates information required to execute an on-chain
        smart contract referenced by name.
 
@@ -299,7 +276,7 @@ class StoredContractByName(StoredContract):
 
 
 @dataclasses.dataclass
-class StoredContractByNameVersioned(StoredContractByName):
+class DeployOfStoredContractByNameVersioned_(DeployOfStoredContractByName_):
     """Encapsulates information required to execute a versioned
        on-chain smart contract referenced by name.
 

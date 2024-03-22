@@ -5,14 +5,14 @@ from pycspr.serialisation.json.cl_value import encode as encode_cl_value
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import StoredContractByHash
-from pycspr.types.chain import StoredContractByHashVersioned
-from pycspr.types.chain import StoredContractByName
-from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Value
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.utils import conversion as convertor
 
 
@@ -73,7 +73,7 @@ def _encode_module_bytes(entity: DeployOfModuleBytes) -> dict:
     }
 
 
-def _encode_stored_contract_by_hash(entity: StoredContractByHash) -> dict:
+def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> dict:
     return {
         "StoredContractByHash": {
             "args": [encode(i) for i in entity.arguments],
@@ -83,7 +83,7 @@ def _encode_stored_contract_by_hash(entity: StoredContractByHash) -> dict:
     }
 
 
-def _encode_stored_contract_by_hash_versioned(entity: StoredContractByHashVersioned) -> dict:
+def _encode_stored_contract_by_hash_versioned(entity: DeployOfStoredContractByHashVersioned) -> dict:
     return {
         "StoredContractByHashVersioned": {
             "args": [encode(i) for i in entity.arguments],
@@ -94,7 +94,7 @@ def _encode_stored_contract_by_hash_versioned(entity: StoredContractByHashVersio
     }
 
 
-def _encode_stored_contract_by_name(entity: StoredContractByName) -> dict:
+def _encode_stored_contract_by_name(entity: DeployOfStoredContractByName) -> dict:
     return {
         "StoredContractByName": {
             "args": [encode(i) for i in entity.arguments],
@@ -104,7 +104,7 @@ def _encode_stored_contract_by_name(entity: StoredContractByName) -> dict:
     }
 
 
-def _encode_stored_contract_by_name_versioned(entity: StoredContractByNameVersioned) -> dict:
+def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNameVersioned) -> dict:
     return {
         "StoredContractByNameVersioned": {
             "args": [encode(i) for i in entity.arguments],
@@ -129,9 +129,9 @@ _ENCODERS = {
     DeployArgument: _encode_deploy_argument,
     DeployHeader: _encode_deploy_header,
     DeployOfModuleBytes: _encode_module_bytes,
-    StoredContractByHash: _encode_stored_contract_by_hash,
-    StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
-    StoredContractByName: _encode_stored_contract_by_name,
-    StoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
+    DeployOfStoredContractByHash: _encode_stored_contract_by_hash,
+    DeployOfStoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
+    DeployOfStoredContractByName: _encode_stored_contract_by_name,
+    DeployOfStoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
     Transfer: _encode_transfer,
 }

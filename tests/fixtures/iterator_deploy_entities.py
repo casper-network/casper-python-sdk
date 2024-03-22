@@ -5,13 +5,13 @@ import pytest
 import pycspr
 from pycspr import types
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import StoredContractByHash
-from pycspr.types.chain import StoredContractByHashVersioned
-from pycspr.types.chain import StoredContractByName
-from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
 from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
 
@@ -70,16 +70,16 @@ def _create_module_bytes() -> DeployOfModuleBytes:
     )
 
 
-def _create_stored_contract_by_hash() -> StoredContractByHash:
-    return StoredContractByHash(
+def _create_stored_contract_by_hash() -> DeployOfStoredContractByHash:
+    return DeployOfStoredContractByHash(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
         hash=_TEST_BYTES
     )
 
 
-def _create_stored_contract_by_hash_versioned() -> StoredContractByHashVersioned:
-    return StoredContractByHashVersioned(
+def _create_stored_contract_by_hash_versioned() -> DeployOfStoredContractByHashVersioned:
+    return DeployOfStoredContractByHashVersioned(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
         hash=_TEST_BYTES,
@@ -87,16 +87,16 @@ def _create_stored_contract_by_hash_versioned() -> StoredContractByHashVersioned
     )
 
 
-def _create_stored_contract_by_name() -> StoredContractByName:
-    return StoredContractByName(
+def _create_stored_contract_by_name() -> DeployOfStoredContractByName:
+    return DeployOfStoredContractByName(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
         name="hello-dolly"
     )
 
 
-def _create_stored_contract_by_name_versioned() -> StoredContractByNameVersioned:
-    return StoredContractByNameVersioned(
+def _create_stored_contract_by_name_versioned() -> DeployOfStoredContractByNameVersioned:
+    return DeployOfStoredContractByNameVersioned(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
         name="hello-dolly",

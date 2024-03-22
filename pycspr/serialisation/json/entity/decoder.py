@@ -4,14 +4,14 @@ from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import StoredContractByHash
-from pycspr.types.chain import StoredContractByHashVersioned
-from pycspr.types.chain import StoredContractByName
-from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.rpc import DeployArgument
 from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import conversion as convertor
 
@@ -57,13 +57,13 @@ def _decode_deploy_executable_item(obj: dict) -> DeployExecutableItem:
     if "DeployOfModuleBytes" in obj:
         return decode(obj, DeployOfModuleBytes)
     elif "StoredContractByHash" in obj:
-        return decode(obj, StoredContractByHash)
+        return decode(obj, DeployOfStoredContractByHash)
     elif "StoredVersionedContractByHash" in obj:
-        return decode(obj, StoredContractByHashVersioned)
+        return decode(obj, DeployOfStoredContractByHashVersioned)
     elif "StoredContractByName" in obj:
-        return decode(obj, StoredContractByName)
+        return decode(obj, DeployOfStoredContractByName)
     elif "StoredVersionedContractByName" in obj:
-        return decode(obj, StoredContractByNameVersioned)
+        return decode(obj, DeployOfStoredContractByNameVersioned)
     elif "Transfer" in obj:
         return decode(obj, Transfer)
     else:
@@ -89,16 +89,16 @@ def _decode_module_bytes(obj: dict) -> DeployOfModuleBytes:
         )
 
 
-def _decode_stored_contract_by_hash(obj: dict) -> StoredContractByHash:
-    return StoredContractByHash(
+def _decode_stored_contract_by_hash(obj: dict) -> DeployOfStoredContractByHash:
+    return DeployOfStoredContractByHash(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],
         hash=bytes.fromhex(obj["hash"])
     )
 
 
-def _decode_stored_contract_by_hash_versioned(obj: dict) -> StoredContractByHashVersioned:
-    return StoredContractByHashVersioned(
+def _decode_stored_contract_by_hash_versioned(obj: dict) -> DeployOfStoredContractByHashVersioned:
+    return DeployOfStoredContractByHashVersioned(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],
         hash=bytes.fromhex(obj["hash"]),
@@ -106,16 +106,16 @@ def _decode_stored_contract_by_hash_versioned(obj: dict) -> StoredContractByHash
     )
 
 
-def _decode_stored_contract_by_name(obj: dict) -> StoredContractByName:
-    return StoredContractByName(
+def _decode_stored_contract_by_name(obj: dict) -> DeployOfStoredContractByName:
+    return DeployOfStoredContractByName(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],
         name=obj["name"],
     )
 
 
-def _decode_stored_contract_by_name_versioned(obj: dict) -> StoredContractByNameVersioned:
-    return StoredContractByNameVersioned(
+def _decode_stored_contract_by_name_versioned(obj: dict) -> DeployOfStoredContractByNameVersioned:
+    return DeployOfStoredContractByNameVersioned(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],
         name=obj["name"],
@@ -135,13 +135,13 @@ def _get_parsed_json(typedef: object, obj: dict) -> dict:
             obj[1]["bytes"] = bytes.fromhex(obj[1]["bytes"])
     elif typedef is DeployOfModuleBytes:
         return obj["DeployOfModuleBytes"]
-    elif typedef is StoredContractByHash:
+    elif typedef is DeployOfStoredContractByHash:
         return obj["StoredContractByHash"]
-    elif typedef is StoredContractByHashVersioned:
+    elif typedef is DeployOfStoredContractByHashVersioned:
         return obj["StoredContractByHashVersioned"]
-    elif typedef is StoredContractByName:
+    elif typedef is DeployOfStoredContractByName:
         return obj["StoredContractByName"]
-    elif typedef is StoredContractByNameVersioned:
+    elif typedef is DeployOfStoredContractByNameVersioned:
         return obj["StoredContractByNameVersioned"]
     elif typedef is Transfer:
         return obj["Transfer"]
@@ -155,9 +155,9 @@ _DECODERS = {
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
     DeployOfModuleBytes: _decode_module_bytes,
-    StoredContractByHash: _decode_stored_contract_by_hash,
-    StoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
-    StoredContractByName: _decode_stored_contract_by_name,
-    StoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
+    DeployOfStoredContractByHash: _decode_stored_contract_by_hash,
+    DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
+    DeployOfStoredContractByName: _decode_stored_contract_by_name,
+    DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
     Transfer: _decode_transfer
 }

@@ -14,7 +14,7 @@ from pycspr.types.cl import CLV_U256
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployParameters
 from pycspr.types.rpc import DeployOfModuleBytes
-from pycspr.types.chain import StoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHash
 
 
 # Path to CCTL network assets.
@@ -187,7 +187,7 @@ def _get_deploy(
     payment: DeployOfModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
-    session: StoredContractByHash = StoredContractByHash(
+    session: DeployOfStoredContractByHash = DeployOfStoredContractByHash(
         entry_point="transfer",
         hash=contract_hash,
         args={

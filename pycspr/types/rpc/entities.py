@@ -176,12 +176,18 @@ class DeployOfModuleBytes(DeployExecutableItem):
 
 @dataclasses.dataclass
 class DeployOfStoredContract(DeployExecutableItem):
-    pass
+    entry_point: str
+
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.entry_point == other.entry_point
 
 
 @dataclasses.dataclass
 class DeployOfStoredContractByHash(DeployOfStoredContract):
     hash: ContractID
+
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.hash == other.hash
 
 
 @dataclasses.dataclass
