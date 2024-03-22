@@ -2,65 +2,63 @@ from __future__ import annotations
 
 import typing
 
-from pycspr.api.rpc.types import AccountID
-from pycspr.api.rpc.types import AccountInfo
-from pycspr.api.rpc.types import ActionThresholds
-from pycspr.api.rpc.types import Address
-from pycspr.api.rpc.types import AssociatedKey
-from pycspr.api.rpc.types import AuctionBidByDelegator
-from pycspr.api.rpc.types import AuctionBidByValidator
-from pycspr.api.rpc.types import AuctionBidByValidatorInfo
-from pycspr.api.rpc.types import AuctionState
-from pycspr.api.rpc.types import Block
-from pycspr.api.rpc.types import BlockBody
-from pycspr.api.rpc.types import BlockHeader
-from pycspr.api.rpc.types import BlockHeight
-from pycspr.api.rpc.types import BlockSignature
-from pycspr.api.rpc.types import BlockTransfers
-from pycspr.api.rpc.types import ContractID
-from pycspr.api.rpc.types import ContractVersion
-from pycspr.api.rpc.types import Deploy
-from pycspr.api.rpc.types import DeployApproval
-from pycspr.api.rpc.types import DeployArgument
-from pycspr.api.rpc.types import DeployExecutionInfo
-from pycspr.api.rpc.types import DeployExecutableItem
-from pycspr.api.rpc.types import DeployHeader
-from pycspr.api.rpc.types import DeployOfModuleBytes
-from pycspr.api.rpc.types import DeployOfStoredContractByHash
-from pycspr.api.rpc.types import DeployOfStoredContractByHashVersioned
-from pycspr.api.rpc.types import DeployOfStoredContractByName
-from pycspr.api.rpc.types import DeployOfStoredContractByNameVersioned
-from pycspr.api.rpc.types import DeployOfTransfer
-from pycspr.api.rpc.types import DeployTimeToLive
-from pycspr.api.rpc.types import Digest
-from pycspr.api.rpc.types import EraID
-from pycspr.api.rpc.types import EraInfo
-from pycspr.api.rpc.types import EraSummary
-from pycspr.api.rpc.types import EraValidators
-from pycspr.api.rpc.types import EraValidatorWeight
-from pycspr.api.rpc.types import Gas
-from pycspr.api.rpc.types import GasPrice
-from pycspr.api.rpc.types import Motes
-from pycspr.api.rpc.types import NamedKey
-from pycspr.api.rpc.types import ProtocolVersion
-from pycspr.api.rpc.types import SeigniorageAllocation
-from pycspr.api.rpc.types import SeigniorageAllocationForDelegator
-from pycspr.api.rpc.types import SeigniorageAllocationForValidator
-from pycspr.api.rpc.types import DeployOfStoredContract
-from pycspr.api.rpc.types import Transfer
-from pycspr.api.rpc.types import Timestamp
-from pycspr.api.rpc.types import URef
-from pycspr.api.rpc.types import URefAccessRights
-from pycspr.api.rpc.types import ValidatorChanges
-from pycspr.api.rpc.types import ValidatorStatusChange
-from pycspr.api.rpc.types import ValidatorStatusChangeType
-from pycspr.api.rpc.types import WasmModule
-from pycspr.api.rpc.types import Weight
+from pycspr.types.rpc import AccountID
+from pycspr.types.rpc import AccountInfo
+from pycspr.types.rpc import ActionThresholds
+from pycspr.types.rpc import Address
+from pycspr.types.rpc import AssociatedKey
+from pycspr.types.rpc import AuctionBidByDelegator
+from pycspr.types.rpc import AuctionBidByValidator
+from pycspr.types.rpc import AuctionBidByValidatorInfo
+from pycspr.types.rpc import AuctionState
+from pycspr.types.rpc import Block
+from pycspr.types.rpc import BlockBody
+from pycspr.types.rpc import BlockHeader
+from pycspr.types.rpc import BlockHeight
+from pycspr.types.rpc import BlockSignature
+from pycspr.types.rpc import BlockTransfers
+from pycspr.types.rpc import ContractID
+from pycspr.types.rpc import ContractVersion
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployApproval
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployExecutionInfo
+from pycspr.types.rpc import DeployExecutableItem
+from pycspr.types.rpc import DeployHeader
+from pycspr.types.rpc import DeployOfModuleBytes
+from pycspr.types.rpc import DeployOfStoredContractByHash
+from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.rpc import DeployOfStoredContractByName
+from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.rpc import DeployOfTransfer
+from pycspr.types.rpc import DeployTimeToLive
+from pycspr.types.rpc import EraID
+from pycspr.types.rpc import EraInfo
+from pycspr.types.rpc import EraSummary
+from pycspr.types.rpc import EraValidators
+from pycspr.types.rpc import EraValidatorWeight
+from pycspr.types.rpc import Gas
+from pycspr.types.rpc import GasPrice
+from pycspr.types.rpc import Motes
+from pycspr.types.rpc import NamedKey
+from pycspr.types.rpc import ProtocolVersion
+from pycspr.types.rpc import SeigniorageAllocation
+from pycspr.types.rpc import SeigniorageAllocationForDelegator
+from pycspr.types.rpc import SeigniorageAllocationForValidator
+from pycspr.types.rpc import Transfer
+from pycspr.types.rpc import Timestamp
+from pycspr.types.rpc import URef
+from pycspr.types.rpc import URefAccessRights
+from pycspr.types.rpc import ValidatorChanges
+from pycspr.types.rpc import ValidatorStatusChange
+from pycspr.types.rpc import ValidatorStatusChangeType
+from pycspr.types.rpc import WasmModule
+from pycspr.types.rpc import Weight
 from pycspr.crypto import Digest
 from pycspr.crypto import MerkleProofBytes
 from pycspr.crypto import PublicKeyBytes
 from pycspr.crypto import SignatureBytes
-from pycspr.utils import conversion
+from pycspr.utils import conversion as convertor
 
 
 def decode(encoded: typing.Union[dict, str], typedef: type) -> object:
@@ -292,7 +290,7 @@ def _decode_deploy_of_transfer(encoded: dict) -> DeployOfTransfer:
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(
-        as_milliseconds=conversion.humanized_time_interval_to_milliseconds(encoded),
+        as_milliseconds=convertor.humanized_time_interval_to_milliseconds(encoded),
         humanized=encoded
     )
 
@@ -375,7 +373,7 @@ def _decode_stored_value(encoded: dict) -> typing.Union[EraInfo]:
 
 def _decode_timestamp(encoded: str) -> Timestamp:
     return Timestamp(
-        value=conversion.posix_timestamp_from_isoformat(encoded)
+        value=convertor.iso_to_timestamp(encoded)
     )
 
 

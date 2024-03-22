@@ -2,9 +2,6 @@ import typing
 
 from pycspr import serialisation
 from pycspr.crypto import cl_checksum
-from pycspr.types.chain import AccountID
-from pycspr.types.chain import BlockID
-from pycspr.types.chain import DeployID
 from pycspr.types.chain import DictionaryID
 from pycspr.types.chain import DictionaryID_AccountNamedKey
 from pycspr.types.chain import DictionaryID_ContractNamedKey
@@ -12,10 +9,13 @@ from pycspr.types.chain import DictionaryID_SeedURef
 from pycspr.types.chain import DictionaryID_UniqueKey
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
-from pycspr.types.chain import PurseID
-from pycspr.types.chain import PurseIDType
-from pycspr.types.chain import StateRootID
 from pycspr.types.cl import CLV_Key
+from pycspr.types.rpc import AccountID
+from pycspr.types.rpc import BlockID
+from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import PurseID
+from pycspr.types.rpc import PurseIDType
+from pycspr.types.rpc import StateRootHash
 
 
 # Map: global state identifier type to JSON-RPC paramater name.
@@ -54,9 +54,9 @@ def get_account_key(account_id: AccountID) -> dict:
     }
 
 
-def get_deploy_id(deploy_id: DeployID) -> dict:
+def get_deploy_hash(deploy_hash: DeployHash) -> dict:
     return {
-        "deploy_hash": cl_checksum.encode_deploy_id(deploy_id)
+        "deploy_hash": cl_checksum.encode_deploy_hash(deploy_hash)
     }
 
 
@@ -128,7 +128,7 @@ def get_params_for_query_global_state(
 
 def get_params_for_state_get_dictionary_item(
     identifier: DictionaryID,
-    state_root_hash: StateRootID
+    state_root_hash: StateRootHash
 ) -> dict:
     def get_dictionary_param():
         if isinstance(identifier, DictionaryID_AccountNamedKey):

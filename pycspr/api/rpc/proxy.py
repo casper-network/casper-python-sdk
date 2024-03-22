@@ -7,16 +7,16 @@ import requests
 from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
-from pycspr.types.chain import AccountID
-from pycspr.types.chain import BlockID
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployID
-from pycspr.types.chain import Digest
 from pycspr.types.chain import DictionaryID
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
-from pycspr.types.chain import PurseID
-from pycspr.types.chain import StateRootID
+from pycspr.types.rpc import AccountID
+from pycspr.types.rpc import BlockID
+from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import PurseID
+from pycspr.types.rpc import StateRootHash
+from pycspr.crypto.types import Digest
 
 
 @dataclasses.dataclass
@@ -39,11 +39,11 @@ class Proxy:
         """Instance string representation."""
         return self.address
 
-    def account_put_deploy(self, deploy: Deploy) -> DeployID:
+    def account_put_deploy(self, deploy: Deploy) -> DeployHash:
         """Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
-        :returns: Deploy identifier.
+        :returns: Deploy hash.
 
         """
         params: dict = {
@@ -111,7 +111,7 @@ class Proxy:
             "era_summary"
             )
 
-    def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootID:
+    def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
         """Returns root hash of global state at a finalised block.
 
         :param block_id: Identifier of a finalised block.
@@ -149,14 +149,14 @@ class Proxy:
             field="chainspec_bytes"
             )
 
-    def info_get_deploy(self, deploy_id: DeployID) -> dict:
+    def info_get_deploy(self, deploy_hash: DeployHash) -> dict:
         """Returns on-chain deploy information.
 
-        :param deploy_id: Identifier of a deploy processed by network.
+        :param deploy_hash: Hash of a deploy processed by network.
         :returns: On-chain deploy information.
 
         """
-        params: dict = param_utils.get_deploy_id(deploy_id)
+        params: dict = param_utils.get_deploy_hash(deploy_hash)
 
         return get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params)
 
@@ -273,7 +273,7 @@ class Proxy:
     def state_get_dictionary_item(
         self,
         identifier: DictionaryID,
-        state_root_hash: StateRootID = None
+        state_root_hash: StateRootHash = None
     ) -> dict:
         """Returns on-chain data stored under a dictionary item.
 
@@ -294,7 +294,7 @@ class Proxy:
         self,
         key: str,
         path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: StateRootID = None
+        state_root_hash: StateRootHash = None
     ) -> bytes:
         """Returns results of a query to global state at a specified block or state root hash.
 

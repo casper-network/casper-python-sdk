@@ -11,8 +11,9 @@ from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
-from pycspr.types.chain import Timestamp
 from pycspr.types.chain import Transfer
+from pycspr.types.rpc import Timestamp
+from pycspr.utils import conversion as convertor
 
 
 def decode(obj: dict, typedef: object) -> object:
@@ -76,7 +77,7 @@ def _decode_deploy_header(obj: dict) -> DeployHeader:
         chain_name=obj["chain_name"],
         dependencies=[],
         gas_price=obj["gas_price"],
-        timestamp=Timestamp.from_string(obj["timestamp"]),
+        timestamp=Timestamp(convertor.iso_to_timestamp(obj["timestamp"])),        
         ttl=DeployTimeToLive.from_string(obj["ttl"])
     )
 

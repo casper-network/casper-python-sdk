@@ -1,4 +1,4 @@
-from datetime import datetime as dt
+import datetime as dt
 
 
 # Millisecond durations of relevance.
@@ -77,27 +77,33 @@ def milliseconds_to_humanized_time_interval(interval: int) -> int:
     raise ValueError("Unsupported humanized time interval")
 
 
-def posix_timestamp_from_isoformat(ts: str) -> float:
-    """Converts ISO formatted timestamp to posix timestamp.
-
-    :param ts: ISO formatted timestamp.
-    :returns: Posix timestamp, i.e. milliseconds since epoch.
-
-    """
-    if ts.endswith("Z"):
-        ts = ts[:-1]
-        ts = f"{ts}+00:00"
-
-    return dt.fromisoformat(ts).timestamp()
-
-
-def isoformat_from_posix_timestamp(ts: float) -> str:
-    """Converts ISO formatted timestamp to posix timestamp.
-
-    :param ts: ISO formatted timestamp.
-    :returns: Posix timestamp, i.e. milliseconds since epoch.
+def timestamp_to_iso(ts: float) -> str:
+    """Converts millisecond precise timestamp to ISO 8601 format.
+    
+    :param ts: Millisecond precise timestamp.
+    :returns: ISO formatted timestamp.
 
     """
-    ts = dt.fromtimestamp(round(ts, 3), tz=dt.timezone.utc)
+    
+    ts_3_decimal_places = round(ts, 3)
+    ts_datetime = dt.datetime.fromtimestamp(
+        ts_3_decimal_places,
+        tz=dt.timezone.utc
+        )
+    ts_iso = ts_datetime.isoformat()
 
-    return f"{ts.isoformat()[:-9]}Z"
+    return f"{ts_iso[:-9]}Z"
+
+
+def iso_to_timestamp(ts_iso: str) -> float:
+    """Converts ISO 8601 format to millisecond precise timestamp.
+    
+    :param ts_iso: ISO formatted timestamp.
+    :returns: Millisecond precise timestamp.
+
+    """
+    if ts_iso.endswith("Z"):
+        ts_iso = ts_iso[:-1]
+        ts_iso = f"{ts_iso}+00:00"
+
+    return dt.datetime.fromisoformat(ts_iso).timestamp()

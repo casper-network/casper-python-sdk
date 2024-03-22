@@ -6,9 +6,9 @@ from pycspr.crypto import verify_deploy_approval_signature
 from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
 from pycspr.types.cl.values import CLV_Value
-from pycspr.types.chain.identifiers import ContractID
-from pycspr.types.chain.identifiers import ContractVersion
-from pycspr.types.chain.identifiers import Timestamp
+from pycspr.types.rpc import ContractID
+from pycspr.types.rpc import ContractVersion
+from pycspr.types.rpc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
 

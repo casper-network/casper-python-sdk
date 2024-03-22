@@ -96,7 +96,7 @@ def encode_contract_id(contract_id: typing.Union[str, bytes]) -> str:
     return encode(contract_id)
 
 
-def encode_deploy_id(deploy_id: typing.Union[str, bytes]) -> str:
+def encode_deploy_hash(deploy_id: typing.Union[str, bytes]) -> str:
     """Encodes a deploy identifier as a checksummed hexadecimal string.
 
     :param deploy_id: A deploy identifier.

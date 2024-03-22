@@ -16,7 +16,6 @@ from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
-from pycspr.types.chain import Timestamp
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.cl import CLT_Type_U32
@@ -24,6 +23,7 @@ from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
+from pycspr.types.rpc import Timestamp
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:

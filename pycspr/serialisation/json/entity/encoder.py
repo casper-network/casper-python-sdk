@@ -13,6 +13,7 @@ from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Value
+from pycspr.utils import conversion as convertor
 
 
 def encode(entity: object) -> dict:
@@ -58,7 +59,7 @@ def _encode_deploy_header(entity: DeployHeader) -> dict:
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
-        "timestamp": entity.timestamp.to_string(),
+        "timestamp": convertor.timestamp_to_iso(entity.timestamp.value),
         "ttl": entity.ttl.to_string()
     }
 

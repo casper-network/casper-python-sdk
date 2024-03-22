@@ -18,7 +18,6 @@ from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import DeployTimeToLive
 from pycspr.types.chain import DeployExecutableItem
 from pycspr.types.chain import ModuleBytes
-from pycspr.types.chain import Timestamp
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
@@ -28,6 +27,9 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
+
+from pycspr.types.rpc import Timestamp
+
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io

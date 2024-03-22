@@ -4,19 +4,18 @@ import typing
 from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
-from pycspr.api.rpc import types as rpc_types
-from pycspr.types.chain import AccountID
-from pycspr.types.chain import BlockID
-from pycspr.types.chain import AccountID
+from pycspr.types import rpc as rpc_types
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployID
 from pycspr.types.chain import DictionaryID
-from pycspr.types.chain import Digest
 from pycspr.types.chain import GlobalStateID
-from pycspr.types.chain import PurseID
-from pycspr.types.chain import StateRootID
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
+from pycspr.types.rpc import AccountID
+from pycspr.types.rpc import BlockID
+from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import PurseID
+from pycspr.types.rpc import StateRootHash
+from pycspr.crypto.types import Digest
 
 
 class Client():
@@ -37,7 +36,7 @@ class Client():
         # Alias methods.
         self.get_auction_state = self.get_auction_info
         self.get_era_info = self.get_era_info_by_switch_block
-        self.get_state_root_hash = self.get_state_root
+        self.get_state_root_hash = self.get_state_root_hash
         self.send_deploy = self.account_put_deploy
 
         # Extension methods -> 2nd order functions.
@@ -51,11 +50,11 @@ class Client():
         self.get_rpc_endpoint = ext.get_rpc_endpoint
         self.get_rpc_endpoints = ext.get_rpc_endpoints
 
-    def account_put_deploy(self, deploy: Deploy) -> DeployID:
+    def account_put_deploy(self, deploy: Deploy) -> DeployHash:
         """Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
-        :returns: Deploy identifier.
+        :returns: Deploy hash.
 
         """
         return self.proxy.account_put_deploy(deploy)
@@ -149,17 +148,17 @@ class Client():
 
     def get_deploy(
         self,
-        deploy_id: DeployID,
+        deploy_hash: DeployHash,
         decode: bool = True
     ) -> typing.Union[dict, rpc_types.Deploy]:
         """Returns on-chain deploy information.
 
-        :param deploy_id: Identifier of a deploy processed by network.
+        :param deploy_id: Hash of a deploy processed by network.
         :param decode: Flag indicating whether to decode API response.
         :returns: On-chain deploy information.
 
         """
-        obj: dict = self.proxy.info_get_deploy(deploy_id)
+        obj: dict = self.proxy.info_get_deploy(deploy_hash)
         obj["deploy"]["execution_info"] = obj.get("execution_results", None)
 
         return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], rpc_types.Deploy)
@@ -167,7 +166,7 @@ class Client():
     def get_dictionary_item(
         self,
         identifier: DictionaryID,
-        state_root_hash: StateRootID = None
+        state_root_hash: StateRootHash = None
     ) -> dict:
         """Returns current auction system contract information.
 
@@ -235,7 +234,7 @@ class Client():
         self,
         key: str,
         path: typing.Union[str, typing.List[str]] = [],
-        state_root_hash: StateRootID = None
+        state_root_hash: StateRootHash = None
     ) -> bytes:
         """Returns a representation of an item stored under a key in global state.
 
@@ -265,7 +264,7 @@ class Client():
         # TODO: decode
         return self.proxy.query_global_state(key, path, state_id)
 
-    def get_state_root(self, block_id: BlockID = None) -> StateRootID:
+    def get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.

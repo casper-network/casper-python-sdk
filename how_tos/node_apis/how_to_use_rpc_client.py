@@ -6,12 +6,12 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.api.rpc import types as rpc_types
+from pycspr.types import rpc as rpc_types
 from pycspr.types.chain import GlobalStateID
 from pycspr.types.chain import GlobalStateIDType
-from pycspr.types.chain import PurseID
-from pycspr.types.chain import PurseIDType
 from pycspr.types.cl import CLV_URef
+from pycspr.types.rpc import PurseID
+from pycspr.types.rpc import PurseIDType
 
 
 # Path to CCTL assets.
@@ -102,7 +102,7 @@ def _main(args: argparse.Namespace):
 
 
 def _get_chain_account_info(ctx: _Context):
-    state_root_hash: bytes = ctx.client.get_state_root()
+    state_root_hash: bytes = ctx.client.get_state_root_hash()
 
     # Query: get_account_info.
     account_info: dict = ctx.client.get_account_info(ctx.user_public_key.to_account_key())
@@ -234,12 +234,12 @@ def _get_chain_state_root_hash(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        state_root_hash: bytes = ctx.client.get_state_root(block_id)
+        state_root_hash: bytes = ctx.client.get_state_root_hash(block_id)
         assert isinstance(state_root_hash, bytes)
         print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
 
-    assert ctx.client.get_state_root(block["hash"]) == \
-           ctx.client.get_state_root(block["header"]["height"])
+    assert ctx.client.get_state_root_hash(block["hash"]) == \
+           ctx.client.get_state_root_hash(block["header"]["height"])
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 

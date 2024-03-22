@@ -43,7 +43,7 @@ def state_root_hash(RPC_CLIENT: NodeRpcClient) -> bytes:
     """Returns current state root hash.
 
     """
-    return RPC_CLIENT.get_state_root()
+    return RPC_CLIENT.get_state_root_hash()
 
 
 @pytest.fixture(scope="session")

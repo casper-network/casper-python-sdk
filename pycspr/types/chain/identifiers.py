@@ -5,67 +5,12 @@ import typing
 
 from pycspr.types.cl.values import CLV_URef
 
-
-# The output of a one way hashing function - 32 bytes.
-Digest = typing.Union[bytes, str]
-
-# An account identifier may be a byte array of 33 bytes,
-# a hexadecimal string of 66 characters.
-AccountID = typing.Union[bytes, str]
-
-# A block identifier: byte array | hex string | height,
-BlockID = typing.Union[Digest, int]
-
-# On chain contract identifier.
-ContractID = typing.NewType("Static contract pointer", bytes)
-
-# On chain contract version.
-ContractVersion = typing.NewType("U32 integer representing", int)
-
-# A deploy identifier is a 32 byte array or it's hexadecimal string equivalent.
-DeployID = typing.Union[bytes, str]
-
-# A public key associated with an assymetric key pair controlled by an entity.
-PublicKey = typing.Union[bytes, str]
-
-# Root id of a node's global state.
-StateRootID = typing.Union[bytes, str]
-
-
-@dataclasses.dataclass
-class PurseID():
-    # Purse identifier - account id | public key | uref.
-    identifier: typing.Union[AccountID, PublicKey, CLV_URef]
-
-    # Type of identifier.
-    id_type: "PurseIDType"
-
-
-class PurseIDType(enum.Enum):
-    """Enumeration over set of CL type keys.
-
-    """
-    PUBLIC_KEY = enum.auto()
-    ACCOUNT_HASH = enum.auto()
-    UREF = enum.auto()
-
-
-@dataclasses.dataclass
-class GlobalStateID():
-    # 32 byte global state identifier, either a block hash, block height or state root hash.
-    identifier: typing.Union[bytes, str, int]
-
-    # Type of identifier.
-    id_type: "GlobalStateIDType"
-
-
-class GlobalStateIDType(enum.Enum):
-    """Enumeration over set of CL type keys.
-
-    """
-    BLOCK_HASH = enum.auto()
-    BLOCK_HEIGHT = enum.auto()
-    STATE_ROOT_HASH = enum.auto()
+from pycspr.crypto.types import Digest
+from pycspr.crypto.types import PublicKeyBytes
+from pycspr.types.rpc import AccountID
+from pycspr.types.rpc import BlockID
+from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import StateRootHash
 
 
 @dataclasses.dataclass
@@ -149,30 +94,18 @@ class DictionaryID_UniqueKey(DictionaryID):
 
 
 @dataclasses.dataclass
-class Timestamp():
-    """A timestamp encodeable as millisecond precise seconds since epoch.
+class GlobalStateID():
+    # 32 byte global state identifier, either a block hash, block height or state root hash.
+    identifier: typing.Union[bytes, str, int]
+
+    # Type of identifier.
+    id_type: "GlobalStateIDType"
+
+
+class GlobalStateIDType(enum.Enum):
+    """Enumeration over set of CL type keys.
 
     """
-    # Timestamp in milliseconds.
-    value: float
-
-    def __eq__(self, other) -> bool:
-        return self.value == other.value
-
-    @staticmethod
-    def from_string(as_string: str) -> "Timestamp":
-        if as_string.endswith("Z"):
-            as_string = as_string[:-1]
-            as_string = f"{as_string}+00:00"
-
-        return Timestamp(dt.datetime.fromisoformat(as_string).timestamp())
-
-    def to_string(self) -> str:
-        ts_3_decimal_places = round(self.value, 3)
-        ts_datetime = dt.datetime.fromtimestamp(
-            ts_3_decimal_places,
-            tz=dt.timezone.utc
-            )
-        ts_iso = ts_datetime.isoformat()
-
-        return f"{ts_iso[:-9]}Z"
+    BLOCK_HASH = enum.auto()
+    BLOCK_HEIGHT = enum.auto()
+    STATE_ROOT_HASH = enum.auto()

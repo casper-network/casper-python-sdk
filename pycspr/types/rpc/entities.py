@@ -4,34 +4,14 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.crypto import Digest
-from pycspr.crypto import MerkleProofBytes
-from pycspr.crypto import PrivateKeyBytes
-from pycspr.crypto import PublicKeyBytes
-from pycspr.crypto import SignatureBytes
-
-
-Address = typing.NewType("Identifier of an on-chain account address.", bytes)
-
-AccountID = typing.NewType("Identifier of an on-chain account.", bytes)
-
-BlockHeight = typing.NewType("A specific location in a blockchain, measured by how many finalised blocks precede it.", int)
-
-ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
-
-ContractVersion = typing.NewType("Version of an on-chain smart contract.", int)
-
-EraID = typing.NewType("Identifier of an era in chain time.", int)
-
-Gas = typing.NewType("Atomic unit of constraint over node compute.", int)
-
-GasPrice = typing.NewType("Price of gas within an era in chain time.", int)
-
-Motes = typing.NewType("Basic unit of crypto economic system.", int)
-
-WasmModule = typing.NewType("WASM module payload.", bytes)
-
-Weight = typing.NewType("Some form of relative relevance measure.", int)
+from pycspr.types.rpc.identifiers import AccountID
+from pycspr.types.rpc.identifiers import BlockHash
+from pycspr.types.rpc.identifiers import BlockHeight
+from pycspr.types.rpc.identifiers import DeployHash
+from pycspr.types.rpc.identifiers import MerkleProofBytes
+from pycspr.types.rpc.identifiers import Motes
+from pycspr.types.rpc.identifiers import StateRootHash
+from pycspr.types.rpc.identifiers import Weight
 
 
 @dataclasses.dataclass
@@ -64,14 +44,6 @@ class AuctionBidByDelegator():
 
 
 @dataclasses.dataclass
-class AuctionState():
-    bids: typing.List[AuctionBidByValidator]
-    block_height: BlockHeight
-    era_validators: EraValidators
-    state_root: Digest
-
-
-@dataclasses.dataclass
 class AuctionBidByValidator():
     public_key: PublicKeyBytes
     bid: AuctionBidByValidatorInfo
@@ -87,9 +59,17 @@ class AuctionBidByValidatorInfo():
 
 
 @dataclasses.dataclass
+class AuctionState():
+    bids: typing.List[AuctionBidByValidator]
+    block_height: BlockHeight
+    era_validators: EraValidators
+    state_root: StateRootHash
+
+
+@dataclasses.dataclass
 class Block():
     body: BlockBody
-    hash: Digest
+    hash: BlockHash
     header: BlockHeader
     proofs: typing.List[BlockSignature]
 
@@ -97,8 +77,8 @@ class Block():
 @dataclasses.dataclass
 class BlockBody():
     proposer: AccountID
-    deploy_hashes: typing.List[Digest]
-    transfer_hashes: typing.List[Digest]
+    deploy_hashes: typing.List[DeployHash]
+    transfer_hashes: typing.List[DeployHash]
 
 
 @dataclasses.dataclass
@@ -107,10 +87,10 @@ class BlockHeader():
     body_hash: Digest
     era_id: EraID
     height: BlockHeight
-    parent_hash: Digest
+    parent_hash: BlockHash
     protocol_version: ProtocolVersion
     random_bit: bool
-    state_root: Digest
+    state_root: StateRootHash
 
 
 @dataclasses.dataclass
@@ -121,7 +101,7 @@ class BlockSignature():
 
 @dataclasses.dataclass
 class BlockTransfers():
-    block_hash: Digest
+    block_hash: BlockHash
     transfers: typing.List[Transfer]
 
 
@@ -133,7 +113,7 @@ class CL_Value():
 @dataclasses.dataclass
 class Deploy():
     approvals: typing.List[DeployApproval]
-    hash: Digest
+    hash: DeployHash
     header: DeployHeader
     payment: dict
     session: dict
@@ -154,7 +134,7 @@ class DeployArgument():
 
 @dataclasses.dataclass
 class DeployExecutionInfo():
-    block_hash: Digest
+    block_hash: BlockHash
     results: dict
 
 
@@ -168,7 +148,7 @@ class DeployHeader():
     account: bytes
     body_hash: Digest
     chain_name: str
-    dependencies: typing.List[Digest]
+    dependencies: typing.List[DeployHash]
     gas_price: GasPrice
     timestamp: Timestamp
     ttl: DeployTimeToLive
@@ -216,6 +196,20 @@ class DeployTimeToLive():
 
 
 @dataclasses.dataclass
+class EraInfo():
+    seigniorage_allocations: typing.List[SeigniorageAllocation]
+
+
+@dataclasses.dataclass
+class EraSummary():
+    block_hash: BlockHash
+    era_id: EraID
+    era_info: EraInfo
+    merkle_proof: MerkleProofBytes
+    state_root: Digest
+
+
+@dataclasses.dataclass
 class EraValidators():
     era_id: EraID
     validator_weights: typing.List[EraValidatorWeight]
@@ -225,20 +219,6 @@ class EraValidators():
 class EraValidatorWeight():
     public_key: PublicKeyBytes
     weight: Weight
-
-
-@dataclasses.dataclass
-class EraInfo():
-    seigniorage_allocations: typing.List[SeigniorageAllocation]
-
-
-@dataclasses.dataclass
-class EraSummary():
-    block_hash: Digest
-    era_id: EraID
-    era_info: EraInfo
-    merkle_proof: str
-    state_root: Digest
 
 
 @dataclasses.dataclass
@@ -271,9 +251,14 @@ class SeigniorageAllocationForValidator(SeigniorageAllocation):
 
 
 @dataclasses.dataclass
+class Timestamp():
+    value: float
+
+
+@dataclasses.dataclass
 class Transfer():
     amount: Motes
-    deploy_hash: Digest
+    deploy_hash: DeployHash
     from_: PublicKeyBytes
     gas: Gas
     source: URef
@@ -283,8 +268,9 @@ class Transfer():
 
 
 @dataclasses.dataclass
-class Timestamp():
-    value: float
+class URef():
+    access_rights: URefAccessRights
+    address: Address
 
 
 class URefAccessRights(enum.Enum):
@@ -296,12 +282,6 @@ class URefAccessRights(enum.Enum):
     READ_ADD = 5
     ADD_WRITE = 6
     READ_ADD_WRITE = 7
-
-
-@dataclasses.dataclass
-class URef():
-    access_rights: URefAccessRights
-    address: Address
 
 
 @dataclasses.dataclass
