@@ -6,13 +6,13 @@ from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.types import rpc as rpc_types
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DictionaryID
-from pycspr.types.chain import GlobalStateID
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
 from pycspr.types.rpc import AccountID
 from pycspr.types.rpc import BlockID
 from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import DictionaryID
+from pycspr.types.rpc import GlobalStateID
 from pycspr.types.rpc import PurseID
 from pycspr.types.rpc import StateRootHash
 from pycspr.crypto.types import Digest

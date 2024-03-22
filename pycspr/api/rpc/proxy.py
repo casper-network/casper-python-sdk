@@ -8,12 +8,12 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DictionaryID
-from pycspr.types.chain import GlobalStateID
-from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.rpc import AccountID
 from pycspr.types.rpc import BlockID
 from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import DictionaryID
+from pycspr.types.rpc import GlobalStateID
+from pycspr.types.rpc import GlobalStateIDType
 from pycspr.types.rpc import PurseID
 from pycspr.types.rpc import StateRootHash
 from pycspr.crypto.types import Digest
@@ -149,14 +149,16 @@ class Proxy:
             field="chainspec_bytes"
             )
 
-    def info_get_deploy(self, deploy_hash: DeployHash) -> dict:
+    def info_get_deploy(self, deploy_hash: DeployHash, finalized_approvals: bool = False) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_hash: Hash of a deploy processed by network.
         :returns: On-chain deploy information.
 
         """
-        params: dict = param_utils.get_deploy_hash(deploy_hash)
+        params: dict = param_utils.get_deploy_hash(deploy_hash) | {
+            "finalized_approvals": finalized_approvals
+        }
 
         return get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params)
 

@@ -7,9 +7,9 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.types import rpc as rpc_types
-from pycspr.types.chain import GlobalStateID
-from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.cl import CLV_URef
+from pycspr.types.rpc import GlobalStateID
+from pycspr.types.rpc import GlobalStateIDType
 from pycspr.types.rpc import PurseID
 from pycspr.types.rpc import PurseIDType
 

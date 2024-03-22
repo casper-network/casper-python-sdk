@@ -5,13 +5,13 @@ import pytest
 import pycspr
 from pycspr import types
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployOfModuleBytes
 from tests.fixtures.deploys import create_deploy
 from tests.fixtures.deploys import create_deploy_body
 
@@ -63,8 +63,8 @@ def _create_deploy_approval() -> DeployApproval:
     )
 
 
-def _create_module_bytes() -> ModuleBytes:
-    return ModuleBytes(
+def _create_module_bytes() -> DeployOfModuleBytes:
+    return DeployOfModuleBytes(
         args=_create_deploy_argument_set(),
         module_bytes=_TEST_BYTES
     )

@@ -12,7 +12,7 @@ from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployParameters
-from pycspr.types.chain import ModuleBytes
+from pycspr.types.rpc import DeployOfModuleBytes
 
 
 # Path to CCTL assets.
@@ -180,11 +180,11 @@ def _get_deploy(args: argparse.Namespace, operator: PrivateKey) -> Deploy:
             )
 
     # Set payment logic.
-    payment: ModuleBytes = \
+    payment: DeployOfModuleBytes = \
         pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
-    session: ModuleBytes = ModuleBytes(
+    session: DeployOfModuleBytes = DeployOfModuleBytes(
         module_bytes=pycspr.read_wasm(args.path_to_wasm),
         args={
             "token_decimals": CLV_U8(args.token_decimals),

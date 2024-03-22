@@ -8,6 +8,8 @@ from pycspr.crypto import PublicKey
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.rpc import ContractID
 from pycspr.types.rpc import ContractVersion
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployExecutableItem
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import conversion
@@ -32,42 +34,6 @@ class DeployApproval:
     def sig(self) -> bytes:
         """Returns signature denuded of leading byte (representing ECC algo)."""
         return self.signature[1:]
-
-
-@dataclasses.dataclass
-class DeployArgument():
-    """An argument to be passed to vm for execution.
-
-    """
-    # Argument name mapped to an entry point parameter.
-    name: str
-
-    # Argument cl type system value.
-    value: CLV_Value
-
-    def __eq__(self, other) -> bool:
-        return self.name == other.name and self.value == other.value
-
-
-@dataclasses.dataclass
-class DeployExecutableItem():
-    """Encapsulates vm execution information.
-
-    """
-    # Set of arguments mapped to endpoint parameters.
-    args: typing.Union[typing.List[DeployArgument], typing.Dict[str, CLV_Value]]
-
-    def __eq__(self, other) -> bool:
-        return self.arguments == other.arguments
-
-    @property
-    def arguments(self) -> typing.List[DeployArgument]:
-        if isinstance(self.args, list):
-            return self.args
-        elif isinstance(self.args, dict):
-            return [DeployArgument(k, v) for (k, v) in self.args.items()]
-        else:
-            raise ValueError("Deploy arguments can be passed as either a list or dictionary")
 
 
 @dataclasses.dataclass
@@ -270,7 +236,7 @@ class Deploy():
 
 
 @dataclasses.dataclass
-class ModuleBytes(DeployExecutableItem):
+class DeployOfModuleBytes_(DeployExecutableItem):
     """Encapsulates information required to execute an in-line wasm binary.
 
     """

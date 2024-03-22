@@ -3,8 +3,8 @@ import random
 import pycspr
 from pycspr import serialisation
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
 from pycspr.types.chain import DeployParameters
+from pycspr.types.rpc import DeployArgument
 
 
 def test_create_deploy_arguments_1(cl_values_vector):
@@ -64,7 +64,7 @@ def test_create_standard_payment():
         pycspr.create_standard_payment(
             amount=random.randint(0, int(1e5)),
         ),
-        pycspr.types.chain.ModuleBytes
+        pycspr.types.rpc.DeployOfModuleBytes
         )
 
 

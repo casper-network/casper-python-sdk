@@ -10,14 +10,11 @@ from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployArgument
 from pycspr.types.chain import DeployApproval
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployParameters
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import DeployExecutableItem
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
@@ -27,9 +24,10 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
-
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployExecutableItem
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import Timestamp
-
 from pycspr.utils import constants
 from pycspr.utils import conversion
 from pycspr.utils import io as _io
@@ -178,13 +176,13 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
 
 def create_standard_payment(
     amount: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
-) -> ModuleBytes:
+) -> DeployOfModuleBytes:
     """Returns standard payment execution information.
 
     :param amount: Maximum amount in motes to be used for standard payment.
 
     """
-    return ModuleBytes(
+    return DeployOfModuleBytes(
         args={
             "amount": CLV_U512(amount)
         },
@@ -256,7 +254,7 @@ def create_validator_auction_bid(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID)
-    session = ModuleBytes(
+    session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
             "amount": CLV_U512(amount),
@@ -286,7 +284,7 @@ def create_validator_auction_bid_withdrawal(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_AUCTION_BID_WITHDRAWAL)
-    session = ModuleBytes(
+    session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
             "amount": CLV_U512(amount),
@@ -318,7 +316,7 @@ def create_validator_delegation(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
-    session = ModuleBytes(
+    session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args=[
             DeployArgument(
@@ -357,7 +355,7 @@ def create_validator_delegation_withdrawal(
 
     """
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION_WITHDRAWAL)
-    session = ModuleBytes(
+    session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
             "amount": CLV_U512(amount),

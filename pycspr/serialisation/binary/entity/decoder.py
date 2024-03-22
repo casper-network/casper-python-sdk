@@ -6,12 +6,9 @@ from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
 from pycspr.types.chain import DeployBody
-from pycspr.types.chain import DeployExecutableItem
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
@@ -23,6 +20,9 @@ from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployExecutableItem
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import Timestamp
 
 
@@ -119,7 +119,7 @@ def _decode_deploy_body(bstream: bytes) -> typing.Tuple[bytes, DeployBody]:
 
 def _decode_deploy_executable_item(bstream: bytes) -> DeployExecutableItem:
     if bstream[0] == 0:
-        return decode(bstream, ModuleBytes)
+        return decode(bstream, DeployOfModuleBytes)
     elif bstream[0] == 1:
         return decode(bstream, StoredContractByHash)
     elif bstream[0] == 2:
@@ -168,7 +168,7 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
     )
 
 
-def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, ModuleBytes]:
+def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, DeployOfModuleBytes]:
     bstream = bstream[1:]
     bstream, length = decode_cl_value(bstream, CLT_Type_U32())
     if length.value > 0:
@@ -178,7 +178,7 @@ def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, ModuleBytes]:
         module_bytes = bytes([])
     bstream, args = _decode_deploy_argument_set(bstream)
 
-    return bstream, ModuleBytes(args, module_bytes)
+    return bstream, DeployOfModuleBytes(args, module_bytes)
 
 
 def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, StoredContractByHash]:
@@ -255,7 +255,7 @@ _DECODERS = {
     DeployBody: _decode_deploy_body,
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
-    ModuleBytes: _decode_module_bytes,
+    DeployOfModuleBytes: _decode_module_bytes,
     StoredContractByHash: _decode_stored_contract_by_hash,
     StoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     StoredContractByName: _decode_stored_contract_by_name,

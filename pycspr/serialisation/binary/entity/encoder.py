@@ -5,10 +5,8 @@ from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
 from pycspr.types.chain import DeployBody
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
@@ -20,6 +18,8 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployOfModuleBytes
 
 
 def encode(entity: object) -> bytes:
@@ -98,7 +98,7 @@ def _encode_deploy_header(entity: DeployHeader) -> bytes:
     return result
 
 
-def _encode_module_bytes(entity: ModuleBytes) -> bytes:
+def _encode_module_bytes(entity: DeployOfModuleBytes) -> bytes:
     return \
         bytes([0]) + \
         _u8_array_to_bytes(list(entity.module_bytes)) + \
@@ -161,7 +161,7 @@ _ENCODERS = {
     DeployArgument: _encode_deploy_argument,
     DeployBody: _encode_deploy_body,
     DeployHeader: _encode_deploy_header,
-    ModuleBytes: _encode_module_bytes,
+    DeployOfModuleBytes: _encode_module_bytes,
     StoredContractByHash: _encode_stored_contract_by_hash,
     StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
     StoredContractByName: _encode_stored_contract_by_name,

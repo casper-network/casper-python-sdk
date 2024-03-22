@@ -2,16 +2,16 @@ from pycspr.factory import create_public_key_from_account_key
 from pycspr.serialisation.json.cl_value import decode as decode_cl_value
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
-from pycspr.types.chain import DeployExecutableItem
 from pycspr.types.chain import DeployHeader
 from pycspr.types.chain import DeployTimeToLive
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployExecutableItem
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import Timestamp
 from pycspr.utils import conversion as convertor
 
@@ -54,8 +54,8 @@ def _decode_deploy_argument(obj: dict) -> DeployArgument:
 
 
 def _decode_deploy_executable_item(obj: dict) -> DeployExecutableItem:
-    if "ModuleBytes" in obj:
-        return decode(obj, ModuleBytes)
+    if "DeployOfModuleBytes" in obj:
+        return decode(obj, DeployOfModuleBytes)
     elif "StoredContractByHash" in obj:
         return decode(obj, StoredContractByHash)
     elif "StoredVersionedContractByHash" in obj:
@@ -82,8 +82,8 @@ def _decode_deploy_header(obj: dict) -> DeployHeader:
     )
 
 
-def _decode_module_bytes(obj: dict) -> ModuleBytes:
-    return ModuleBytes(
+def _decode_module_bytes(obj: dict) -> DeployOfModuleBytes:
+    return DeployOfModuleBytes(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         module_bytes=bytes.fromhex(obj["module_bytes"])
         )
@@ -133,8 +133,8 @@ def _get_parsed_json(typedef: object, obj: dict) -> dict:
     if typedef is DeployArgument:
         if isinstance(obj[1]["bytes"], str):
             obj[1]["bytes"] = bytes.fromhex(obj[1]["bytes"])
-    elif typedef is ModuleBytes:
-        return obj["ModuleBytes"]
+    elif typedef is DeployOfModuleBytes:
+        return obj["DeployOfModuleBytes"]
     elif typedef is StoredContractByHash:
         return obj["StoredContractByHash"]
     elif typedef is StoredContractByHashVersioned:
@@ -154,7 +154,7 @@ _DECODERS = {
     DeployArgument: _decode_deploy_argument,
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
-    ModuleBytes: _decode_module_bytes,
+    DeployOfModuleBytes: _decode_module_bytes,
     StoredContractByHash: _decode_stored_contract_by_hash,
     StoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     StoredContractByName: _decode_stored_contract_by_name,

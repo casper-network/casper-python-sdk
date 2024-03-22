@@ -13,7 +13,7 @@ from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U256
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployParameters
-from pycspr.types.chain import ModuleBytes
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.chain import StoredContractByHash
 
 
@@ -184,7 +184,7 @@ def _get_deploy(
         )
 
     # Set payment logic.
-    payment: ModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
+    payment: DeployOfModuleBytes = pycspr.create_standard_payment(args.deploy_payment)
 
     # Set session logic.
     session: StoredContractByHash = StoredContractByHash(

@@ -4,6 +4,7 @@ import dataclasses
 import enum
 import typing
 
+from pycspr.types.cl.values import CLV_Value
 from pycspr.types.rpc.identifiers import AccountID
 from pycspr.types.rpc.identifiers import BlockHash
 from pycspr.types.rpc.identifiers import BlockHeight
@@ -11,6 +12,7 @@ from pycspr.types.rpc.identifiers import DeployHash
 from pycspr.types.rpc.identifiers import MerkleProofBytes
 from pycspr.types.rpc.identifiers import Motes
 from pycspr.types.rpc.identifiers import StateRootHash
+from pycspr.types.rpc.identifiers import WasmModule
 from pycspr.types.rpc.identifiers import Weight
 
 
@@ -106,11 +108,6 @@ class BlockTransfers():
 
 
 @dataclasses.dataclass
-class CL_Value():
-    pass
-
-
-@dataclasses.dataclass
 class Deploy():
     approvals: typing.List[DeployApproval]
     hash: DeployHash
@@ -129,7 +126,10 @@ class DeployApproval():
 @dataclasses.dataclass
 class DeployArgument():
     name: str
-    value: CL_Value
+    value: CLV_Value
+
+    def __eq__(self, other) -> bool:
+        return self.name == other.name and self.value == other.value
 
 
 @dataclasses.dataclass
@@ -140,7 +140,19 @@ class DeployExecutionInfo():
 
 @dataclasses.dataclass
 class DeployExecutableItem():
-    args: typing.List[DeployArgument]
+    args: typing.Union[typing.List[DeployArgument], typing.Dict[str, CLV_Value]]
+
+    def __eq__(self, other) -> bool:
+        return self.arguments == other.arguments
+
+    @property
+    def arguments(self) -> typing.List[DeployArgument]:
+        if isinstance(self.args, list):
+            return self.args
+        elif isinstance(self.args, dict):
+            return [DeployArgument(k, v) for (k, v) in self.args.items()]
+        else:
+            raise ValueError("Deploy arguments can be passed as either a list or dictionary")
 
 
 @dataclasses.dataclass
@@ -157,6 +169,9 @@ class DeployHeader():
 @dataclasses.dataclass
 class DeployOfModuleBytes(DeployExecutableItem):
     module_bytes: WasmModule
+
+    def __eq__(self, other) -> bool:
+        return super().__eq__(other) and self.module_bytes == other.module_bytes
 
 
 @dataclasses.dataclass

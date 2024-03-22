@@ -2,17 +2,17 @@ import typing
 
 from pycspr import serialisation
 from pycspr.crypto import cl_checksum
-from pycspr.types.chain import DictionaryID
-from pycspr.types.chain import DictionaryID_AccountNamedKey
-from pycspr.types.chain import DictionaryID_ContractNamedKey
-from pycspr.types.chain import DictionaryID_SeedURef
-from pycspr.types.chain import DictionaryID_UniqueKey
-from pycspr.types.chain import GlobalStateID
-from pycspr.types.chain import GlobalStateIDType
 from pycspr.types.cl import CLV_Key
 from pycspr.types.rpc import AccountID
 from pycspr.types.rpc import BlockID
 from pycspr.types.rpc import DeployHash
+from pycspr.types.rpc import DictionaryID
+from pycspr.types.rpc import DictionaryID_AccountNamedKey
+from pycspr.types.rpc import DictionaryID_ContractNamedKey
+from pycspr.types.rpc import DictionaryID_SeedURef
+from pycspr.types.rpc import DictionaryID_UniqueKey
+from pycspr.types.rpc import GlobalStateID
+from pycspr.types.rpc import GlobalStateIDType
 from pycspr.types.rpc import PurseID
 from pycspr.types.rpc import PurseIDType
 from pycspr.types.rpc import StateRootHash
@@ -27,7 +27,9 @@ _GLOBAL_STATE_ID_PARAM_NAME: typing.Dict[GlobalStateIDType, str] = {
 
 
 def get_block_id(block_id: BlockID, allow_none=True) -> dict:
-    if block_id is not None:
+    if block_id is None:
+        return dict()
+    else:
         if isinstance(block_id, (bytes, str)):
             return {
                 "block_identifier": {
@@ -44,8 +46,6 @@ def get_block_id(block_id: BlockID, allow_none=True) -> dict:
             return {
                 "block_identifier": None
             }
-    else:
-        return dict()
 
 
 def get_account_key(account_id: AccountID) -> dict:
@@ -91,7 +91,7 @@ def get_global_state_id(global_state_id: GlobalStateID) -> dict:
     if global_state_id.id_type == GlobalStateIDType.BLOCK_HASH:
         id_type = "BlockHash"
     elif global_state_id.id_type == GlobalStateIDType.BLOCK_HEIGHT:
-        id_type = "BlockHash"
+        id_type = "BlockHeight"
     elif global_state_id.id_type == GlobalStateIDType.STATE_ROOT_HASH:
         id_type = "StateRootHash"
     else:

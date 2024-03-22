@@ -4,15 +4,15 @@ from pycspr.crypto import cl_checksum
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
 from pycspr.types.chain import Deploy
 from pycspr.types.chain import DeployApproval
-from pycspr.types.chain import DeployArgument
 from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.chain import StoredContractByHash
 from pycspr.types.chain import StoredContractByHashVersioned
 from pycspr.types.chain import StoredContractByName
 from pycspr.types.chain import StoredContractByNameVersioned
 from pycspr.types.chain import Transfer
 from pycspr.types.cl import CLV_Value
+from pycspr.types.rpc import DeployArgument
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.utils import conversion as convertor
 
 
@@ -64,9 +64,9 @@ def _encode_deploy_header(entity: DeployHeader) -> dict:
     }
 
 
-def _encode_module_bytes(entity: ModuleBytes) -> dict:
+def _encode_module_bytes(entity: DeployOfModuleBytes) -> dict:
     return {
-        "ModuleBytes": {
+        "DeployOfModuleBytes": {
             "args": [encode(i) for i in entity.arguments],
             "module_bytes": cl_checksum.encode(entity.module_bytes)
         }
@@ -128,7 +128,7 @@ _ENCODERS = {
     DeployApproval: _encode_deploy_approval,
     DeployArgument: _encode_deploy_argument,
     DeployHeader: _encode_deploy_header,
-    ModuleBytes: _encode_module_bytes,
+    DeployOfModuleBytes: _encode_module_bytes,
     StoredContractByHash: _encode_stored_contract_by_hash,
     StoredContractByHashVersioned: _encode_stored_contract_by_hash_versioned,
     StoredContractByName: _encode_stored_contract_by_name,

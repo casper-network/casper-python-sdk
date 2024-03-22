@@ -38,6 +38,7 @@ Weight = typing.NewType("Some form of relative relevance measure.", int)
 
 StateRootHash = typing.NewType("Root digest of a node's global state.", Digest)
 
+
 @dataclasses.dataclass
 class DictionaryID():
     pass

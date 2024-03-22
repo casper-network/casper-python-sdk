@@ -7,10 +7,10 @@ import pycspr
 from pycctl.types import AccountType
 from pycspr.api.rpc import Client as NodeClient
 from pycspr.types.chain import Deploy
-from pycspr.types.chain import ModuleBytes
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256
+from pycspr.types.rpc import DeployOfModuleBytes
 from pycctl.fsys import get_path_to_account_private_key
 
 
@@ -61,7 +61,7 @@ async def _get_tx() -> Deploy:
         pycspr.create_standard_payment(pycctl.constants.SC_PAYMENT_INSTALL)
 
     tx_session = \
-        ModuleBytes(
+        DeployOfModuleBytes(
             module_bytes=pycspr.read_wasm(sc_binary_path),
             args={
                 "token_decimals": CLV_U8(_TOKEN_DECIMALS),

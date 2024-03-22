@@ -48,6 +48,7 @@ from pycspr.types.rpc.identifiers import BlockID
 from pycspr.types.rpc.identifiers import ContractID
 from pycspr.types.rpc.identifiers import ContractVersion
 from pycspr.types.rpc.identifiers import DeployHash
+from pycspr.types.rpc.identifiers import DictionaryID
 from pycspr.types.rpc.identifiers import DictionaryID_AccountNamedKey
 from pycspr.types.rpc.identifiers import DictionaryID_ContractNamedKey
 from pycspr.types.rpc.identifiers import DictionaryID_ContractNamedKey
