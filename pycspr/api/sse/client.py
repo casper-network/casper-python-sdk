@@ -21,7 +21,7 @@ class Client():
         :param rpc_client: Node RPC client.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port)
+        self.proxy = Proxy(connection_info)
 
         # Extension methods -> 2nd order functions.
         ext = ClientExtensions(self, rpc_client or RpcClient(

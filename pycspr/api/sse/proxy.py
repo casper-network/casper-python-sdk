@@ -1,31 +1,31 @@
-import dataclasses
 import json
 import typing
 
 import requests
 import sseclient
 
-from pycspr.api import constants
+from pycspr.api.sse.connection import ConnectionInfo
 from pycspr.types.api.sse import NodeEventChannel
 from pycspr.types.api.sse import NodeEventInfo
 from pycspr.types.api.sse import NodeEventType
 
 
-@dataclasses.dataclass
 class Proxy:
     """Node SSE server proxy.
 
     """
-    # Host address.
-    host: str = constants.DEFAULT_HOST
+    def __init__(self, connection_info: ConnectionInfo):
+        """Instance constructor.
 
-    # Number of exposed SSE port.
-    port: int = constants.DEFAULT_PORT_SSE
+        :param connection_info: Information required to connect to a node.
+
+        """
+        self.connection_info = connection_info
 
     @property
     def address(self) -> str:
-        """A node's SSE server base address."""
-        return f"http://{self.host}:{self.port}/events"
+        """A node's REST server base address."""
+        return f"http://{self.connection_info.host}:{self.connection_info.port}/events"
 
     def __str__(self):
         """Instance string representation."""
