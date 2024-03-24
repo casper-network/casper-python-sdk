@@ -1,6 +1,6 @@
 from pycspr import NodeRpcClient
-from pycspr.types.api.rpc import AuctionState
-from pycspr.types.api.rpc import EraSummary
+from pycspr.types.node.rpc import AuctionState
+from pycspr.types.node.rpc import EraSummary
 
 
 def test_get_auction_info(RPC_CLIENT: NodeRpcClient):

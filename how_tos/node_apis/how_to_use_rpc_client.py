@@ -7,14 +7,14 @@ import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.types.cl import CLV_URef
-from pycspr.types.api.rpc import AuctionState
-from pycspr.types.api.rpc import BlockTransfers
-from pycspr.types.api.rpc import EraSummary
-from pycspr.types.api.rpc import GlobalStateID
-from pycspr.types.api.rpc import GlobalStateIDType
-from pycspr.types.api.rpc import PurseID
-from pycspr.types.api.rpc import PurseIDType
-from pycspr.types.api.rpc import ValidatorChanges
+from pycspr.types.node.rpc import AuctionState
+from pycspr.types.node.rpc import BlockTransfers
+from pycspr.types.node.rpc import EraSummary
+from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import GlobalStateIDType
+from pycspr.types.node.rpc import PurseID
+from pycspr.types.node.rpc import PurseIDType
+from pycspr.types.node.rpc import ValidatorChanges
 
 
 # Path to CCTL assets.

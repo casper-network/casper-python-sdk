@@ -5,9 +5,9 @@ import requests
 import sseclient
 
 from pycspr.api.sse.connection import ConnectionInfo
-from pycspr.types.api.sse import NodeEventChannel
-from pycspr.types.api.sse import NodeEventInfo
-from pycspr.types.api.sse import NodeEventType
+from pycspr.types.node.sse import NodeEventChannel
+from pycspr.types.node.sse import NodeEventInfo
+from pycspr.types.node.sse import NodeEventType
 
 
 class Proxy:

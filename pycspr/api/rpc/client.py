@@ -7,20 +7,20 @@ from pycspr.api.rpc.proxy import Proxy
 from pycspr.crypto.types import Digest
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
-from pycspr.types.api.rpc import AccountID
-from pycspr.types.api.rpc import AccountInfo
-from pycspr.types.api.rpc import AuctionState
-from pycspr.types.api.rpc import Block
-from pycspr.types.api.rpc import BlockID
-from pycspr.types.api.rpc import BlockTransfers
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import DeployHash
-from pycspr.types.api.rpc import DictionaryID
-from pycspr.types.api.rpc import EraSummary
-from pycspr.types.api.rpc import GlobalStateID
-from pycspr.types.api.rpc import PurseID
-from pycspr.types.api.rpc import StateRootHash
-from pycspr.types.api.rpc import ValidatorChanges
+from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import AccountInfo
+from pycspr.types.node.rpc import AuctionState
+from pycspr.types.node.rpc import Block
+from pycspr.types.node.rpc import BlockID
+from pycspr.types.node.rpc import BlockTransfers
+from pycspr.types.node.rpc import Deploy
+from pycspr.types.node.rpc import DeployHash
+from pycspr.types.node.rpc import DictionaryID
+from pycspr.types.node.rpc import EraSummary
+from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import PurseID
+from pycspr.types.node.rpc import StateRootHash
+from pycspr.types.node.rpc import ValidatorChanges
 
 
 class Client():

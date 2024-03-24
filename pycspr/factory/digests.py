@@ -1,12 +1,12 @@
 from pycspr import crypto
 from pycspr import serialisation
-from pycspr.types.api.rpc import DeployHeader
+from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
-from pycspr.types.api.rpc import DeployExecutableItem
+from pycspr.types.node.rpc import DeployExecutableItem
 
 
 def create_digest_of_deploy(header: DeployHeader) -> bytes:

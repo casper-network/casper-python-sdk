@@ -3,8 +3,8 @@ from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.proxy import get_response
 from pycspr.api.rpc_speculative.connection import ConnectionInfo
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import BlockID
+from pycspr.types.node.rpc import Deploy
+from pycspr.types.node.rpc import BlockID
 
 
 class Proxy:

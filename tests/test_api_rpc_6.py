@@ -1,7 +1,7 @@
 from pycspr import NodeRpcClient
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_URefAccessRights
-from pycspr.types.api.rpc import AccountInfo
+from pycspr.types.node.rpc import AccountInfo
 
 
 def test_get_state_root(RPC_CLIENT: NodeRpcClient):

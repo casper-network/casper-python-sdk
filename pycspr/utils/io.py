@@ -4,7 +4,7 @@ import typing
 
 from pycspr import serialisation
 from pycspr import factory
-from pycspr.types.api.rpc import Deploy
+from pycspr.types.node.rpc import Deploy
 
 
 def get_deploy_size_bytes(deploy: Deploy) -> int:

@@ -1,8 +1,8 @@
 import dataclasses
 import typing
 
-from pycspr.types.api.sse.simple import NodeEventChannel
-from pycspr.types.api.sse.simple import NodeEventType
+from pycspr.types.node.sse.simple import NodeEventChannel
+from pycspr.types.node.sse.simple import NodeEventType
 
 
 @dataclasses.dataclass

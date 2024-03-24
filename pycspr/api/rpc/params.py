@@ -3,19 +3,19 @@ import typing
 from pycspr import serialisation
 from pycspr.crypto import cl_checksum
 from pycspr.types.cl import CLV_Key
-from pycspr.types.api.rpc import AccountID
-from pycspr.types.api.rpc import BlockID
-from pycspr.types.api.rpc import DeployHash
-from pycspr.types.api.rpc import DictionaryID
-from pycspr.types.api.rpc import DictionaryID_AccountNamedKey
-from pycspr.types.api.rpc import DictionaryID_ContractNamedKey
-from pycspr.types.api.rpc import DictionaryID_SeedURef
-from pycspr.types.api.rpc import DictionaryID_UniqueKey
-from pycspr.types.api.rpc import GlobalStateID
-from pycspr.types.api.rpc import GlobalStateIDType
-from pycspr.types.api.rpc import PurseID
-from pycspr.types.api.rpc import PurseIDType
-from pycspr.types.api.rpc import StateRootHash
+from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import BlockID
+from pycspr.types.node.rpc import DeployHash
+from pycspr.types.node.rpc import DictionaryID
+from pycspr.types.node.rpc import DictionaryID_AccountNamedKey
+from pycspr.types.node.rpc import DictionaryID_ContractNamedKey
+from pycspr.types.node.rpc import DictionaryID_SeedURef
+from pycspr.types.node.rpc import DictionaryID_UniqueKey
+from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import GlobalStateIDType
+from pycspr.types.node.rpc import PurseID
+from pycspr.types.node.rpc import PurseIDType
+from pycspr.types.node.rpc import StateRootHash
 
 
 # Map: global state identifier type to JSON-RPC paramater name.

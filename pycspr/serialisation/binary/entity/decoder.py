@@ -10,20 +10,20 @@ from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import DeployApproval
-from pycspr.types.api.rpc import DeployArgument
-from pycspr.types.api.rpc import DeployBody
-from pycspr.types.api.rpc import DeployExecutableItem
-from pycspr.types.api.rpc import DeployHeader
-from pycspr.types.api.rpc import DeployTimeToLive
-from pycspr.types.api.rpc import DeployOfModuleBytes
-from pycspr.types.api.rpc import DeployOfStoredContractByHash
-from pycspr.types.api.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.api.rpc import DeployOfStoredContractByName
-from pycspr.types.api.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.api.rpc import DeployOfTransfer
-from pycspr.types.api.rpc import Timestamp
+from pycspr.types.node.rpc import Deploy
+from pycspr.types.node.rpc import DeployApproval
+from pycspr.types.node.rpc import DeployArgument
+from pycspr.types.node.rpc import DeployBody
+from pycspr.types.node.rpc import DeployExecutableItem
+from pycspr.types.node.rpc import DeployHeader
+from pycspr.types.node.rpc import DeployTimeToLive
+from pycspr.types.node.rpc import DeployOfModuleBytes
+from pycspr.types.node.rpc import DeployOfStoredContractByHash
+from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.node.rpc import DeployOfStoredContractByName
+from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.node.rpc import DeployOfTransfer
+from pycspr.types.node.rpc import Timestamp
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:

@@ -7,15 +7,15 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import AccountID
-from pycspr.types.api.rpc import BlockID
-from pycspr.types.api.rpc import DeployHash
-from pycspr.types.api.rpc import DictionaryID
-from pycspr.types.api.rpc import GlobalStateID
-from pycspr.types.api.rpc import GlobalStateIDType
-from pycspr.types.api.rpc import PurseID
-from pycspr.types.api.rpc import StateRootHash
+from pycspr.types.node.rpc import Deploy
+from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import BlockID
+from pycspr.types.node.rpc import DeployHash
+from pycspr.types.node.rpc import DictionaryID
+from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import GlobalStateIDType
+from pycspr.types.node.rpc import PurseID
+from pycspr.types.node.rpc import StateRootHash
 from pycspr.crypto.types import Digest
 
 
