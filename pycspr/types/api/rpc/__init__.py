@@ -26,6 +26,11 @@ from pycspr.types.api.rpc.entities import DeployOfStoredContractByNameVersioned
 from pycspr.types.api.rpc.entities import DeployOfTransfer
 from pycspr.types.api.rpc.entities import DeployParameters
 from pycspr.types.api.rpc.entities import DeployTimeToLive
+from pycspr.types.api.rpc.entities import DictionaryID
+from pycspr.types.api.rpc.entities import DictionaryID_AccountNamedKey
+from pycspr.types.api.rpc.entities import DictionaryID_ContractNamedKey
+from pycspr.types.api.rpc.entities import DictionaryID_SeedURef
+from pycspr.types.api.rpc.entities import DictionaryID_UniqueKey
 from pycspr.types.api.rpc.entities import EraInfo
 from pycspr.types.api.rpc.entities import EraValidators
 from pycspr.types.api.rpc.entities import EraValidatorWeight
@@ -51,11 +56,6 @@ from pycspr.types.api.rpc.identifiers import BlockID
 from pycspr.types.api.rpc.identifiers import ContractID
 from pycspr.types.api.rpc.identifiers import ContractVersion
 from pycspr.types.api.rpc.identifiers import DeployHash
-from pycspr.types.api.rpc.identifiers import DictionaryID
-from pycspr.types.api.rpc.identifiers import DictionaryID_AccountNamedKey
-from pycspr.types.api.rpc.identifiers import DictionaryID_ContractNamedKey
-from pycspr.types.api.rpc.identifiers import DictionaryID_SeedURef
-from pycspr.types.api.rpc.identifiers import DictionaryID_UniqueKey
 from pycspr.types.api.rpc.identifiers import EraID
 from pycspr.types.api.rpc.identifiers import Gas
 from pycspr.types.api.rpc.identifiers import GasPrice

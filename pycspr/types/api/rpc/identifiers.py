@@ -42,36 +42,6 @@ StateRootHash = typing.NewType("Root digest of a node's global state.", Digest)
 
 
 @dataclasses.dataclass
-class DictionaryID():
-    pass
-
-
-@dataclasses.dataclass
-class DictionaryID_AccountNamedKey(DictionaryID):
-    account_key: str
-    dictionary_item_key: str
-    dictionary_name: str
-
-
-@dataclasses.dataclass
-class DictionaryID_ContractNamedKey(DictionaryID):
-    contract_key: str
-    dictionary_item_key: str
-    dictionary_name: str
-
-
-@dataclasses.dataclass
-class DictionaryID_SeedURef(DictionaryID):
-    dictionary_item_key: str
-    seed_uref: object
-
-
-@dataclasses.dataclass
-class DictionaryID_UniqueKey(DictionaryID):
-    key: str
-
-
-@dataclasses.dataclass
 class GlobalStateID():
     identifier: typing.Union[BlockHash, BlockHeight, StateRootHash]
     id_type: "GlobalStateIDType"
