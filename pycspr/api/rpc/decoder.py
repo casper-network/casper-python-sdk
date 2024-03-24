@@ -214,8 +214,8 @@ def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
 
 
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
-    if "DeployOfModuleBytes" in encoded:
-        return decode(encoded["DeployOfModuleBytes"], DeployOfModuleBytes)
+    if "ModuleBytes" in encoded:
+        return decode(encoded["ModuleBytes"], DeployOfModuleBytes)
     elif "StoredContractByHash" in encoded:
         return decode(encoded["StoredContractByHash"], DeployOfStoredContractByHash)
     elif "StoredVersionedContractByHash" in encoded:

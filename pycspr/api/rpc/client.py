@@ -5,7 +5,7 @@ from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.types import rpc as rpc_types
-from pycspr.types.chain import Deploy
+from pycspr.types.rpc import Deploy
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
 from pycspr.types.rpc import AccountID

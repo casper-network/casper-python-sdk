@@ -4,6 +4,10 @@ import dataclasses
 import enum
 import typing
 
+from pycspr.crypto import get_signature_for_deploy_approval
+from pycspr.crypto import verify_deploy_approval_signature
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PrivateKey
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.rpc.identifiers import AccountID
 from pycspr.types.rpc.identifiers import BlockHash
@@ -14,6 +18,8 @@ from pycspr.types.rpc.identifiers import Motes
 from pycspr.types.rpc.identifiers import StateRootHash
 from pycspr.types.rpc.identifiers import WasmModule
 from pycspr.types.rpc.identifiers import Weight
+from pycspr.utils import conversion
+from pycspr.utils import constants
 
 
 @dataclasses.dataclass
@@ -112,9 +118,63 @@ class Deploy():
     approvals: typing.List[DeployApproval]
     hash: DeployHash
     header: DeployHeader
-    payment: dict
-    session: dict
+    payment: DeployExecutableItem
+    session: DeployExecutableItem
     execution_info: DeployExecutionInfo = None
+
+    def __eq__(self, other: Deploy) -> bool:
+        return self.approvals == other.approvals and \
+               self.hash == other.hash and \
+               self.header == other.header and \
+               self.payment == other.payment and \
+               self.session == other.session and \
+               self.execution_info == other.execution_info
+
+
+    def get_body(self) -> DeployBody:
+        return DeployBody(
+            payment=self.payment,
+            session=self.session,
+            hash=self.header.body_hash
+        )
+
+    def approve(self, approver: PrivateKey):
+        """Creates a deploy approval & appends it to associated set.
+
+        :params approver: Private key of entity approving the deploy.
+
+        """
+        sig = get_signature_for_deploy_approval(
+            self.hash, approver.private_key, approver.key_algo
+            )
+        approval = DeployApproval(approver.to_public_key(), sig)
+        self._append_approval(approval)
+
+    def set_approval(self, approval: DeployApproval):
+        """Appends an approval to associated set.
+
+        :params approval: An approval to be associated with the deploy.
+
+        """
+        if not verify_deploy_approval_signature(
+            self.hash,
+            approval.signature,
+            approval.signer.to_account_key()
+        ):
+            raise ValueError("Invalid signature - please review your processes.")
+
+        self._append_approval(approval)
+
+    def _append_approval(self, approval: DeployApproval):
+        """Appends an approval to managed set - implicitly deduplicating.
+
+        """
+        self.approvals.append(approval)
+        uniques = set()
+        self.approvals = [
+            uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques
+            ]
+
 
 
 @dataclasses.dataclass
@@ -138,6 +198,18 @@ class DeployArgument():
 
     def __eq__(self, other) -> bool:
         return self.name == other.name and self.value == other.value
+
+
+@dataclasses.dataclass
+class DeployBody():
+    payment: DeployExecutableItem
+    session: DeployExecutableItem
+    hash: bytes
+
+    def __eq__(self, other) -> bool:
+        return self.payment == other.payment and \
+               self.session == other.session and \
+               self.hash == other.hash
 
 
 @dataclasses.dataclass
@@ -165,13 +237,22 @@ class DeployExecutableItem():
 
 @dataclasses.dataclass
 class DeployHeader():
-    account: bytes
+    account: PublicKey
     body_hash: Digest
     chain_name: str
     dependencies: typing.List[DeployHash]
     gas_price: GasPrice
     timestamp: Timestamp
     ttl: DeployTimeToLive
+
+    def __eq__(self, other) -> bool:
+        return self.account == other.account and \
+               self.body_hash == other.body_hash and \
+               self.chain_name == other.chain_name and \
+               self.dependencies == other.dependencies and \
+               self.gas_price == other.gas_price and \
+               self.timestamp == other.timestamp and \
+               self.ttl == other.ttl
 
 
 @dataclasses.dataclass
@@ -229,9 +310,52 @@ class DeployOfTransfer(DeployExecutableItem):
 
 
 @dataclasses.dataclass
+class DeployParameters():
+    account: PublicKey
+    chain_name: str
+    dependencies: typing.List[bytes]
+    gas_price: int
+    timestamp: Timestamp
+    ttl: "DeployTimeToLive"
+
+    def __eq__(self, other) -> bool:
+        return self.account == other.account and \
+               self.chain_name == other.chain_name and \
+               self.dependencies == other.dependencies and \
+               self.gas_price == other.gas_price and \
+               self.timestamp == other.timestamp and \
+               self.ttl == other.ttl
+
+
+@dataclasses.dataclass
 class DeployTimeToLive():
     as_milliseconds: int
     humanized: str
+
+    def __eq__(self, other) -> bool:
+        return self.as_milliseconds == other.as_milliseconds and \
+               self.humanized == other.humanized
+
+    @staticmethod
+    def from_string(as_string: str) -> "DeployTimeToLive":
+        as_milliseconds = conversion.humanized_time_interval_to_milliseconds(as_string)
+        if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
+            raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
+
+        return DeployTimeToLive(
+            as_milliseconds=as_milliseconds,
+            humanized=as_string
+        )
+
+    @staticmethod
+    def from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
+        return DeployTimeToLive(
+            as_milliseconds,
+            conversion.milliseconds_to_humanized_time_interval(as_milliseconds)
+            )
+
+    def to_string(self) -> str:
+        return self.humanized
 
 
 @dataclasses.dataclass

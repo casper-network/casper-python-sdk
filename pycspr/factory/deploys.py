@@ -9,11 +9,11 @@ from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployBody
-from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import DeployParameters
-from pycspr.types.chain import DeployTimeToLive
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployBody
+from pycspr.types.rpc import DeployHeader
+from pycspr.types.rpc import DeployParameters
+from pycspr.types.rpc import DeployTimeToLive
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLT_Type_U64
@@ -113,7 +113,7 @@ def create_deploy_header(body: DeployBody, params: DeployParameters) -> DeployHe
 
     """
     return DeployHeader(
-        account_public_key=params.account_public_key,
+        account=params.account,
         body_hash=body.hash,
         chain_name=params.chain_name,
         dependencies=params.dependencies,
@@ -149,7 +149,7 @@ def create_deploy_parameters(
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
 
     return DeployParameters(
-        account_public_key=public_key,
+        account=public_key,
         chain_name=chain_name,
         dependencies=dependencies,
         gas_price=gas_price,

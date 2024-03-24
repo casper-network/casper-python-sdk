@@ -6,7 +6,7 @@ import pycctl
 import pycspr
 from pycctl.types import AccountType
 from pycspr.api.rpc import Client as NodeClient
-from pycspr.types.chain import Deploy
+from pycspr.types.rpc import Deploy
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256

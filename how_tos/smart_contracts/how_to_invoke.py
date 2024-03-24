@@ -11,8 +11,8 @@ from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U256
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployParameters
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployParameters
 from pycspr.types.rpc import DeployOfModuleBytes
 from pycspr.types.rpc import DeployOfStoredContractByHash
 

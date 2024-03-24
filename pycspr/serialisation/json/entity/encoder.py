@@ -2,8 +2,8 @@ import typing
 
 from pycspr.crypto import cl_checksum
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployHeader
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployHeader
 from pycspr.types.cl import CLV_Value
 from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
@@ -54,7 +54,7 @@ def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CLV_Val
 
 def _encode_deploy_header(entity: DeployHeader) -> dict:
     return {
-        "account": cl_checksum.encode_account_key(entity.account_public_key.to_account_key()),
+        "account": cl_checksum.encode_account_key(entity.account.to_account_key()),
         "body_hash": cl_checksum.encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
@@ -66,7 +66,7 @@ def _encode_deploy_header(entity: DeployHeader) -> dict:
 
 def _encode_module_bytes(entity: DeployOfModuleBytes) -> dict:
     return {
-        "DeployOfModuleBytes": {
+        "ModuleBytes": {
             "args": [encode(i) for i in entity.arguments],
             "module_bytes": cl_checksum.encode(entity.module_bytes)
         }

@@ -2,7 +2,7 @@ import random
 
 import pycspr
 from pycspr import serialisation
-from pycspr.types.chain import DeployParameters
+from pycspr.types.rpc import DeployParameters
 from pycspr.types.rpc import DeployApproval
 from pycspr.types.rpc import DeployArgument
 
@@ -90,7 +90,7 @@ def test_create_transfer_body(a_test_account):
             target=a_test_account.to_account_key(),
         )
     )
-    assert isinstance(body, pycspr.types.chain.DeployBody)
+    assert isinstance(body, pycspr.types.rpc.DeployBody)
     assert isinstance(body.hash, bytes)
     assert len(body.hash) == 32
 
@@ -110,7 +110,7 @@ def test_create_transfer_header(deploy_params, a_test_account):
         body,
         deploy_params
         )
-    assert isinstance(header, pycspr.types.chain.DeployHeader)
+    assert isinstance(header, pycspr.types.rpc.DeployHeader)
     assert isinstance(header.body_hash, bytes)
     assert len(header.body_hash) == 32
 
@@ -122,5 +122,5 @@ def test_create_transfer(deploy_params, a_test_account):
         target=a_test_account.to_account_key(),
         correlation_id=random.randint(0, int(1e9))
     )
-    assert isinstance(deploy, pycspr.types.chain.Deploy)
+    assert isinstance(deploy, pycspr.types.rpc.Deploy)
     assert isinstance(deploy.hash, bytes) and len(deploy.hash) == 32

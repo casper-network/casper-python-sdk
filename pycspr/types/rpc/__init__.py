@@ -13,6 +13,7 @@ from pycspr.types.rpc.entities import BlockTransfers
 from pycspr.types.rpc.entities import Deploy
 from pycspr.types.rpc.entities import DeployApproval
 from pycspr.types.rpc.entities import DeployArgument
+from pycspr.types.rpc.entities import DeployBody
 from pycspr.types.rpc.entities import DeployExecutionInfo
 from pycspr.types.rpc.entities import DeployExecutableItem
 from pycspr.types.rpc.entities import DeployHeader
@@ -23,6 +24,7 @@ from pycspr.types.rpc.entities import DeployOfStoredContractByHashVersioned
 from pycspr.types.rpc.entities import DeployOfStoredContractByName
 from pycspr.types.rpc.entities import DeployOfStoredContractByNameVersioned
 from pycspr.types.rpc.entities import DeployOfTransfer
+from pycspr.types.rpc.entities import DeployParameters
 from pycspr.types.rpc.entities import DeployTimeToLive
 from pycspr.types.rpc.entities import EraInfo
 from pycspr.types.rpc.entities import EraValidators

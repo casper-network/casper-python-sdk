@@ -1,6 +1,6 @@
 from pycspr import crypto
 from pycspr import factory
-from pycspr.types.chain import Deploy
+from pycspr.types.rpc import Deploy
 
 
 class InvalidDeployException(Exception):

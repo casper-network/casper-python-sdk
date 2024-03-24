@@ -4,9 +4,9 @@ from pycspr.crypto import SignatureBytes
 from pycspr.serialisation.binary.cl_type import encode as encode_cl_type
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployBody
-from pycspr.types.chain import DeployHeader
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployBody
+from pycspr.types.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
@@ -75,7 +75,7 @@ def _encode_deploy_body(entity: DeployBody) -> bytes:
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
     result = bytes([])
     result += encode_cl_value(
-        CLV_PublicKey.from_public_key(entity.account_public_key)
+        CLV_PublicKey.from_public_key(entity.account)
     )
     result += encode_cl_value(
         CLV_U64(int(entity.timestamp.value * 1000))

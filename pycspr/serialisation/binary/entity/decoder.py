@@ -4,10 +4,10 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployBody
-from pycspr.types.chain import DeployHeader
-from pycspr.types.chain import DeployTimeToLive
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployBody
+from pycspr.types.rpc import DeployHeader
+from pycspr.types.rpc import DeployTimeToLive
 from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -158,7 +158,7 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
         )
 
     return bstream, DeployHeader(
-        account_public_key=account_public_key,
+        account=account_public_key,
         body_hash=body_hash.value,
         chain_name=chain_name.value,
         dependencies=dependencies.vector,

@@ -7,7 +7,7 @@ import requests
 from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
-from pycspr.types.chain import Deploy
+from pycspr.types.rpc import Deploy
 from pycspr.types.rpc import AccountID
 from pycspr.types.rpc import BlockID
 from pycspr.types.rpc import DeployHash
@@ -49,6 +49,9 @@ class Proxy:
         params: dict = {
             "deploy": serialisation.to_json(deploy),
         }
+
+        import json
+        print(json.dumps(params, indent=4))
 
         return get_response(
             self.address,

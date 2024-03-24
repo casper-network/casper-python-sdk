@@ -10,8 +10,8 @@ from pycspr.crypto import PrivateKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256
-from pycspr.types.chain import Deploy
-from pycspr.types.chain import DeployParameters
+from pycspr.types.rpc import Deploy
+from pycspr.types.rpc import DeployParameters
 from pycspr.types.rpc import DeployOfModuleBytes
 
 
