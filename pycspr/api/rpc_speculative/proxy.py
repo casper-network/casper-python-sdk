@@ -4,8 +4,8 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.proxy import get_response
-from pycspr.types.rpc import Deploy
-from pycspr.types.rpc import BlockID
+from pycspr.types.api.rpc import Deploy
+from pycspr.types.api.rpc import BlockID
 
 
 @dataclasses.dataclass

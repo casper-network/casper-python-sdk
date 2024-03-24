@@ -2,8 +2,8 @@ import pytest
 
 from pycspr import NodeRpcClient
 from pycspr.types.cl import CLV_URef
-from pycspr.types.rpc import GlobalStateID
-from pycspr.types.rpc import GlobalStateIDType
+from pycspr.types.api.rpc import GlobalStateID
+from pycspr.types.api.rpc import GlobalStateIDType
 
 
 @pytest.fixture(scope="session")

@@ -9,15 +9,15 @@ from pycspr.crypto import verify_deploy_approval_signature
 from pycspr.crypto.types import PublicKey
 from pycspr.crypto.types import PrivateKey
 from pycspr.types.cl.values import CLV_Value
-from pycspr.types.rpc.identifiers import AccountID
-from pycspr.types.rpc.identifiers import BlockHash
-from pycspr.types.rpc.identifiers import BlockHeight
-from pycspr.types.rpc.identifiers import DeployHash
-from pycspr.types.rpc.identifiers import MerkleProofBytes
-from pycspr.types.rpc.identifiers import Motes
-from pycspr.types.rpc.identifiers import StateRootHash
-from pycspr.types.rpc.identifiers import WasmModule
-from pycspr.types.rpc.identifiers import Weight
+from pycspr.types.api.rpc.identifiers import AccountID
+from pycspr.types.api.rpc.identifiers import BlockHash
+from pycspr.types.api.rpc.identifiers import BlockHeight
+from pycspr.types.api.rpc.identifiers import DeployHash
+from pycspr.types.api.rpc.identifiers import MerkleProofBytes
+from pycspr.types.api.rpc.identifiers import Motes
+from pycspr.types.api.rpc.identifiers import StateRootHash
+from pycspr.types.api.rpc.identifiers import WasmModule
+from pycspr.types.api.rpc.identifiers import Weight
 from pycspr.utils import conversion
 from pycspr.utils import constants
 

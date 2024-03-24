@@ -10,7 +10,7 @@ from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
-from pycspr.types.rpc import Deploy
+from pycspr.types.api.rpc import Deploy
 
 
 # Path to CCTL assets.

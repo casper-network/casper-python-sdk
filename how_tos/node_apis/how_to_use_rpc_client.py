@@ -6,12 +6,15 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.types import rpc as rpc_types
 from pycspr.types.cl import CLV_URef
-from pycspr.types.rpc import GlobalStateID
-from pycspr.types.rpc import GlobalStateIDType
-from pycspr.types.rpc import PurseID
-from pycspr.types.rpc import PurseIDType
+from pycspr.types.api.rpc import AuctionState
+from pycspr.types.api.rpc import BlockTransfers
+from pycspr.types.api.rpc import EraSummary
+from pycspr.types.api.rpc import GlobalStateID
+from pycspr.types.api.rpc import GlobalStateIDType
+from pycspr.types.api.rpc import PurseID
+from pycspr.types.api.rpc import PurseIDType
+from pycspr.types.api.rpc import ValidatorChanges
 
 
 # Path to CCTL assets.
@@ -132,8 +135,8 @@ def _get_chain_auction_state(ctx: _Context):
         block["header"]["height"]
     }:
         # Invoke API.
-        obj: rpc_types.AuctionState = ctx.client.get_auction_state(block_id)
-        assert isinstance(obj, rpc_types.AuctionState)
+        obj: AuctionState = ctx.client.get_auction_state(block_id)
+        assert isinstance(obj, AuctionState)
         print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
 
     assert ctx.client.get_auction_state(block["hash"]) == \
@@ -172,8 +175,8 @@ def _get_chain_block_transfers(ctx: _Context):
     block: dict = ctx.client.get_block()
 
     # Query: by hash.
-    entity: rpc_types.BlockTransfers = ctx.client.get_block_transfers(block["hash"])
-    assert isinstance(entity, rpc_types.BlockTransfers)
+    entity: BlockTransfers = ctx.client.get_block_transfers(block["hash"])
+    assert isinstance(entity, BlockTransfers)
     print("SUCCESS :: invoked get_block_transfers - by block hash")
 
     # Query: by height.
@@ -208,8 +211,8 @@ def _get_chain_era_summary(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        entity: rpc_types.EraSummary = ctx.client.get_era_summary(block_id, decode=True)
-        assert isinstance(entity, rpc_types.EraSummary)
+        entity: EraSummary = ctx.client.get_era_summary(block_id, decode=True)
+        assert isinstance(entity, EraSummary)
 
         entity: dict = ctx.client.get_era_summary(block_id, decode=False)
         assert isinstance(entity, dict)
@@ -244,11 +247,11 @@ def _get_chain_state_root_hash(ctx: _Context):
 
 
 def _get_chain_validator_changes(ctx: _Context):
-    validator_changes: typing.List[rpc_types.ValidatorChanges] = \
+    validator_changes: typing.List[ValidatorChanges] = \
         ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)
     for item in validator_changes:
-        assert isinstance(item, rpc_types.ValidatorChanges)
+        assert isinstance(item, ValidatorChanges)
     print("SUCCESS :: get_validator_changes")
 
 

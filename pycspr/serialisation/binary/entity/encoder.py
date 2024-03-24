@@ -4,23 +4,23 @@ from pycspr.crypto import SignatureBytes
 from pycspr.serialisation.binary.cl_type import encode as encode_cl_type
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
-from pycspr.types.rpc import Deploy
-from pycspr.types.rpc import DeployBody
-from pycspr.types.rpc import DeployHeader
+from pycspr.types.api.rpc import Deploy
+from pycspr.types.api.rpc import DeployBody
+from pycspr.types.api.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
-from pycspr.types.rpc import DeployApproval
-from pycspr.types.rpc import DeployArgument
-from pycspr.types.rpc import DeployOfModuleBytes
-from pycspr.types.rpc import DeployOfStoredContractByHash
-from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.rpc import DeployOfStoredContractByName
-from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.rpc import DeployOfTransfer
+from pycspr.types.api.rpc import DeployApproval
+from pycspr.types.api.rpc import DeployArgument
+from pycspr.types.api.rpc import DeployOfModuleBytes
+from pycspr.types.api.rpc import DeployOfStoredContractByHash
+from pycspr.types.api.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.api.rpc import DeployOfStoredContractByName
+from pycspr.types.api.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.api.rpc import DeployOfTransfer
 
 
 def encode(entity: object) -> bytes:

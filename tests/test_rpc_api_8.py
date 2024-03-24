@@ -1,5 +1,5 @@
 from pycspr import NodeRpcClient
-from pycspr.types.rpc import Block
+from pycspr.types.api.rpc import Block
 
 
 def test_get_block(RPC_CLIENT: NodeRpcClient):

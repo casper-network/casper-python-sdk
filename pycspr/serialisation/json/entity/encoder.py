@@ -2,17 +2,17 @@ import typing
 
 from pycspr.crypto import cl_checksum
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
-from pycspr.types.rpc import Deploy
-from pycspr.types.rpc import DeployHeader
+from pycspr.types.api.rpc import Deploy
+from pycspr.types.api.rpc import DeployHeader
 from pycspr.types.cl import CLV_Value
-from pycspr.types.rpc import DeployApproval
-from pycspr.types.rpc import DeployArgument
-from pycspr.types.rpc import DeployOfModuleBytes
-from pycspr.types.rpc import DeployOfStoredContractByHash
-from pycspr.types.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.rpc import DeployOfStoredContractByName
-from pycspr.types.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.rpc import DeployOfTransfer
+from pycspr.types.api.rpc import DeployApproval
+from pycspr.types.api.rpc import DeployArgument
+from pycspr.types.api.rpc import DeployOfModuleBytes
+from pycspr.types.api.rpc import DeployOfStoredContractByHash
+from pycspr.types.api.rpc import DeployOfStoredContractByHashVersioned
+from pycspr.types.api.rpc import DeployOfStoredContractByName
+from pycspr.types.api.rpc import DeployOfStoredContractByNameVersioned
+from pycspr.types.api.rpc import DeployOfTransfer
 from pycspr.utils import conversion as convertor
 
 

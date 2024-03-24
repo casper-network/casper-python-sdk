@@ -4,10 +4,10 @@ from pycspr.api.rpc import Client as RpcClient
 from pycspr.api.rpc import ConnectionInfo as RpcClientConnectionInfo
 from pycspr.api.sse.connection import ConnectionInfo
 from pycspr.api.sse.proxy import Proxy
-from pycspr.types.sse import NodeEventChannel
-from pycspr.types.sse import NodeEventInfo
-from pycspr.types.sse import NodeEventType
-from pycspr.types.sse import SSE_CHANNEL_TO_SSE_EVENT
+from pycspr.types.api.sse import NodeEventChannel
+from pycspr.types.api.sse import NodeEventInfo
+from pycspr.types.api.sse import NodeEventType
+from pycspr.types.api.sse import SSE_CHANNEL_TO_SSE_EVENT
 
 
 class Client():

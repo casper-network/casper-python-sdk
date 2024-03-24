@@ -7,7 +7,7 @@ from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.crypto import KeyAlgorithm
 from pycspr.crypto import PrivateKey
-from pycspr.types.rpc import Deploy
+from pycspr.types.api.rpc import Deploy
 from pycspr.types.cl import CLV_URef
 
 

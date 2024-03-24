@@ -1,5 +1,5 @@
 from pycspr import serialisation
-from pycspr.types.rpc import DeployBody
+from pycspr.types.api.rpc import DeployBody
 
 
 def test_that_deploy_entities_serialisation_to_and_from_bytes(deploy_entities_iterator):

@@ -4,17 +4,23 @@ import typing
 from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
-from pycspr.types import rpc as rpc_types
-from pycspr.types.rpc import Deploy
+from pycspr.types.api.rpc import Deploy
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
-from pycspr.types.rpc import AccountID
-from pycspr.types.rpc import BlockID
-from pycspr.types.rpc import DeployHash
-from pycspr.types.rpc import DictionaryID
-from pycspr.types.rpc import GlobalStateID
-from pycspr.types.rpc import PurseID
-from pycspr.types.rpc import StateRootHash
+from pycspr.types.api.rpc import AccountID
+from pycspr.types.api.rpc import AccountInfo
+from pycspr.types.api.rpc import AuctionState
+from pycspr.types.api.rpc import Block
+from pycspr.types.api.rpc import BlockID
+from pycspr.types.api.rpc import BlockTransfers
+from pycspr.types.api.rpc import Deploy
+from pycspr.types.api.rpc import DeployHash
+from pycspr.types.api.rpc import DictionaryID
+from pycspr.types.api.rpc import EraSummary
+from pycspr.types.api.rpc import GlobalStateID
+from pycspr.types.api.rpc import PurseID
+from pycspr.types.api.rpc import StateRootHash
+from pycspr.types.api.rpc import ValidatorChanges
 from pycspr.crypto.types import Digest
 
 
@@ -78,7 +84,7 @@ class Client():
         account_id: AccountID,
         block_id: BlockID = None,
         decode=False
-    ) -> typing.Union[dict, rpc_types.AccountInfo]:
+    ) -> typing.Union[dict, AccountInfo]:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -88,13 +94,13 @@ class Client():
         """
         obj: dict = self.proxy.state_get_account_info(account_id, block_id)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.AccountInfo)
+        return obj if decode is False else decoder.decode(obj, AccountInfo)
 
     def get_auction_info(
         self,
         block_id: BlockID = None,
         decode: bool = True
-    ) -> typing.Union[dict, rpc_types.AuctionState]:
+    ) -> typing.Union[dict, AuctionState]:
         """Returns current auction system contract information.
 
         :param block_id: Identifier of a finalised block.
@@ -103,13 +109,13 @@ class Client():
         """
         obj: dict = self.proxy.state_get_auction_info(block_id)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.AuctionState)
+        return obj if decode is False else decoder.decode(obj, AuctionState)
 
     def get_block(
         self,
         block_id: BlockID = None,
         decode=False
-    ) -> typing.Union[dict, rpc_types.Block]:
+    ) -> typing.Union[dict, Block]:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -119,13 +125,13 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_block(block_id)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.Block)
+        return obj if decode is False else decoder.decode(obj, Block)
 
     def get_block_transfers(
         self,
         block_id: BlockID = None,
         decode: bool = True
-    ) -> typing.Union[dict, rpc_types.BlockTransfers]:
+    ) -> typing.Union[dict, BlockTransfers]:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -135,7 +141,7 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_block_transfers(block_id)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.BlockTransfers)
+        return obj if decode is False else decoder.decode(obj, BlockTransfers)
 
     def get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -150,7 +156,7 @@ class Client():
         self,
         deploy_hash: DeployHash,
         decode: bool = True
-    ) -> typing.Union[dict, rpc_types.Deploy]:
+    ) -> typing.Union[dict, Deploy]:
         """Returns on-chain deploy information.
 
         :param deploy_id: Hash of a deploy processed by network.
@@ -161,7 +167,7 @@ class Client():
         obj: dict = self.proxy.info_get_deploy(deploy_hash)
         obj["deploy"]["execution_info"] = obj.get("execution_results", None)
 
-        return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], rpc_types.Deploy)
+        return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], Deploy)
 
     def get_dictionary_item(
         self,
@@ -182,7 +188,7 @@ class Client():
         self,
         block_id: BlockID = None,
         decode: bool = True
-    ) -> typing.Union[dict, rpc_types.EraSummary]:
+    ) -> typing.Union[dict, EraSummary]:
         """Returns consensus era summary information.
 
         :param block_id: Identifier of a block.
@@ -191,7 +197,7 @@ class Client():
         """
         obj: dict = self.proxy.chain_get_era_summary(block_id)
 
-        return obj if decode is False else decoder.decode(obj, rpc_types.EraSummary)
+        return obj if decode is False else decoder.decode(obj, EraSummary)
 
     def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
@@ -285,7 +291,7 @@ class Client():
     def get_validator_changes(
         self,
         decode: bool = True
-    ) -> typing.List[typing.Union[dict, rpc_types.ValidatorChanges]]:
+    ) -> typing.List[typing.Union[dict, ValidatorChanges]]:
         """Returns status changes of active validators.
 
         :param node: Information required to connect to a node.
@@ -294,7 +300,7 @@ class Client():
         """
         obj = self.proxy.info_get_validator_changes()
 
-        return obj if decode is False else [decoder.decode(i, rpc_types.ValidatorChanges) for i in obj]
+        return obj if decode is False else [decoder.decode(i, ValidatorChanges) for i in obj]
 
 
 class ClientExtensions():

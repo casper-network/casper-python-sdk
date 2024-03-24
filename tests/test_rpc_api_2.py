@@ -1,5 +1,5 @@
 from pycspr import NodeRpcClient
-from pycspr.types.rpc import ValidatorChanges
+from pycspr.types.api.rpc import ValidatorChanges
 
 
 def test_get_node_peers(RPC_CLIENT: NodeRpcClient):

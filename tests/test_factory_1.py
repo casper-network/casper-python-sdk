@@ -2,9 +2,9 @@ import random
 
 import pycspr
 from pycspr import serialisation
-from pycspr.types.rpc import DeployParameters
-from pycspr.types.rpc import DeployApproval
-from pycspr.types.rpc import DeployArgument
+from pycspr.types.api.rpc import DeployParameters
+from pycspr.types.api.rpc import DeployApproval
+from pycspr.types.api.rpc import DeployArgument
 
 
 def test_create_deploy_arguments_1(cl_values_vector):
@@ -64,7 +64,7 @@ def test_create_standard_payment():
         pycspr.create_standard_payment(
             amount=random.randint(0, int(1e5)),
         ),
-        pycspr.types.rpc.DeployOfModuleBytes
+        pycspr.types.api.rpc.DeployOfModuleBytes
         )
 
 
@@ -75,7 +75,7 @@ def test_create_transfer_session(a_test_account):
             correlation_id=random.randint(0, int(1e9)),
             target=a_test_account.to_account_key(),
             ),
-        pycspr.types.rpc.DeployOfTransfer
+        pycspr.types.api.rpc.DeployOfTransfer
         )
 
 
@@ -90,7 +90,7 @@ def test_create_transfer_body(a_test_account):
             target=a_test_account.to_account_key(),
         )
     )
-    assert isinstance(body, pycspr.types.rpc.DeployBody)
+    assert isinstance(body, pycspr.types.api.rpc.DeployBody)
     assert isinstance(body.hash, bytes)
     assert len(body.hash) == 32
 
@@ -110,7 +110,7 @@ def test_create_transfer_header(deploy_params, a_test_account):
         body,
         deploy_params
         )
-    assert isinstance(header, pycspr.types.rpc.DeployHeader)
+    assert isinstance(header, pycspr.types.api.rpc.DeployHeader)
     assert isinstance(header.body_hash, bytes)
     assert len(header.body_hash) == 32
 
@@ -122,5 +122,5 @@ def test_create_transfer(deploy_params, a_test_account):
         target=a_test_account.to_account_key(),
         correlation_id=random.randint(0, int(1e9))
     )
-    assert isinstance(deploy, pycspr.types.rpc.Deploy)
+    assert isinstance(deploy, pycspr.types.api.rpc.Deploy)
     assert isinstance(deploy.hash, bytes) and len(deploy.hash) == 32

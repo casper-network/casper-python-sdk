@@ -6,9 +6,9 @@ import requests
 import sseclient
 
 from pycspr.api import constants
-from pycspr.types.sse import NodeEventChannel
-from pycspr.types.sse import NodeEventInfo
-from pycspr.types.sse import NodeEventType
+from pycspr.types.api.sse import NodeEventChannel
+from pycspr.types.api.sse import NodeEventInfo
+from pycspr.types.api.sse import NodeEventType
 
 
 @dataclasses.dataclass
