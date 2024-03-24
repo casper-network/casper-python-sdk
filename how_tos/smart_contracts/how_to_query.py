@@ -5,8 +5,8 @@ import pathlib
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.crypto import PrivateKey
-from pycspr.crypto import PublicKey
+from pycspr.types.crypto import PrivateKey
+from pycspr.types.crypto import PublicKey
 from pycspr.types.cl import CLV_Key
 
 

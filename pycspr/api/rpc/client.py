@@ -4,9 +4,9 @@ import typing
 from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
-from pycspr.crypto.types import Digest
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
+from pycspr.types.crypto import Digest
 from pycspr.types.node.rpc import AccountID
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import AuctionState

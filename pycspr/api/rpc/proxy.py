@@ -7,6 +7,7 @@ from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
+from pycspr.types.crypto import Digest
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import AccountID
 from pycspr.types.node.rpc import BlockID
@@ -16,7 +17,6 @@ from pycspr.types.node.rpc import GlobalStateID
 from pycspr.types.node.rpc import GlobalStateIDType
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
-from pycspr.crypto.types import Digest
 
 
 class Proxy:

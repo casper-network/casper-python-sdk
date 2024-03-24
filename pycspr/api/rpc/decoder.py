@@ -53,10 +53,10 @@ from pycspr.types.node.rpc import ValidatorStatusChange
 from pycspr.types.node.rpc import ValidatorStatusChangeType
 from pycspr.types.node.rpc import WasmModule
 from pycspr.types.node.rpc import Weight
-from pycspr.crypto import Digest
-from pycspr.crypto import MerkleProofBytes
-from pycspr.crypto import PublicKeyBytes
-from pycspr.crypto import SignatureBytes
+from pycspr.types.crypto import Digest
+from pycspr.types.crypto import MerkleProofBytes
+from pycspr.types.crypto import PublicKeyBytes
+from pycspr.types.crypto import SignatureBytes
 from pycspr.utils import conversion as convertor
 
 

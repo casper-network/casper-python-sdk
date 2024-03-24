@@ -2,8 +2,11 @@ import dataclasses
 import enum
 import typing
 
-from pycspr import crypto
+from pycspr.crypto import get_account_hash
+from pycspr.crypto import get_account_key
 from pycspr.types.cl.types import CLT_Type
+from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PublicKey
 
 
 @dataclasses.dataclass
@@ -163,7 +166,7 @@ class CLV_PublicKey(CLV_Value):
 
     """
     # Algorithm used to generate ECC key pair.
-    algo: crypto.KeyAlgorithm
+    algo: KeyAlgorithm
 
     # Public key as raw bytes.
     pbk: bytes
@@ -171,22 +174,22 @@ class CLV_PublicKey(CLV_Value):
     @property
     def account_hash(self) -> bytes:
         """Returns on-chain account hash."""
-        return crypto.get_account_hash(self.account_key)
+        return get_account_hash(self.account_key)
 
     @property
     def account_key(self) -> bytes:
         """Returns on-chain account key."""
-        return crypto.get_account_key(self.algo, self.pbk)
+        return get_account_key(self.algo, self.pbk)
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
 
     @staticmethod
     def from_account_key(key: bytes) -> "CLV_PublicKey":
-        return CLV_PublicKey(crypto.KeyAlgorithm(key[0]), key[1:])
+        return CLV_PublicKey(KeyAlgorithm(key[0]), key[1:])
 
     @staticmethod
-    def from_public_key(key: crypto.PublicKey) -> "CLV_PublicKey":
+    def from_public_key(key: PublicKey) -> "CLV_PublicKey":
         return CLV_PublicKey(key.algo, key.pbk)
 
 

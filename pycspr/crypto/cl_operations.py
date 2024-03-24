@@ -2,7 +2,7 @@ from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
 from pycspr.crypto.hashifier import HashAlgorithm
-from pycspr.crypto.types import KeyAlgorithm
+from pycspr.types.crypto.simple import KeyAlgorithm
 
 
 # Desired length of hash digest.

@@ -2,7 +2,7 @@ import enum
 
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
-from pycspr.crypto.types import Digest
+from pycspr.types.crypto.simple import Digest
 
 
 class HashAlgorithm(enum.Enum):

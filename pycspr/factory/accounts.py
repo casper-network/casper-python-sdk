@@ -1,9 +1,9 @@
 import pathlib
 import typing
 
-from pycspr.crypto import KeyAlgorithm
-from pycspr.crypto import PrivateKey
-from pycspr.crypto import PublicKey
+from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PrivateKey
+from pycspr.types.crypto import PublicKey
 from pycspr.crypto import get_key_pair_from_bytes
 from pycspr.crypto import get_key_pair_from_pem_file
 

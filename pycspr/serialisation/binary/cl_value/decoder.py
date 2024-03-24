@@ -1,6 +1,5 @@
 import typing
 
-from pycspr import crypto
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
 from pycspr.types.cl import CLT_Type_Any
@@ -52,6 +51,7 @@ from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.cl import CLV_URef
+from pycspr.types.crypto import KeyAlgorithm
 
 
 def decode(
@@ -175,11 +175,11 @@ def _decode_public_key(
     _: CLT_Type_PublicKey
 ) -> typing.Tuple[bytes, CLV_PublicKey]:
     assert len(bstream) >= 1
-    bstream, algo = bstream[1:], crypto.KeyAlgorithm(bstream[0])
+    bstream, algo = bstream[1:], KeyAlgorithm(bstream[0])
 
-    if algo == crypto.KeyAlgorithm.ED25519:
+    if algo == KeyAlgorithm.ED25519:
         key_length = 32
-    elif algo == crypto.KeyAlgorithm.SECP256K1:
+    elif algo == KeyAlgorithm.SECP256K1:
         key_length = 33
     else:
         raise ValueError("Unknown ecc key algorithm")

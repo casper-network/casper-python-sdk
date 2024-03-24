@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.crypto import KeyAlgorithm
+from pycspr.types.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value

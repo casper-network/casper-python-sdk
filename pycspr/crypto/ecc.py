@@ -5,14 +5,7 @@ import typing
 
 from pycspr.crypto import ecc_ed25519 as ed25519
 from pycspr.crypto import ecc_secp256k1 as secp256k1
-
-
-class KeyAlgorithm(enum.Enum):
-    """Enumeration over set of supported key algorithms.
-
-    """
-    ED25519 = 1
-    SECP256K1 = 2
+from pycspr.types.crypto.simple import KeyAlgorithm
 
 
 # Map: Key algo Type -> Key algo Implementation.

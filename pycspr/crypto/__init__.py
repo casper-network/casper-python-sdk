@@ -20,10 +20,3 @@ from pycspr.crypto.ecc import DEFAULT_KEY_ALGO
 from pycspr.crypto.hashifier import get_hash
 from pycspr.crypto.hashifier import HashAlgorithm
 from pycspr.crypto.hashifier import DEFAULT_HASH_ALGO
-from pycspr.crypto.types import Digest
-from pycspr.crypto.types import MerkleProofBytes
-from pycspr.crypto.types import PrivateKey
-from pycspr.crypto.types import PrivateKeyBytes
-from pycspr.crypto.types import PublicKey
-from pycspr.crypto.types import PublicKeyBytes
-from pycspr.crypto.types import SignatureBytes

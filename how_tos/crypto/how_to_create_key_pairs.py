@@ -3,7 +3,7 @@ import base64
 import typing
 
 import pycspr
-from pycspr.crypto import KeyAlgorithm
+from pycspr.types.crypto import KeyAlgorithm
 
 
 # CLI argument parser.

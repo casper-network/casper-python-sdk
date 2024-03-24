@@ -3,8 +3,8 @@ import enum
 import typing
 
 from pycspr.types.cl.values import CLV_URef
-from pycspr.crypto.types import Digest
-from pycspr.crypto.types import PublicKeyBytes
+from pycspr.types.crypto import Digest
+from pycspr.types.crypto import PublicKeyBytes
 
 
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
