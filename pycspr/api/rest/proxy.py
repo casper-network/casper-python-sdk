@@ -1,26 +1,27 @@
-import dataclasses
 import json
 
 import requests
 
 from pycspr.api import constants
+from pycspr.api.rest.connection import ConnectionInfo
 
 
-@dataclasses.dataclass
 class Proxy:
     """Node REST server proxy.
 
     """
-    # Host address.
-    host: str = constants.DEFAULT_HOST
+    def __init__(self, connection_info: ConnectionInfo):
+        """Instance constructor.
 
-    # Number of exposed REST port.
-    port: int = constants.DEFAULT_PORT_REST
+        :param connection_info: Information required to connect to a node.
+
+        """
+        self.connection_info = connection_info
 
     @property
     def address(self) -> str:
         """A node's REST server base address."""
-        return f"http://{self.host}:{self.port}"
+        return f"http://{self.connection_info.host}:{self.connection_info.port}"
 
     def __str__(self):
         """Instance string representation."""

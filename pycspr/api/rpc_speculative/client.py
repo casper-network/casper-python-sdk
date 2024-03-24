@@ -14,7 +14,8 @@ class Client():
         :param connection_info: Information required to connect to a node.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port)
+        print(connection_info)
+        self.proxy = Proxy(connection_info)
 
     def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
         """Dispatches a deploy to a node for speculative execution.

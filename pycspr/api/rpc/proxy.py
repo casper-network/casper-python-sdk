@@ -1,4 +1,3 @@
-import dataclasses
 import typing
 
 import jsonrpcclient
@@ -7,6 +6,7 @@ import requests
 from pycspr import serialisation
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
+from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.types.api.rpc import Deploy
 from pycspr.types.api.rpc import AccountID
 from pycspr.types.api.rpc import BlockID
@@ -19,21 +19,22 @@ from pycspr.types.api.rpc import StateRootHash
 from pycspr.crypto.types import Digest
 
 
-@dataclasses.dataclass
 class Proxy:
     """Node JSON-RPC server proxy.
 
     """
-    # Host address.
-    host: str = constants.DEFAULT_HOST
+    def __init__(self, connection_info: ConnectionInfo):
+        """Instance constructor.
 
-    # Number of exposed REST port.
-    port: int = constants.DEFAULT_PORT_RPC
+        :param connection_info: Information required to connect to a node.
+
+        """
+        self.connection_info = connection_info
 
     @property
     def address(self) -> str:
         """A node's RPC server base address."""
-        return f"http://{self.host}:{self.port}/rpc"
+        return f"http://{self.connection_info.host}:{self.connection_info.port}/rpc"
 
     def __str__(self):
         """Instance string representation."""
@@ -49,9 +50,6 @@ class Proxy:
         params: dict = {
             "deploy": serialisation.to_json(deploy),
         }
-
-        import json
-        print(json.dumps(params, indent=4))
 
         return get_response(
             self.address,

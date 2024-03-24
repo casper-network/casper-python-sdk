@@ -9,10 +9,10 @@ class Client():
     def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
-        :param connection: Information required to connect to a node.
+        :param connection_info: Information required to connect to a node.
 
         """
-        self.proxy = Proxy(connection_info.host, connection_info.port)
+        self.proxy = Proxy(connection_info)
 
         # Extension methods -> 2nd order functions.
         ext = ClientExtensions(self)

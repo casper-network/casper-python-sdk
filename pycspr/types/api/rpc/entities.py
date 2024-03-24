@@ -7,6 +7,7 @@ import typing
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.crypto import verify_deploy_approval_signature
 from pycspr.crypto.types import Digest
+from pycspr.crypto.types import MerkleProofBytes
 from pycspr.crypto.types import PublicKey
 from pycspr.crypto.types import PublicKeyBytes
 from pycspr.crypto.types import PrivateKey
@@ -22,7 +23,6 @@ from pycspr.types.api.rpc.identifiers import DeployHash
 from pycspr.types.api.rpc.identifiers import EraID
 from pycspr.types.api.rpc.identifiers import Gas
 from pycspr.types.api.rpc.identifiers import GasPrice
-from pycspr.types.api.rpc.identifiers import MerkleProofBytes
 from pycspr.types.api.rpc.identifiers import Motes
 from pycspr.types.api.rpc.identifiers import StateRootHash
 from pycspr.types.api.rpc.identifiers import WasmModule

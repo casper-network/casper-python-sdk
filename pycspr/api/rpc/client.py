@@ -30,13 +30,10 @@ class Client():
     def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
-        :param connection: Information required to connect to a node.
+        :param connection_info: Information required to connect to a node.
 
         """
-        self.proxy = Proxy(
-            host=connection_info.host,
-            port=connection_info.port,
-        )
+        self.proxy = Proxy(connection_info)
 
         # Alias methods.
         self.get_auction_state = self.get_auction_info
