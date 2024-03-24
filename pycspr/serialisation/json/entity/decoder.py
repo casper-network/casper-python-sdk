@@ -78,7 +78,7 @@ def _decode_deploy_header(obj: dict) -> DeployHeader:
         dependencies=[],
         gas_price=obj["gas_price"],
         timestamp=Timestamp(convertor.iso_to_timestamp(obj["timestamp"])),
-        ttl=DeployTimeToLive.from_string(obj["ttl"])
+        ttl=convertor.deploy_time_to_live_from_string(obj["ttl"])
     )
 
 

@@ -1,5 +1,7 @@
 import datetime as dt
 
+from pycspr.utils import constants
+
 
 # Millisecond durations of relevance.
 _MS_1_SECOND: int = 1000
@@ -106,3 +108,33 @@ def iso_to_timestamp(ts_iso: str) -> float:
         ts_iso = f"{ts_iso}+00:00"
 
     return dt.datetime.fromisoformat(ts_iso).timestamp()
+
+
+def deploy_time_to_live_from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
+    """Converts milliseconds to a DeployTimeToLive.
+    
+    :param as_milliseconds: Milliseconds time duration.
+    :returns: Deploy time to live.
+
+    """
+    from pycspr.types.node.rpc import DeployTimeToLive
+
+    humanized_time_interval = milliseconds_to_humanized_time_interval(as_milliseconds)
+
+    return DeployTimeToLive(as_milliseconds, humanized_time_interval)
+
+
+def deploy_time_to_live_from_string(humanized_time_interval: str) -> "DeployTimeToLive":
+    """Converts a human readable time interval to a DeployTimeToLive.
+    
+    :param humanized_time_interval: Human readable time interval.
+    :returns: Deploy time to live.
+
+    """
+    from pycspr.types.node.rpc import DeployTimeToLive
+
+    as_milliseconds = humanized_time_interval_to_milliseconds(humanized_time_interval)
+    if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
+        raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
+
+    return DeployTimeToLive(as_milliseconds, humanized_time_interval)

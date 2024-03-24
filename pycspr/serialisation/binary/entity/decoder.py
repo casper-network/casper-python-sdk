@@ -24,6 +24,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import Timestamp
+from pycspr.utils import conversion as convertor
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:
@@ -164,7 +165,7 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
         dependencies=dependencies.vector,
         gas_price=gas_price.value,
         timestamp=Timestamp(timestamp.value / 1000),
-        ttl=DeployTimeToLive.from_milliseconds(ttl.value)
+        ttl=convertor.deploy_time_to_live_from_milliseconds(ttl.value)
     )
 
 
