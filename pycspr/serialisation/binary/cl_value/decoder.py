@@ -53,6 +53,7 @@ from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.cl import CLV_URef
 
+
 def decode(
     bstream: bytes,
     cl_type: CLT_Type

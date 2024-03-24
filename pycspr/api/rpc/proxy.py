@@ -152,7 +152,11 @@ class Proxy:
             field="chainspec_bytes"
             )
 
-    def info_get_deploy(self, deploy_hash: DeployHash, finalized_approvals: bool = False) -> dict:
+    def info_get_deploy(
+        self,
+        deploy_hash: DeployHash,
+        finalized_approvals: bool = False
+    ) -> dict:
         """Returns on-chain deploy information.
 
         :param deploy_hash: Hash of a deploy processed by network.
@@ -211,7 +215,7 @@ class Proxy:
         params: dict = \
             param_utils.get_global_state_id(global_state_id) | \
             param_utils.get_purse_id(purse_id)
-        
+
         return int(
             get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
         )
@@ -251,7 +255,7 @@ class Proxy:
         params: dict = \
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
-        
+
         return get_response(
             self.address,
             constants.RPC_STATE_GET_ACCOUNT_INFO,
@@ -328,7 +332,11 @@ class Proxy:
             "trie_key": trie_key.hex()
         }
 
-        return get_response(self.address, constants.RPC_STATE_GET_TRIE, params, "maybe_trie_bytes")
+        return get_response(
+            self.address,
+            constants.RPC_STATE_GET_TRIE, params,
+            "maybe_trie_bytes"
+            )
 
 
 class ProxyError(Exception):

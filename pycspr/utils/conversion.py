@@ -79,12 +79,11 @@ def milliseconds_to_humanized_time_interval(interval: int) -> int:
 
 def timestamp_to_iso(ts: float) -> str:
     """Converts millisecond precise timestamp to ISO 8601 format.
-    
+
     :param ts: Millisecond precise timestamp.
     :returns: ISO formatted timestamp.
 
     """
-    
     ts_3_decimal_places = round(ts, 3)
     ts_datetime = dt.datetime.fromtimestamp(
         ts_3_decimal_places,
@@ -97,7 +96,7 @@ def timestamp_to_iso(ts: float) -> str:
 
 def iso_to_timestamp(ts_iso: str) -> float:
     """Converts ISO 8601 format to millisecond precise timestamp.
-    
+
     :param ts_iso: ISO formatted timestamp.
     :returns: Millisecond precise timestamp.
 

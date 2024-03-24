@@ -33,7 +33,7 @@ class PublicKey():
 
     def to_account_hash(self) -> bytes:
         """Returns on-chain account address.
-        
+
         """
         from pycspr.crypto.cl_operations import get_account_hash
 
@@ -41,11 +41,11 @@ class PublicKey():
 
     def to_account_key(self) -> bytes:
         """Returns on-chain account key.
-        
+
         """
         # JIT import to avoid circular references.
         from pycspr.crypto.cl_operations import get_account_key
-        
+
         return get_account_key(self.algo, self.pbk)
 
     def __eq__(self, other) -> bool:
@@ -98,7 +98,7 @@ class PrivateKey:
 
     def to_account_hash(self) -> bytes:
         """Gets derived on-chain account hash - i.e. address.
-        
+
         """
         from pycspr.crypto.cl_operations import get_account_hash
 
@@ -119,7 +119,7 @@ class PrivateKey:
     def get_signature(self, data: bytes) -> bytes:
         """Get signature over payload.
 
-        """ 
-        from pycspr.crypto.ecc import get_signature        
-        
+        """
+        from pycspr.crypto.ecc import get_signature
+
         return get_signature(data, self.pvk, self.algo)

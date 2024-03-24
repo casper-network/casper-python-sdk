@@ -1,20 +1,19 @@
 import typing
 
-from pycspr.crypto import SignatureBytes
 from pycspr.serialisation.binary.cl_type import encode as encode_cl_type
 from pycspr.serialisation.binary.cl_value import encode as encode_cl_value
 from pycspr.serialisation.utils import cl_value_to_cl_type
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import DeployBody
-from pycspr.types.api.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
+from pycspr.types.api.rpc import Deploy
 from pycspr.types.api.rpc import DeployApproval
 from pycspr.types.api.rpc import DeployArgument
+from pycspr.types.api.rpc import DeployBody
+from pycspr.types.api.rpc import DeployHeader
 from pycspr.types.api.rpc import DeployOfModuleBytes
 from pycspr.types.api.rpc import DeployOfStoredContractByHash
 from pycspr.types.api.rpc import DeployOfStoredContractByHashVersioned
@@ -114,7 +113,9 @@ def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> byt
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_hash_versioned(entity: DeployOfStoredContractByHashVersioned) -> bytes:
+def _encode_stored_contract_by_hash_versioned(
+    entity: DeployOfStoredContractByHashVersioned
+) -> bytes:
     return \
         bytes([2]) + \
         encode_cl_value(CLV_ByteArray(entity.hash)) + \
@@ -131,7 +132,9 @@ def _encode_stored_contract_by_name(entity: DeployOfStoredContractByName) -> byt
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
-def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNameVersioned) -> bytes:
+def _encode_stored_contract_by_name_versioned(
+    entity: DeployOfStoredContractByNameVersioned
+) -> bytes:
     return \
         bytes([4]) + \
         encode_cl_value(CLV_String(entity.name)) + \

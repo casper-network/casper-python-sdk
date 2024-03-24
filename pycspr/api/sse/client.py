@@ -24,8 +24,7 @@ class Client():
         self.proxy = Proxy(connection_info.host, connection_info.port)
 
         # Extension methods -> 2nd order functions.
-        ext = ClientExtensions(self, rpc_client or \
-            RpcClient(
+        ext = ClientExtensions(self, rpc_client or RpcClient(
                 RpcClientConnectionInfo(connection_info.host, connection_info.port_rpc)
             )
         )

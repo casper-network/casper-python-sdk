@@ -4,7 +4,6 @@ import typing
 
 from pycspr.types.cl.values import CLV_URef
 from pycspr.crypto.types import Digest
-from pycspr.crypto.types import MerkleProofBytes
 from pycspr.crypto.types import PublicKeyBytes
 
 
@@ -14,7 +13,10 @@ AccountID = typing.NewType("Identifier of an on-chain account.", Address)
 
 BlockHash = typing.NewType("Digest over a block.", Digest)
 
-BlockHeight = typing.NewType("A specific location in a blockchain, measured by how many finalised blocks precede it.", int)
+BlockHeight = typing.NewType(
+    "A specific location in a blockchain, measured by how many finalised blocks precede it.",
+    int
+)
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 

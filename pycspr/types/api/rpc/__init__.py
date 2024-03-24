@@ -54,7 +54,6 @@ from pycspr.types.api.rpc.identifiers import DeployHash
 from pycspr.types.api.rpc.identifiers import DictionaryID
 from pycspr.types.api.rpc.identifiers import DictionaryID_AccountNamedKey
 from pycspr.types.api.rpc.identifiers import DictionaryID_ContractNamedKey
-from pycspr.types.api.rpc.identifiers import DictionaryID_ContractNamedKey
 from pycspr.types.api.rpc.identifiers import DictionaryID_SeedURef
 from pycspr.types.api.rpc.identifiers import DictionaryID_UniqueKey
 from pycspr.types.api.rpc.identifiers import EraID

@@ -17,7 +17,6 @@ from pycspr.types.api.rpc import BlockHeader
 from pycspr.types.api.rpc import BlockHeight
 from pycspr.types.api.rpc import BlockSignature
 from pycspr.types.api.rpc import BlockTransfers
-from pycspr.types.api.rpc import ContractID
 from pycspr.types.api.rpc import ContractVersion
 from pycspr.types.api.rpc import Deploy
 from pycspr.types.api.rpc import DeployApproval
@@ -215,17 +214,35 @@ def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
 
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
     if "ModuleBytes" in encoded:
-        return decode(encoded["ModuleBytes"], DeployOfModuleBytes)
+        return decode(
+            encoded["ModuleBytes"],
+            DeployOfModuleBytes
+            )
     elif "StoredContractByHash" in encoded:
-        return decode(encoded["StoredContractByHash"], DeployOfStoredContractByHash)
+        return decode(
+            encoded["StoredContractByHash"],
+            DeployOfStoredContractByHash
+            )
     elif "StoredVersionedContractByHash" in encoded:
-        return decode(encoded["StoredVersionedContractByHash"], DeployOfStoredContractByHashVersioned)
+        return decode(
+            encoded["StoredVersionedContractByHash"],
+            DeployOfStoredContractByHashVersioned
+            )
     elif "StoredContractByName" in encoded:
-        return decode(encoded["StoredContractByName"], DeployOfStoredContractByName)
+        return decode(
+            encoded["StoredContractByName"],
+            DeployOfStoredContractByName
+            )
     elif "StoredVersionedContractByName" in encoded:
-        return decode(encoded["StoredVersionedContractByName"], DeployOfStoredContractByNameVersioned)
+        return decode(
+            encoded["StoredVersionedContractByName"],
+            DeployOfStoredContractByNameVersioned
+            )
     elif "Transfer" in encoded:
-        return decode(encoded["Transfer"], DeployOfTransfer)
+        return decode(
+            encoded["Transfer"],
+            DeployOfTransfer
+            )
     else:
         raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
@@ -264,6 +281,7 @@ def _decode_deploy_of_stored_contract_by_hash_versioned(
         hash=decode(encoded["hash"], Digest),
         version=decode(encoded["version"], ContractVersion),
     )
+
 
 def _decode_deploy_of_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
     return DeployOfStoredContractByName(

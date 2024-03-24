@@ -2,7 +2,6 @@ import datetime
 import random
 import typing
 
-from pycspr import crypto
 from pycspr.crypto import PrivateKey
 from pycspr.crypto import PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
@@ -166,7 +165,9 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     """
     as_milliseconds = conversion.humanized_time_interval_to_milliseconds(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl. Max = {constants.DEPLOY_TTL_MS_MAX}ms. Actual = {humanized_ttl}.")
+        raise ValueError(
+            f"Invalid deploy ttl. Max={constants.DEPLOY_TTL_MS_MAX}ms. Actual={humanized_ttl}."
+            )
 
     return DeployTimeToLive(
         humanized=humanized_ttl,

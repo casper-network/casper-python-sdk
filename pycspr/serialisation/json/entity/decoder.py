@@ -77,7 +77,7 @@ def _decode_deploy_header(obj: dict) -> DeployHeader:
         chain_name=obj["chain_name"],
         dependencies=[],
         gas_price=obj["gas_price"],
-        timestamp=Timestamp(convertor.iso_to_timestamp(obj["timestamp"])),        
+        timestamp=Timestamp(convertor.iso_to_timestamp(obj["timestamp"])),
         ttl=DeployTimeToLive.from_string(obj["ttl"])
     )
 
@@ -97,7 +97,9 @@ def _decode_stored_contract_by_hash(obj: dict) -> DeployOfStoredContractByHash:
     )
 
 
-def _decode_stored_contract_by_hash_versioned(obj: dict) -> DeployOfStoredContractByHashVersioned:
+def _decode_stored_contract_by_hash_versioned(
+    obj: dict
+) -> DeployOfStoredContractByHashVersioned:
     return DeployOfStoredContractByHashVersioned(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],
@@ -114,7 +116,9 @@ def _decode_stored_contract_by_name(obj: dict) -> DeployOfStoredContractByName:
     )
 
 
-def _decode_stored_contract_by_name_versioned(obj: dict) -> DeployOfStoredContractByNameVersioned:
+def _decode_stored_contract_by_name_versioned(
+    obj: dict
+) -> DeployOfStoredContractByNameVersioned:
     return DeployOfStoredContractByNameVersioned(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         entry_point=obj["entry_point"],

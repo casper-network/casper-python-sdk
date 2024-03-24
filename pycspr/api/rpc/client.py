@@ -4,7 +4,7 @@ import typing
 from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
-from pycspr.types.api.rpc import Deploy
+from pycspr.crypto.types import Digest
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
 from pycspr.types.api.rpc import AccountID
@@ -21,7 +21,6 @@ from pycspr.types.api.rpc import GlobalStateID
 from pycspr.types.api.rpc import PurseID
 from pycspr.types.api.rpc import StateRootHash
 from pycspr.types.api.rpc import ValidatorChanges
-from pycspr.crypto.types import Digest
 
 
 class Client():

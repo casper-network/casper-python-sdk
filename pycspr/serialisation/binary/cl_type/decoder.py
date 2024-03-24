@@ -34,7 +34,7 @@ def decode(bstream: bytes) -> CLT_Type:
 
     """
     typekey, bstream = CLT_TypeKey(int(bstream[0])), bstream[1:]
-    if typekey in _DECODERS["simple"]:        
+    if typekey in _DECODERS["simple"]:
         return bstream, _DECODERS["simple"][typekey]()
     elif typekey in _DECODERS["complex"]:
         return _DECODERS["complex"][typekey](bstream)

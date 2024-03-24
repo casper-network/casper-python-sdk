@@ -81,8 +81,6 @@ _ENCODERS = {
         lambda x: [encode(i) for i in x.vector],
     CLV_Map:
         lambda x: [{"key": encode(k), "value": encode(v)} for (k, v) in x.value],
-    CLV_Map:
-        lambda x: x,
     CLV_Option:
         lambda x: "" if x.value is None else encode(x.value),
     CLV_PublicKey:

@@ -102,6 +102,6 @@ _ENCODERS: dict = {
         CLT_TypeKey.U256: "U256",
         CLT_TypeKey.U512: "U512",
         CLT_TypeKey.UNIT: "Unit",
-        CLT_TypeKey.UREF: "URef",        
+        CLT_TypeKey.UREF: "URef",
     }
 }

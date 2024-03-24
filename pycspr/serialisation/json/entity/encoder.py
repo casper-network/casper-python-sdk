@@ -83,7 +83,9 @@ def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> dic
     }
 
 
-def _encode_stored_contract_by_hash_versioned(entity: DeployOfStoredContractByHashVersioned) -> dict:
+def _encode_stored_contract_by_hash_versioned(
+    entity: DeployOfStoredContractByHashVersioned
+) -> dict:
     return {
         "StoredContractByHashVersioned": {
             "args": [encode(i) for i in entity.arguments],
@@ -104,7 +106,9 @@ def _encode_stored_contract_by_name(entity: DeployOfStoredContractByName) -> dic
     }
 
 
-def _encode_stored_contract_by_name_versioned(entity: DeployOfStoredContractByNameVersioned) -> dict:
+def _encode_stored_contract_by_name_versioned(
+    entity: DeployOfStoredContractByNameVersioned
+) -> dict:
     return {
         "StoredContractByNameVersioned": {
             "args": [encode(i) for i in entity.arguments],

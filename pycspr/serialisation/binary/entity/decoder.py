@@ -4,19 +4,19 @@ from pycspr.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
-from pycspr.types.api.rpc import Deploy
-from pycspr.types.api.rpc import DeployBody
-from pycspr.types.api.rpc import DeployHeader
-from pycspr.types.api.rpc import DeployTimeToLive
 from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
+from pycspr.types.api.rpc import Deploy
 from pycspr.types.api.rpc import DeployApproval
 from pycspr.types.api.rpc import DeployArgument
+from pycspr.types.api.rpc import DeployBody
 from pycspr.types.api.rpc import DeployExecutableItem
+from pycspr.types.api.rpc import DeployHeader
+from pycspr.types.api.rpc import DeployTimeToLive
 from pycspr.types.api.rpc import DeployOfModuleBytes
 from pycspr.types.api.rpc import DeployOfStoredContractByHash
 from pycspr.types.api.rpc import DeployOfStoredContractByHashVersioned
@@ -181,7 +181,9 @@ def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, DeployOfModuleBy
     return bstream, DeployOfModuleBytes(args, module_bytes)
 
 
-def _decode_stored_contract_by_hash(bstream: bytes) -> typing.Tuple[bytes, DeployOfStoredContractByHash]:
+def _decode_stored_contract_by_hash(
+    bstream: bytes
+) -> typing.Tuple[bytes, DeployOfStoredContractByHash]:
     bstream = bstream[1:]
     bstream, contract_hash = decode_cl_value(bstream, CLT_Type_ByteArray(32))
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())
@@ -211,7 +213,9 @@ def _decode_stored_contract_by_hash_versioned(
         )
 
 
-def _decode_stored_contract_by_name(bstream: bytes) -> typing.Tuple[bytes, DeployOfStoredContractByName]:
+def _decode_stored_contract_by_name(
+    bstream: bytes
+) -> typing.Tuple[bytes, DeployOfStoredContractByName]:
     bstream = bstream[1:]
     bstream, contract_name = decode_cl_value(bstream, CLT_Type_String())
     bstream, entry_point = decode_cl_value(bstream, CLT_Type_String())

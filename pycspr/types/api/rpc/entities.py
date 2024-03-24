@@ -6,13 +6,22 @@ import typing
 
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.crypto import verify_deploy_approval_signature
+from pycspr.crypto.types import Digest
 from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PublicKeyBytes
 from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import SignatureBytes
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.api.rpc.identifiers import AccountID
+from pycspr.types.api.rpc.identifiers import Address
 from pycspr.types.api.rpc.identifiers import BlockHash
 from pycspr.types.api.rpc.identifiers import BlockHeight
+from pycspr.types.api.rpc.identifiers import ContractID
+from pycspr.types.api.rpc.identifiers import ContractVersion
 from pycspr.types.api.rpc.identifiers import DeployHash
+from pycspr.types.api.rpc.identifiers import EraID
+from pycspr.types.api.rpc.identifiers import Gas
+from pycspr.types.api.rpc.identifiers import GasPrice
 from pycspr.types.api.rpc.identifiers import MerkleProofBytes
 from pycspr.types.api.rpc.identifiers import Motes
 from pycspr.types.api.rpc.identifiers import StateRootHash
@@ -130,7 +139,6 @@ class Deploy():
                self.session == other.session and \
                self.execution_info == other.execution_info
 
-
     def get_body(self) -> DeployBody:
         return DeployBody(
             payment=self.payment,
@@ -174,7 +182,6 @@ class Deploy():
         self.approvals = [
             uniques.add(a.signer) or a for a in self.approvals if a.signer not in uniques
             ]
-
 
 
 @dataclasses.dataclass

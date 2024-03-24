@@ -161,7 +161,6 @@ def get_params_for_state_get_dictionary_item(
         else:
             raise ValueError("Unrecognized dictionary item type.")
 
-
     return {
         "dictionary_identifier": get_dictionary_param(),
         "state_root_hash": state_root_hash.hex(),
