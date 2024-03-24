@@ -38,7 +38,6 @@ from pycspr.crypto import get_account_hash as get_account_address
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_account_key_algo
 from pycspr.crypto import get_hash
-from pycspr.crypto import HashAlgorithm
 
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
@@ -61,6 +60,7 @@ from pycspr.serialisation import to_json
 from pycspr.serialisation import from_bytes
 from pycspr.serialisation import from_json
 
+from pycspr.types.crypto import HashAlgorithm
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PrivateKey

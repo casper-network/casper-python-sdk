@@ -5,6 +5,13 @@ import typing
 # Cryptographic fingerprint of data.
 Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
 
+class HashAlgorithm(enum.Enum):
+    """Enumeration over set of supported hash algorithms.
+
+    """
+    BLAKE2B = enum.auto()
+    BLAKE3 = enum.auto()
+
 class KeyAlgorithm(enum.Enum):
     """Enumeration over set of supported key algorithms.
 

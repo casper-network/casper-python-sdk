@@ -18,5 +18,4 @@ from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.ecc import KeyAlgorithm
 from pycspr.crypto.ecc import DEFAULT_KEY_ALGO
 from pycspr.crypto.hashifier import get_hash
-from pycspr.crypto.hashifier import HashAlgorithm
 from pycspr.crypto.hashifier import DEFAULT_HASH_ALGO

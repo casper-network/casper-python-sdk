@@ -1,9 +1,8 @@
 import itertools
 import typing
 
-
 from pycspr.crypto.hashifier import get_hash
-from pycspr.crypto.hashifier import HashAlgorithm
+from pycspr.types.crypto.simple import HashAlgorithm
 
 
 # The number of input bytes, at or below which [`encode`] will checksum-encode the output.

@@ -1,6 +1,7 @@
 from pycspr.types.crypto.complex import PrivateKey
 from pycspr.types.crypto.complex import PublicKey
 from pycspr.types.crypto.simple import Digest
+from pycspr.types.crypto.simple import HashAlgorithm
 from pycspr.types.crypto.simple import KeyAlgorithm
 from pycspr.types.crypto.simple import MerkleProofBytes
 from pycspr.types.crypto.simple import PrivateKeyBytes
