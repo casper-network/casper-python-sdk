@@ -1,4 +1,3 @@
-import dataclasses
 import enum
 import typing
 
@@ -27,26 +26,8 @@ class NodeEventType(enum.Enum):
     Step = enum.auto()
 
 
-@dataclasses.dataclass
-class NodeEventInfo():
-    """Encapsulates emitted event information.
-
-    """
-    # Channel over which event emitted by a node.
-    channel: NodeEventChannel
-
-    # Type of event emitted by a node.
-    typeof: NodeEventType
-
-    # Event ordinal identifier - acts as an offset.
-    idx: int
-
-    # Event payload ... typically data but sometimes a simple string.
-    payload: typing.Union[dict, str]
-
-
 # Map: SSE channel <-> SSE event.
-SSE_CHANNEL_TO_SSE_EVENT = {
+SSE_CHANNEL_TO_SSE_EVENT: typing.Dict[NodeEventChannel, typing.Set[NodeEventType]] = {
     NodeEventChannel.deploys: {
         NodeEventType.ApiVersion,
         NodeEventType.DeployAccepted
