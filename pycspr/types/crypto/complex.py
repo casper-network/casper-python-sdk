@@ -1,6 +1,8 @@
 import dataclasses
 
 from pycspr.types.crypto.simple import KeyAlgorithm
+from pycspr.types.crypto.simple import PrivateKeyBytes
+from pycspr.types.crypto.simple import PublicKeyBytes
 
 
 @dataclasses.dataclass
@@ -12,7 +14,7 @@ class PublicKey():
     algo: KeyAlgorithm
 
     # Public key as raw bytes.
-    pbk: bytes
+    pbk: PublicKeyBytes
 
     def to_account_hash(self) -> bytes:
         """Returns on-chain account address.
@@ -26,7 +28,6 @@ class PublicKey():
         """Returns on-chain account key.
 
         """
-        # JIT import to avoid circular references.
         from pycspr.crypto.cl_operations import get_account_key
 
         return get_account_key(self.algo, self.pbk)
@@ -47,10 +48,10 @@ class PrivateKey:
 
     """
     # Private key as bytes - sensitive material !
-    pvk: bytes
+    pvk: PrivateKeyBytes
 
     # Public key as bytes.
-    pbk: bytes
+    pbk: PublicKeyBytes
 
     # Algorithm used to generate ECC key pair.
     algo: KeyAlgorithm = KeyAlgorithm.ED25519
@@ -64,29 +65,6 @@ class PrivateKey:
     def __len__(self) -> int:
         return len(self.pvk)
 
-    @property
-    def private_key(self) -> bytes:
-        """Associated private key synonym."""
-        return self.pvk
-
-    @property
-    def public_key(self) -> bytes:
-        """Associated public key synonym."""
-        return self.pbk
-
-    @property
-    def key_algo(self) -> KeyAlgorithm:
-        """Associated key algorithm synonym."""
-        return self.algo
-
-    def to_account_hash(self) -> bytes:
-        """Gets derived on-chain account hash - i.e. address.
-
-        """
-        from pycspr.crypto.cl_operations import get_account_hash
-
-        return get_account_hash(self.to_account_key())
-
     def to_account_key(self) -> bytes:
         """Gets on-chain account key."""
         from pycspr.crypto.cl_operations import get_account_key
@@ -98,11 +76,3 @@ class PrivateKey:
 
         """
         return PublicKey(algo=self.algo, pbk=self.pbk)
-
-    def get_signature(self, data: bytes) -> bytes:
-        """Get signature over payload.
-
-        """
-        from pycspr.crypto.ecc import get_signature
-
-        return get_signature(data, self.pvk, self.algo)
