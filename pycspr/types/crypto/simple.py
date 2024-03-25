@@ -31,5 +31,5 @@ PrivateKeyBytes = typing.NewType("Asymmetric private key associated with an acco
 # Asymmetric public key associated with an account.
 PublicKeyBytes = typing.NewType("Asymmetric public key associated with an account.", bytes)
 
-# Cryptographic signature over data.
+# Cryptographic signature over data - includes single byte algo prefix.
 SignatureBytes = typing.NewType("Cryptographic signature over data.", bytes)

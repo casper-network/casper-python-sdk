@@ -192,11 +192,6 @@ class DeployApproval():
     def __eq__(self, other) -> bool:
         return self.signer == other.signer and self.signature == other.signature
 
-    @property
-    def sig(self) -> bytes:
-        """Returns signature denuded of leading byte (representing ECC algo)."""
-        return self.signature[1:]
-
 
 @dataclasses.dataclass
 class DeployArgument():

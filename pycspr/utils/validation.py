@@ -31,7 +31,7 @@ def validate_deploy(deploy: Deploy):
     for approval in deploy.approvals:
         if not crypto.is_signature_valid(
             deploy.hash,
-            approval.sig,
+            approval.signature[1:],
             approval.signer.pbk,
             approval.signer.algo
         ):
