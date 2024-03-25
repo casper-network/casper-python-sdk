@@ -1,5 +1,3 @@
-import enum
-
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
 from pycspr.types.crypto.simple import Digest

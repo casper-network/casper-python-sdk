@@ -5,6 +5,7 @@ import typing
 # Cryptographic fingerprint of data.
 Digest = typing.NewType("Cryptographic fingerprint of data.", bytes)
 
+
 class HashAlgorithm(enum.Enum):
     """Enumeration over set of supported hash algorithms.
 
@@ -12,12 +13,14 @@ class HashAlgorithm(enum.Enum):
     BLAKE2B = enum.auto()
     BLAKE3 = enum.auto()
 
+
 class KeyAlgorithm(enum.Enum):
     """Enumeration over set of supported key algorithms.
 
     """
     ED25519 = 1
     SECP256K1 = 2
+
 
 # Cryptographic proof over a merkle trie.
 MerkleProofBytes = typing.NewType("Cryptographic proof over a merkle trie.", bytes)

@@ -1,6 +1,5 @@
 import typing
 
-from pycspr.types.crypto import KeyAlgorithm
 from pycspr.factory import create_public_key
 from pycspr.serialisation.binary.cl_type import decode as decode_cl_type
 from pycspr.serialisation.binary.cl_value import decode as decode_cl_value
@@ -10,6 +9,7 @@ from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
+from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
@@ -139,12 +139,8 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
     bstream, account_public_key = decode_cl_value(
         bstream, CLT_Type_PublicKey()
         )
-    bstream, timestamp = decode_cl_value(
-        bstream, CLT_Type_U64()
-        )
-    bstream, ttl = decode_cl_value(
-        bstream, CLT_Type_U64()
-        )
+    bstream, timestamp = decode(bstream, Timestamp)
+    bstream, ttl = decode(bstream, DeployTimeToLive)
     bstream, gas_price = decode_cl_value(
         bstream, CLT_Type_U64()
         )
@@ -164,9 +160,20 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
         chain_name=chain_name.value,
         dependencies=dependencies.vector,
         gas_price=gas_price.value,
-        timestamp=Timestamp(timestamp.value / 1000),
-        ttl=convertor.deploy_time_to_live_from_milliseconds(ttl.value)
+        timestamp=timestamp,
+        ttl=ttl
     )
+
+
+def _decode_deploy_time_to_live(bstream: bytes) -> typing.Tuple[bytes, DeployTimeToLive]:
+    bstream, ttl = decode_cl_value(
+        bstream, CLT_Type_U64()
+        )
+
+    return bstream, DeployTimeToLive(
+        ttl.value,
+        convertor.ms_to_humanized_time_interval(ttl.value)
+        )
 
 
 def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, DeployOfModuleBytes]:
@@ -246,6 +253,14 @@ def _decode_stored_contract_by_name_versioned(
         )
 
 
+def _decode_timestamp(bstream: bytes) -> typing.Tuple[bytes, Timestamp]:
+    bstream, ts_ns = decode_cl_value(
+        bstream, CLT_Type_U64()
+        )
+
+    return bstream, Timestamp(ts_ns.value / 1000)
+
+
 def _decode_transfer(bstream: bytes) -> typing.Tuple[bytes, DeployOfTransfer]:
     bstream = bstream[1:]
     bstream, args = _decode_deploy_argument_set(bstream)
@@ -265,5 +280,7 @@ _DECODERS = {
     DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _decode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
-    DeployOfTransfer: _decode_transfer
+    DeployOfTransfer: _decode_transfer,
+    DeployTimeToLive: _decode_deploy_time_to_live,
+    Timestamp: _decode_timestamp,
 }

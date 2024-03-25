@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.factory import create_public_key_from_account_key
 from pycspr.serialisation.json.cl_value import decode as decode_cl_value
 from pycspr.types.node.rpc import Deploy
@@ -13,6 +15,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import Timestamp
+from pycspr.utils import constants
 from pycspr.utils import conversion as convertor
 
 
@@ -71,15 +74,25 @@ def _decode_deploy_executable_item(obj: dict) -> DeployExecutableItem:
 
 
 def _decode_deploy_header(obj: dict) -> DeployHeader:
+    decode(obj["ttl"], DeployTimeToLive)
+
     return DeployHeader(
         account=create_public_key_from_account_key(bytes.fromhex(obj["account"])),
         body_hash=bytes.fromhex(obj["body_hash"]),
         chain_name=obj["chain_name"],
         dependencies=[],
         gas_price=obj["gas_price"],
-        timestamp=Timestamp(convertor.iso_to_timestamp(obj["timestamp"])),
-        ttl=convertor.deploy_time_to_live_from_string(obj["ttl"])
+        timestamp=decode(obj["timestamp"], Timestamp),
+        ttl=decode(obj["ttl"], DeployTimeToLive)
     )
+
+
+def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
+    as_ms = convertor.humanized_time_interval_to_ms(encoded)
+    if as_ms > constants.DEPLOY_TTL_MS_MAX:
+        raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
+
+    return DeployTimeToLive(as_ms, encoded)
 
 
 def _decode_module_bytes(obj: dict) -> DeployOfModuleBytes:
@@ -127,29 +140,33 @@ def _decode_stored_contract_by_name_versioned(
     )
 
 
+def _decode_timestamp(encoded: str) -> Timestamp:
+    return Timestamp(convertor.iso_to_timestamp(encoded))
+
+
 def _decode_transfer(obj: dict) -> DeployOfTransfer:
     return DeployOfTransfer(
         args=[decode(i, DeployArgument) for i in obj["args"]],
         )
 
 
-def _get_parsed_json(typedef: object, obj: dict) -> dict:
+def _get_parsed_json(typedef: object, encoded: typing.Union[dict, str]) -> dict:
     if typedef is DeployArgument:
-        if isinstance(obj[1]["bytes"], str):
-            obj[1]["bytes"] = bytes.fromhex(obj[1]["bytes"])
+        if isinstance(encoded[1]["bytes"], str):
+            encoded[1]["bytes"] = bytes.fromhex(encoded[1]["bytes"])
     elif typedef is DeployOfModuleBytes:
-        return obj["ModuleBytes"]
+        return encoded["ModuleBytes"]
     elif typedef is DeployOfStoredContractByHash:
-        return obj["StoredContractByHash"]
+        return encoded["StoredContractByHash"]
     elif typedef is DeployOfStoredContractByHashVersioned:
-        return obj["StoredContractByHashVersioned"]
+        return encoded["StoredContractByHashVersioned"]
     elif typedef is DeployOfStoredContractByName:
-        return obj["StoredContractByName"]
+        return encoded["StoredContractByName"]
     elif typedef is DeployOfStoredContractByNameVersioned:
-        return obj["StoredContractByNameVersioned"]
+        return encoded["StoredContractByNameVersioned"]
     elif typedef is DeployOfTransfer:
-        return obj["Transfer"]
-    return obj
+        return encoded["Transfer"]
+    return encoded
 
 
 _DECODERS = {
@@ -163,5 +180,7 @@ _DECODERS = {
     DeployOfStoredContractByHashVersioned: _decode_stored_contract_by_hash_versioned,
     DeployOfStoredContractByName: _decode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _decode_stored_contract_by_name_versioned,
-    DeployOfTransfer: _decode_transfer
+    DeployOfTransfer: _decode_transfer,
+    DeployTimeToLive: _decode_deploy_time_to_live,
+    Timestamp: _decode_timestamp,
 }

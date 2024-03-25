@@ -1,5 +1,4 @@
 import base64
-import enum
 import tempfile
 import typing
 

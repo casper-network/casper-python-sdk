@@ -27,8 +27,7 @@ from pycspr.types.node.rpc.simple import Motes
 from pycspr.types.node.rpc.simple import StateRootHash
 from pycspr.types.node.rpc.simple import WasmModule
 from pycspr.types.node.rpc.simple import Weight
-from pycspr.utils import conversion
-from pycspr.utils import constants
+from pycspr.utils import conversion as convertor
 
 
 @dataclasses.dataclass
@@ -347,7 +346,7 @@ class DeployTimeToLive():
     def from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
         return DeployTimeToLive(
             as_milliseconds,
-            conversion.milliseconds_to_humanized_time_interval(as_milliseconds)
+            convertor.ms_to_humanized_time_interval(as_milliseconds)
             )
 
     def to_string(self) -> str:

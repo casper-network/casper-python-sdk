@@ -308,7 +308,7 @@ def _decode_deploy_of_transfer(encoded: dict) -> DeployOfTransfer:
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(
-        as_milliseconds=convertor.humanized_time_interval_to_milliseconds(encoded),
+        as_milliseconds=convertor.humanized_time_interval_to_ms(encoded),
         humanized=encoded
     )
 
