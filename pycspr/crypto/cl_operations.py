@@ -1,8 +1,11 @@
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
+from pycspr.types.crypto.complex import PrivateKey
+from pycspr.types.crypto.simple import Digest
 from pycspr.types.crypto.simple import HashAlgorithm
 from pycspr.types.crypto.simple import KeyAlgorithm
+from pycspr.types.crypto.simple import SignatureBytes
 
 
 # Desired length of hash digest.
@@ -61,24 +64,24 @@ def get_account_key_algo(account_key: bytes) -> KeyAlgorithm:
 
 
 def get_signature_for_deploy_approval(
-    deploy_hash: bytes,
-    private_key: bytes,
-    key_algo: KeyAlgorithm
-) -> bytes:
+    deploy_hash: Digest,
+    key_of_approver: PrivateKey
+) -> SignatureBytes:
     """Returns a signature designated to approve a deploy.
 
-    :param deploy_hash: Identifier, i.e. hash, of a deploy to be signed.
-    :param pvk: Secret key.
-    :param algo: Type of ECC algo used to generate secret key.
-    :returns: Digital signature of input data.
+    :param deploy_hash: Digest of a deploy to be signed.
+    :param key_of_approver: Private key of approver.
+    :returns: Digital signature over deploy digest.
 
     """
-    return bytes([key_algo.value]) + get_signature(deploy_hash, private_key, algo=key_algo)
+    return \
+        bytes([key_of_approver.algo.value]) + \
+        get_signature(deploy_hash, key_of_approver.pvk, key_of_approver.algo)
 
 
 def verify_deploy_approval_signature(
-    deploy_hash: bytes,
-    sig: bytes,
+    deploy_hash: Digest,
+    sig: SignatureBytes,
     account_key: bytes
 ) -> bool:
     """Returns a flag indicating whether a deploy signature was signed by private key

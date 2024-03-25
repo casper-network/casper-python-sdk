@@ -4,8 +4,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.crypto import get_signature_for_deploy_approval
-from pycspr.crypto import verify_deploy_approval_signature
+from pycspr import crypto
 from pycspr.types.cl.values import CLV_Value
 from pycspr.types.crypto import Digest
 from pycspr.types.crypto import MerkleProofBytes
@@ -27,7 +26,6 @@ from pycspr.types.node.rpc.simple import Motes
 from pycspr.types.node.rpc.simple import StateRootHash
 from pycspr.types.node.rpc.simple import WasmModule
 from pycspr.types.node.rpc.simple import Weight
-from pycspr.utils import conversion as convertor
 
 
 @dataclasses.dataclass
@@ -151,11 +149,12 @@ class Deploy():
         :params approver: Private key of entity approving the deploy.
 
         """
-        sig = get_signature_for_deploy_approval(
-            self.hash, approver.private_key, approver.key_algo
+        self._append_approval(
+            DeployApproval(
+                approver.to_public_key(),
+                crypto.get_signature_for_deploy_approval(self.hash, approver)
             )
-        approval = DeployApproval(approver.to_public_key(), sig)
-        self._append_approval(approval)
+        )
 
     def set_approval(self, approval: DeployApproval):
         """Appends an approval to associated set.
@@ -163,7 +162,7 @@ class Deploy():
         :params approval: An approval to be associated with the deploy.
 
         """
-        if not verify_deploy_approval_signature(
+        if not crypto.verify_deploy_approval_signature(
             self.hash,
             approval.signature,
             approval.signer.to_account_key()
@@ -175,7 +174,9 @@ class Deploy():
     def _append_approval(self, approval: DeployApproval):
         """Appends an approval to managed set - implicitly deduplicating.
 
-        """
+        :params approval: An approval to be associated with the deploy.
+
+                """
         self.approvals.append(approval)
         uniques = set()
         self.approvals = [
@@ -341,16 +342,6 @@ class DeployTimeToLive():
     def __eq__(self, other) -> bool:
         return self.as_milliseconds == other.as_milliseconds and \
                self.humanized == other.humanized
-
-    @staticmethod
-    def from_milliseconds(as_milliseconds: int) -> "DeployTimeToLive":
-        return DeployTimeToLive(
-            as_milliseconds,
-            convertor.ms_to_humanized_time_interval(as_milliseconds)
-            )
-
-    def to_string(self) -> str:
-        return self.humanized
 
 
 @dataclasses.dataclass

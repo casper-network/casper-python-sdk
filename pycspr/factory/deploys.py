@@ -69,11 +69,7 @@ def create_deploy_approval(deploy: typing.Union[bytes, Deploy], approver: Privat
 
     return DeployApproval(
         approver.to_public_key(),
-        get_signature_for_deploy_approval(
-            deploy_hash,
-            approver.private_key,
-            approver.key_algo
-        )
+        get_signature_for_deploy_approval(deploy_hash, approver)
     )
 
 

@@ -60,7 +60,7 @@ def _encode_deploy_header(entity: DeployHeader) -> dict:
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
         "timestamp": convertor.timestamp_to_iso(entity.timestamp.value),
-        "ttl": entity.ttl.to_string()
+        "ttl": entity.ttl.humanized
     }
 
 
