@@ -16,7 +16,7 @@ _HEX_CHARS: typing.List[str] = [
 ]
 
 
-def decode(input: str) -> bytes:
+def decode_bytes(input: str) -> bytes:
     """Maps input hexadecimal string to an array of bytes.
 
     :param input: A checksummed hexadecimal string to be mapped.
@@ -37,21 +37,6 @@ def decode(input: str) -> bytes:
     return input_bytes
 
 
-def encode(input: bytes) -> str:
-    """Encodes input bytes as hexadecimal with mixed-case based checksums
-    following a scheme similar to [EIP-55][1].
-
-    :param input: Input data to be encoded.
-    :returns: Checksummed hexadecimal string.
-
-    """
-    # Return lower case for long inputs.
-    if len(input) > _SMALL_BYTES_COUNT:
-        return input.hex().lower()
-
-    return "".join(_encode(input))
-
-
 def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
     """Encodes an account identifier as a checksummed hexadecimal string.
 
@@ -62,7 +47,7 @@ def encode_account_key(account_id: typing.Union[str, bytes]) -> str:
     if isinstance(account_id, str):
         account_id = bytes.fromhex(account_id)
 
-    return account_id[:1].hex() + encode(account_id[1:])
+    return account_id[:1].hex() + encode_bytes(account_id[1:])
 
 
 # Synonym due to semantic issues.
@@ -79,7 +64,22 @@ def encode_block_id(block_id: typing.Union[str, bytes]) -> str:
     if isinstance(block_id, str):
         block_id = bytes.fromhex(block_id)
 
-    return encode(block_id)
+    return encode_bytes(block_id)
+
+
+def encode_bytes(input: bytes) -> str:
+    """Encodes input bytes as hexadecimal with mixed-case based checksums
+    following a scheme similar to [EIP-55][1].
+
+    :param input: Input data to be encoded.
+    :returns: Checksummed hexadecimal string.
+
+    """
+    # Return lower case for long inputs.
+    if len(input) > _SMALL_BYTES_COUNT:
+        return input.hex().lower()
+
+    return "".join(_encode(input))
 
 
 def encode_contract_id(contract_id: typing.Union[str, bytes]) -> str:
@@ -92,7 +92,7 @@ def encode_contract_id(contract_id: typing.Union[str, bytes]) -> str:
     if isinstance(contract_id, str):
         contract_id = bytes.fromhex(contract_id)
 
-    return encode(contract_id)
+    return encode_bytes(contract_id)
 
 
 def encode_deploy_hash(deploy_id: typing.Union[str, bytes]) -> str:
@@ -105,7 +105,7 @@ def encode_deploy_hash(deploy_id: typing.Union[str, bytes]) -> str:
     if isinstance(deploy_id, str):
         deploy_id = bytes.fromhex(deploy_id)
 
-    return encode(deploy_id)
+    return encode_bytes(deploy_id)
 
 
 def encode_digest(digest: typing.Union[str, bytes]) -> str:
@@ -118,7 +118,7 @@ def encode_digest(digest: typing.Union[str, bytes]) -> str:
     if isinstance(digest, str):
         digest = bytes.fromhex(digest)
 
-    return encode(digest)
+    return encode_bytes(digest)
 
 
 def encode_signature(signature: typing.Union[str, bytes]) -> str:
@@ -131,7 +131,7 @@ def encode_signature(signature: typing.Union[str, bytes]) -> str:
     if isinstance(signature, str):
         signature = bytes.fromhex(signature)
 
-    return signature[:1].hex() + encode(signature[1:])
+    return signature[:1].hex() + encode_bytes(signature[1:])
 
 
 def _encode(input: bytes) -> typing.Iterator[str]:

@@ -1,4 +1,4 @@
-from pycspr.crypto import cl_checksum
+from pycspr import crypto
 from pycspr.types.cl import CLV_Value
 from pycspr.types.cl import CLV_Any
 from pycspr.types.cl import CLV_Bool
@@ -48,15 +48,15 @@ def _encode_any(entity: CLV_Any) -> object:
 def _encode_key(entity: CLV_Key) -> bytes:
     if entity.key_type == CLV_KeyType.ACCOUNT:
         return {
-            "Account": f"account-hash-{cl_checksum.encode(entity.identifier)}"
+            "Account": f"account-hash-{crypto.encode_bytes(entity.identifier)}"
         }
     elif entity.key_type == CLV_KeyType.HASH:
         return {
-            "Hash": f"hash-{cl_checksum.encode(entity.identifier)}"
+            "Hash": f"hash-{crypto.encode_bytes(entity.identifier)}"
         }
     elif entity.key_type == CLV_KeyType.UREF:
         return {
-            "URef": f"uref-{cl_checksum.encode(entity.identifier)}"
+            "URef": f"uref-{crypto.encode_bytes(entity.identifier)}"
         }
 
 
@@ -70,7 +70,7 @@ _ENCODERS = {
     CLV_Bool:
         lambda x: str(x.value),
     CLV_ByteArray:
-        lambda x: cl_checksum.encode(x.value),
+        lambda x: crypto.encode_bytes(x.value),
     CLV_I32:
         lambda x: x.value,
     CLV_I64:
@@ -84,7 +84,7 @@ _ENCODERS = {
     CLV_Option:
         lambda x: "" if x.value is None else encode(x.value),
     CLV_PublicKey:
-        lambda x: cl_checksum.encode_account_key(x.account_key),
+        lambda x: crypto.encode_account_key(x.account_key),
     CLV_Result:
         _encode_result,
     CLV_String:
@@ -110,5 +110,5 @@ _ENCODERS = {
     CLV_Unit:
         lambda x: "",
     CLV_URef:
-        lambda x: f"uref-{cl_checksum.encode(x.address)}-{x.access_rights.value:03}",
+        lambda x: f"uref-{crypto.encode_bytes(x.address)}-{x.access_rights.value:03}",
 }

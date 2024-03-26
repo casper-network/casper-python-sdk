@@ -1,16 +1,16 @@
 import inspect
 
-from pycspr.crypto import cl_checksum
+from pycspr import crypto
 
 
 def test_checksum_encoding(crypto_checksums):
-    assert inspect.isfunction(cl_checksum.encode)
+    assert inspect.isfunction(crypto.encode_bytes)
     for row in crypto_checksums:
-        assert row["checksum"] == cl_checksum.encode(row["input"])
+        assert row["checksum"] == crypto.encode_bytes(row["input"])
 
 
 def test_checksum_decoding(crypto_checksums):
-    assert inspect.isfunction(cl_checksum.decode)
+    assert inspect.isfunction(crypto.decode_bytes)
     for row in crypto_checksums:
-        encoded: str = cl_checksum.encode(row["input"])
-        assert row["input"] == cl_checksum.decode(encoded)
+        encoded: str = crypto.encode_bytes(row["input"])
+        assert row["input"] == crypto.decode_bytes(encoded)

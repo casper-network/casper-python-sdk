@@ -29,7 +29,7 @@ def _main(args: argparse.Namespace):
     account_key: bytes = pycspr.get_account_key(pycspr.KeyAlgorithm.ED25519, pbk)
 
     # Map account key to checksummed hexadecimal.
-    account_key_checksum: str = pycspr.crypto.cl_checksum.encode_account_key(account_key)
+    account_key_checksum: str = pycspr.encode_account_key(account_key)
 
     print("Account Key Hexadecimal:")
     print(f" ... raw:         {account_key.hex()}")

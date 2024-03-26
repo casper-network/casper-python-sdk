@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.crypto import cl_checksum
+from pycspr import crypto
 from pycspr.serialisation.json.cl_value import encode as encode_cl_value
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import DeployHeader
@@ -34,7 +34,7 @@ def encode(entity: object) -> dict:
 def _encode_deploy(entity: Deploy) -> dict:
     return {
         "approvals": [encode(i) for i in entity.approvals],
-        "hash": cl_checksum.encode_digest(entity.hash),
+        "hash": crypto.encode_digest(entity.hash),
         "header": encode(entity.header),
         "payment": encode(entity.payment),
         "session": encode(entity.session)
@@ -43,8 +43,8 @@ def _encode_deploy(entity: Deploy) -> dict:
 
 def _encode_deploy_approval(entity: DeployApproval) -> dict:
     return {
-        "signature": cl_checksum.encode_signature(entity.signature),
-        "signer": cl_checksum.encode_account_key(entity.signer.account_key)
+        "signature": crypto.encode_signature(entity.signature),
+        "signer": crypto.encode_account_key(entity.signer.account_key)
     }
 
 
@@ -54,10 +54,8 @@ def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CLV_Val
 
 def _encode_deploy_header(entity: DeployHeader) -> dict:
     return {
-        "account": cl_checksum.encode_account_key(
-            entity.account.account_key
-        ),
-        "body_hash": cl_checksum.encode_digest(entity.body_hash),
+        "account": crypto.encode_account_key(entity.account.account_key),
+        "body_hash": crypto.encode_digest(entity.body_hash),
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
@@ -70,7 +68,7 @@ def _encode_module_bytes(entity: DeployOfModuleBytes) -> dict:
     return {
         "ModuleBytes": {
             "args": [encode(i) for i in entity.arguments],
-            "module_bytes": cl_checksum.encode(entity.module_bytes)
+            "module_bytes": crypto.encode_bytes(entity.module_bytes)
         }
     }
 
@@ -80,7 +78,7 @@ def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> dic
         "StoredContractByHash": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
-            "hash": cl_checksum.encode(entity.hash)
+            "hash": crypto.encode_bytes(entity.hash)
         }
     }
 
@@ -92,7 +90,7 @@ def _encode_stored_contract_by_hash_versioned(
         "StoredContractByHashVersioned": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
-            "hash": cl_checksum.encode(entity.hash),
+            "hash": crypto.encode_bytes(entity.hash),
             "version": entity.version
         }
     }
