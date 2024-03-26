@@ -104,7 +104,7 @@ def _main(args: argparse.Namespace):
 
     # Set validator unbond purse.
     validator_purse_uref: CLV_URef = \
-        client.get_account_main_purse_uref(validator.to_account_key())
+        client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, validator, validator_purse_uref)

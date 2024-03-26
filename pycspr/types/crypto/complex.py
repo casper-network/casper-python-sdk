@@ -16,30 +16,26 @@ class PublicKey():
     # Public key as raw bytes.
     pbk: PublicKeyBytes
 
+    @property
+    def account_key(self) -> bytes:
+        return bytes([self.algo.value]) + self.pbk
+
     def to_account_hash(self) -> bytes:
         """Returns on-chain account address.
 
         """
         from pycspr.crypto.cl_operations import get_account_hash
 
-        return get_account_hash(self.to_account_key())
-
-    def to_account_key(self) -> bytes:
-        """Returns on-chain account key.
-
-        """
-        from pycspr.crypto.cl_operations import get_account_key
-
-        return get_account_key(self.algo, self.pbk)
+        return get_account_hash(self.account_key)
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
 
     def __hash__(self) -> bytes:
-        return hash(self.to_account_key())
+        return hash(self.account_key)
 
     def __len__(self) -> int:
-        return len(self.to_account_key())
+        return len(self.pbk) + 1
 
 
 @dataclasses.dataclass
@@ -56,6 +52,10 @@ class PrivateKey:
     # Algorithm used to generate ECC key pair.
     algo: KeyAlgorithm = KeyAlgorithm.ED25519
 
+    @property
+    def account_key(self) -> bytes:
+        return bytes([self.algo.value]) + self.pbk
+
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pvk == other.pvk and self.pbk == other.pbk
 
@@ -64,12 +64,6 @@ class PrivateKey:
 
     def __len__(self) -> int:
         return len(self.pvk)
-
-    def to_account_key(self) -> bytes:
-        """Gets on-chain account key."""
-        from pycspr.crypto.cl_operations import get_account_key
-
-        return get_account_key(self.algo, self.pbk)
 
     def to_public_key(self) -> PublicKey:
         """Returns public key representation.

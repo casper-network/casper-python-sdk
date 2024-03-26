@@ -101,7 +101,6 @@ _INTERFACE_OF_LIBRARY = {
         "parse_public_key_bytes",
         "get_account_hash",
         "get_account_key",
-        "get_account_key_algo",
         "get_deploy_size_bytes",
         "get_hash",
         "read_deploy",

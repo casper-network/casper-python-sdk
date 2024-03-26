@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
@@ -26,7 +28,7 @@ def get_account_hash(account_key: bytes) -> bytes:
     :returns: An on-chain account identifier.
 
     """
-    key_algo: KeyAlgorithm = get_account_key_algo(account_key)
+    key_algo: KeyAlgorithm = KeyAlgorithm(account_key[0])
     public_key: bytes = account_key[1:]
     as_bytes: bytes = \
         bytes(key_algo.name.lower(), "utf-8") + \
@@ -48,19 +50,6 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
            f"Invalid {key_algo.name} public key length."
 
     return bytes([key_algo.value]) + public_key
-
-
-def get_account_key_algo(account_key: bytes) -> KeyAlgorithm:
-    """Returns ECC algorithm identifier associated with an account key.
-
-    :param account_key: An account key associated with a specific ECC algorithm.
-    :returns: An ECC key algorithm identifier.
-
-    """
-    try:
-        return KeyAlgorithm(account_key[0])
-    except ValueError:
-        raise ValueError("Unsupported account key.")
 
 
 def get_signature_for_deploy_approval(
@@ -98,6 +87,9 @@ def verify_deploy_approval_signature(
     assert len(sig) == 65, \
            "Invalid deploy approval signature.  Expected length = 65"
 
-    algo = get_account_key_algo(account_key)
-
-    return is_signature_valid(deploy_hash, sig[1:], account_key[1:], algo)
+    return is_signature_valid(
+        deploy_hash,
+        sig[1:],
+        account_key[1:],
+        KeyAlgorithm(account_key[0])
+        )

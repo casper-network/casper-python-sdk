@@ -108,13 +108,12 @@ def _get_chain_account_info(ctx: _Context):
     state_root_hash: bytes = ctx.client.get_state_root_hash()
 
     # Query: get_account_info.
-    account_info: dict = ctx.client.get_account_info(ctx.user_public_key.to_account_key())
+    account_info: dict = ctx.client.get_account_info(ctx.user_public_key.account_key)
     assert isinstance(account_info, dict)
     print("SUCCESS :: get_account_info")
 
     # Query: get_account_main_purse_uref.
-    account_main_purse: CLV_URef = \
-        ctx.client.get_account_main_purse_uref(ctx.user_public_key.to_account_key())
+    account_main_purse: CLV_URef = ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
     assert isinstance(account_main_purse, CLV_URef)
     print("SUCCESS :: get_account_main_purse_uref")
 

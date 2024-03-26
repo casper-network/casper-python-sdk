@@ -4,6 +4,7 @@ import pathlib
 import typing
 
 import pycspr
+from pycspr import get_account_hash
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.types.crypto import KeyAlgorithm
@@ -160,7 +161,7 @@ def _get_contract_hash(
 
     """
     # Query operator account for a named key == ERC20 & return parsed named key value.
-    account_info = client.get_account_info(operator.to_account_key())
+    account_info = client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])
@@ -192,7 +193,7 @@ def _get_deploy(
         hash=contract_hash,
         args={
             "amount": CLV_U256(args.amount),
-            "recipient": CLV_ByteArray(key_of_user.to_account_hash())
+            "recipient": CLV_ByteArray(pycspr.get_account_hash(key_of_user.account_key))
         }
     )
 

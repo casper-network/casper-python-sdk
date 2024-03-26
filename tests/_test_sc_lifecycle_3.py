@@ -66,7 +66,8 @@ async def _test_pre_requisites(ctx: TestContext):
     async def test_net_accounts_are_funded():
         for account_idx in range(1, cctl.COUNT_OF_USERS + 1):
             public_key = cctl.get_public_key_of_user(account_idx)
-            purse_id = ctx.client.get_account_main_purse_uref(public_key.to_account_key())
+            account_key = public_key.account_key
+            purse_id = ctx.client.get_account_main_purse_uref(account_key)
             assert ctx.client.get_account_balance(purse_id) > 0
 
         time.sleep(1.0)

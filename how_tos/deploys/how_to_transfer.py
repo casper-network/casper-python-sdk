@@ -140,7 +140,7 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
     deploy = pycspr.create_transfer(
         params=deploy_params,
         amount=int(2.5e9),
-        target=cp2.to_account_key(),
+        target=cp2.account_key,
         correlation_id=random.randint(1, 1e6)
         )
 

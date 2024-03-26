@@ -1,7 +1,6 @@
 from pycspr.crypto import cl_checksum
 from pycspr.crypto.cl_operations import get_account_hash
 from pycspr.crypto.cl_operations import get_account_key
-from pycspr.crypto.cl_operations import get_account_key_algo
 from pycspr.crypto.cl_operations import get_signature_for_deploy_approval
 from pycspr.crypto.cl_operations import verify_deploy_approval_signature
 from pycspr.crypto.ecc import get_key_pair

@@ -73,7 +73,7 @@ def test_create_transfer_session(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.to_account_key(),
+            target=a_test_account.account_key,
             ),
         pycspr.types.node.rpc.DeployOfTransfer
         )
@@ -87,7 +87,7 @@ def test_create_transfer_body(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.to_account_key(),
+            target=a_test_account.account_key,
         )
     )
     assert isinstance(body, pycspr.types.node.rpc.DeployBody)
@@ -103,7 +103,7 @@ def test_create_transfer_header(deploy_params, a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.to_account_key(),
+            target=a_test_account.account_key,
         )
     )
     header = pycspr.factory.create_deploy_header(
@@ -119,7 +119,7 @@ def test_create_transfer(deploy_params, a_test_account):
     deploy = pycspr.create_transfer(
         params=deploy_params,
         amount=random.randint(0, int(1e5)),
-        target=a_test_account.to_account_key(),
+        target=a_test_account.account_key,
         correlation_id=random.randint(0, int(1e9))
     )
     assert isinstance(deploy, pycspr.types.node.rpc.Deploy)

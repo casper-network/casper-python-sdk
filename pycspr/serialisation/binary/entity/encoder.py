@@ -51,7 +51,7 @@ def _encode_deploy_approval(entity: DeployApproval) -> bytes:
     if isinstance(entity.signer, bytes):
         return entity.signer + entity.signature
     else:
-        return entity.signer.to_account_key() + entity.signature
+        return entity.signer.account_key + entity.signature
 
 
 def _encode_deploy_approval_set(entities: typing.List[DeployApproval]) -> bytes:
