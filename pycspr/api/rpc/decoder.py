@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import ActionThresholds
 from pycspr.types.node.rpc import Address
@@ -78,7 +78,7 @@ def decode(encoded: typing.Union[dict, str], typedef: type) -> object:
 
 def _decode_account_info(encoded: dict) -> AccountInfo:
     return AccountInfo(
-        account_hash=decode(encoded["account_hash"], AccountID),
+        account_hash=decode(encoded["account_hash"], Address),
         action_thresholds=decode(encoded["action_thresholds"], ActionThresholds),
         associated_keys=[decode(i, AssociatedKey) for i in encoded["associated_keys"]],
         main_purse=decode(encoded["main_purse"], URef),
@@ -93,9 +93,16 @@ def _decode_action_thresholds(encoded: dict) -> ActionThresholds:
     )
 
 
+def _decode_address(encoded: str) -> Address:
+    if encoded.startswith("account-hash-"):
+        return decode(encoded[13:], bytes)
+    else:
+        return decode(encoded, bytes)
+
+
 def _decode_associated_key(encoded: dict) -> AssociatedKey:
     return AssociatedKey(
-        account_hash=decode(encoded["account_hash"], AccountID),
+        account_hash=decode(encoded["account_hash"], Address),
         weight=decode(encoded["weight"], Weight),
         )
 
@@ -399,12 +406,12 @@ def _decode_transfer(encoded: dict) -> Transfer:
     return Transfer(
         amount=decode(encoded["amount"], Motes),
         deploy_hash=decode(encoded["deploy_hash"], Digest),
-        from_=decode(encoded["from"], AccountID),
+        from_=decode(encoded["from"], Address),
         gas=decode(encoded["gas"], Gas),
         source=decode(encoded["source"], URef),
         target=decode(encoded["target"], URef),
         correlation_id=decode(encoded["id"], int),
-        to_=decode(encoded["to"], AccountID),
+        to_=decode(encoded["to"], Address),
     )
 
 
@@ -444,8 +451,7 @@ _DECODERS = {
     int: int,
     str: lambda x: x.strip(),
 } | {
-    AccountID: lambda x: decode(x[13:], bytes),
-    Address: lambda x: decode(x, bytes),
+    Address: _decode_address,
     BlockHeight: lambda x: decode(x, int),
     Digest: lambda x: decode(x, bytes),
     EraID: lambda x: decode(x, int),
@@ -456,7 +462,7 @@ _DECODERS = {
     Motes: lambda x: decode(x, int),
     SignatureBytes: lambda x: decode(x, bytes),
     Weight: lambda x: decode(x, int),
-    WasmModule: _decode_wasm_module
+    WasmModule: _decode_wasm_module,
 } | {
     AccountInfo: _decode_account_info,
     ActionThresholds: _decode_action_thresholds,

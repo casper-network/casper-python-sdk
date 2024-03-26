@@ -12,7 +12,7 @@ from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import SignatureBytes
-from pycspr.types.node.rpc.simple import AccountID
+from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight
@@ -30,7 +30,7 @@ from pycspr.types.node.rpc.simple import Weight
 
 @dataclasses.dataclass
 class AccountInfo():
-    account_hash: AccountID
+    account_hash: Address
     action_thresholds: ActionThresholds
     associated_keys: typing.List[AssociatedKey]
     main_purse: URef
@@ -45,7 +45,7 @@ class ActionThresholds():
 
 @dataclasses.dataclass
 class AssociatedKey():
-    account_hash: AccountID
+    account_hash: Address
     weight: Weight
 
 
@@ -53,7 +53,7 @@ class AssociatedKey():
 class AuctionBidByDelegator():
     bonding_purse: URef
     public_key: PublicKeyBytes
-    delegatee: AccountID
+    delegatee: Address
     staked_amount: Motes
 
 
@@ -90,7 +90,7 @@ class Block():
 
 @dataclasses.dataclass
 class BlockBody():
-    proposer: AccountID
+    proposer: Address
     deploy_hashes: typing.List[DeployHash]
     transfer_hashes: typing.List[DeployHash]
 

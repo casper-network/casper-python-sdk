@@ -4,7 +4,7 @@ from pycspr import crypto
 from pycspr import serialisation
 from pycspr.crypto import cl_checksum
 from pycspr.types.cl import CLV_Key
-from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import BlockID
 from pycspr.types.node.rpc import DeployHash
 from pycspr.types.node.rpc import DictionaryID
@@ -49,7 +49,7 @@ def get_block_id(block_id: BlockID, allow_none=True) -> dict:
             }
 
 
-def get_account_key(account_id: AccountID) -> dict:
+def get_account_key(account_id: Address) -> dict:
     return {
         "public_key": crypto.encode_account_key(account_id)
     }

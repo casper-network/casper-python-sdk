@@ -9,7 +9,7 @@ from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.types.crypto import Digest
 from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import BlockID
 from pycspr.types.node.rpc import DeployHash
 from pycspr.types.node.rpc import DictionaryID
@@ -242,7 +242,7 @@ class Proxy:
 
         return get_response(self.address, constants.RPC_QUERY_GLOBAL_STATE, params)
 
-    def state_get_account_info(self, account_id: AccountID, block_id: BlockID = None) -> dict:
+    def state_get_account_info(self, account_id: Address, block_id: BlockID = None) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.

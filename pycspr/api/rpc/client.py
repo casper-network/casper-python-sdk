@@ -7,7 +7,7 @@ from pycspr.api.rpc.proxy import Proxy
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
 from pycspr.types.crypto import Digest
-from pycspr.types.node.rpc import AccountID
+from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import AuctionState
 from pycspr.types.node.rpc import Block
@@ -77,7 +77,7 @@ class Client():
 
     def get_account_info(
         self,
-        account_id: AccountID,
+        account_id: Address,
         block_id: BlockID = None,
         decode=False
     ) -> typing.Union[dict, AccountInfo]:
@@ -313,7 +313,7 @@ class ClientExtensions():
 
     def get_account_main_purse_uref(
         self,
-        account_id: AccountID,
+        account_id: Address,
         block_id: BlockID = None
     ) -> CLV_URef:
         """Returns an on-chain account's main purse unforgeable reference.
@@ -329,7 +329,7 @@ class ClientExtensions():
 
     def get_account_named_key(
         self,
-        account_id: AccountID,
+        account_id: Address,
         key_name: str,
         block_id: BlockID = None
     ) -> CLV_Key:

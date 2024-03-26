@@ -9,8 +9,6 @@ from pycspr.types.crypto import PublicKeyBytes
 
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
 
-AccountID = typing.NewType("Identifier of an on-chain account.", Address)
-
 BlockHash = typing.NewType("Digest over a block.", Digest)
 
 BlockHeight = typing.NewType(
@@ -55,7 +53,7 @@ class GlobalStateIDType(enum.Enum):
 
 @dataclasses.dataclass
 class PurseID():
-    identifier: typing.Union[AccountID, PublicKeyBytes, CLV_URef]
+    identifier: typing.Union[Address, PublicKeyBytes, CLV_URef]
     id_type: "PurseIDType"
 
 
