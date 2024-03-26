@@ -19,10 +19,10 @@ from pycspr.utils import constants
 from pycspr.utils import conversion as convertor
 
 
-def decode(obj: dict, typedef: object) -> object:
+def decode(encoded: dict, typedef: object) -> object:
     """Decoder: Domain entity <- JSON blob.
 
-    :param obj: A JSON compatible dictionary.
+    :param encoded: A JSON compatible dictionary.
     :param typedef: Deploy related type definition.
     :returns: A deploy related type.
 
@@ -32,58 +32,58 @@ def decode(obj: dict, typedef: object) -> object:
     except KeyError:
         raise ValueError(f"Cannot decode {typedef} from json")
     else:
-        return decoder(_get_parsed_json(typedef, obj))
+        return decoder(_get_parsed_json(typedef, encoded))
 
 
-def _decode_deploy(obj: dict) -> Deploy:
+def _decode_deploy(encoded: dict) -> Deploy:
     return Deploy(
-        approvals=[decode(i, DeployApproval) for i in obj["approvals"]],
-        hash=bytes.fromhex(obj["hash"]),
-        header=decode(obj["header"], DeployHeader),
-        payment=decode(obj["payment"], DeployExecutableItem),
-        session=decode(obj["session"], DeployExecutableItem)
+        approvals=[decode(i, DeployApproval) for i in encoded["approvals"]],
+        hash=bytes.fromhex(encoded["hash"]),
+        header=decode(encoded["header"], DeployHeader),
+        payment=decode(encoded["payment"], DeployExecutableItem),
+        session=decode(encoded["session"], DeployExecutableItem)
     )
 
 
-def _decode_deploy_approval(obj: dict) -> DeployApproval:
+def _decode_deploy_approval(encoded: dict) -> DeployApproval:
     return DeployApproval(
-        signer=create_public_key_from_account_key(bytes.fromhex(obj["signer"])),
-        signature=bytes.fromhex(obj["signature"]),
+        signer=create_public_key_from_account_key(bytes.fromhex(encoded["signer"])),
+        signature=bytes.fromhex(encoded["signature"]),
     )
 
 
-def _decode_deploy_argument(obj: dict) -> DeployArgument:
-    return DeployArgument(name=obj[0], value=decode_cl_value(obj[1]))
+def _decode_deploy_argument(encoded: dict) -> DeployArgument:
+    return DeployArgument(name=encoded[0], value=decode_cl_value(encoded[1]))
 
 
-def _decode_deploy_executable_item(obj: dict) -> DeployExecutableItem:
-    if "ModuleBytes" in obj:
-        return decode(obj, DeployOfModuleBytes)
-    elif "StoredContractByHash" in obj:
-        return decode(obj, DeployOfStoredContractByHash)
-    elif "StoredVersionedContractByHash" in obj:
-        return decode(obj, DeployOfStoredContractByHashVersioned)
-    elif "StoredContractByName" in obj:
-        return decode(obj, DeployOfStoredContractByName)
-    elif "StoredVersionedContractByName" in obj:
-        return decode(obj, DeployOfStoredContractByNameVersioned)
-    elif "Transfer" in obj:
-        return decode(obj, DeployOfTransfer)
+def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
+    if "ModuleBytes" in encoded:
+        return decode(encoded, DeployOfModuleBytes)
+    elif "StoredContractByHash" in encoded:
+        return decode(encoded, DeployOfStoredContractByHash)
+    elif "StoredVersionedContractByHash" in encoded:
+        return decode(encoded, DeployOfStoredContractByHashVersioned)
+    elif "StoredContractByName" in encoded:
+        return decode(encoded, DeployOfStoredContractByName)
+    elif "StoredVersionedContractByName" in encoded:
+        return decode(encoded, DeployOfStoredContractByNameVersioned)
+    elif "Transfer" in encoded:
+        return decode(encoded, DeployOfTransfer)
     else:
         raise NotImplementedError("Unsupported DeployExecutableItem variant")
 
 
-def _decode_deploy_header(obj: dict) -> DeployHeader:
-    decode(obj["ttl"], DeployTimeToLive)
+def _decode_deploy_header(encoded: dict) -> DeployHeader:
+    decode(encoded["ttl"], DeployTimeToLive)
 
     return DeployHeader(
-        account=create_public_key_from_account_key(bytes.fromhex(obj["account"])),
-        body_hash=bytes.fromhex(obj["body_hash"]),
-        chain_name=obj["chain_name"],
+        account=create_public_key_from_account_key(bytes.fromhex(encoded["account"])),
+        body_hash=bytes.fromhex(encoded["body_hash"]),
+        chain_name=encoded["chain_name"],
         dependencies=[],
-        gas_price=obj["gas_price"],
-        timestamp=decode(obj["timestamp"], Timestamp),
-        ttl=decode(obj["ttl"], DeployTimeToLive)
+        gas_price=encoded["gas_price"],
+        timestamp=decode(encoded["timestamp"], Timestamp),
+        ttl=decode(encoded["ttl"], DeployTimeToLive)
     )
 
 
@@ -95,48 +95,48 @@ def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(as_ms, encoded)
 
 
-def _decode_module_bytes(obj: dict) -> DeployOfModuleBytes:
+def _decode_module_bytes(encoded: dict) -> DeployOfModuleBytes:
     return DeployOfModuleBytes(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
-        module_bytes=bytes.fromhex(obj["module_bytes"])
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        module_bytes=bytes.fromhex(encoded["module_bytes"])
         )
 
 
-def _decode_stored_contract_by_hash(obj: dict) -> DeployOfStoredContractByHash:
+def _decode_stored_contract_by_hash(encoded: dict) -> DeployOfStoredContractByHash:
     return DeployOfStoredContractByHash(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
-        entry_point=obj["entry_point"],
-        hash=bytes.fromhex(obj["hash"])
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        entry_point=encoded["entry_point"],
+        hash=bytes.fromhex(encoded["hash"])
     )
 
 
 def _decode_stored_contract_by_hash_versioned(
-    obj: dict
+    encoded: dict
 ) -> DeployOfStoredContractByHashVersioned:
     return DeployOfStoredContractByHashVersioned(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
-        entry_point=obj["entry_point"],
-        hash=bytes.fromhex(obj["hash"]),
-        version=obj["version"]
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        entry_point=encoded["entry_point"],
+        hash=bytes.fromhex(encoded["hash"]),
+        version=encoded["version"]
     )
 
 
-def _decode_stored_contract_by_name(obj: dict) -> DeployOfStoredContractByName:
+def _decode_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
     return DeployOfStoredContractByName(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
-        entry_point=obj["entry_point"],
-        name=obj["name"],
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        entry_point=encoded["entry_point"],
+        name=encoded["name"],
     )
 
 
 def _decode_stored_contract_by_name_versioned(
-    obj: dict
+    encoded: dict
 ) -> DeployOfStoredContractByNameVersioned:
     return DeployOfStoredContractByNameVersioned(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
-        entry_point=obj["entry_point"],
-        name=obj["name"],
-        version=obj["version"]
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
+        entry_point=encoded["entry_point"],
+        name=encoded["name"],
+        version=encoded["version"]
     )
 
 
@@ -144,9 +144,9 @@ def _decode_timestamp(encoded: str) -> Timestamp:
     return Timestamp(convertor.iso_to_timestamp(encoded))
 
 
-def _decode_transfer(obj: dict) -> DeployOfTransfer:
+def _decode_transfer(encoded: dict) -> DeployOfTransfer:
     return DeployOfTransfer(
-        args=[decode(i, DeployArgument) for i in obj["args"]],
+        args=[decode(i, DeployArgument) for i in encoded["args"]],
         )
 
 

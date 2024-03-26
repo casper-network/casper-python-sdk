@@ -13,7 +13,6 @@ from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import SignatureBytes
 from pycspr.types.node.rpc.simple import Address
-from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight
 from pycspr.types.node.rpc.simple import ContractID
@@ -30,7 +29,7 @@ from pycspr.types.node.rpc.simple import Weight
 
 @dataclasses.dataclass
 class AccountInfo():
-    account_hash: Address
+    address: Address
     action_thresholds: ActionThresholds
     associated_keys: typing.List[AssociatedKey]
     main_purse: URef
@@ -45,7 +44,7 @@ class ActionThresholds():
 
 @dataclasses.dataclass
 class AssociatedKey():
-    account_hash: Address
+    address: Address
     weight: Weight
 
 

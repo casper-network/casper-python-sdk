@@ -49,7 +49,6 @@ from pycspr.types.node.rpc.complex import ValidatorStatusChange
 from pycspr.types.node.rpc.complex import ValidatorStatusChangeType
 
 from pycspr.types.node.rpc.simple import Address
-from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight
 from pycspr.types.node.rpc.simple import BlockID

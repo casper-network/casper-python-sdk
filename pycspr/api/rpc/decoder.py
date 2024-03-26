@@ -5,7 +5,6 @@ import typing
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import ActionThresholds
-from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AssociatedKey
 from pycspr.types.node.rpc import AuctionBidByDelegator
 from pycspr.types.node.rpc import AuctionBidByValidator
@@ -78,7 +77,7 @@ def decode(encoded: typing.Union[dict, str], typedef: type) -> object:
 
 def _decode_account_info(encoded: dict) -> AccountInfo:
     return AccountInfo(
-        account_hash=decode(encoded["account_hash"], Address),
+        address=decode(encoded["account_hash"], Address),
         action_thresholds=decode(encoded["action_thresholds"], ActionThresholds),
         associated_keys=[decode(i, AssociatedKey) for i in encoded["associated_keys"]],
         main_purse=decode(encoded["main_purse"], URef),
@@ -102,7 +101,7 @@ def _decode_address(encoded: str) -> Address:
 
 def _decode_associated_key(encoded: dict) -> AssociatedKey:
     return AssociatedKey(
-        account_hash=decode(encoded["account_hash"], Address),
+        address=decode(encoded["account_hash"], Address),
         weight=decode(encoded["weight"], Weight),
         )
 
