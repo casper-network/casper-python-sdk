@@ -1,5 +1,5 @@
 from pycspr import crypto
-from pycspr import serialisation
+from pycspr import serializer
 from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_List
@@ -17,25 +17,25 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
 
     """
     return crypto.get_hash(
-        serialisation.to_bytes(
+        serializer.to_bytes(
             convertor.clv_public_key_from_public_key(header.account)
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_U64(int(header.timestamp.value * 1000))
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_U64(header.ttl.as_milliseconds)
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_U64(header.gas_price)
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_ByteArray(header.body_hash)
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_List(header.dependencies)
         ) +
-        serialisation.to_bytes(
+        serializer.to_bytes(
             CLV_String(header.chain_name)
         )
     )
@@ -53,6 +53,6 @@ def create_digest_of_deploy_body(
 
     """
     return crypto.get_hash(
-        serialisation.to_bytes(payment) +
-        serialisation.to_bytes(session)
+        serializer.to_bytes(payment) +
+        serializer.to_bytes(session)
         )

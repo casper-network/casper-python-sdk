@@ -45,8 +45,8 @@ def test_that_a_deploy_can_be_written_to_and_read_from_fs(deploy_params, cp1, cp
         fpath = pycspr.write_deploy(deploy_1, str(fp))
         deploy_2 = pycspr.read_deploy(fp)
         assert isinstance(deploy_2, type(deploy_1))
-        assert pycspr.serialisation.to_json(deploy_1) == \
-               pycspr.serialisation.to_json(deploy_2)
+        assert pycspr.serializer.to_json(deploy_1) == \
+               pycspr.serializer.to_json(deploy_2)
         os.remove(fpath)
 
 

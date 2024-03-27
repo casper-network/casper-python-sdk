@@ -3,7 +3,7 @@ import typing
 import jsonrpcclient
 import requests
 
-from pycspr import serialisation
+from pycspr import serializer
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
@@ -48,7 +48,7 @@ class Proxy:
 
         """
         params: dict = {
-            "deploy": serialisation.to_json(deploy),
+            "deploy": serializer.to_json(deploy),
         }
 
         return get_response(

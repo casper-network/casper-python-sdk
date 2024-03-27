@@ -1,8 +1,8 @@
 import typing
 
 from pycspr import crypto
-from pycspr import serialisation
-from pycspr.crypto import cl_checksum
+from pycspr import serializer
+from pycspr.crypto import checksummer
 from pycspr.types.cl import CLV_Key
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import BlockID
@@ -34,7 +34,7 @@ def get_block_id(block_id: BlockID, allow_none=True) -> dict:
         if isinstance(block_id, (bytes, str)):
             return {
                 "block_identifier": {
-                    "Hash": crypto.encode_block_id(block_id)
+                    "Hash": checksummer.encode_block_id(block_id)
                 }
             }
         elif isinstance(block_id, int):
@@ -51,13 +51,13 @@ def get_block_id(block_id: BlockID, allow_none=True) -> dict:
 
 def get_account_key(account_id: Address) -> dict:
     return {
-        "public_key": crypto.encode_account_key(account_id)
+        "public_key": checksummer.encode_account_key(account_id)
     }
 
 
 def get_deploy_hash(deploy_hash: DeployHash) -> dict:
     return {
-        "deploy_hash": cl_checksum.encode_deploy_hash(deploy_hash)
+        "deploy_hash": checksummer.encode_deploy_hash(deploy_hash)
     }
 
 
@@ -72,7 +72,7 @@ def get_purse_id(purse_id: PurseID) -> dict:
     elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
         id_type = "main_purse_under_public_key"
     elif purse_id.id_type == PurseIDType.UREF:
-        id = serialisation.cl_value_to_parsed(purse_id.identifier)
+        id = serializer.cl_value_to_parsed(purse_id.identifier)
         id_type = "purse_uref"
     else:
         raise ValueError(f"Invalid purse identifier type: {purse_id.id_type}")
@@ -119,7 +119,7 @@ def get_params_for_query_global_state(
         state_id = state_id.identifier
 
     return {
-        "key": serialisation.cl_value_to_parsed(key),
+        "key": serializer.cl_value_to_parsed(key),
         "path": path,
         "state_identifier": {
             state_id_type: state_id
@@ -137,7 +137,7 @@ def get_params_for_state_get_dictionary_item(
                 "AccountNamedKey": {
                     "dictionary_item_key": identifier.dictionary_item_key,
                     "dictionary_name": identifier.dictionary_name,
-                    "key": f"hash-{cl_checksum.encode_account_id(identifier.account_key)}"
+                    "key": f"hash-{checksummer.encode_account_id(identifier.account_key)}"
                 }
             }
         elif isinstance(identifier, DictionaryID_ContractNamedKey):
@@ -145,7 +145,7 @@ def get_params_for_state_get_dictionary_item(
                 "ContractNamedKey": {
                     "dictionary_item_key": identifier.dictionary_item_key,
                     "dictionary_name": identifier.dictionary_name,
-                    "key": f"hash-{cl_checksum.encode_contract_id(identifier.contract_key)}"
+                    "key": f"hash-{checksummer.encode_contract_id(identifier.contract_key)}"
                 }
             }
         elif isinstance(identifier, DictionaryID_SeedURef):

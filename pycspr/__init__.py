@@ -11,12 +11,9 @@ __version__ = "1.2.0"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
-import pycspr.types.crypto.simple
-
+from pycspr import types
 from pycspr import crypto
 from pycspr import factory
-from pycspr import serialisation
-from pycspr import types
 
 from pycspr.api import NodeRestClient
 from pycspr.api import NodeRestConnectionInfo
@@ -33,10 +30,8 @@ from pycspr.api import SSE_CHANNEL_TO_SSE_EVENT
 
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO
-from pycspr.crypto import encode_block_id
-from pycspr.crypto import encode_account_key
+from pycspr.crypto import checksummer
 from pycspr.crypto import get_account_hash
-from pycspr.crypto import get_account_hash as get_account_address
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_hash
 
@@ -56,10 +51,10 @@ from pycspr.factory import parse_private_key_bytes
 from pycspr.factory import parse_public_key
 from pycspr.factory import parse_public_key_bytes
 
-from pycspr.serialisation import to_bytes
-from pycspr.serialisation import to_json
-from pycspr.serialisation import from_bytes
-from pycspr.serialisation import from_json
+from pycspr.serializer import to_bytes
+from pycspr.serializer import to_json
+from pycspr.serializer import from_bytes
+from pycspr.serializer import from_json
 
 from pycspr.types.crypto import HashAlgorithm
 from pycspr.types.crypto import KeyAlgorithm

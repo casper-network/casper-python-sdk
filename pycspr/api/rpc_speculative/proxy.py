@@ -1,4 +1,4 @@
-from pycspr import serialisation
+from pycspr import serializer
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.proxy import get_response
@@ -37,7 +37,7 @@ class Proxy:
 
         """
         params: dict = param_utils.get_block_id(block_id) | {
-            "deploy": serialisation.to_json(deploy)
+            "deploy": serializer.to_json(deploy)
         }
 
         return get_response(
