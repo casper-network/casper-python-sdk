@@ -3,7 +3,7 @@ import random
 from pycspr.utils import convertor
 
 
-def test_that_humanized_time_interval_can_be_converted_to_milliseconds():
+def test_ms_from_humanized_time_interval():
     for (unit, ms, quantity) in (
         ("ms", 1, random.randint(1, int(1e9))),
         ("s", 1000, random.randint(1, 60)),
