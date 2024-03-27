@@ -3,10 +3,10 @@ from pycspr import serialisation
 from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_List
-from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
 from pycspr.types.node.rpc import DeployExecutableItem
+from pycspr.utils import convertor
 
 
 def create_digest_of_deploy(header: DeployHeader) -> bytes:
@@ -18,7 +18,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     """
     return crypto.get_hash(
         serialisation.to_bytes(
-            CLV_PublicKey.from_public_key(header.account)
+            convertor.clv_public_key_from_public_key(header.account)
         ) +
         serialisation.to_bytes(
             CLV_U64(int(header.timestamp.value * 1000))

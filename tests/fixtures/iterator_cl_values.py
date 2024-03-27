@@ -24,6 +24,7 @@ from pycspr.types.cl import CLV_Tuple2
 from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URef
+from pycspr.utils import convertor
 
 
 def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
@@ -47,7 +48,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_I64(value)
 
         elif type_key == CLT_TypeKey.KEY:
-            yield CLV_Key.from_string(value)
+            yield convertor.clv_key_from_str(value)
 
         elif type_key == CLT_TypeKey.LIST:
             yield CLV_List([CLV_U64(i) for i in value])
@@ -61,7 +62,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_Option(CLV_U64(value), CLT_Type_U64())
 
         elif type_key == CLT_TypeKey.PUBLIC_KEY:
-            yield CLV_PublicKey.from_account_key(bytes.fromhex(value))
+            yield convertor.clv_public_key_from_account_key(bytes.fromhex(value))
 
         elif type_key == CLT_TypeKey.RESULT:
             continue
@@ -109,4 +110,4 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_Unit()
 
         elif type_key == CLT_TypeKey.UREF:
-            yield CLV_URef.from_string(value)
+            yield convertor.clv_uref_from_str(value)

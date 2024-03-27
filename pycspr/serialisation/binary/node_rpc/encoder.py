@@ -7,7 +7,6 @@ from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
-from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import DeployApproval
@@ -20,6 +19,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
+from pycspr.utils import convertor
 
 
 def encode(entity: object) -> bytes:
@@ -74,7 +74,7 @@ def _encode_deploy_body(entity: DeployBody) -> bytes:
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
     result = bytes([])
     result += encode_cl_value(
-        CLV_PublicKey.from_public_key(entity.account)
+        convertor.clv_public_key_from_public_key(entity.account)
     )
     result += encode_cl_value(
         CLV_U64(int(entity.timestamp.value * 1000))

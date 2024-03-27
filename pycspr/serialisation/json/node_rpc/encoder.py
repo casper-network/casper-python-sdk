@@ -13,7 +13,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
 from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
-from pycspr.utils import conversion as convertor
+from pycspr.utils import convertor
 
 
 def encode(entity: object) -> dict:
@@ -59,7 +59,7 @@ def _encode_deploy_header(entity: DeployHeader) -> dict:
         "chain_name": entity.chain_name,
         "dependencies": entity.dependencies,
         "gas_price": entity.gas_price,
-        "timestamp": convertor.timestamp_to_iso(entity.timestamp.value),
+        "timestamp": convertor.iso_datetime_from_timestamp(entity.timestamp.value),
         "ttl": entity.ttl.humanized
     }
 

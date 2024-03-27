@@ -21,6 +21,7 @@ from pycspr.types.node.rpc import GlobalStateID
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
 from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.utils import convertor
 
 
 class Client():
@@ -325,7 +326,7 @@ class ClientExtensions():
         """
         account_info = self.client.get_account_info(account_id, block_id)
 
-        return CLV_URef.from_string(account_info["main_purse"])
+        return convertor.clv_uref_from_str(account_info["main_purse"])
 
     def get_account_named_key(
         self,
@@ -344,7 +345,7 @@ class ClientExtensions():
         account_info = self.client.get_account_info(account_id, block_id)
         for named_key in account_info["named_keys"]:
             if named_key["name"] == key_name:
-                return CLV_Key.from_string(named_key["key"])
+                return convertor.clv_key_from_str(named_key["key"])
 
     def get_block_at_era_switch(
         self,

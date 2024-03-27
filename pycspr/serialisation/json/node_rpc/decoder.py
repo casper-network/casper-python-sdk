@@ -16,7 +16,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import Timestamp
 from pycspr.utils import constants
-from pycspr.utils import conversion as convertor
+from pycspr.utils import convertor
 
 
 def decode(encoded: dict, typedef: object) -> object:
@@ -88,7 +88,7 @@ def _decode_deploy_header(encoded: dict) -> DeployHeader:
 
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
-    as_ms = convertor.humanized_time_interval_to_ms(encoded)
+    as_ms = convertor.ms_from_humanized_time_interval(encoded)
     if as_ms > constants.DEPLOY_TTL_MS_MAX:
         raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
 
@@ -141,7 +141,7 @@ def _decode_stored_contract_by_name_versioned(
 
 
 def _decode_timestamp(encoded: str) -> Timestamp:
-    return Timestamp(convertor.iso_to_timestamp(encoded))
+    return Timestamp(convertor.timestamp_from_iso_datetime(encoded))
 
 
 def _decode_transfer(encoded: dict) -> DeployOfTransfer:

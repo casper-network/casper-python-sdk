@@ -14,7 +14,6 @@ from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.node.rpc import DeployParameters
 from pycspr.types.node.rpc import DeployTimeToLive
 from pycspr.types.cl import CLV_Option
-from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U64
@@ -28,7 +27,7 @@ from pycspr.types.node.rpc import DeployOfModuleBytes
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import Timestamp
 from pycspr.utils import constants
-from pycspr.utils import conversion
+from pycspr.utils import convertor
 from pycspr.utils import io as _io
 
 
@@ -159,7 +158,7 @@ def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> Depl
     :param humanized_ttl: A humanized ttl, e.g. 2 hours.
 
     """
-    as_milliseconds = conversion.humanized_time_interval_to_ms(humanized_ttl)
+    as_milliseconds = convertor.ms_from_humanized_time_interval(humanized_ttl)
     if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
         raise ValueError(
             f"Invalid deploy ttl. Max={constants.DEPLOY_TTL_MS_MAX}ms. Actual={humanized_ttl}."
@@ -227,7 +226,7 @@ def create_transfer_session(
     return DeployOfTransfer(
         args={
             "amount": CLV_U512(amount),
-            "target": CLV_PublicKey.from_account_key(target),
+            "target": convertor.clv_public_key_from_account_key(target),
             "id": CLV_Option(CLV_U64(correlation_id), CLT_Type_U64()),
         }
     )
@@ -256,7 +255,7 @@ def create_validator_auction_bid(
         args={
             "amount": CLV_U512(amount),
             "delegation_rate": CLV_U8(delegation_rate),
-            "public_key": CLV_PublicKey.from_public_key(public_key),
+            "public_key": convertor.clv_public_key_from_public_key(public_key),
         }
     )
 
@@ -285,10 +284,10 @@ def create_validator_auction_bid_withdrawal(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
             "amount": CLV_U512(amount),
-            "public_key": CLV_PublicKey.from_public_key(public_key),
+            "public_key": convertor.clv_public_key_from_public_key(public_key),
             "unbond_purse":
                 unbond_purse_ref if isinstance(unbond_purse_ref, CLV_URef) else
-                CLV_URef.from_string(unbond_purse_ref)
+                convertor.clv_uref_from_str(unbond_purse_ref)
         }
     )
 
@@ -322,11 +321,11 @@ def create_validator_delegation(
                 ),
             DeployArgument(
                 "delegator",
-                CLV_PublicKey.from_public_key(public_key_of_delegator)
+                convertor.clv_public_key_from_public_key(public_key_of_delegator)
                 ),
             DeployArgument(
                 "validator",
-                CLV_PublicKey.from_public_key(public_key_of_validator)
+                convertor.clv_public_key_from_public_key(public_key_of_validator)
                 ),
         ]
     )
@@ -356,8 +355,8 @@ def create_validator_delegation_withdrawal(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
             "amount": CLV_U512(amount),
-            "delegator": CLV_PublicKey.from_public_key(public_key_of_delegator),
-            "validator": CLV_PublicKey.from_public_key(public_key_of_validator)
+            "delegator": convertor.clv_public_key_from_public_key(public_key_of_delegator),
+            "validator": convertor.clv_public_key_from_public_key(public_key_of_validator)
         }
     )
 

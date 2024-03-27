@@ -13,6 +13,11 @@ MAX_TRANSFER_ID = (2 ** 63) - 1
 # Minimum amount in motes of a wasmless transfer.
 MIN_TRANSFER_AMOUNT_MOTES = 2_500_000_000
 
+# Millisecond durations of relevance.
+MS_1_SECOND: int = 1000
+MS_1_MINUTE: int = 60 * MS_1_SECOND
+MS_1_HOUR: int = 60 * MS_1_MINUTE
+
 # Default number of motes to pay for standard payments.
 STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS = int(1e8)
 

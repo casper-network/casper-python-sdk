@@ -56,7 +56,7 @@ from pycspr.types.crypto import Digest
 from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import SignatureBytes
-from pycspr.utils import conversion as convertor
+from pycspr.utils import convertor
 
 
 def decode(encoded: typing.Union[dict, str], typedef: type) -> object:
@@ -314,7 +314,7 @@ def _decode_deploy_of_transfer(encoded: dict) -> DeployOfTransfer:
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(
-        as_milliseconds=convertor.humanized_time_interval_to_ms(encoded),
+        as_milliseconds=convertor.ms_from_humanized_time_interval(encoded),
         humanized=encoded
     )
 
@@ -397,7 +397,7 @@ def _decode_stored_value(encoded: dict) -> typing.Union[EraInfo]:
 
 def _decode_timestamp(encoded: str) -> Timestamp:
     return Timestamp(
-        value=convertor.iso_to_timestamp(encoded)
+        value=convertor.timestamp_from_iso_datetime(encoded)
     )
 
 

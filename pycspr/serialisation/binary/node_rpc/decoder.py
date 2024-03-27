@@ -24,7 +24,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import Timestamp
-from pycspr.utils import conversion as convertor
+from pycspr.utils import convertor
 
 
 def decode(bstream: bytes, typedef: object) -> typing.Tuple[bytes, object]:
@@ -172,7 +172,7 @@ def _decode_deploy_time_to_live(bstream: bytes) -> typing.Tuple[bytes, DeployTim
 
     return bstream, DeployTimeToLive(
         ttl.value,
-        convertor.ms_to_humanized_time_interval(ttl.value)
+        convertor.humanized_time_interval_from_ms(ttl.value)
         )
 
 
