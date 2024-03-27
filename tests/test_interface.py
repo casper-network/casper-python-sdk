@@ -112,7 +112,6 @@ _INTERFACE_OF_LIBRARY = {
     _has_member: {
         "crypto",
         "factory",
-        "serialisation",
         "types",
     }
 }
