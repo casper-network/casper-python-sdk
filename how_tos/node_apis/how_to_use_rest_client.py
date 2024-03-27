@@ -46,51 +46,47 @@ def _main(args: argparse.Namespace):
     for func in [
         _get_chainspec,
         _get_node_metrics,
+        _get_node_metric,
         _get_node_status,
         _get_rpc_schema,
         _get_validator_changes
     ]:
         func(ctx)
-        print("-" * 74)
 
 
 def _get_chainspec(ctx: _Context):
-    # get_chainspec.
     chainspec: dict = ctx.client.get_chainspec()
     assert isinstance(chainspec, dict)
     print("SUCCESS :: get_chainspec")
 
 
 def _get_node_metrics(ctx: _Context):
-    # get_node_metrics.
     node_metrics: typing.List[str] = ctx.client.get_node_metrics()
     assert isinstance(node_metrics, list)
     print("SUCCESS :: get_node_metrics")
 
-    # ext -> get_node_metric.
-    node_metric: typing.List[str] = ctx.client.ext.get_node_metric("mem_deploy_gossiper")
+
+def _get_node_metric(ctx: _Context):
+    node_metric: typing.List[str] = ctx.client.get_node_metric("mem_deploy_gossiper")
     assert isinstance(node_metric, list)
     print("SUCCESS :: get_node_metric")
 
 
 def _get_node_status(ctx: _Context):
-    # get_node_status.
     node_status: dict = ctx.client.get_node_status()
     assert isinstance(node_status, dict)
     print("SUCCESS :: get_node_status")
 
 
 def _get_rpc_schema(ctx: _Context):
-    # _get_rpc_schema.
     rpc_schema: dict = ctx.client.get_node_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: get_node_rpc_schema")
 
 
 def _get_validator_changes(ctx: _Context):
-    # _get_validator_changes.
     validator_changes: dict = ctx.client.get_validator_changes()
-    assert isinstance(validator_changes, dict)
+    assert isinstance(validator_changes, list)
     print("SUCCESS :: get_validator_changes")
 
 
