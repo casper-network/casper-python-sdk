@@ -25,7 +25,7 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
     print("PYCSPR :: How To Get Cryptographic Hash")
     print("")
-    print("Illustrates usage of pycspr.crypto.get_hash function.")
+    print("Illustrates usage of pycspr.get_hash function.")
     print("-" * 74)
     print(f"Data to be hashed: {args.data.decode()}")
     print("-" * 74)
@@ -39,10 +39,12 @@ def _main(args: argparse.Namespace):
         # Create a digest - default size = 32.
         digest: bytes = pycspr.get_hash(args.data, algo=algo, size=32)
         assert isinstance(digest, bytes) and len(digest) == 32
+        print(f"Hash -> 32 bytes :: {algo.name} = {digest.hex()}")
 
         # Create a digest - size = 64.
         digest: bytes = pycspr.get_hash(args.data, algo=algo, size=64)
         assert isinstance(digest, bytes) and len(digest) == 64
+        print(f"Hash -> 64 bytes :: {algo.name} = {digest.hex()}")
 
 
 # Entry point.

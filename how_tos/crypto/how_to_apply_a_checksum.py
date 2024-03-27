@@ -5,7 +5,7 @@ import pycspr
 
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to obtain a checksummed account key.")
+_ARGS = argparse.ArgumentParser("Illustrates usage of pycspr.checksummer module.")
 
 
 def _main(args: argparse.Namespace):
@@ -17,23 +17,23 @@ def _main(args: argparse.Namespace):
     print("-" * 74)
     print("PYCSPR :: How To Apply A Checksum")
     print("")
-    print("Illustrates usage of pycspr.crypto.cl_checksum module.")
+    print("Illustrates usage of pycspr.checksummer module.")
     print("-" * 74)
 
     # Create new key pair & destructure raw public key.
     key_pair: typing.Tuple[bytes, bytes] = \
-        pycspr.crypto.get_key_pair(algo=pycspr.KeyAlgorithm.ED25519)
+        pycspr.crypto.get_key_pair(algo=pycspr.DEFAULT_KEY_ALGO)
     pbk: bytes = key_pair[1]
 
     # Map raw public key -> raw account key.
-    account_key: bytes = pycspr.get_account_key(pycspr.KeyAlgorithm.ED25519, pbk)
+    account_key: bytes = pycspr.get_account_key(pycspr.DEFAULT_KEY_ALGO, pbk)
 
-    # Map account key to checksummed hexadecimal.
-    account_key_checksum: str = pycspr.checksummer.encode_account_key(account_key)
+    # Use checksummer to checksum account key.
+    checksum: str = pycspr.checksummer.encode_account_key(account_key)
 
-    print("Account Key Hexadecimal:")
+    print("Account Key:")
     print(f" ... raw:         {account_key.hex()}")
-    print(f" ... checksummed: {account_key_checksum}")
+    print(f" ... checksummed: {checksum}")
     print("-" * 74)
 
 

@@ -34,6 +34,18 @@ from pycspr.crypto import checksummer
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
 from pycspr.crypto import get_hash
+from pycspr.crypto import get_key_pair
+from pycspr.crypto import get_key_pair_from_base64
+from pycspr.crypto import get_key_pair_from_bytes
+from pycspr.crypto import get_key_pair_from_hex_string
+from pycspr.crypto import get_key_pair_from_pem_file
+from pycspr.crypto import get_key_pair_from_seed
+from pycspr.crypto import get_pvk_pem_file_from_bytes
+from pycspr.crypto import get_pvk_pem_from_bytes
+from pycspr.crypto import get_signature
+from pycspr.crypto import get_signature_for_deploy_approval
+from pycspr.crypto import get_signature_from_pem_file
+from pycspr.crypto import verify_deploy_approval_signature
 
 from pycspr.factory import create_deploy
 from pycspr.factory import create_deploy_approval
