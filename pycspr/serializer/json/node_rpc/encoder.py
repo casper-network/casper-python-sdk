@@ -87,7 +87,7 @@ def _encode_stored_contract_by_hash_versioned(
     entity: DeployOfStoredContractByHashVersioned
 ) -> dict:
     return {
-        "StoredContractByHashVersioned": {
+        "StoredVersionedContractByHash": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
             "hash": checksummer.encode_bytes(entity.hash),
@@ -110,7 +110,7 @@ def _encode_stored_contract_by_name_versioned(
     entity: DeployOfStoredContractByNameVersioned
 ) -> dict:
     return {
-        "StoredContractByNameVersioned": {
+        "StoredVersionedContractByName": {
             "args": [encode(i) for i in entity.arguments],
             "entry_point": entity.entry_point,
             "name": entity.name,

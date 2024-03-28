@@ -115,7 +115,7 @@ class ClientExtensions():
         :returns: On-chain block information N block in the future.
 
         """
-        _, current = self.rpc_client.get_chain_heights()
+        _, current = await self.rpc_client.get_chain_heights()
         offset = future - current
         if offset > 0:
             await self.await_n_blocks(offset)
@@ -127,7 +127,7 @@ class ClientExtensions():
         :returns: On-chain era information N eras in the future.
 
         """
-        current, _ = self.rpc_client.get_chain_heights()
+        current, _ = await self.rpc_client.get_chain_heights()
         offset = future - current
         if offset > 0:
             await self.await_n_eras(offset)

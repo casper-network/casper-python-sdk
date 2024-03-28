@@ -220,20 +220,81 @@ def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
 
 
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
+    def _decode_deploy_of_module_bytes(encoded) -> DeployOfModuleBytes:
+        if "ModuleBytes" in encoded:
+            encoded = encoded["ModuleBytes"]
+
+        return DeployOfModuleBytes(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            module_bytes=decode(encoded["module_bytes"], bytes),
+            )
+
+    def _decode_deploy_of_stored_contract_by_hash(encoded) -> DeployOfStoredContractByHash:
+        if "StoredContractByHash" in encoded:
+            encoded = encoded["StoredContractByHash"]
+
+        return DeployOfStoredContractByHash(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            entry_point=decode(encoded["entry_point"], str),
+            hash=decode(encoded["hash"], Digest),
+        )
+
+    def _decode_deploy_of_stored_contract_by_hash_versioned(encoded) -> DeployOfStoredContractByHashVersioned:
+        if "StoredVersionedContractByHash" in encoded:
+            encoded = encoded["StoredVersionedContractByHash"]
+
+        return DeployOfStoredContractByHashVersioned(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            entry_point=decode(encoded["entry_point"], str),
+            hash=decode(encoded["hash"], Digest),
+            version=decode(encoded["version"], int),
+        )
+
+    def _decode_deploy_of_stored_contract_by_name(encoded) -> DeployOfStoredContractByName:
+        if "StoredContractByName" in encoded:
+            encoded = encoded["StoredContractByName"]
+
+        return DeployOfStoredContractByName(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            entry_point=decode(encoded["entry_point"], str),
+            name=decode(encoded["name"], str),
+        )
+
+    def _decode_deploy_of_stored_contract_by_name_versioned(encoded) -> DeployOfStoredContractByNameVersioned:
+        if "StoredVersionedContractByName" in encoded:
+            encoded = encoded["StoredVersionedContractByName"]
+
+        return DeployOfStoredContractByNameVersioned(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            entry_point=decode(encoded["entry_point"], str),
+            name=decode(encoded["name"], str),
+            version=decode(encoded["version"], int),
+        )
+
+    def _decode_deploy_of_transfer(encoded) -> DeployOfTransfer:
+        if "Transfer" in encoded:
+            encoded = encoded["Transfer"]
+
+        return DeployOfTransfer(
+            args=[decode(i, DeployArgument) for i in encoded["args"]],
+            )
+
     if "ModuleBytes" in encoded:
-        return decode(encoded, DeployOfModuleBytes)
+        decoder = _decode_deploy_of_module_bytes
     elif "StoredContractByHash" in encoded:
-        return decode(encoded, DeployOfStoredContractByHash)
+        decoder = _decode_deploy_of_stored_contract_by_hash
     elif "StoredVersionedContractByHash" in encoded:
-        return decode(encoded, DeployOfStoredContractByHashVersioned)
+        decoder = _decode_deploy_of_stored_contract_by_hash_versioned
     elif "StoredContractByName" in encoded:
-        return decode(encoded, DeployOfStoredContractByName)
+        decoder = _decode_deploy_of_stored_contract_by_name
     elif "StoredVersionedContractByName" in encoded:
-        return decode(encoded, DeployOfStoredContractByNameVersioned)
+        decoder = _decode_deploy_of_stored_contract_by_name_versioned
     elif "Transfer" in encoded:
-        return decode(encoded, DeployOfTransfer)
+        decoder = _decode_deploy_of_transfer
     else:
-        raise NotImplementedError("Unsupported DeployExecutableItem variant")
+        raise NotImplementedError(f"Unsupported DeployExecutableItem variant: {encoded}")
+    
+    return decoder(encoded)
 
 
 def _decode_deploy_header(encoded: dict) -> DeployHeader:
@@ -250,75 +311,6 @@ def _decode_deploy_header(encoded: dict) -> DeployHeader:
         timestamp=decode(encoded["timestamp"], Timestamp),
         ttl=decode(encoded["ttl"], DeployTimeToLive)
     )
-
-
-def _decode_deploy_of_module_bytes(encoded: dict) -> DeployOfModuleBytes:
-    if "ModuleBytes" in encoded:
-        encoded = encoded["ModuleBytes"]
-
-    return DeployOfModuleBytes(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        module_bytes=decode(encoded["module_bytes"], bytes),
-        )
-
-
-def _decode_deploy_of_stored_contract_by_hash(encoded: dict) -> DeployOfStoredContractByHash:
-    if "StoredContractByHash" in encoded:
-        encoded = encoded["StoredContractByHash"]
-
-    return DeployOfStoredContractByHash(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        entry_point=decode(encoded["entry_point"], str),
-        hash=decode(encoded["hash"], Digest),
-    )
-
-
-def _decode_deploy_of_stored_contract_by_hash_versioned(
-    encoded: dict
-) -> DeployOfStoredContractByHashVersioned:
-    if "StoredContractByHashVersioned" in encoded:
-        encoded = encoded["StoredContractByHashVersioned"]
-
-    return DeployOfStoredContractByHashVersioned(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        entry_point=decode(encoded["entry_point"], str),
-        hash=decode(encoded["hash"], Digest),
-        version=decode(encoded["version"], int),
-    )
-
-
-def _decode_deploy_of_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
-    if "StoredContractByName" in encoded:
-        encoded = encoded["StoredContractByName"]
-
-    return DeployOfStoredContractByName(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        entry_point=decode(encoded["entry_point"], str),
-        name=decode(encoded["name"], str),
-    )
-
-
-def _decode_deploy_of_stored_contract_by_name_versioned(
-    encoded: dict
-) -> DeployOfStoredContractByNameVersioned:
-    if "StoredContractByNameVersioned" in encoded:
-        encoded = encoded["StoredContractByNameVersioned"]
-
-    return DeployOfStoredContractByNameVersioned(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        entry_point=decode(encoded["entry_point"], str),
-        name=decode(encoded["name"], str),
-        version=decode(encoded["version"], int),
-    )
-
-
-def _decode_deploy_of_transfer(encoded: dict) -> DeployOfTransfer:
-    if "Transfer" in encoded:
-        encoded = encoded["Transfer"]
-
-    return DeployOfTransfer(
-        args=[decode(i, DeployArgument) for i in encoded["args"]],
-        )
 
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
@@ -487,12 +479,12 @@ _DECODERS = {
     DeployExecutionInfo: _decode_deploy_execution_info,
     DeployExecutableItem: _decode_deploy_executable_item,
     DeployHeader: _decode_deploy_header,
-    DeployOfModuleBytes: _decode_deploy_of_module_bytes,
-    DeployOfStoredContractByHash: _decode_deploy_of_stored_contract_by_hash,
-    DeployOfStoredContractByHashVersioned: _decode_deploy_of_stored_contract_by_hash_versioned,
-    DeployOfStoredContractByName: _decode_deploy_of_stored_contract_by_name,
-    DeployOfStoredContractByNameVersioned: _decode_deploy_of_stored_contract_by_name_versioned,
-    DeployOfTransfer: _decode_deploy_of_transfer,
+    DeployOfModuleBytes: _decode_deploy_executable_item,
+    DeployOfStoredContractByHash: _decode_deploy_executable_item,
+    DeployOfStoredContractByHashVersioned: _decode_deploy_executable_item,
+    DeployOfStoredContractByName: _decode_deploy_executable_item,
+    DeployOfStoredContractByNameVersioned: _decode_deploy_executable_item,
+    DeployOfTransfer: _decode_deploy_executable_item,
     DeployTimeToLive: _decode_deploy_time_to_live,
     EraInfo: _decode_era_info,
     EraValidators: _decode_era_validators,
