@@ -145,7 +145,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(operator)
 
     # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")

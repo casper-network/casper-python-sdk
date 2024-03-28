@@ -6,8 +6,8 @@ async def test_that_cctl_assets_exist() -> None:
 
 
 async def test_that_cctl_network_is_up() -> None:
-    pycctl.validator.validate_infra_net_is_up()
+    await pycctl.validator.validate_infra_net_is_up()
 
 
 async def test_that_cctl_accounts_are_funded() -> None:
-    pycctl.validator.validate_chain_accounts_are_funded()
+    await pycctl.validator.validate_chain_accounts_are_funded()
