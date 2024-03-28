@@ -36,6 +36,7 @@ from pycspr.types.node.rpc.complex import EraValidators
 from pycspr.types.node.rpc.complex import EraValidatorWeight
 from pycspr.types.node.rpc.complex import EraSummary
 from pycspr.types.node.rpc.complex import NamedKey
+from pycspr.types.node.rpc.complex import NodeStatus
 from pycspr.types.node.rpc.complex import ProtocolVersion
 from pycspr.types.node.rpc.complex import SeigniorageAllocation
 from pycspr.types.node.rpc.complex import SeigniorageAllocationForDelegator

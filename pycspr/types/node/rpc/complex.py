@@ -401,6 +401,11 @@ class NamedKey():
 
 
 @dataclasses.dataclass
+class NodeStatus():
+    api_version: str
+
+
+@dataclasses.dataclass
 class ProtocolVersion():
     major: int
     minor: int

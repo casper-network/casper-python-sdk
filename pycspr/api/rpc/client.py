@@ -18,6 +18,7 @@ from pycspr.types.node.rpc import DeployHash
 from pycspr.types.node.rpc import DictionaryID
 from pycspr.types.node.rpc import EraSummary
 from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
 from pycspr.types.node.rpc import ValidatorChanges
@@ -215,14 +216,15 @@ class Client():
         # TODO: decode
         return await self.proxy.info_get_peers()
 
-    async def get_node_status(self) -> dict:
+    async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
 
         :returns: Node status information.
 
         """
-        # TODO: decode
-        return await self.proxy.info_get_status()
+        obj: dict = await self.proxy.info_get_status()
+
+        return obj if decode is False else decoder.decode(obj, NodeStatus)
 
     async def get_rpc_schema(self) -> dict:
         """Returns RPC schema.

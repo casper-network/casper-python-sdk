@@ -44,6 +44,7 @@ from pycspr.types.node.rpc import Gas
 from pycspr.types.node.rpc import GasPrice
 from pycspr.types.node.rpc import Motes
 from pycspr.types.node.rpc import NamedKey
+from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import ProtocolVersion
 from pycspr.types.node.rpc import SeigniorageAllocation
 from pycspr.types.node.rpc import SeigniorageAllocationForDelegator
@@ -360,6 +361,12 @@ def _decode_named_key(encoded: dict) -> NamedKey:
     )
 
 
+def _decode_node_status(encoded: dict) -> NodeStatus:
+    return NodeStatus(
+        api_version=decode(encoded["api_version"], str),
+    )
+
+
 def _decode_protocol_version(encoded: str) -> ProtocolVersion:
     major, minor, revision = encoded.split(".")
 
@@ -491,6 +498,7 @@ _DECODERS = {
     EraValidatorWeight: _decode_era_validator_weight,
     EraSummary: _decode_era_summary,
     NamedKey: _decode_named_key,
+    NodeStatus: _decode_node_status,
     ProtocolVersion: _decode_protocol_version,
     SeigniorageAllocation: _decode_seigniorage_allocation,
     Timestamp: _decode_timestamp,
