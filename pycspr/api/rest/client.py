@@ -18,45 +18,45 @@ class Client():
         ext = ClientExtensions(self)
         self.get_node_metric = ext.get_node_metric
 
-    def get_chainspec(self) -> dict:
+    async def get_chainspec(self) -> dict:
         """Returns network chainspec.
 
         :returns: Network chainspec.
 
         """
-        return self.proxy.get_chainspec()
+        return await self.proxy.get_chainspec()
 
-    def get_node_metrics(self) -> list:
+    async def get_node_metrics(self) -> list:
         """Returns set of node metrics.
 
         :returns: Node metrics information.
 
         """
-        return self.proxy.get_node_metrics()
+        return await self.proxy.get_node_metrics()
 
-    def get_node_status(self) -> dict:
+    async def get_node_status(self) -> dict:
         """Returns node status information.
 
         :returns: Node status information.
 
         """
-        return self.proxy.get_node_status()
+        return await self.proxy.get_node_status()
 
-    def get_node_rpc_schema(self) -> dict:
+    async def get_node_rpc_schema(self) -> dict:
         """Returns node RPC API schema.
 
         :returns: Node RPC API schema.
 
         """
-        return self.proxy.get_rpc_schema()
+        return await self.proxy.get_rpc_schema()
 
-    def get_validator_changes(self) -> list:
+    async def get_validator_changes(self) -> list:
         """Returns validator change information.
 
         :returns: Validator change information.
 
         """
-        return self.proxy.get_validator_changes()
+        return await self.proxy.get_validator_changes()
 
 
 class ClientExtensions():
@@ -71,13 +71,13 @@ class ClientExtensions():
         """
         self.client = client
 
-    def get_node_metric(self, metric_id: str) -> list:
+    async def get_node_metric(self, metric_id: str) -> list:
         """Returns node metrics information filtered by a particular metric.
 
         :param metric_id: Identifier of node metric.
         :returns: Node metrics information filtered by a particular metric.
 
         """
-        metrics: list = self.client.get_node_metrics()
+        metrics: list = await self.client.get_node_metrics()
 
         return [i for i in metrics if i.lower().startswith(metric_id.lower())]

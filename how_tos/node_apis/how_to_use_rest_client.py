@@ -33,7 +33,7 @@ class _Context():
         self.client = NodeClient(NodeConnectionInfo(args.node_host, args.node_port_rest))
 
 
-def _main(args: argparse.Namespace):
+async def _main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -52,45 +52,45 @@ def _main(args: argparse.Namespace):
         _get_rpc_schema,
         _get_validator_changes
     ]:
-        func(ctx)
+        await func(ctx)
 
 
-def _get_chainspec(ctx: _Context):
-    chainspec: dict = ctx.client.get_chainspec()
+async def _get_chainspec(ctx: _Context):
+    chainspec: dict = await ctx.client.get_chainspec()
     assert isinstance(chainspec, dict)
     print("SUCCESS :: get_chainspec")
 
 
-def _get_node_metrics(ctx: _Context):
-    node_metrics: typing.List[str] = ctx.client.get_node_metrics()
+async def _get_node_metrics(ctx: _Context):
+    node_metrics: typing.List[str] = await ctx.client.get_node_metrics()
     assert isinstance(node_metrics, list)
     print("SUCCESS :: get_node_metrics")
 
 
-def _get_node_metric(ctx: _Context):
-    node_metric: typing.List[str] = ctx.client.get_node_metric("mem_deploy_gossiper")
+async def _get_node_metric(ctx: _Context):
+    node_metric: typing.List[str] = await ctx.client.get_node_metric("mem_deploy_gossiper")
     assert isinstance(node_metric, list)
     print("SUCCESS :: get_node_metric")
 
 
-def _get_node_status(ctx: _Context):
-    node_status: dict = ctx.client.get_node_status()
+async def _get_node_status(ctx: _Context):
+    node_status: dict = await ctx.client.get_node_status()
     assert isinstance(node_status, dict)
     print("SUCCESS :: get_node_status")
 
 
-def _get_rpc_schema(ctx: _Context):
-    rpc_schema: dict = ctx.client.get_node_rpc_schema()
+async def _get_rpc_schema(ctx: _Context):
+    rpc_schema: dict = await ctx.client.get_node_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: get_node_rpc_schema")
 
 
-def _get_validator_changes(ctx: _Context):
-    validator_changes: dict = ctx.client.get_validator_changes()
+async def _get_validator_changes(ctx: _Context):
+    validator_changes: dict = await ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)
     print("SUCCESS :: get_validator_changes")
 
 
 # Entry point.
 if __name__ == "__main__":
-    _main(_ARGS.parse_args())
+    asyncio.run(_main(_ARGS.parse_args()))
