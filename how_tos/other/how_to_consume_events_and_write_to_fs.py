@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import json
 
 from pycspr import NodeEventChannel

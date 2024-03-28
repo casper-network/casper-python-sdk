@@ -11,12 +11,16 @@ def RPC_CLIENT(CONNECTION_RPC: pycspr.NodeRpcConnectionInfo) -> pycspr.NodeRpcCl
 
 
 @pytest.fixture(scope="session")
-def SPECULATIVE_RPC_CLIENT(CONNECTION_RPC_SPECULATIVE: pycspr.NodeSpeculativeRpcConnectionInfo) -> pycspr.NodeSpeculativeRpcClient:
+def SPECULATIVE_RPC_CLIENT(
+    CONNECTION_RPC_SPECULATIVE: pycspr.NodeSpeculativeRpcConnectionInfo
+) -> pycspr.NodeSpeculativeRpcClient:
     return pycspr.NodeSpeculativeRpcClient(CONNECTION_RPC_SPECULATIVE)
 
 
 @pytest.fixture(scope="session")
-def REST_CLIENT(CONNECTION_REST: pycspr.NodeRestConnectionInfo) -> pycspr.NodeRestClient:
+def REST_CLIENT(
+    CONNECTION_REST: pycspr.NodeRestConnectionInfo
+) -> pycspr.NodeRestClient:
     return pycspr.NodeRestClient(CONNECTION_REST)
 
 
@@ -61,7 +65,10 @@ def CONNECTION_RPC(NODE_HOST: str, PORT_RPC: int) -> pycspr.NodeRpcConnectionInf
 
 
 @pytest.fixture(scope="session")
-def CONNECTION_RPC_SPECULATIVE(NODE_HOST: str, PORT_RPC_SPECULATIVE: int) -> pycspr.NodeSpeculativeRpcConnectionInfo:
+def CONNECTION_RPC_SPECULATIVE(
+    NODE_HOST: str,
+    PORT_RPC_SPECULATIVE: int
+) -> pycspr.NodeSpeculativeRpcConnectionInfo:
     return pycspr.NodeSpeculativeRpcConnectionInfo(NODE_HOST, PORT_RPC_SPECULATIVE)
 
 

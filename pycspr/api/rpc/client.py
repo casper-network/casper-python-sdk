@@ -53,16 +53,16 @@ class Client():
         self.get_rpc_endpoint = ext.get_rpc_endpoint
         self.get_rpc_endpoints = ext.get_rpc_endpoints
 
-    def account_put_deploy(self, deploy: Deploy) -> DeployHash:
+    async def account_put_deploy(self, deploy: Deploy) -> DeployHash:
         """Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
         :returns: Deploy hash.
 
         """
-        return self.proxy.account_put_deploy(deploy)
+        return await self.proxy.account_put_deploy(deploy)
 
-    def get_account_balance(
+    async def get_account_balance(
         self,
         purse_id: PurseID,
         global_state_id: GlobalStateID = None
@@ -74,9 +74,9 @@ class Client():
         :returns: Account balance in motes (if purse exists).
 
         """
-        return self.proxy.query_balance(purse_id, global_state_id)
+        return await self.proxy.query_balance(purse_id, global_state_id)
 
-    def get_account_info(
+    async def get_account_info(
         self,
         account_id: Address,
         block_id: BlockID = None,
@@ -89,11 +89,11 @@ class Client():
         :returns: Account information in JSON format.
 
         """
-        obj: dict = self.proxy.state_get_account_info(account_id, block_id)
+        obj: dict = await self.proxy.state_get_account_info(account_id, block_id)
 
         return obj if decode is False else decoder.decode(obj, AccountInfo)
 
-    def get_auction_info(
+    async def get_auction_info(
         self,
         block_id: BlockID = None,
         decode: bool = True
@@ -104,11 +104,11 @@ class Client():
         :returns: Current auction system contract information.
 
         """
-        obj: dict = self.proxy.state_get_auction_info(block_id)
+        obj: dict = await self.proxy.state_get_auction_info(block_id)
 
         return obj if decode is False else decoder.decode(obj, AuctionState)
 
-    def get_block(
+    async def get_block(
         self,
         block_id: BlockID = None,
         decode=False
@@ -120,11 +120,11 @@ class Client():
         :returns: On-chain block information.
 
         """
-        obj: dict = self.proxy.chain_get_block(block_id)
+        obj: dict = await self.proxy.chain_get_block(block_id)
 
         return obj if decode is False else decoder.decode(obj, Block)
 
-    def get_block_transfers(
+    async def get_block_transfers(
         self,
         block_id: BlockID = None,
         decode: bool = True
@@ -136,20 +136,20 @@ class Client():
         :returns: On-chain block transfers information.
 
         """
-        obj: dict = self.proxy.chain_get_block_transfers(block_id)
+        obj: dict = await self.proxy.chain_get_block_transfers(block_id)
 
         return obj if decode is False else decoder.decode(obj, BlockTransfers)
 
-    def get_chainspec(self) -> dict:
+    async def get_chainspec(self) -> dict:
         """Returns canonical network state information.
 
         :returns: Chain spec, genesis accounts and global state information.
 
         """
         # TODO: decode
-        return self.proxy.info_get_chainspec()
+        return await self.proxy.info_get_chainspec()
 
-    def get_deploy(
+    async def get_deploy(
         self,
         deploy_hash: DeployHash,
         decode: bool = True
@@ -161,12 +161,12 @@ class Client():
         :returns: On-chain deploy information.
 
         """
-        obj: dict = self.proxy.info_get_deploy(deploy_hash)
+        obj: dict = await self.proxy.info_get_deploy(deploy_hash)
         obj["deploy"]["execution_info"] = obj.get("execution_results", None)
 
         return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], Deploy)
 
-    def get_dictionary_item(
+    async def get_dictionary_item(
         self,
         identifier: DictionaryID,
         state_root_hash: StateRootHash = None
@@ -179,9 +179,9 @@ class Client():
 
         """
         # TODO: decode
-        return self.proxy.state_get_dictionary_item(identifier, state_root_hash)
+        return await self.proxy.state_get_dictionary_item(identifier, state_root_hash)
 
-    def get_era_summary(
+    async def get_era_summary(
         self,
         block_id: BlockID = None,
         decode: bool = True
@@ -192,11 +192,11 @@ class Client():
         :returns: Era summary information.
 
         """
-        obj: dict = self.proxy.chain_get_era_summary(block_id)
+        obj: dict = await self.proxy.chain_get_era_summary(block_id)
 
         return obj if decode is False else decoder.decode(obj, EraSummary)
 
-    def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
+    async def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
@@ -204,36 +204,36 @@ class Client():
 
         """
         # TODO: decode
-        return self.proxy.chain_get_era_info_by_switch_block(block_id)
+        return await self.proxy.chain_get_era_info_by_switch_block(block_id)
 
-    def get_node_peers(self) -> dict:
+    async def get_node_peers(self) -> dict:
         """Returns node peer information.
 
         :returns: Node peer information.
 
         """
         # TODO: decode
-        return self.proxy.info_get_peers()
+        return await self.proxy.info_get_peers()
 
-    def get_node_status(self) -> dict:
+    async def get_node_status(self) -> dict:
         """Returns node status information.
 
         :returns: Node status information.
 
         """
         # TODO: decode
-        return self.proxy.info_get_status()
+        return await self.proxy.info_get_status()
 
-    def get_rpc_schema(self) -> dict:
+    async def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
 
         :returns: Node JSON-RPC API schema.
 
         """
         # TODO: decode
-        return self.proxy.discover()
+        return await self.proxy.discover()
 
-    def get_state_item(
+    async def get_state_item(
         self,
         key: str,
         path: typing.Union[str, typing.List[str]] = [],
@@ -248,9 +248,9 @@ class Client():
 
         """
         # TODO: decode
-        return self.proxy.state_get_item(key, path, state_root_hash)
+        return await self.proxy.state_get_item(key, path, state_root_hash)
 
-    def get_state_key_value(
+    async def get_state_key_value(
         self,
         key: str,
         path: typing.List[str],
@@ -265,27 +265,27 @@ class Client():
 
         """
         # TODO: decode
-        return self.proxy.query_global_state(key, path, state_id)
+        return await self.proxy.query_global_state(key, path, state_id)
 
-    def get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
+    async def get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
         """Returns an root hash of global state at a specified block.
 
         :param block_id: Identifier of a finalised block.
         :returns: State root hash at specified block.
 
         """
-        return self.proxy.chain_get_state_root_hash(block_id)
+        return await self.proxy.chain_get_state_root_hash(block_id)
 
-    def get_state_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+    async def get_state_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
         """Returns results of a query to global state trie store at a specified key.
 
         :param trie_key: Key of an item stored within global state.
         :returns:  A list of keys read under the specified prefix.
 
         """
-        return self.proxy.state_get_trie(trie_key)
+        return await self.proxy.state_get_trie(trie_key)
 
-    def get_validator_changes(
+    async def get_validator_changes(
         self,
         decode: bool = True
     ) -> typing.List[typing.Union[dict, ValidatorChanges]]:
@@ -295,7 +295,7 @@ class Client():
         :returns: Status changes of active validators.
 
         """
-        obj = self.proxy.info_get_validator_changes()
+        obj = await self.proxy.info_get_validator_changes()
 
         return obj if decode is False else [decoder.decode(i, ValidatorChanges) for i in obj]
 
@@ -312,7 +312,7 @@ class ClientExtensions():
         """
         self.client = client
 
-    def get_account_main_purse_uref(
+    async def get_account_main_purse_uref(
         self,
         account_id: Address,
         block_id: BlockID = None
@@ -324,11 +324,11 @@ class ClientExtensions():
         :returns: Account main purse unforgeable reference.
 
         """
-        account_info = self.client.get_account_info(account_id, block_id)
+        account_info = await self.client.get_account_info(account_id, block_id)
 
         return convertor.clv_uref_from_str(account_info["main_purse"])
 
-    def get_account_named_key(
+    async def get_account_named_key(
         self,
         account_id: Address,
         key_name: str,
@@ -342,12 +342,12 @@ class ClientExtensions():
         :returns: A CL key if found.
 
         """
-        account_info = self.client.get_account_info(account_id, block_id)
+        account_info = await self.client.get_account_info(account_id, block_id)
         for named_key in account_info["named_keys"]:
             if named_key["name"] == key_name:
                 return convertor.clv_key_from_str(named_key["key"])
 
-    def get_block_at_era_switch(
+    async def get_block_at_era_switch(
         self,
         polling_interval_seconds: float = 1.0,
         max_polling_time_seconds: float = 120.0
@@ -361,7 +361,7 @@ class ClientExtensions():
         """
         elapsed = 0.0
         while True:
-            block = self.client.get_block()
+            block = await self.client.get_block()
             if block["header"]["era_end"] is not None:
                 return block
 
@@ -370,54 +370,54 @@ class ClientExtensions():
                 break
             time.sleep(polling_interval_seconds)
 
-    def get_block_height(self) -> int:
+    async def get_block_height(self) -> int:
         """Returns height of current block.
 
         :returns: Hieght of current block.
 
         """
-        _, block_height = self.get_chain_heights()
+        _, block_height = await self.get_chain_heights()
 
         return block_height
 
-    def get_chain_heights(self) -> int:
+    async def get_chain_heights(self) -> int:
         """Returns height of current era & block.
 
         :returns: 2-ary tuple: (era height, block height).
 
         """
-        block: dict = self.client.get_block()
+        block: dict = await self.client.get_block()
 
         return block["header"]["era_id"], block["header"]["height"]
 
-    def get_era_height(self) -> int:
+    async def get_era_height(self) -> int:
         """Returns height of current era.
 
         :returns: Hieght of current era.
 
         """
-        era_height, _ = self.get_chain_heights()
+        era_height, _ = await self.get_chain_heights()
 
         return era_height
 
-    def get_rpc_endpoint(self, endpoint: str) -> dict:
+    async def get_rpc_endpoint(self, endpoint: str) -> dict:
         """Returns RPC schema.
 
         :param endpoint: A specific endpoint of interest.
         :returns: A JSON-RPC schema endpoint fragment.
 
         """
-        schema = self.client.get_rpc_schema()
+        schema = await self.client.get_rpc_schema()
         for obj in schema["methods"]:
             if obj["name"].lower() == endpoint.lower():
                 return obj
 
-    def get_rpc_endpoints(self) -> typing.Union[dict, list]:
+    async def get_rpc_endpoints(self) -> typing.Union[dict, list]:
         """Returns RPC schema.
 
         :returns: A list of all supported JSON-RPC endpoints.
 
         """
-        schema = self.client.get_rpc_schema()
+        schema = await self.client.get_rpc_schema()
 
         return sorted([i["name"] for i in schema["methods"]])

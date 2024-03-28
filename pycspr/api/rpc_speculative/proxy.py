@@ -28,7 +28,7 @@ class Proxy:
         """Instance string representation."""
         return self.address
 
-    def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
+    async def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
         """Dispatches a deploy to a node for speculative execution.
 
         :param deploy: A deploy to be processed at a node.
@@ -40,7 +40,7 @@ class Proxy:
             "deploy": serializer.to_json(deploy)
         }
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.SPECULATIVE_RPC_EXEC_DEPLOY,
             params,

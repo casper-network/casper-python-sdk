@@ -7,7 +7,7 @@ def test_pre_requisites(SPECULATIVE_RPC_CLIENT: NodeSpeculativeRpcClient, a_depl
     assert isinstance(a_deploy, Deploy)
 
 
-def test_deploy(SPECULATIVE_RPC_CLIENT: NodeSpeculativeRpcClient, a_deploy: Deploy):
-    data: dict = SPECULATIVE_RPC_CLIENT.speculative_exec(a_deploy)
+async def test_deploy(SPECULATIVE_RPC_CLIENT: NodeSpeculativeRpcClient, a_deploy: Deploy):
+    data: dict = await SPECULATIVE_RPC_CLIENT.speculative_exec(a_deploy)
     assert isinstance(data, dict)
     assert "Success" in data

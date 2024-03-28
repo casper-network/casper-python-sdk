@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo

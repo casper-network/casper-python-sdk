@@ -20,6 +20,7 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
+from pycspr.types.node.rpc import AccountKey
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
 from pycspr.types.node.rpc import DeployExecutableItem
@@ -189,7 +190,7 @@ def create_standard_payment(
 def create_transfer(
     params: DeployParameters,
     amount: int,
-    target: bytes,
+    target: AccountKey,
     correlation_id: int = None,
     payment: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
 ) -> Deploy:
@@ -211,7 +212,7 @@ def create_transfer(
 
 def create_transfer_session(
     amount: int,
-    target: bytes,
+    target: AccountKey,
     correlation_id: int = None,
 ) -> DeployOfTransfer:
     """Returns session execution information for a native transfer.

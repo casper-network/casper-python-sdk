@@ -182,7 +182,7 @@ def _decode_block_signature(encoded: dict) -> BlockSignature:
 def _decode_block_transfers(encoded: dict) -> BlockTransfers:
     return BlockTransfers(
         block_hash=decode(encoded["block_hash"], Digest),
-        transfers=decode(encoded["transfers"], Transfer)
+        transfers=[decode(i, Transfer) for i in encoded["transfers"]],
     )
 
 

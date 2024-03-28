@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import os
 import pathlib
 import typing
@@ -75,7 +76,7 @@ class _Context():
         self.user_public_key = pycspr.parse_public_key(args.path_to_account_key)
 
 
-def _main(args: argparse.Namespace):
+async def _main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -100,33 +101,34 @@ def _main(args: argparse.Namespace):
         _get_chain_state_root_hash,
         _get_chain_account_info,
     ]:
-        func(ctx)
-        print("-" * 74)
+        await func(ctx)
+
+    print("-" * 74)
 
 
-def _get_chain_account_info(ctx: _Context):
-    state_root_hash: bytes = ctx.client.get_state_root_hash()
+async def _get_chain_account_info(ctx: _Context):
+    state_root_hash: bytes = await ctx.client.get_state_root_hash()
 
     # Query: get_account_info.
-    account_info: dict = ctx.client.get_account_info(ctx.user_public_key.account_key)
+    account_info: dict = await ctx.client.get_account_info(ctx.user_public_key.account_key)
     assert isinstance(account_info, dict)
     print("SUCCESS :: get_account_info")
 
     # Query: get_account_main_purse_uref.
-    account_main_purse: CLV_URef = ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
+    account_main_purse: CLV_URef = await ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
     assert isinstance(account_main_purse, CLV_URef)
     print("SUCCESS :: get_account_main_purse_uref")
 
     # Query: get_account_balance.
     global_state_id = GlobalStateID(state_root_hash, GlobalStateIDType.STATE_ROOT_HASH)
     purse_id = PurseID(account_main_purse, PurseIDType.UREF)
-    account_balance: int = ctx.client.get_account_balance(purse_id, global_state_id)
+    account_balance: int = await ctx.client.get_account_balance(purse_id, global_state_id)
     assert isinstance(account_balance, int)
     print("SUCCESS :: get_account_balance")
 
 
-def _get_chain_auction_state(ctx: _Context):
-    block: dict = ctx.client.get_block()
+async def _get_chain_auction_state(ctx: _Context):
+    block: dict = await ctx.client.get_block()
 
     for block_id in {
         None,
@@ -134,7 +136,7 @@ def _get_chain_auction_state(ctx: _Context):
         block["header"]["height"]
     }:
         # Invoke API.
-        obj: AuctionState = ctx.client.get_auction_state(block_id)
+        obj: AuctionState = await ctx.client.get_auction_state(block_id)
         assert isinstance(obj, AuctionState)
         print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
 
@@ -143,9 +145,9 @@ def _get_chain_auction_state(ctx: _Context):
     print("SUCCESS :: get_auction_state - by equivalent block height & hash")
 
 
-def _get_chain_block(ctx: _Context):
+async def _get_chain_block(ctx: _Context):
     # Query: get_block.
-    block: dict = ctx.client.get_block()
+    block: dict = await ctx.client.get_block()
     assert isinstance(block, dict)
     print("SUCCESS :: get_block :: block-id=None")
 
@@ -153,67 +155,67 @@ def _get_chain_block(ctx: _Context):
         block["hash"],
         block["header"]["height"]
     }:
-        block: bytes = ctx.client.get_block(block_id)
+        block: bytes = await ctx.client.get_block(block_id)
         assert isinstance(block, dict)
         print(f"SUCCESS :: get_block :: block-id={block_id}")
 
-    assert ctx.client.get_block(block["hash"]) == \
-           ctx.client.get_block(block["header"]["height"])
+    assert await ctx.client.get_block(block["hash"]) == \
+           await ctx.client.get_block(block["header"]["height"])
     print("SUCCESS :: get_block - by equivalent height & hash")
 
 
-def _get_chain_block_at_era_switch(ctx: _Context):
+async def _get_chain_block_at_era_switch(ctx: _Context):
     # Query: get_block_at_era_switch - polls until switch block.
     print("POLLING :: get_block_at_era_switch - may take some time")
-    block: dict = ctx.client.get_block_at_era_switch()
+    block: dict = await ctx.client.get_block_at_era_switch()
     assert isinstance(block, dict)
     print("SUCCESS :: get_block_at_era_switch")
 
 
-def _get_chain_block_transfers(ctx: _Context):
-    block: dict = ctx.client.get_block()
+async def _get_chain_block_transfers(ctx: _Context):
+    block: dict = await ctx.client.get_block()
 
     # Query: by hash.
-    entity: BlockTransfers = ctx.client.get_block_transfers(block["hash"])
+    entity: BlockTransfers = await ctx.client.get_block_transfers(block["hash"])
     assert isinstance(entity, BlockTransfers)
     print("SUCCESS :: invoked get_block_transfers - by block hash")
 
     # Query: by height.
-    assert entity == ctx.client.get_block_transfers(block["header"]["height"])
+    assert entity == await ctx.client.get_block_transfers(block["header"]["height"])
     print("SUCCESS :: invoked get_block_transfers - by block height")
 
 
-def _get_chain_era_info(ctx: _Context):
+async def _get_chain_era_info(ctx: _Context):
     print("POLLING :: get_block_at_era_switch - may take some time")
-    block: dict = ctx.client.get_block_at_era_switch()
+    block: dict = await ctx.client.get_block_at_era_switch()
 
     for block_id in {
         None,
         block["hash"],
         block["header"]["height"]
     }:
-        era_info: dict = ctx.client.get_era_info(block_id)
+        era_info: dict = await ctx.client.get_era_info(block_id)
         assert isinstance(era_info, dict)
         print(f"SUCCESS :: get_era_info :: block-id={block_id}")
-        assert era_info == ctx.client.get_era_info_by_switch_block(block_id)
+        assert era_info == await ctx.client.get_era_info_by_switch_block(block_id)
 
     assert ctx.client.get_era_info(block["hash"]) == \
            ctx.client.get_era_info(block["header"]["height"])
     print("SUCCESS :: get_era_info - by equivalent block height & hash")
 
 
-def _get_chain_era_summary(ctx: _Context):
-    block: dict = ctx.client.get_block()
+async def _get_chain_era_summary(ctx: _Context):
+    block: dict = await ctx.client.get_block()
 
     for block_id in {
         None,
         block["hash"],
         block["header"]["height"]
     }:
-        entity: EraSummary = ctx.client.get_era_summary(block_id, decode=True)
+        entity: EraSummary = await ctx.client.get_era_summary(block_id, decode=True)
         assert isinstance(entity, EraSummary)
 
-        entity: dict = ctx.client.get_era_summary(block_id, decode=False)
+        entity: dict = await ctx.client.get_era_summary(block_id, decode=False)
         assert isinstance(entity, dict)
 
         print(f"SUCCESS :: get_era_summary :: block-id={block_id}")
@@ -223,20 +225,20 @@ def _get_chain_era_summary(ctx: _Context):
     print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
 
 
-def _get_chain_specification(ctx: _Context):
-    chainspec: dict = ctx.client.get_chainspec()
+async def _get_chain_specification(ctx: _Context):
+    chainspec: dict = await ctx.client.get_chainspec()
     assert isinstance(chainspec, dict)
 
 
-def _get_chain_state_root_hash(ctx: _Context):
-    block: dict = ctx.client.get_block()
+async def _get_chain_state_root_hash(ctx: _Context):
+    block: dict = await ctx.client.get_block()
 
     for block_id in {
         None,
         block["hash"],
         block["header"]["height"]
     }:
-        state_root_hash: bytes = ctx.client.get_state_root_hash(block_id)
+        state_root_hash: bytes = await ctx.client.get_state_root_hash(block_id)
         assert isinstance(state_root_hash, bytes)
         print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
 
@@ -245,7 +247,7 @@ def _get_chain_state_root_hash(ctx: _Context):
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 
-def _get_chain_validator_changes(ctx: _Context):
+async def _get_chain_validator_changes(ctx: _Context):
     validator_changes: typing.List[ValidatorChanges] = \
         ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)
@@ -254,36 +256,36 @@ def _get_chain_validator_changes(ctx: _Context):
     print("SUCCESS :: get_validator_changes")
 
 
-def _get_node_ops(ctx: _Context):
+async def _get_node_ops(ctx: _Context):
     # get_node_peers.
-    node_peers: typing.List[dict] = ctx.client.get_node_peers()
+    node_peers: typing.List[dict] = await ctx.client.get_node_peers()
     assert isinstance(node_peers, list)
     print("SUCCESS :: get_node_peers")
 
     # get_node_status.
-    node_status: dict = ctx.client.get_node_status()
+    node_status: dict = await ctx.client.get_node_status()
     assert isinstance(node_status, dict)
     print("SUCCESS :: get_node_status")
 
 
-def _get_node_rpc(ctx: _Context):
+async def _get_node_rpc(ctx: _Context):
     # get_rpc_schema.
-    rpc_schema: dict = ctx.client.get_rpc_schema()
+    rpc_schema: dict = await ctx.client.get_rpc_schema()
     assert isinstance(rpc_schema, dict)
     print("SUCCESS :: get_rpc_schema")
 
     # get_rpc_endpoints.
-    rpc_endpoints: typing.List[str] = ctx.client.get_rpc_endpoints()
+    rpc_endpoints: typing.List[str] = await ctx.client.get_rpc_endpoints()
     assert isinstance(rpc_endpoints, list)
     print("SUCCESS :: get_rpc_endpoints")
 
     # get_rpc_endpoint.
     for rpc_endpoint in rpc_endpoints:
-        rpc_endpoint_schema: dict = ctx.client.get_rpc_endpoint("account_put_deploy")
+        rpc_endpoint_schema: dict = await ctx.client.get_rpc_endpoint("account_put_deploy")
         assert isinstance(rpc_endpoint_schema, dict)
     print("SUCCESS :: get_rpc_endpoint")
 
 
 # Entry point.
 if __name__ == "__main__":
-    _main(_ARGS.parse_args())
+    asyncio.run(_main(_ARGS.parse_args()))

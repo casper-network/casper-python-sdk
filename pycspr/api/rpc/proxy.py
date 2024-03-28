@@ -40,7 +40,7 @@ class Proxy:
         """Instance string representation."""
         return self.address
 
-    def account_put_deploy(self, deploy: Deploy) -> DeployHash:
+    async def account_put_deploy(self, deploy: Deploy) -> DeployHash:
         """Dispatches a deploy to a node for processing.
 
         :param deploy: A deploy to be processed at a node.
@@ -51,14 +51,14 @@ class Proxy:
             "deploy": serializer.to_json(deploy),
         }
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_ACCOUNT_PUT_DEPLOY,
             params,
             "deploy_hash"
             )
 
-    def chain_get_block(self, block_id: BlockID = None) -> dict:
+    async def chain_get_block(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block information.
 
         :param block_id: Identifier of a finalised block.
@@ -67,9 +67,9 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")
+        return await get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")
 
-    def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
+    async def chain_get_block_transfers(self, block_id: BlockID = None) -> dict:
         """Returns on-chain block transfers information.
 
         :param block_id: Identifier of a finalised block.
@@ -79,9 +79,9 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return get_response(self.address, constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
+        return await get_response(self.address, constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
-    def chain_get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
+    async def chain_get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
@@ -90,13 +90,13 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
             params
             )
 
-    def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
+    async def chain_get_era_summary(self, block_id: BlockID = None) -> dict:
         """Returns consensus era summary information.
 
         :param block_id: Identifier of a block.
@@ -105,14 +105,14 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_CHAIN_GET_ERA_SUMMARY,
             params,
             "era_summary"
             )
 
-    def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
+    async def chain_get_state_root_hash(self, block_id: BlockID = None) -> StateRootHash:
         """Returns root hash of global state at a finalised block.
 
         :param block_id: Identifier of a finalised block.
@@ -121,7 +121,7 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
         response: str = \
-            get_response(
+            await get_response(
                 self.address,
                 constants.RPC_CHAIN_GET_STATE_ROOT_HASH,
                 params,
@@ -130,27 +130,27 @@ class Proxy:
 
         return bytes.fromhex(response)
 
-    def discover(self) -> dict:
+    async def discover(self) -> dict:
         """Returns RPC schema.
 
         :returns: Node JSON-RPC API schema.
 
         """
-        return get_response(self.address, constants.RPC_DISCOVER, field="schema")
+        return await get_response(self.address, constants.RPC_DISCOVER, field="schema")
 
-    def info_get_chainspec(self) -> dict:
+    async def info_get_chainspec(self) -> dict:
         """Returns canonical network state information.
 
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_INFO_GET_CHAINSPEC,
             field="chainspec_bytes"
             )
 
-    def info_get_deploy(
+    async def info_get_deploy(
         self,
         deploy_hash: DeployHash,
         finalized_approvals: bool = False
@@ -165,37 +165,41 @@ class Proxy:
             "finalized_approvals": finalized_approvals
         }
 
-        return get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params)
+        return await get_response(self.address, constants.RPC_INFO_GET_DEPLOY, params)
 
-    def info_get_peers(self) -> typing.List[dict]:
+    async def info_get_peers(self) -> typing.List[dict]:
         """Returns node peer information.
 
         :returns: Node peer information.
 
         """
-        return get_response(self.address, constants.RPC_INFO_GET_PEERS, field="peers")
+        return await get_response(self.address, constants.RPC_INFO_GET_PEERS, field="peers")
 
-    def info_get_status(self) -> dict:
+    async def info_get_status(self) -> dict:
         """Returns node status information.
 
         :returns: Node status information.
 
         """
-        return get_response(self.address, constants.RPC_INFO_GET_STATUS)
+        return await get_response(self.address, constants.RPC_INFO_GET_STATUS)
 
-    def info_get_validator_changes(self) -> typing.List[dict]:
+    async def info_get_validator_changes(self) -> typing.List[dict]:
         """Returns validator change set.
 
         :returns: Validator change set.
 
         """
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_INFO_GET_VALIDATOR_CHANGES,
             field="changes"
             )
 
-    def query_balance(self, purse_id: PurseID, global_state_id: GlobalStateID = None) -> int:
+    async def query_balance(
+        self,
+        purse_id: PurseID,
+        global_state_id: GlobalStateID = None
+    ) -> int:
         """Returns account balance at a certain point in global state history.
 
         :param proxy: Remote RPC server proxy.
@@ -206,7 +210,7 @@ class Proxy:
         """
         if global_state_id is None:
             global_state_id = GlobalStateID(
-                self.chain_get_state_root_hash(),
+                await self.chain_get_state_root_hash(),
                 GlobalStateIDType.STATE_ROOT_HASH
             )
 
@@ -215,10 +219,10 @@ class Proxy:
             param_utils.get_purse_id(purse_id)
 
         return int(
-            get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
+            await get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
         )
 
-    def query_global_state(
+    async def query_global_state(
         self,
         key: str,
         path: typing.List[str],
@@ -234,15 +238,19 @@ class Proxy:
         """
         if state_id is None:
             state_id: GlobalStateID = GlobalStateID(
-                self.chain_get_state_root_hash(),
+                await self.chain_get_state_root_hash(),
                 GlobalStateIDType.STATE_ROOT_HASH
                 )
 
         params: dict = param_utils.get_params_for_query_global_state(key, path, state_id)
 
-        return get_response(self.address, constants.RPC_QUERY_GLOBAL_STATE, params)
+        return await get_response(self.address, constants.RPC_QUERY_GLOBAL_STATE, params)
 
-    def state_get_account_info(self, account_id: Address, block_id: BlockID = None) -> dict:
+    async def state_get_account_info(
+        self,
+        account_id: Address,
+        block_id: BlockID = None
+    ) -> dict:
         """Returns account information at a certain global state root hash.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -254,14 +262,14 @@ class Proxy:
             param_utils.get_account_key(account_id) | \
             param_utils.get_block_id(block_id)
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_STATE_GET_ACCOUNT_INFO,
             params,
             "account"
             )
 
-    def state_get_auction_info(self, block_id: BlockID = None) -> dict:
+    async def state_get_auction_info(self, block_id: BlockID = None) -> dict:
         """Returns current auction system contract information.
 
         :param block_id: Identifier of a finalised block.
@@ -270,14 +278,14 @@ class Proxy:
         """
         params: dict = param_utils.get_block_id(block_id, False)
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_STATE_GET_AUCTION_INFO,
             params,
             "auction_state"
             )
 
-    def state_get_dictionary_item(
+    async def state_get_dictionary_item(
         self,
         identifier: DictionaryID,
         state_root_hash: StateRootHash = None
@@ -290,14 +298,14 @@ class Proxy:
 
         """
         if state_root_hash is None:
-            state_root_hash = self.chain_get_state_root_hash()
+            state_root_hash = await self.chain_get_state_root_hash()
 
         params: dict = \
             param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
 
-        return get_response(self.address, constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
+        return await get_response(self.address, constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
-    def state_get_item(
+    async def state_get_item(
         self,
         key: str,
         path: typing.Union[str, typing.List[str]] = [],
@@ -313,13 +321,18 @@ class Proxy:
 
         """
         path = path if isinstance(path, list) else [path]
-        state_root_hash = state_root_hash or self.chain_get_state_root_hash()
+        state_root_hash = state_root_hash or await self.chain_get_state_root_hash()
 
         params: dict = param_utils.get_params_for_state_get_item(key, path, state_root_hash)
 
-        return get_response(self.address, constants.RPC_STATE_GET_ITEM, params, "stored_value")
+        return await get_response(
+            self.address,
+            constants.RPC_STATE_GET_ITEM,
+            params,
+            "stored_value"
+            )
 
-    def state_get_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+    async def state_get_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
         """Returns results of a query to global state trie store at a specified key.
 
         :param trie_key: Key of an item stored within global state.
@@ -330,7 +343,7 @@ class Proxy:
             "trie_key": trie_key.hex()
         }
 
-        return get_response(
+        return await get_response(
             self.address,
             constants.RPC_STATE_GET_TRIE, params,
             "maybe_trie_bytes"
@@ -348,7 +361,7 @@ class ProxyError(Exception):
         super(ProxyError, self).__init__(msg)
 
 
-def get_response(
+async def get_response(
     address: str,
     endpoint: str,
     params: dict = None,

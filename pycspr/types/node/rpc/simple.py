@@ -7,6 +7,8 @@ from pycspr.types.crypto import Digest
 from pycspr.types.crypto import PublicKeyBytes
 
 
+AccountKey = typing.NewType("On-chain account public key prefixed with ecc algo type.", bytes)
+
 Address = typing.NewType("Identifier of an on-chain account address.", bytes)
 
 BlockHash = typing.NewType("Digest over a block.", Digest)

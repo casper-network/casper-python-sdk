@@ -28,12 +28,12 @@ def test_account_1():
 
     """
     path = _PATH_TO_ACCOUNTS / "account-1" / "secret_key.pem"
-    (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
+    (pvk, pbk) = pycspr.get_key_pair_from_pem_file(path)
 
     return pycspr.types.crypto.PrivateKey(
         pbk=pbk,
         pvk=pvk,
-        algo=pycspr.crypto.KeyAlgorithm.ED25519
+        algo=pycspr.KeyAlgorithm.ED25519
     )
 
 
@@ -43,12 +43,12 @@ def test_account_2():
 
     """
     path = _PATH_TO_ACCOUNTS / "account-2" / "secret_key.pem"
-    (pvk, pbk) = pycspr.crypto.get_key_pair_from_pem_file(path)
+    (pvk, pbk) = pycspr.get_key_pair_from_pem_file(path)
 
     return pycspr.types.crypto.PrivateKey(
         pbk=pbk,
         pvk=pvk,
-        algo=pycspr.crypto.KeyAlgorithm.SECP256K1
+        algo=pycspr.KeyAlgorithm.SECP256K1
     )
 
 
@@ -93,7 +93,7 @@ def get_account_of_nctl_faucet():
     """
     path = _PATH_TO_CCTL_ASSETS / "faucet" / "secret_key.pem"
 
-    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
+    return pycspr.parse_private_key(path, pycspr.KeyAlgorithm.ED25519)
 
 
 def get_account_of_nctl_user(user_id: int):
@@ -102,14 +102,14 @@ def get_account_of_nctl_user(user_id: int):
     """
     path = _PATH_TO_CCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
 
-    return pycspr.parse_private_key(path, pycspr.crypto.KeyAlgorithm.ED25519)
+    return pycspr.parse_private_key(path, pycspr.KeyAlgorithm.ED25519)
 
 
 def create_account():
     """Returns a test account.
 
     """
-    algo = pycspr.crypto.DEFAULT_KEY_ALGO
-    pvk, pbk = pycspr.crypto.get_key_pair(algo)
+    algo = pycspr.DEFAULT_KEY_ALGO
+    pvk, pbk = pycspr.get_key_pair(algo)
 
     return pycspr.factory.create_private_key(algo, pvk, pbk)

@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import os
 import pathlib
 
@@ -117,7 +118,7 @@ def _main(args: argparse.Namespace):
     deploy.approve(validator)
 
     # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 

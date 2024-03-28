@@ -68,7 +68,7 @@ async def _test_pre_requisites(ctx: TestContext):
             public_key = cctl.get_public_key_of_user(account_idx)
             account_key = public_key.account_key
             purse_id = ctx.client.get_account_main_purse_uref(account_key)
-            assert ctx.client.get_account_balance(purse_id) > 0
+            assert await ctx.client.get_account_balance(purse_id) > 0
 
         time.sleep(1.0)
 
@@ -119,7 +119,6 @@ async def _test_sc_invocation_3(ctx: TestContext):
     pass
 
 
-@pytest.mark.asyncio
 async def test_01(RPC_CLIENT) -> None:
     ctx = TestContext(RPC_CLIENT)
     for func in {

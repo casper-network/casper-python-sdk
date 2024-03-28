@@ -21,12 +21,10 @@ _TOKEN_SUPPLY = int(1e18)
 _TOKEN_SYMBOL = "ACME"
 
 
-@pytest.mark.asyncio
 async def test_sc_exists():
     assert pycctl.fsys.get_path_to_binary(_CONTRACT_FNAME).exists()
 
 
-@pytest.mark.asyncio
 async def test_sc_installation(RPC_CLIENT: NodeClient):
     # Set installation tx.
     tx: Deploy = await _get_tx()

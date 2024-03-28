@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import os
 import pathlib
 import typing
@@ -161,7 +162,7 @@ def _get_contract_hash(
 
     """
     # Query operator account for a named key == ERC20 & return parsed named key value.
-    account_info = client.get_account_info(operator.account_key)
+    account_info = await client.get_account_info(operator.account_key)
     for named_key in account_info["named_keys"]:
         if named_key["name"] == "ERC20":
             return bytes.fromhex(named_key["key"][5:])

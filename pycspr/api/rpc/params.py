@@ -1,6 +1,5 @@
 import typing
 
-from pycspr import crypto
 from pycspr import serializer
 from pycspr.crypto import checksummer
 from pycspr.types.cl import CLV_Key

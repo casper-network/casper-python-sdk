@@ -95,7 +95,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(cp1)
 
     # Dispatch deploy to a node.
-    r = client.speculative_exec(deploy)
+    r = await client.speculative_exec(deploy)
 
     print(json.dumps(r, indent=4))
 

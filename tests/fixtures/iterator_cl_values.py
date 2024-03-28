@@ -13,17 +13,14 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U128
 from pycspr.types.cl import CLV_U256
 from pycspr.types.cl import CLV_U512
-from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_Map
 from pycspr.types.cl import CLV_Option
-from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_Tuple1
 from pycspr.types.cl import CLV_Tuple2
 from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
-from pycspr.types.cl import CLV_URef
 from pycspr.utils import convertor
 
 

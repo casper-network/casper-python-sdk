@@ -17,7 +17,7 @@ class Client():
         print(connection_info)
         self.proxy = Proxy(connection_info)
 
-    def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
+    async def speculative_exec(self, deploy: Deploy, block_id: BlockID = None) -> dict:
         """Dispatches a deploy to a node for speculative execution.
 
         :param deploy: A deploy to be processed at a node.
@@ -25,4 +25,4 @@ class Client():
         :returns: Execution effects of virtual deploy processing.
 
         """
-        return self.proxy.speculative_exec(deploy, block_id)
+        return await self.proxy.speculative_exec(deploy, block_id)

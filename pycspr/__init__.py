@@ -45,6 +45,7 @@ from pycspr.crypto import get_pvk_pem_from_bytes
 from pycspr.crypto import get_signature
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.crypto import get_signature_from_pem_file
+from pycspr.crypto import is_signature_valid
 from pycspr.crypto import verify_deploy_approval_signature
 
 from pycspr.factory import create_deploy
