@@ -90,23 +90,23 @@ async def _main(args: argparse.Namespace):
     for func in [
         _get_node_rpc,
         _get_node_ops,
-        _get_chain_block,
-        _get_chain_block_at_era_switch,
-        _get_chain_block_transfers,
-        _get_chain_era_info,
-        _get_chain_era_summary,
-        _get_chain_auction_state,
-        _get_chain_validator_changes,
-        _get_chain_specification,
-        _get_chain_state_root_hash,
-        _get_chain_account_info,
+        _get_block,
+        _get_block_at_era_switch,
+        _get_block_transfers,
+        _get_era_info,
+        _get_era_summary,
+        _get_auction_state,
+        _get_validator_changes,
+        _get_specification,
+        _get_state_root_hash,
+        _get_account_info,
     ]:
         await func(ctx)
 
     print("-" * 74)
 
 
-async def _get_chain_account_info(ctx: _Context):
+async def _get_account_info(ctx: _Context):
     state_root_hash: bytes = await ctx.client.get_state_root_hash()
 
     # Query: get_account_info.
@@ -115,7 +115,8 @@ async def _get_chain_account_info(ctx: _Context):
     print("SUCCESS :: get_account_info")
 
     # Query: get_account_main_purse_uref.
-    account_main_purse: CLV_URef = await ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
+    account_main_purse: CLV_URef = \
+        await ctx.client.get_account_main_purse_uref(ctx.user_public_key.account_key)
     assert isinstance(account_main_purse, CLV_URef)
     print("SUCCESS :: get_account_main_purse_uref")
 
@@ -127,7 +128,7 @@ async def _get_chain_account_info(ctx: _Context):
     print("SUCCESS :: get_account_balance")
 
 
-async def _get_chain_auction_state(ctx: _Context):
+async def _get_auction_state(ctx: _Context):
     block: dict = await ctx.client.get_block()
 
     for block_id in {
@@ -145,7 +146,7 @@ async def _get_chain_auction_state(ctx: _Context):
     print("SUCCESS :: get_auction_state - by equivalent block height & hash")
 
 
-async def _get_chain_block(ctx: _Context):
+async def _get_block(ctx: _Context):
     # Query: get_block.
     block: dict = await ctx.client.get_block()
     assert isinstance(block, dict)
@@ -164,7 +165,7 @@ async def _get_chain_block(ctx: _Context):
     print("SUCCESS :: get_block - by equivalent height & hash")
 
 
-async def _get_chain_block_at_era_switch(ctx: _Context):
+async def _get_block_at_era_switch(ctx: _Context):
     # Query: get_block_at_era_switch - polls until switch block.
     print("POLLING :: get_block_at_era_switch - may take some time")
     block: dict = await ctx.client.get_block_at_era_switch()
@@ -172,7 +173,7 @@ async def _get_chain_block_at_era_switch(ctx: _Context):
     print("SUCCESS :: get_block_at_era_switch")
 
 
-async def _get_chain_block_transfers(ctx: _Context):
+async def _get_block_transfers(ctx: _Context):
     block: dict = await ctx.client.get_block()
 
     # Query: by hash.
@@ -185,7 +186,7 @@ async def _get_chain_block_transfers(ctx: _Context):
     print("SUCCESS :: invoked get_block_transfers - by block height")
 
 
-async def _get_chain_era_info(ctx: _Context):
+async def _get_era_info(ctx: _Context):
     print("POLLING :: get_block_at_era_switch - may take some time")
     block: dict = await ctx.client.get_block_at_era_switch()
 
@@ -204,7 +205,7 @@ async def _get_chain_era_info(ctx: _Context):
     print("SUCCESS :: get_era_info - by equivalent block height & hash")
 
 
-async def _get_chain_era_summary(ctx: _Context):
+async def _get_era_summary(ctx: _Context):
     block: dict = await ctx.client.get_block()
 
     for block_id in {
@@ -225,12 +226,12 @@ async def _get_chain_era_summary(ctx: _Context):
     print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
 
 
-async def _get_chain_specification(ctx: _Context):
+async def _get_specification(ctx: _Context):
     chainspec: dict = await ctx.client.get_chainspec()
     assert isinstance(chainspec, dict)
 
 
-async def _get_chain_state_root_hash(ctx: _Context):
+async def _get_state_root_hash(ctx: _Context):
     block: dict = await ctx.client.get_block()
 
     for block_id in {
@@ -247,7 +248,7 @@ async def _get_chain_state_root_hash(ctx: _Context):
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 
-async def _get_chain_validator_changes(ctx: _Context):
+async def _get_validator_changes(ctx: _Context):
     validator_changes: typing.List[ValidatorChanges] = \
         ctx.client.get_validator_changes()
     assert isinstance(validator_changes, list)

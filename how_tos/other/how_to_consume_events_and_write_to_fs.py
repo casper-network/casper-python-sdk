@@ -59,7 +59,7 @@ _ARGS.add_argument(
     )
 
 
-def main(args: argparse.Namespace):
+async def _main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -117,4 +117,4 @@ def _on_event(event_info: NodeEventInfo, fhandle):
 
 # Entry point.
 if __name__ == "__main__":
-    main(_ARGS.parse_args())
+    asyncio.run(_main(_ARGS.parse_args()))

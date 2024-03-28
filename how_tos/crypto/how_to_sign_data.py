@@ -37,7 +37,7 @@ def _main(args: argparse.Namespace):
     print(f"  Hash:  {digest.hex()}")
 
     # Iterate supported algos:
-    for algo in pycspr.KeyAlgorithm:        
+    for algo in pycspr.KeyAlgorithm:
         # Sign over digest with a private key.
         pvk, _ = pycspr.get_key_pair(algo)
         sig: bytes = pycspr.get_signature(digest, pvk, algo)

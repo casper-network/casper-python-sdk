@@ -75,7 +75,7 @@ _ARGS.add_argument(
     )
 
 
-def _main(args: argparse.Namespace):
+async def _main(args: argparse.Namespace):
     """Main entry point.
 
     :param args: Parsed command line arguments.
@@ -150,4 +150,4 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
 
 # Entry point.
 if __name__ == "__main__":
-    _main(_ARGS.parse_args())
+    asyncio.run(_main(_ARGS.parse_args()))
