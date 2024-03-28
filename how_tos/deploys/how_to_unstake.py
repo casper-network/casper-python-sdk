@@ -105,7 +105,7 @@ async def _main(args: argparse.Namespace):
 
     # Set validator unbond purse.
     validator_purse_uref: CLV_URef = \
-        client.get_account_main_purse_uref(validator.account_key)
+        await client.get_account_main_purse_uref(validator.account_key)
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, validator, validator_purse_uref)
@@ -114,7 +114,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(validator)
 
     # Dispatch deploy.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 

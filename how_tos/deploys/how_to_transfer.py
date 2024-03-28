@@ -100,7 +100,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(cp1)
 
     # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
@@ -142,7 +142,7 @@ def _get_deploy(args: argparse.Namespace, cp1: PrivateKey, cp2: PublicKey) -> De
         params=deploy_params,
         amount=int(2.5e9),
         target=cp2.account_key,
-        correlation_id=random.randint(1, 1e6)
+        correlation_id=random.randint(1, int(1e6))
         )
 
     return deploy

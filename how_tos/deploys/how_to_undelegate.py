@@ -108,7 +108,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(delegator)
 
     # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
 
@@ -148,7 +148,7 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
     # Set deploy.
     deploy = pycspr.create_validator_delegation_withdrawal(
         params=deploy_params,
-        amount=int(1e9),
+        amount=int(5e11),
         public_key_of_delegator=delegator,
         public_key_of_validator=validator,
         path_to_wasm=args.path_to_wasm

@@ -145,12 +145,12 @@ def _get_deploy(args: argparse.Namespace, delegator: PrivateKey, validator: Publ
     deploy_params = pycspr.create_deploy_parameters(
         account=delegator,
         chain_name=args.chain_name
-        )
+        )    
 
     # Set deploy.
     deploy = pycspr.create_validator_delegation(
         params=deploy_params,
-        amount=int(1e9),
+        amount=int(5e11),
         public_key_of_delegator=delegator,
         public_key_of_validator=validator,
         path_to_wasm=args.path_to_wasm
