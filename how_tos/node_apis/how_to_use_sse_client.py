@@ -77,27 +77,27 @@ async def main(args: argparse.Namespace):
 
     # Await until 2 blocks have been added to linear chain.
     print("awaiting 2 blocks ...")
-    block_height = client.get_block_height()
+    block_height = client.rpc.get_block_height()
     await client.await_n_blocks(2)
-    assert client.get_block_height() == block_height + 2
+    assert client.rpc.get_block_height() == block_height + 2
 
     # Await until 1 consensus era has elapsed.
     print("awaiting 1 era ...")
-    era_height = client.get_era_height()
+    era_height = client.rpc.get_era_height()
     await client.await_n_eras(1)
-    assert client.get_era_height() == era_height + 1
+    assert client.rpc.get_era_height() == era_height + 1
 
     # Await until a block in the future.
-    future_block_height = client.get_block_height() + 2
+    future_block_height = client.rpc.get_block_height() + 2
     print(f"awaiting until block {future_block_height} ...")
     await client.await_until_block_n(future_block_height)
-    assert client.get_block_height() == future_block_height
+    assert client.rpc.get_block_height() == future_block_height
 
     # Await until a consensus era in the future.
-    future_era_height = client.get_era_height() + 1
+    future_era_height = client.rpc.get_era_height() + 1
     print(f"awaiting until era {future_era_height} ...")
     await client.await_until_era_n(future_era_height)
-    assert future_era_height == client.get_era_height()
+    assert future_era_height == client.rpc.get_era_height()
 
     # Listen to node events.
     client.get_events(

@@ -22,12 +22,12 @@ class Client():
 
         """
         self.proxy = Proxy(connection_info)
+        self.rpc = rpc_client or RpcClient(
+            RpcClientConnectionInfo(connection_info.host, connection_info.port_rpc)
+        )
 
         # Extension methods -> 2nd order functions.
-        ext = ClientExtensions(self, rpc_client or RpcClient(
-                RpcClientConnectionInfo(connection_info.host, connection_info.port_rpc)
-            )
-        )
+        ext = ClientExtensions(self)
         self.await_n_blocks = ext.await_n_blocks
         self.await_n_eras = ext.await_n_eras
         self.await_n_events = ext.await_n_events
@@ -61,15 +61,14 @@ class ClientExtensions():
     """Node SSE server client extensions, i.e. 2nd order functions.
 
     """
-    def __init__(self, client: Client, rpc_client: RpcClient):
+    def __init__(self, client: Client):
         """Instance constructor.
 
         :param client: Node SSE client.
-        :param rpc_client: Node RPC client.
 
         """
         self.client = client
-        self.rpc_client = rpc_client
+        self.rpc_client = client.rpc
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
