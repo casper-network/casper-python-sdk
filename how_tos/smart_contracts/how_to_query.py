@@ -71,13 +71,13 @@ async def _main(args: argparse.Namespace):
     operator = _get_operator_key(args)
 
     # Set contract hash.
-    contract_hash: CLV_Key = _get_contract_hash(client, operator)
+    contract_hash: CLV_Key = await _get_contract_hash(client, operator)
 
     # Issue queries.
-    token_decimals = _get_contract_data(client, contract_hash, "decimals")
-    token_name = _get_contract_data(client, contract_hash, "name")
-    token_symbol = _get_contract_data(client, contract_hash, "symbol")
-    token_supply = _get_contract_data(client, contract_hash, "total_supply")
+    token_decimals = await _get_contract_data(client, contract_hash, "decimals")
+    token_name = await _get_contract_data(client, contract_hash, "name")
+    token_symbol = await _get_contract_data(client, contract_hash, "symbol")
+    token_supply = await _get_contract_data(client, contract_hash, "total_supply")
 
     print("-" * 72)
     print(f"Token Decimals: {token_decimals}")
@@ -94,21 +94,21 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     return NodeClient(NodeConnectionInfo(args.node_host, args.node_port_rpc))
 
 
-def _get_contract_data(client: NodeClient, contract_hash: CLV_Key, key: str) -> bytes:
+async def _get_contract_data(client: NodeClient, contract_hash: CLV_Key, key: str) -> bytes:
     """Queries chain for data associated with a contract.
 
     """
     state_key = f"hash-{contract_hash.identifier.hex()}"
-    value = client.get_state_item(state_key, key)
+    value = await client.get_state_item(state_key, key)
 
     return value["CLValue"]["parsed"]
 
 
-def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CLV_Key:
+async def _get_contract_hash(client: NodeClient, operator: PrivateKey) -> CLV_Key:
     """Returns on-chain contract identifier.
 
     """
-    named_key = client.get_account_named_key(operator.account_key, "ERC20")
+    named_key = await client.get_account_named_key(operator.account_key, "ERC20")
     if named_key is None:
         raise ValueError("ERC-20 uninstalled ... see how_tos/how_to_install_a_contract.py")
 

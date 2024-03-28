@@ -114,7 +114,7 @@ async def _main(args: argparse.Namespace):
     operator, user = _get_operator_and_user_keys(args)
 
     # Set contract hash.
-    contract_hash: bytes = _get_contract_hash(args, client, operator)
+    contract_hash: bytes = await _get_contract_hash(args, client, operator)
 
     # Set deploy.
     deploy: Deploy = _get_deploy(args, contract_hash, operator, user)
@@ -123,7 +123,7 @@ async def _main(args: argparse.Namespace):
     deploy.approve(operator)
 
     # Dispatch deploy to a node.
-    client.send_deploy(deploy)
+    await client.send_deploy(deploy)
 
     print("-" * 72)
     print(f"Deploy dispatched to node [{args.node_host}]: {deploy.hash.hex()}")
@@ -152,7 +152,7 @@ def _get_operator_and_user_keys(args: argparse.Namespace) -> typing.Tuple[Privat
     return operator, user
 
 
-def _get_contract_hash(
+async def _get_contract_hash(
     args: argparse.Namespace,
     client: NodeClient,
     operator: PrivateKey

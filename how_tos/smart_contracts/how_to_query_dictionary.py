@@ -86,7 +86,7 @@ async def _main(args: argparse.Namespace):
     )
 
     # Set node JSON-RPC query response.
-    response = client.get_dictionary_item(dictionary_id)
+    response = await client.get_dictionary_item(dictionary_id)
 
     print(response)
 
