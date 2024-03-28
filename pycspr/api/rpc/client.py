@@ -1,9 +1,9 @@
 import time
 import typing
 
-from pycspr.api.rpc import decoder
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
+from pycspr.serializer.json.node_rpc import decoder
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_URef
 from pycspr.types.crypto import Digest
