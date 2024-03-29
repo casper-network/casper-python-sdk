@@ -442,25 +442,22 @@ def _decode_protocol_version(encoded: str) -> ProtocolVersion:
 
 
 def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
-    def decode_delegator_seigniorage_allocation(encoded: dict):
+    if "Delegator" in encoded:
+        encoded = encoded["Delegator"]
         return SeigniorageAllocationForDelegator(
             amount=decode(encoded["amount"], Motes),
             delegator_public_key=decode(encoded["delegator_public_key"], PublicKeyBytes),
             validator_public_key=decode(encoded["validator_public_key"], PublicKeyBytes),
         )
 
-    def decode_validator_seigniorage_allocation(encoded: dict):
+    if "Validator" in encoded:
+        encoded = encoded["Validator"]
         return SeigniorageAllocationForValidator(
             amount=decode(encoded["amount"], Motes),
             validator_public_key=decode(encoded["validator_public_key"], PublicKeyBytes),
         )
 
-    if "Delegator" in encoded:
-        return decode_delegator_seigniorage_allocation(encoded["Delegator"])
-    elif "Validator" in encoded:
-        return decode_validator_seigniorage_allocation(encoded["Validator"])
-    else:
-        raise ValueError("decode_seigniorage_allocation")
+    raise ValueError("Invalid seigniorage allocation.")
 
 
 def _decode_timestamp(encoded: str) -> Timestamp:
