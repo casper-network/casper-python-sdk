@@ -35,7 +35,10 @@ from pycspr.types.node.rpc.complex import EraInfo
 from pycspr.types.node.rpc.complex import EraValidators
 from pycspr.types.node.rpc.complex import EraValidatorWeight
 from pycspr.types.node.rpc.complex import EraSummary
+from pycspr.types.node.rpc.complex import MinimalBlockInfo
 from pycspr.types.node.rpc.complex import NamedKey
+from pycspr.types.node.rpc.complex import NextUpgradeInfo
+from pycspr.types.node.rpc.complex import NodePeer
 from pycspr.types.node.rpc.complex import NodeStatus
 from pycspr.types.node.rpc.complex import ProtocolVersion
 from pycspr.types.node.rpc.complex import SeigniorageAllocation
@@ -44,10 +47,8 @@ from pycspr.types.node.rpc.complex import SeigniorageAllocationForValidator
 from pycspr.types.node.rpc.complex import Timestamp
 from pycspr.types.node.rpc.complex import Transfer
 from pycspr.types.node.rpc.complex import URef
-from pycspr.types.node.rpc.complex import URefAccessRights
 from pycspr.types.node.rpc.complex import ValidatorChanges
 from pycspr.types.node.rpc.complex import ValidatorStatusChange
-from pycspr.types.node.rpc.complex import ValidatorStatusChangeType
 
 from pycspr.types.node.rpc.simple import AccountKey
 from pycspr.types.node.rpc.simple import Address
@@ -65,6 +66,9 @@ from pycspr.types.node.rpc.simple import GlobalStateIDType
 from pycspr.types.node.rpc.simple import Motes
 from pycspr.types.node.rpc.simple import PurseID
 from pycspr.types.node.rpc.simple import PurseIDType
+from pycspr.types.node.rpc.simple import ReactorState
 from pycspr.types.node.rpc.simple import StateRootHash
+from pycspr.types.node.rpc.simple import URefAccessRights
 from pycspr.types.node.rpc.simple import WasmModule
+from pycspr.types.node.rpc.simple import ValidatorStatusChangeType
 from pycspr.types.node.rpc.simple import Weight

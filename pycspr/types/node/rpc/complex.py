@@ -12,6 +12,7 @@ from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import SignatureBytes
+from pycspr.types.node.rpc.simple import AccountKey
 from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight
@@ -22,7 +23,10 @@ from pycspr.types.node.rpc.simple import EraID
 from pycspr.types.node.rpc.simple import Gas
 from pycspr.types.node.rpc.simple import GasPrice
 from pycspr.types.node.rpc.simple import Motes
+from pycspr.types.node.rpc.simple import ReactorState
 from pycspr.types.node.rpc.simple import StateRootHash
+from pycspr.types.node.rpc.simple import URefAccessRights
+from pycspr.types.node.rpc.simple import ValidatorStatusChangeType
 from pycspr.types.node.rpc.simple import WasmModule
 from pycspr.types.node.rpc.simple import Weight
 
@@ -395,14 +399,41 @@ class EraValidatorWeight():
 
 
 @dataclasses.dataclass
+class MinimalBlockInfo():
+    hash: Digest
+
+
+@dataclasses.dataclass
 class NamedKey():
     key: str
     name: str
 
 
 @dataclasses.dataclass
+class NextUpgradeInfo():
+    activation_point: str
+    protocol_version: str
+
+
+@dataclasses.dataclass
+class NodePeer():
+    address: str
+    node_id: str
+
+
+@dataclasses.dataclass
 class NodeStatus():
     api_version: str
+    build_version: str
+    chainspec_name: str
+    last_added_block_info: MinimalBlockInfo
+    next_upgrade: NextUpgradeInfo
+    our_public_signing_key: PublicKey
+    peers: typing.List[NodePeer]
+    reactor_state: ReactorState
+    round_length: str
+    starting_state_root_hash: Digest
+    uptime: str
 
 
 @dataclasses.dataclass
@@ -451,17 +482,6 @@ class URef():
     address: Address
 
 
-class URefAccessRights(enum.Enum):
-    NONE = 0
-    READ = 1
-    WRITE = 2
-    ADD = 4
-    READ_WRITE = 3
-    READ_ADD = 5
-    ADD_WRITE = 6
-    READ_ADD_WRITE = 7
-
-
 @dataclasses.dataclass
 class ValidatorChanges():
     public_key: PublicKeyBytes
@@ -472,11 +492,3 @@ class ValidatorChanges():
 class ValidatorStatusChange():
     era_id: EraID
     status_change: ValidatorStatusChangeType
-
-
-class ValidatorStatusChangeType(enum.Enum):
-    Added = 0
-    Removed = 1
-    Banned = 2
-    CannotPropose = 4
-    SeenAsFaulty = 3

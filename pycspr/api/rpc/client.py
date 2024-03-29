@@ -18,6 +18,7 @@ from pycspr.types.node.rpc import DeployHash
 from pycspr.types.node.rpc import DictionaryID
 from pycspr.types.node.rpc import EraSummary
 from pycspr.types.node.rpc import GlobalStateID
+from pycspr.types.node.rpc import NodePeer
 from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
@@ -190,6 +191,7 @@ class Client():
         """Returns consensus era summary information.
 
         :param block_id: Identifier of a block.
+        :param decode: Flag indicating whether to decode API response.
         :returns: Era summary information.
 
         """
@@ -207,18 +209,24 @@ class Client():
         # TODO: decode
         return await self.proxy.chain_get_era_info_by_switch_block(block_id)
 
-    async def get_node_peers(self) -> dict:
+    async def get_node_peers(
+        self,
+        decode: bool = True
+    ) -> typing.Union[typing.List[dict], typing.List[NodePeer]]:
         """Returns node peer information.
 
+        :param decode: Flag indicating whether to decode API response.
         :returns: Node peer information.
 
         """
-        # TODO: decode
-        return await self.proxy.info_get_peers()
+        obj: list = await self.proxy.info_get_peers()
+
+        return obj if decode is False else [decoder.decode(i, NodePeer) for i in obj]
 
     async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
 
+        :param decode: Flag indicating whether to decode API response.
         :returns: Node status information.
 
         """

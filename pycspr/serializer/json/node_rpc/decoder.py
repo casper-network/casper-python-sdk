@@ -4,6 +4,7 @@ from pycspr.factory import create_public_key_from_account_key
 from pycspr.serializer.json.cl_value import decode as decode_cl_value
 from pycspr.types.crypto import Digest
 from pycspr.types.crypto import MerkleProofBytes
+from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import SignatureBytes
 from pycspr.types.node.rpc import Address
@@ -42,10 +43,14 @@ from pycspr.types.node.rpc import EraValidators
 from pycspr.types.node.rpc import EraValidatorWeight
 from pycspr.types.node.rpc import Gas
 from pycspr.types.node.rpc import GasPrice
+from pycspr.types.node.rpc import MinimalBlockInfo
 from pycspr.types.node.rpc import Motes
 from pycspr.types.node.rpc import NamedKey
+from pycspr.types.node.rpc import NodePeer
 from pycspr.types.node.rpc import NodeStatus
+from pycspr.types.node.rpc import NextUpgradeInfo
 from pycspr.types.node.rpc import ProtocolVersion
+from pycspr.types.node.rpc import ReactorState
 from pycspr.types.node.rpc import SeigniorageAllocation
 from pycspr.types.node.rpc import SeigniorageAllocationForDelegator
 from pycspr.types.node.rpc import SeigniorageAllocationForValidator
@@ -221,7 +226,7 @@ def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
 
 
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
-    def _decode_deploy_of_module_bytes(encoded) -> DeployOfModuleBytes:
+    def _decode_module_bytes(encoded) -> DeployOfModuleBytes:
         if "ModuleBytes" in encoded:
             encoded = encoded["ModuleBytes"]
 
@@ -230,7 +235,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             module_bytes=decode(encoded["module_bytes"], bytes),
             )
 
-    def _decode_deploy_of_stored_contract_by_hash(encoded) -> DeployOfStoredContractByHash:
+    def _decode_stored_contract_by_hash(encoded) -> DeployOfStoredContractByHash:
         if "StoredContractByHash" in encoded:
             encoded = encoded["StoredContractByHash"]
 
@@ -240,7 +245,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             hash=decode(encoded["hash"], Digest),
         )
 
-    def _decode_deploy_of_stored_contract_by_hash_versioned(encoded) -> DeployOfStoredContractByHashVersioned:
+    def _decode_stored_contract_by_hash_versioned(encoded) -> DeployOfStoredContractByHashVersioned:
         if "StoredVersionedContractByHash" in encoded:
             encoded = encoded["StoredVersionedContractByHash"]
 
@@ -251,7 +256,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             version=decode(encoded["version"], int),
         )
 
-    def _decode_deploy_of_stored_contract_by_name(encoded) -> DeployOfStoredContractByName:
+    def _decode_stored_contract_by_name(encoded) -> DeployOfStoredContractByName:
         if "StoredContractByName" in encoded:
             encoded = encoded["StoredContractByName"]
 
@@ -261,7 +266,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             name=decode(encoded["name"], str),
         )
 
-    def _decode_deploy_of_stored_contract_by_name_versioned(encoded) -> DeployOfStoredContractByNameVersioned:
+    def _decode_stored_contract_by_name_versioned(encoded) -> DeployOfStoredContractByNameVersioned:
         if "StoredVersionedContractByName" in encoded:
             encoded = encoded["StoredVersionedContractByName"]
 
@@ -272,7 +277,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             version=decode(encoded["version"], int),
         )
 
-    def _decode_deploy_of_transfer(encoded) -> DeployOfTransfer:
+    def _decode_transfer(encoded) -> DeployOfTransfer:
         if "Transfer" in encoded:
             encoded = encoded["Transfer"]
 
@@ -281,20 +286,20 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             )
 
     if "ModuleBytes" in encoded:
-        decoder = _decode_deploy_of_module_bytes
+        decoder = _decode_module_bytes
     elif "StoredContractByHash" in encoded:
-        decoder = _decode_deploy_of_stored_contract_by_hash
+        decoder = _decode_stored_contract_by_hash
     elif "StoredVersionedContractByHash" in encoded:
-        decoder = _decode_deploy_of_stored_contract_by_hash_versioned
+        decoder = _decode_stored_contract_by_hash_versioned
     elif "StoredContractByName" in encoded:
-        decoder = _decode_deploy_of_stored_contract_by_name
+        decoder = _decode_stored_contract_by_name
     elif "StoredVersionedContractByName" in encoded:
-        decoder = _decode_deploy_of_stored_contract_by_name_versioned
+        decoder = _decode_stored_contract_by_name_versioned
     elif "Transfer" in encoded:
-        decoder = _decode_deploy_of_transfer
+        decoder = _decode_transfer
     else:
         raise NotImplementedError(f"Unsupported DeployExecutableItem variant: {encoded}")
-    
+
     return decoder(encoded)
 
 
@@ -354,6 +359,12 @@ def _decode_era_summary(encoded: dict) -> EraSummary:
     )
 
 
+def _decode_minimal_block_info(encoded: dict) -> MinimalBlockInfo:
+    return MinimalBlockInfo(
+        hash=decode(encoded["hash"], Digest),
+    )
+
+
 def _decode_named_key(encoded: dict) -> NamedKey:
     return NamedKey(
         key=decode(encoded["key"], str),
@@ -361,9 +372,35 @@ def _decode_named_key(encoded: dict) -> NamedKey:
     )
 
 
+def _decode_next_upgrade_info(encoded: dict) -> NextUpgradeInfo:
+    if encoded is not None:
+        return NextUpgradeInfo(
+            activation_point=decode(encoded["activation_point"], str),
+            protocol_version=decode(encoded["protocol_version"], str),
+        )
+
+
+def _decode_node_peer(encoded: dict) -> NodePeer:
+    return NodePeer(
+        address=decode(encoded["address"], str),
+        node_id=decode(encoded["node_id"], str),
+    )
+
+
 def _decode_node_status(encoded: dict) -> NodeStatus:
+    # TODO: decode round length correctly
     return NodeStatus(
         api_version=decode(encoded["api_version"], str),
+        build_version=decode(encoded["build_version"], str),
+        chainspec_name=decode(encoded["chainspec_name"], str),
+        last_added_block_info=decode(encoded["last_added_block_info"], MinimalBlockInfo),
+        next_upgrade=decode(encoded["next_upgrade"], NextUpgradeInfo),
+        our_public_signing_key=decode(encoded["our_public_signing_key"], PublicKeyBytes),
+        peers=[decode(i, NodePeer) for i in encoded["peers"]],
+        reactor_state=decode(encoded["reactor_state"], ReactorState),
+        round_length=decode(encoded["round_length"], str),
+        starting_state_root_hash=decode(encoded["starting_state_root_hash"], Digest),
+        uptime=decode(encoded["uptime"], str),
     )
 
 
@@ -429,14 +466,10 @@ def _decode_uref(encoded: str) -> URef:
     )
 
 
-def _decode_uref_access_rights(encoded: str) -> URefAccessRights:
-    return URefAccessRights(int(encoded))
-
-
 def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
     return ValidatorStatusChange(
         era_id=decode(encoded["era_id"], EraID),
-        status_change=ValidatorStatusChangeType[encoded["validator_change"]]
+        status_change=ValidatorStatusChangeType(encoded["validator_change"])
     )
 
 
@@ -464,7 +497,9 @@ _DECODERS = {
     PublicKeyBytes: lambda x: decode(x, bytes),
     MerkleProofBytes: lambda x: decode(x, bytes),
     Motes: lambda x: decode(x, int),
+    ReactorState: lambda x: ReactorState(x),
     SignatureBytes: lambda x: decode(x, bytes),
+    URefAccessRights: lambda x: URefAccessRights(int(x)),
     Weight: lambda x: decode(x, int),
     WasmModule: lambda x: decode(x, bytes),
 } | {
@@ -497,14 +532,16 @@ _DECODERS = {
     EraValidators: _decode_era_validators,
     EraValidatorWeight: _decode_era_validator_weight,
     EraSummary: _decode_era_summary,
+    MinimalBlockInfo: _decode_minimal_block_info,
     NamedKey: _decode_named_key,
+    NodePeer: _decode_node_peer,
     NodeStatus: _decode_node_status,
+    NextUpgradeInfo: _decode_next_upgrade_info,
     ProtocolVersion: _decode_protocol_version,
     SeigniorageAllocation: _decode_seigniorage_allocation,
     Timestamp: _decode_timestamp,
     Transfer: _decode_transfer,
     URef: _decode_uref,
-    URefAccessRights: _decode_uref_access_rights,
     ValidatorChanges: _decode_validator_changes,
     ValidatorStatusChange: _decode_validator_status_change,
 }
