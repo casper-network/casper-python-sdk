@@ -66,12 +66,12 @@ class PurseIDType(enum.Enum):
 
 
 class ReactorState(enum.Enum):
-   INITIALIZE = "Initialize"
-   CATCH_UP = "CatchUp"
-   UPGRADING = "Upgrading"
-   KEEP_UP = "KeepUp"
-   VALIDATE = "Validate"
-   SHUTDOWN_FOR_UPGRADE = "ShutdownForUpgrade"
+    INITIALIZE = "Initialize"
+    CATCH_UP = "CatchUp"
+    UPGRADING = "Upgrading"
+    KEEP_UP = "KeepUp"
+    VALIDATE = "Validate"
+    SHUTDOWN_FOR_UPGRADE = "ShutdownForUpgrade"
 
 
 class URefAccessRights(enum.Enum):

@@ -16,6 +16,7 @@ from pycspr.types.node.rpc import AuctionBidByDelegator
 from pycspr.types.node.rpc import AuctionBidByValidator
 from pycspr.types.node.rpc import AuctionBidByValidatorInfo
 from pycspr.types.node.rpc import AuctionState
+from pycspr.types.node.rpc import AuctionStateEraValidators
 from pycspr.types.node.rpc import Block
 from pycspr.types.node.rpc import BlockBody
 from pycspr.types.node.rpc import BlockHeader
@@ -37,10 +38,10 @@ from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import DeployTimeToLive
 from pycspr.types.node.rpc import EraID
-from pycspr.types.node.rpc import EraInfo
+from pycspr.types.node.rpc import EraEnd
+from pycspr.types.node.rpc import EraEndReport
 from pycspr.types.node.rpc import EraSummary
-from pycspr.types.node.rpc import EraValidators
-from pycspr.types.node.rpc import EraValidatorWeight
+from pycspr.types.node.rpc import EraSummaryInfo
 from pycspr.types.node.rpc import Gas
 from pycspr.types.node.rpc import GasPrice
 from pycspr.types.node.rpc import MinimalBlockInfo
@@ -59,8 +60,10 @@ from pycspr.types.node.rpc import Timestamp
 from pycspr.types.node.rpc import URef
 from pycspr.types.node.rpc import URefAccessRights
 from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.types.node.rpc import ValidatorReward
 from pycspr.types.node.rpc import ValidatorStatusChange
 from pycspr.types.node.rpc import ValidatorStatusChangeType
+from pycspr.types.node.rpc import ValidatorWeight
 from pycspr.types.node.rpc import WasmModule
 from pycspr.types.node.rpc import Weight
 from pycspr.utils import constants
@@ -145,7 +148,7 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
     return AuctionState(
         bids=[decode(i, AuctionBidByValidator) for i in encoded["bids"]],
         block_height=decode(encoded["block_height"], BlockHeight),
-        era_validators=[decode(i, EraValidators) for i in encoded["era_validators"]],
+        era_validators=[decode(i, AuctionStateEraValidators) for i in encoded["era_validators"]],
         state_root=decode(encoded["state_root_hash"], Digest),
     )
 
@@ -171,6 +174,7 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
     return BlockHeader(
         accumulated_seed=decode(encoded["accumulated_seed"], bytes),
         body_hash=decode(encoded["body_hash"], Digest),
+        era_end=decode(encoded["era_end"], EraEnd),
         era_id=decode(encoded["era_id"], EraID),
         height=decode(encoded["height"], BlockHeight),
         parent_hash=decode(encoded["parent_hash"], Digest),
@@ -327,25 +331,26 @@ def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(as_ms, encoded)
 
 
-def _decode_era_info(encoded: dict) -> EraInfo:
-    return EraInfo(
-        seigniorage_allocations=[
-            decode(i, SeigniorageAllocation) for i in encoded["seigniorage_allocations"]
-            ]
+def _decode_era_end(encoded: typing.Union[None, dict]) -> typing.Optional[EraEnd]:
+    if encoded is not None:
+        return EraEnd(
+            era_report=decode(encoded["era_report"], EraEndReport),
+            next_era_validator_weights=[decode(i, ValidatorWeight) for i in encoded["next_era_validator_weights"]]
+        )
+
+
+def _decode_era_end_report(encoded: dict) -> EraEndReport:
+    return EraEndReport(
+        equivocators=[decode(i, PublicKeyBytes) for i in encoded["equivocators"]],
+        rewards=[decode(i, ValidatorReward) for i in encoded["rewards"]],
+        inactive_validators=[decode(i, PublicKeyBytes) for i in encoded["inactive_validators"]],
     )
 
 
-def _decode_era_validators(encoded: dict) -> EraValidators:
-    return EraValidators(
+def _decode_auction_state_era_validators(encoded: dict) -> AuctionStateEraValidators:
+    return AuctionStateEraValidators(
         era_id=decode(encoded["era_id"], EraID),
-        validator_weights=[decode(i, EraValidatorWeight) for i in encoded["validator_weights"]]
-    )
-
-
-def _decode_era_validator_weight(encoded: dict) -> EraValidatorWeight:
-    return EraValidatorWeight(
-        public_key=decode(encoded["public_key"], PublicKeyBytes),
-        weight=decode(encoded["weight"], Weight)
+        validator_weights=[decode(i, ValidatorWeight) for i in encoded["validator_weights"]]
     )
 
 
@@ -353,9 +358,17 @@ def _decode_era_summary(encoded: dict) -> EraSummary:
     return EraSummary(
         block_hash=decode(encoded["block_hash"], Digest),
         era_id=decode(encoded["era_id"], EraID),
-        era_info=decode(encoded["stored_value"]["EraInfo"], EraInfo),
+        era_info=decode(encoded["stored_value"]["EraInfo"], EraSummaryInfo),
         merkle_proof=decode(encoded["merkle_proof"], MerkleProofBytes),
         state_root=decode(encoded["state_root_hash"], Digest),
+    )
+
+
+def _decode_era_summary_info(encoded: dict) -> EraSummaryInfo:
+    return EraSummaryInfo(
+        seigniorage_allocations=[
+            decode(i, SeigniorageAllocation) for i in encoded["seigniorage_allocations"]
+            ]
     )
 
 
@@ -405,12 +418,12 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
 
 
 def _decode_protocol_version(encoded: str) -> ProtocolVersion:
-    major, minor, revision = encoded.split(".")
+    major, minor, revision = [int(i) for i in encoded.split(".")]
 
     return ProtocolVersion(
-        major=int(major),
-        minor=int(minor),
-        revision=int(revision)
+        major=major,
+        minor=minor,
+        revision=revision
         )
 
 
@@ -434,11 +447,6 @@ def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
         return decode_validator_seigniorage_allocation(encoded["Validator"])
     else:
         raise ValueError("decode_seigniorage_allocation")
-
-
-def _decode_stored_value(encoded: dict) -> typing.Union[EraInfo]:
-    if "EraInfo" in encoded:
-        _decode_era_info(encoded["EraInfo"])
 
 
 def _decode_timestamp(encoded: str) -> Timestamp:
@@ -466,6 +474,20 @@ def _decode_uref(encoded: str) -> URef:
     )
 
 
+def _decode_validator_changes(encoded: list) -> ValidatorChanges:
+    return ValidatorChanges(
+        public_key=decode(encoded["public_key"], PublicKeyBytes),
+        status_changes=[decode(i, ValidatorStatusChange) for i in encoded["status_changes"]],
+    )
+
+
+def _decode_validator_reward(encoded: dict) -> ValidatorReward:
+    return ValidatorReward(
+        amount=decode(encoded["amount"], Motes),
+        validator=decode(encoded["validator"], PublicKeyBytes),
+    )
+
+
 def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
     return ValidatorStatusChange(
         era_id=decode(encoded["era_id"], EraID),
@@ -473,10 +495,10 @@ def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
     )
 
 
-def _decode_validator_changes(encoded: list) -> ValidatorChanges:
-    return ValidatorChanges(
-        public_key=decode(encoded["public_key"], PublicKeyBytes),
-        status_changes=[decode(i, ValidatorStatusChange) for i in encoded["status_changes"]],
+def _decode_validator_weight(encoded: dict) -> ValidatorWeight:
+    return ValidatorWeight(
+        validator=decode(encoded.get("public_key", encoded["validator"]), PublicKeyBytes),
+        weight=decode(encoded["weight"], Weight)
     )
 
 
@@ -510,6 +532,7 @@ _DECODERS = {
     AuctionBidByValidator: _decode_auction_bid_by_validator,
     AuctionBidByValidatorInfo: _decode_auction_bid_by_validator_info,
     AuctionState: _decode_auction_state,
+    AuctionStateEraValidators: _decode_auction_state_era_validators,
     Block: _decode_block,
     BlockBody: _decode_block_body,
     BlockHeader: _decode_block_header,
@@ -528,10 +551,10 @@ _DECODERS = {
     DeployOfStoredContractByNameVersioned: _decode_deploy_executable_item,
     DeployOfTransfer: _decode_deploy_executable_item,
     DeployTimeToLive: _decode_deploy_time_to_live,
-    EraInfo: _decode_era_info,
-    EraValidators: _decode_era_validators,
-    EraValidatorWeight: _decode_era_validator_weight,
+    EraEnd: _decode_era_end,
+    EraEndReport: _decode_era_end_report,
     EraSummary: _decode_era_summary,
+    EraSummaryInfo: _decode_era_summary_info,
     MinimalBlockInfo: _decode_minimal_block_info,
     NamedKey: _decode_named_key,
     NodePeer: _decode_node_peer,
@@ -543,5 +566,7 @@ _DECODERS = {
     Transfer: _decode_transfer,
     URef: _decode_uref,
     ValidatorChanges: _decode_validator_changes,
+    ValidatorReward: _decode_validator_reward,
     ValidatorStatusChange: _decode_validator_status_change,
+    ValidatorWeight: _decode_validator_weight,
 }

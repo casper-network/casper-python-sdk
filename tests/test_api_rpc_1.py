@@ -23,9 +23,12 @@ async def test_get_rpc_endpoint(RPC_CLIENT: NodeRpcClient):
 
 
 async def test_get_chainspec(RPC_CLIENT: NodeRpcClient):
-    data = await RPC_CLIENT.get_chainspec()
+    data = await RPC_CLIENT.get_chainspec(decode=False)
 
     assert isinstance(data, dict)
-    assert "chainspec_bytes" in data
-    assert "maybe_genesis_accounts_bytes" in data
-    assert "maybe_global_state_bytes" in data
+    for field in {
+        "chainspec_bytes",
+        "maybe_genesis_accounts_bytes",
+        "maybe_global_state_bytes",
+    }:
+        assert field in data

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-import enum
 import typing
 
 from pycspr import crypto
@@ -79,8 +78,14 @@ class AuctionBidByValidatorInfo():
 class AuctionState():
     bids: typing.List[AuctionBidByValidator]
     block_height: BlockHeight
-    era_validators: EraValidators
+    era_validators: AuctionStateEraValidators
     state_root: StateRootHash
+
+
+@dataclasses.dataclass
+class AuctionStateEraValidators():
+    era_id: EraID
+    validator_weights: typing.List[ValidatorWeight]
 
 
 @dataclasses.dataclass
@@ -102,6 +107,7 @@ class BlockBody():
 class BlockHeader():
     accumulated_seed: bytes
     body_hash: Digest
+    era_end: typing.Optional[EraEnd]
     era_id: EraID
     height: BlockHeight
     parent_hash: BlockHash
@@ -373,29 +379,30 @@ class DictionaryID_UniqueKey(DictionaryID):
 
 
 @dataclasses.dataclass
-class EraInfo():
-    seigniorage_allocations: typing.List[SeigniorageAllocation]
+class EraEnd():
+    era_report: EraEndReport
+    next_era_validator_weights: typing.List[ValidatorWeight]
+
+
+@dataclasses.dataclass
+class EraEndReport():
+    equivocators: typing.List[PublicKeyBytes]
+    rewards: typing.List[ValidatorReward]
+    inactive_validators: typing.List[PublicKeyBytes]
 
 
 @dataclasses.dataclass
 class EraSummary():
     block_hash: BlockHash
     era_id: EraID
-    era_info: EraInfo
+    era_info: EraSummaryInfo
     merkle_proof: MerkleProofBytes
     state_root: Digest
 
 
 @dataclasses.dataclass
-class EraValidators():
-    era_id: EraID
-    validator_weights: typing.List[EraValidatorWeight]
-
-
-@dataclasses.dataclass
-class EraValidatorWeight():
-    public_key: PublicKeyBytes
-    weight: Weight
+class EraSummaryInfo():
+    seigniorage_allocations: typing.List[SeigniorageAllocation]
 
 
 @dataclasses.dataclass
@@ -489,6 +496,18 @@ class ValidatorChanges():
 
 
 @dataclasses.dataclass
+class ValidatorReward():
+    amount: Motes
+    validator: PublicKeyBytes
+
+
+@dataclasses.dataclass
 class ValidatorStatusChange():
     era_id: EraID
     status_change: ValidatorStatusChangeType
+
+
+@dataclasses.dataclass
+class ValidatorWeight():
+    validator: PublicKeyBytes
+    weight: Weight

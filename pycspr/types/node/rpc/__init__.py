@@ -5,6 +5,7 @@ from pycspr.types.node.rpc.complex import AuctionBidByDelegator
 from pycspr.types.node.rpc.complex import AuctionBidByValidator
 from pycspr.types.node.rpc.complex import AuctionBidByValidatorInfo
 from pycspr.types.node.rpc.complex import AuctionState
+from pycspr.types.node.rpc.complex import AuctionStateEraValidators
 from pycspr.types.node.rpc.complex import Block
 from pycspr.types.node.rpc.complex import BlockBody
 from pycspr.types.node.rpc.complex import BlockHeader
@@ -31,10 +32,10 @@ from pycspr.types.node.rpc.complex import DictionaryID_AccountNamedKey
 from pycspr.types.node.rpc.complex import DictionaryID_ContractNamedKey
 from pycspr.types.node.rpc.complex import DictionaryID_SeedURef
 from pycspr.types.node.rpc.complex import DictionaryID_UniqueKey
-from pycspr.types.node.rpc.complex import EraInfo
-from pycspr.types.node.rpc.complex import EraValidators
-from pycspr.types.node.rpc.complex import EraValidatorWeight
+from pycspr.types.node.rpc.complex import EraEnd
+from pycspr.types.node.rpc.complex import EraEndReport
 from pycspr.types.node.rpc.complex import EraSummary
+from pycspr.types.node.rpc.complex import EraSummaryInfo
 from pycspr.types.node.rpc.complex import MinimalBlockInfo
 from pycspr.types.node.rpc.complex import NamedKey
 from pycspr.types.node.rpc.complex import NextUpgradeInfo
@@ -48,7 +49,9 @@ from pycspr.types.node.rpc.complex import Timestamp
 from pycspr.types.node.rpc.complex import Transfer
 from pycspr.types.node.rpc.complex import URef
 from pycspr.types.node.rpc.complex import ValidatorChanges
+from pycspr.types.node.rpc.complex import ValidatorReward
 from pycspr.types.node.rpc.complex import ValidatorStatusChange
+from pycspr.types.node.rpc.complex import ValidatorWeight
 
 from pycspr.types.node.rpc.simple import AccountKey
 from pycspr.types.node.rpc.simple import Address

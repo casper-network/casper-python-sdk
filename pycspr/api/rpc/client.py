@@ -82,7 +82,7 @@ class Client():
         self,
         account_id: Address,
         block_id: BlockID = None,
-        decode=False
+        decode: bool = True
     ) -> typing.Union[dict, AccountInfo]:
         """Returns account information at a certain global state root hash.
 
@@ -113,7 +113,7 @@ class Client():
     async def get_block(
         self,
         block_id: BlockID = None,
-        decode=False
+        decode: bool = True
     ) -> typing.Union[dict, Block]:
         """Returns on-chain block information.
 
@@ -148,7 +148,6 @@ class Client():
         :returns: Chain spec, genesis accounts and global state information.
 
         """
-        # TODO: decode
         return await self.proxy.info_get_chainspec()
 
     async def get_deploy(
@@ -199,15 +198,19 @@ class Client():
 
         return obj if decode is False else decoder.decode(obj, EraSummary)
 
-    async def get_era_info_by_switch_block(self, block_id: BlockID = None) -> dict:
+    async def get_era_info_by_switch_block(self, block_id: BlockID = None, decode: bool = True) -> dict:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
+        :param decode: Flag indicating whether to decode API response.
         :returns: Era information.
 
         """
-        # TODO: decode
-        return await self.proxy.chain_get_era_info_by_switch_block(block_id)
+        encoded: dict = await self.proxy.chain_get_era_info_by_switch_block(block_id)
+
+        return encoded
+
+        return encoded if decode is False else decoder.decode(encoded, EraSummary)
 
     async def get_node_peers(
         self,
@@ -240,7 +243,6 @@ class Client():
         :returns: Node JSON-RPC API schema.
 
         """
-        # TODO: decode
         return await self.proxy.discover()
 
     async def get_state_item(
