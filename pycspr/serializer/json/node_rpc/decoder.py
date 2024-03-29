@@ -4,7 +4,6 @@ from pycspr.factory import create_public_key_from_account_key
 from pycspr.serializer.json.cl_value import decode as decode_cl_value
 from pycspr.types.crypto import Digest
 from pycspr.types.crypto import MerkleProofBytes
-from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import SignatureBytes
 from pycspr.types.node.rpc import Address
@@ -230,7 +229,7 @@ def _decode_deploy_execution_info(encoded: list) -> DeployExecutionInfo:
 
 
 def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
-    def _decode_module_bytes(encoded) -> DeployOfModuleBytes:
+    def _decode_module_bytes(encoded: dict) -> DeployOfModuleBytes:
         if "ModuleBytes" in encoded:
             encoded = encoded["ModuleBytes"]
 
@@ -239,7 +238,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             module_bytes=decode(encoded["module_bytes"], bytes),
             )
 
-    def _decode_stored_contract_by_hash(encoded) -> DeployOfStoredContractByHash:
+    def _decode_stored_contract_by_hash(encoded: dict) -> DeployOfStoredContractByHash:
         if "StoredContractByHash" in encoded:
             encoded = encoded["StoredContractByHash"]
 
@@ -249,7 +248,9 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             hash=decode(encoded["hash"], Digest),
         )
 
-    def _decode_stored_contract_by_hash_versioned(encoded) -> DeployOfStoredContractByHashVersioned:
+    def _decode_stored_contract_by_hash_versioned(
+        encoded: dict
+    ) -> DeployOfStoredContractByHashVersioned:
         if "StoredVersionedContractByHash" in encoded:
             encoded = encoded["StoredVersionedContractByHash"]
 
@@ -260,7 +261,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             version=decode(encoded["version"], int),
         )
 
-    def _decode_stored_contract_by_name(encoded) -> DeployOfStoredContractByName:
+    def _decode_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
         if "StoredContractByName" in encoded:
             encoded = encoded["StoredContractByName"]
 
@@ -270,7 +271,9 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             name=decode(encoded["name"], str),
         )
 
-    def _decode_stored_contract_by_name_versioned(encoded) -> DeployOfStoredContractByNameVersioned:
+    def _decode_stored_contract_by_name_versioned(
+        encoded: dict
+    ) -> DeployOfStoredContractByNameVersioned:
         if "StoredVersionedContractByName" in encoded:
             encoded = encoded["StoredVersionedContractByName"]
 
@@ -281,7 +284,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             version=decode(encoded["version"], int),
         )
 
-    def _decode_transfer(encoded) -> DeployOfTransfer:
+    def _decode_transfer(encoded: dict) -> DeployOfTransfer:
         if "Transfer" in encoded:
             encoded = encoded["Transfer"]
 
@@ -335,7 +338,9 @@ def _decode_era_end(encoded: typing.Union[None, dict]) -> typing.Optional[EraEnd
     if encoded is not None:
         return EraEnd(
             era_report=decode(encoded["era_report"], EraEndReport),
-            next_era_validator_weights=[decode(i, ValidatorWeight) for i in encoded["next_era_validator_weights"]]
+            next_era_validator_weights=[
+                decode(i, ValidatorWeight) for i in encoded["next_era_validator_weights"]
+            ]
         )
 
 

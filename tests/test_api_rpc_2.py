@@ -12,7 +12,7 @@ async def test_get_node_peers(RPC_CLIENT: NodeRpcClient):
     for item in data:
         assert isinstance(item, dict)
 
-    data: typing.List[NodePeer]  = await RPC_CLIENT.get_node_peers(decode=True)
+    data: typing.List[NodePeer] = await RPC_CLIENT.get_node_peers(decode=True)
     assert isinstance(data, list)
     for item in data:
         assert isinstance(item, NodePeer)

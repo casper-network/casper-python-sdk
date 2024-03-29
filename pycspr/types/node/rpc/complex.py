@@ -11,7 +11,6 @@ from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import SignatureBytes
-from pycspr.types.node.rpc.simple import AccountKey
 from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight

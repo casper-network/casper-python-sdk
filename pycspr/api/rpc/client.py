@@ -91,9 +91,9 @@ class Client():
         :returns: Account information in JSON format.
 
         """
-        obj: dict = await self.proxy.state_get_account_info(account_id, block_id)
+        encoded: dict = await self.proxy.state_get_account_info(account_id, block_id)
 
-        return obj if decode is False else decoder.decode(obj, AccountInfo)
+        return encoded if decode is False else decoder.decode(encoded, AccountInfo)
 
     async def get_auction_info(
         self,
@@ -106,9 +106,9 @@ class Client():
         :returns: Current auction system contract information.
 
         """
-        obj: dict = await self.proxy.state_get_auction_info(block_id)
+        encoded: dict = await self.proxy.state_get_auction_info(block_id)
 
-        return obj if decode is False else decoder.decode(obj, AuctionState)
+        return encoded if decode is False else decoder.decode(encoded, AuctionState)
 
     async def get_block(
         self,
@@ -122,9 +122,9 @@ class Client():
         :returns: On-chain block information.
 
         """
-        obj: dict = await self.proxy.chain_get_block(block_id)
+        encoded: dict = await self.proxy.chain_get_block(block_id)
 
-        return obj if decode is False else decoder.decode(obj, Block)
+        return encoded if decode is False else decoder.decode(encoded, Block)
 
     async def get_block_transfers(
         self,
@@ -138,9 +138,9 @@ class Client():
         :returns: On-chain block transfers information.
 
         """
-        obj: dict = await self.proxy.chain_get_block_transfers(block_id)
+        encoded: dict = await self.proxy.chain_get_block_transfers(block_id)
 
-        return obj if decode is False else decoder.decode(obj, BlockTransfers)
+        return encoded if decode is False else decoder.decode(encoded, BlockTransfers)
 
     async def get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -162,10 +162,10 @@ class Client():
         :returns: On-chain deploy information.
 
         """
-        obj: dict = await self.proxy.info_get_deploy(deploy_hash)
-        obj["deploy"]["execution_info"] = obj.get("execution_results", None)
+        encoded: dict = await self.proxy.info_get_deploy(deploy_hash)
+        encoded["deploy"]["execution_info"] = encoded.get("execution_results", None)
 
-        return obj["deploy"] if decode is False else decoder.decode(obj["deploy"], Deploy)
+        return encoded["deploy"] if decode is False else decoder.decode(encoded["deploy"], Deploy)
 
     async def get_dictionary_item(
         self,
@@ -194,11 +194,15 @@ class Client():
         :returns: Era summary information.
 
         """
-        obj: dict = await self.proxy.chain_get_era_summary(block_id)
+        encoded: dict = await self.proxy.chain_get_era_summary(block_id)
 
-        return obj if decode is False else decoder.decode(obj, EraSummary)
+        return encoded if decode is False else decoder.decode(encoded, EraSummary)
 
-    async def get_era_info_by_switch_block(self, block_id: BlockID = None, decode: bool = True) -> dict:
+    async def get_era_info_by_switch_block(
+        self,
+        block_id: BlockID = None,
+        decode: bool = True
+    ) -> dict:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
@@ -207,8 +211,6 @@ class Client():
 
         """
         encoded: dict = await self.proxy.chain_get_era_info_by_switch_block(block_id)
-
-        return encoded
 
         return encoded if decode is False else decoder.decode(encoded, EraSummary)
 
@@ -222,9 +224,9 @@ class Client():
         :returns: Node peer information.
 
         """
-        obj: list = await self.proxy.info_get_peers()
+        encoded: list = await self.proxy.info_get_peers()
 
-        return obj if decode is False else [decoder.decode(i, NodePeer) for i in obj]
+        return encoded if decode is False else [decoder.decode(i, NodePeer) for i in encoded]
 
     async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
@@ -233,9 +235,9 @@ class Client():
         :returns: Node status information.
 
         """
-        obj: dict = await self.proxy.info_get_status()
+        encoded: dict = await self.proxy.info_get_status()
 
-        return obj if decode is False else decoder.decode(obj, NodeStatus)
+        return encoded if decode is False else decoder.decode(encoded, NodeStatus)
 
     async def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
