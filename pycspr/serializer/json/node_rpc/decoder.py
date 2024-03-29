@@ -17,17 +17,20 @@ from pycspr.types.node.rpc import AuctionBidByValidatorInfo
 from pycspr.types.node.rpc import AuctionState
 from pycspr.types.node.rpc import AuctionStateEraValidators
 from pycspr.types.node.rpc import Block
+from pycspr.types.node.rpc import BlockHash
 from pycspr.types.node.rpc import BlockBody
 from pycspr.types.node.rpc import BlockHeader
 from pycspr.types.node.rpc import BlockHeight
 from pycspr.types.node.rpc import BlockSignature
 from pycspr.types.node.rpc import BlockTransfers
+from pycspr.types.node.rpc import ContractID
 from pycspr.types.node.rpc import ContractVersion
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
 from pycspr.types.node.rpc import DeployExecutionInfo
 from pycspr.types.node.rpc import DeployExecutableItem
+from pycspr.types.node.rpc import DeployHash
 from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.node.rpc import DeployOfModuleBytes
 from pycspr.types.node.rpc import DeployOfStoredContractByHash
@@ -54,6 +57,7 @@ from pycspr.types.node.rpc import ReactorState
 from pycspr.types.node.rpc import SeigniorageAllocation
 from pycspr.types.node.rpc import SeigniorageAllocationForDelegator
 from pycspr.types.node.rpc import SeigniorageAllocationForValidator
+from pycspr.types.node.rpc import StateRootHash
 from pycspr.types.node.rpc import Transfer
 from pycspr.types.node.rpc import Timestamp
 from pycspr.types.node.rpc import URef
@@ -148,14 +152,21 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
         bids=[decode(i, AuctionBidByValidator) for i in encoded["bids"]],
         block_height=decode(encoded["block_height"], BlockHeight),
         era_validators=[decode(i, AuctionStateEraValidators) for i in encoded["era_validators"]],
-        state_root=decode(encoded["state_root_hash"], Digest),
+        state_root=decode(encoded["state_root_hash"], StateRootHash),
+    )
+
+
+def _decode_auction_state_era_validators(encoded: dict) -> AuctionStateEraValidators:
+    return AuctionStateEraValidators(
+        era_id=decode(encoded["era_id"], EraID),
+        validator_weights=[decode(i, ValidatorWeight) for i in encoded["validator_weights"]]
     )
 
 
 def _decode_block(encoded: dict) -> Block:
     return Block(
         body=decode(encoded["body"], BlockBody),
-        hash=decode(encoded["hash"], Digest),
+        hash=decode(encoded["hash"], BlockHash),
         header=decode(encoded["header"], BlockHeader),
         proofs=[decode(i, BlockSignature) for i in encoded["proofs"]],
     )
@@ -164,8 +175,8 @@ def _decode_block(encoded: dict) -> Block:
 def _decode_block_body(encoded: dict) -> BlockBody:
     return BlockBody(
         proposer=decode(encoded["proposer"], PublicKeyBytes),
-        deploy_hashes=[decode(i, Digest) for i in encoded["deploy_hashes"]],
-        transfer_hashes=[decode(i, Digest) for i in encoded["transfer_hashes"]],
+        deploy_hashes=[decode(i, DeployHash) for i in encoded["deploy_hashes"]],
+        transfer_hashes=[decode(i, DeployHash) for i in encoded["transfer_hashes"]],
     )
 
 
@@ -176,10 +187,10 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
         era_end=decode(encoded["era_end"], EraEnd),
         era_id=decode(encoded["era_id"], EraID),
         height=decode(encoded["height"], BlockHeight),
-        parent_hash=decode(encoded["parent_hash"], Digest),
+        parent_hash=decode(encoded["parent_hash"], BlockHash),
         protocol_version=decode(encoded["protocol_version"], ProtocolVersion),
         random_bit=decode(encoded["random_bit"], bool),
-        state_root=decode(encoded["state_root_hash"], Digest),
+        state_root=decode(encoded["state_root_hash"], StateRootHash),
         )
 
 
@@ -192,7 +203,7 @@ def _decode_block_signature(encoded: dict) -> BlockSignature:
 
 def _decode_block_transfers(encoded: dict) -> BlockTransfers:
     return BlockTransfers(
-        block_hash=decode(encoded["block_hash"], Digest),
+        block_hash=decode(encoded["block_hash"], BlockHash),
         transfers=[decode(i, Transfer) for i in encoded["transfers"]],
     )
 
@@ -200,7 +211,7 @@ def _decode_block_transfers(encoded: dict) -> BlockTransfers:
 def _decode_deploy(encoded: dict) -> Deploy:
     return Deploy(
         approvals=[decode(i, DeployApproval) for i in encoded["approvals"]],
-        hash=decode(encoded["hash"], Digest),
+        hash=decode(encoded["hash"], DeployHash),
         header=decode(encoded["header"], DeployHeader),
         payment=decode(encoded["payment"], DeployExecutableItem),
         session=decode(encoded["session"], DeployExecutableItem)
@@ -245,7 +256,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
         return DeployOfStoredContractByHash(
             args=[decode(i, DeployArgument) for i in encoded["args"]],
             entry_point=decode(encoded["entry_point"], str),
-            hash=decode(encoded["hash"], Digest),
+            hash=decode(encoded["hash"], ContractID),
         )
 
     def _decode_stored_contract_by_hash_versioned(
@@ -257,8 +268,8 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
         return DeployOfStoredContractByHashVersioned(
             args=[decode(i, DeployArgument) for i in encoded["args"]],
             entry_point=decode(encoded["entry_point"], str),
-            hash=decode(encoded["hash"], Digest),
-            version=decode(encoded["version"], int),
+            hash=decode(encoded["hash"], ContractID),
+            version=decode(encoded["version"], ContractVersion),
         )
 
     def _decode_stored_contract_by_name(encoded: dict) -> DeployOfStoredContractByName:
@@ -281,7 +292,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
             args=[decode(i, DeployArgument) for i in encoded["args"]],
             entry_point=decode(encoded["entry_point"], str),
             name=decode(encoded["name"], str),
-            version=decode(encoded["version"], int),
+            version=decode(encoded["version"], ContractVersion),
         )
 
     def _decode_transfer(encoded: dict) -> DeployOfTransfer:
@@ -352,20 +363,13 @@ def _decode_era_end_report(encoded: dict) -> EraEndReport:
     )
 
 
-def _decode_auction_state_era_validators(encoded: dict) -> AuctionStateEraValidators:
-    return AuctionStateEraValidators(
-        era_id=decode(encoded["era_id"], EraID),
-        validator_weights=[decode(i, ValidatorWeight) for i in encoded["validator_weights"]]
-    )
-
-
 def _decode_era_summary(encoded: dict) -> EraSummary:
     return EraSummary(
-        block_hash=decode(encoded["block_hash"], Digest),
+        block_hash=decode(encoded["block_hash"], BlockHash),
         era_id=decode(encoded["era_id"], EraID),
         era_info=decode(encoded["stored_value"]["EraInfo"], EraSummaryInfo),
         merkle_proof=decode(encoded["merkle_proof"], MerkleProofBytes),
-        state_root=decode(encoded["state_root_hash"], Digest),
+        state_root=decode(encoded["state_root_hash"], StateRootHash),
     )
 
 
@@ -379,7 +383,12 @@ def _decode_era_summary_info(encoded: dict) -> EraSummaryInfo:
 
 def _decode_minimal_block_info(encoded: dict) -> MinimalBlockInfo:
     return MinimalBlockInfo(
-        hash=decode(encoded["hash"], Digest),
+        creator=decode(encoded["creator"], PublicKeyBytes),
+        era_id=decode(encoded["era_id"], EraID),
+        hash=decode(encoded["hash"], BlockHash),
+        height=decode(encoded["height"], BlockHeight),
+        state_root=decode(encoded["state_root_hash"], StateRootHash),
+        timestamp=decode(encoded["timestamp"], Timestamp),
     )
 
 
@@ -417,7 +426,7 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
         peers=[decode(i, NodePeer) for i in encoded["peers"]],
         reactor_state=decode(encoded["reactor_state"], ReactorState),
         round_length=decode(encoded["round_length"], str),
-        starting_state_root_hash=decode(encoded["starting_state_root_hash"], Digest),
+        starting_state_root_hash=decode(encoded["starting_state_root_hash"], StateRootHash),
         uptime=decode(encoded["uptime"], str),
     )
 
@@ -461,7 +470,7 @@ def _decode_timestamp(encoded: str) -> Timestamp:
 def _decode_transfer(encoded: dict) -> Transfer:
     return Transfer(
         amount=decode(encoded["amount"], Motes),
-        deploy_hash=decode(encoded["deploy_hash"], Digest),
+        deploy_hash=decode(encoded["deploy_hash"], DeployHash),
         from_=decode(encoded["from"], Address),
         gas=decode(encoded["gas"], Gas),
         source=decode(encoded["source"], URef),
@@ -515,8 +524,11 @@ _DECODERS = {
 } | {
     AccountKey: lambda x: decode(x, bytes),
     Address: _decode_address,
+    BlockHash: lambda x: decode(x, Digest),
     BlockHeight: lambda x: decode(x, int),
+    ContractID:  lambda x: decode(x, bytes),
     ContractVersion: lambda x: decode(x, int),
+    DeployHash: lambda x: decode(x, Digest),
     Digest: lambda x: decode(x, bytes),
     EraID: lambda x: decode(x, int),
     Gas: lambda x: decode(x, int),
@@ -526,6 +538,7 @@ _DECODERS = {
     Motes: lambda x: decode(x, int),
     ReactorState: lambda x: ReactorState(x),
     SignatureBytes: lambda x: decode(x, bytes),
+    StateRootHash: lambda x: decode(x, Digest),
     URefAccessRights: lambda x: URefAccessRights(int(x)),
     Weight: lambda x: decode(x, int),
     WasmModule: lambda x: decode(x, bytes),

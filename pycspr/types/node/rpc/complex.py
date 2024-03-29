@@ -406,7 +406,12 @@ class EraSummaryInfo():
 
 @dataclasses.dataclass
 class MinimalBlockInfo():
-    hash: Digest
+    creator: PublicKeyBytes
+    era_id: EraID
+    hash: BlockHash
+    height: BlockHeight
+    state_root: StateRootHash
+    timestamp: Timestamp
 
 
 @dataclasses.dataclass
