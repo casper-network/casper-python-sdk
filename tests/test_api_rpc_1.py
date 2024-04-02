@@ -23,7 +23,7 @@ async def test_get_rpc_endpoint(RPC_CLIENT: NodeRpcClient):
 
 
 async def test_get_chainspec(RPC_CLIENT: NodeRpcClient):
-    data = await RPC_CLIENT.get_chainspec(decode=False)
+    data = await RPC_CLIENT.get_chainspec()
 
     assert isinstance(data, dict)
     for field in {

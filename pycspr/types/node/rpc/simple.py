@@ -2,7 +2,6 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.types.cl.values import CLV_URef
 from pycspr.types.crypto import Digest
 from pycspr.types.crypto import PublicKeyBytes
 
@@ -55,7 +54,7 @@ class GlobalStateIDType(enum.Enum):
 
 @dataclasses.dataclass
 class PurseID():
-    identifier: typing.Union[Address, PublicKeyBytes, CLV_URef]
+    identifier: typing.Union[Address, PublicKeyBytes, "URef"]
     id_type: "PurseIDType"
 
 

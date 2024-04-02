@@ -1,5 +1,6 @@
 import datetime as dt
 
+from pycspr.crypto import checksummer
 from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_KeyType
 from pycspr.types.cl import CLV_PublicKey
@@ -7,6 +8,8 @@ from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
+from pycspr.types.node.rpc import AccountKey
+from pycspr.types.node.rpc import URef
 from pycspr.utils import constants
 
 
@@ -24,7 +27,7 @@ def clv_key_from_str(value: str) -> CLV_Key:
     return CLV_Key(identifier, key_type)
 
 
-def clv_public_key_from_account_key(value: bytes) -> CLV_PublicKey:
+def clv_public_key_from_account_key(value: AccountKey) -> CLV_PublicKey:
     return CLV_PublicKey(KeyAlgorithm(value[0]), value[1:])
 
 
@@ -116,3 +119,7 @@ def timestamp_from_iso_datetime(value: str) -> float:
         value = f"{value}+00:00"
 
     return dt.datetime.fromisoformat(value).timestamp()
+
+
+def str_from_uref(value: URef) -> URef:
+    return f"uref-{checksummer.encode_bytes(value.address)}-{value.access_rights.value:03}",

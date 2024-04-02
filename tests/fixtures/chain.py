@@ -1,19 +1,20 @@
 import pytest
 
 from pycspr import NodeRpcClient
-from pycspr.types.cl import CLV_URef
 from pycspr.types.crypto import Digest
 from pycspr.types.node.rpc import AccountKey
+from pycspr.types.node.rpc import Block
 from pycspr.types.node.rpc import GlobalStateID
 from pycspr.types.node.rpc import GlobalStateIDType
 from pycspr.types.node.rpc import StateRootHash
+from pycspr.types.node.rpc import URef
 
 
 @pytest.fixture(scope="session")
 async def account_main_purse_uref(
     RPC_CLIENT: NodeRpcClient,
     account_key: AccountKey
-) -> CLV_URef:
+) -> URef:
     """Returns an on-chain account's main purse unforgeable reference.
 
     """
@@ -21,7 +22,7 @@ async def account_main_purse_uref(
 
 
 @pytest.fixture(scope="session")
-async def block(RPC_CLIENT: NodeRpcClient) -> dict:
+async def block(RPC_CLIENT: NodeRpcClient) -> Block:
     """Returns most recent block.
 
     """
@@ -29,11 +30,11 @@ async def block(RPC_CLIENT: NodeRpcClient) -> dict:
 
 
 @pytest.fixture(scope="session")
-async def block_hash(block: dict) -> Digest:
+async def block_hash(block: Block) -> Digest:
     """Returns hash of most recent block.
 
     """
-    return block["hash"]
+    return block.hash
 
 
 @pytest.fixture(scope="session")
@@ -61,8 +62,8 @@ async def switch_block(RPC_CLIENT: NodeRpcClient) -> dict:
 
 
 @pytest.fixture(scope="session")
-async def switch_block_hash(switch_block: dict) -> Digest:
+async def switch_block_hash(switch_block: Block) -> Digest:
     """Returns hash of most recent switch block.
 
     """
-    return switch_block["hash"]
+    return switch_block.hash

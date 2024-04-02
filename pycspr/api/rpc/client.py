@@ -5,7 +5,6 @@ from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.serializer.json.node_rpc import decoder
 from pycspr.types.cl import CLV_Key
-from pycspr.types.cl import CLV_URef
 from pycspr.types.crypto import Digest
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
@@ -23,6 +22,8 @@ from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
 from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.types.node.rpc import URef
+from pycspr.types.node.rpc import URefAccessRights
 from pycspr.utils import convertor
 
 
@@ -202,7 +203,7 @@ class Client():
         self,
         block_id: BlockID = None,
         decode: bool = True
-    ) -> dict:
+    ) -> typing.Union[dict, EraSummary]:
         """Returns consensus era information scoped by block id.
 
         :param block_id: Identifier of a block.
@@ -330,7 +331,7 @@ class ClientExtensions():
         self,
         account_id: Address,
         block_id: BlockID = None
-    ) -> CLV_URef:
+    ) -> URef:
         """Returns an on-chain account's main purse unforgeable reference.
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
@@ -338,9 +339,9 @@ class ClientExtensions():
         :returns: Account main purse unforgeable reference.
 
         """
-        account_info = await self.client.get_account_info(account_id, block_id)
+        account_info: AccountInfo = await self.client.get_account_info(account_id, block_id)
 
-        return convertor.clv_uref_from_str(account_info["main_purse"])
+        return account_info.main_purse
 
     async def get_account_named_key(
         self,
@@ -356,10 +357,10 @@ class ClientExtensions():
         :returns: A CL key if found.
 
         """
-        account_info = await self.client.get_account_info(account_id, block_id)
-        for named_key in account_info["named_keys"]:
-            if named_key["name"] == key_name:
-                return convertor.clv_key_from_str(named_key["key"])
+        account_info: AccountInfo = await self.client.get_account_info(account_id, block_id)
+        for named_key in account_info.named_keys:
+            if named_key.name == key_name:
+                return convertor.clv_key_from_str(named_key.key)
 
     async def get_block_at_era_switch(
         self,
@@ -375,8 +376,8 @@ class ClientExtensions():
         """
         elapsed = 0.0
         while True:
-            block = await self.client.get_block()
-            if block["header"]["era_end"] is not None:
+            block: Block = await self.client.get_block()
+            if block.header.era_end is not None:
                 return block
 
             elapsed += polling_interval_seconds
@@ -394,15 +395,15 @@ class ClientExtensions():
 
         return block_height
 
-    async def get_chain_heights(self) -> int:
+    async def get_chain_heights(self) -> typing.Tuple[int, int]:
         """Returns height of current era & block.
 
         :returns: 2-ary tuple: (era height, block height).
 
         """
-        block: dict = await self.client.get_block()
+        block: Block = await self.client.get_block(decode=True)
 
-        return block["header"]["era_id"], block["header"]["height"]
+        return block.header.era_id, block.header.height
 
     async def get_era_height(self) -> int:
         """Returns height of current era.

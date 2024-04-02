@@ -16,6 +16,7 @@ from pycspr.types.node.rpc import GlobalStateIDType
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import PurseIDType
 from pycspr.types.node.rpc import StateRootHash
+from pycspr.utils import convertor
 
 
 # Map: global state identifier type to JSON-RPC paramater name.
@@ -153,6 +154,7 @@ def purse_id(purse_id: PurseID) -> dict:
     elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
         id_type = "main_purse_under_public_key"
     elif purse_id.id_type == PurseIDType.UREF:
+        con
         id = serializer.cl_value_to_parsed(purse_id.identifier)
         id_type = "purse_uref"
     else:

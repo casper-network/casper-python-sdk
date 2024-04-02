@@ -93,7 +93,8 @@ class Proxy:
         return await get_response(
             self.address,
             constants.RPC_CHAIN_GET_ERA_INFO_BY_SWITCH_BLOCK,
-            params
+            params,
+            "era_summary"
             )
 
     async def chain_get_era_summary(self, block_id: BlockID = None) -> dict:

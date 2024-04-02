@@ -3,22 +3,31 @@ from pycspr.types.node.rpc import AuctionState
 from pycspr.types.node.rpc import EraSummary
 
 
-async def test_get_auction_info(RPC_CLIENT: NodeRpcClient):
+async def test_get_auction_info_1(RPC_CLIENT: NodeRpcClient):
     data = await RPC_CLIENT.get_auction_info()
     assert isinstance(data, AuctionState)
 
+
+async def test_get_auction_info_2(RPC_CLIENT: NodeRpcClient):
     data = await RPC_CLIENT.get_auction_info(decode=False)
     assert isinstance(data, dict)
 
 
-async def test_get_era_info_by_switch_block(RPC_CLIENT: NodeRpcClient, switch_block_hash: str):
+async def test_get_era_info_by_switch_block_1(RPC_CLIENT: NodeRpcClient, switch_block_hash: str):
     data = await RPC_CLIENT.get_era_info_by_switch_block(switch_block_hash)
+    assert isinstance(data, EraSummary)
+
+
+async def test_get_era_info_by_switch_block_2(RPC_CLIENT: NodeRpcClient, switch_block_hash: str):
+    data = await RPC_CLIENT.get_era_info_by_switch_block(switch_block_hash, decode=False)
     assert isinstance(data, dict)
 
 
-async def test_get_era_summary(RPC_CLIENT: NodeRpcClient, block_hash: str):
+async def test_get_era_summary_1(RPC_CLIENT: NodeRpcClient, block_hash: str):
     data = await RPC_CLIENT.get_era_summary(block_hash)
     assert isinstance(data, EraSummary)
 
+
+async def test_get_era_summary_2(RPC_CLIENT: NodeRpcClient, block_hash: str):
     data = await RPC_CLIENT.get_era_summary(block_hash, decode=False)
     assert isinstance(data, dict)

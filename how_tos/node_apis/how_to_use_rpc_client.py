@@ -9,6 +9,7 @@ from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.types.cl import CLV_URef
 from pycspr.types.node.rpc import AuctionState
+from pycspr.types.node.rpc import Block
 from pycspr.types.node.rpc import BlockTransfers
 from pycspr.types.node.rpc import EraSummary
 from pycspr.types.node.rpc import GlobalStateID
@@ -129,39 +130,39 @@ async def _get_account_info(ctx: _Context):
 
 
 async def _get_auction_state(ctx: _Context):
-    block: dict = await ctx.client.get_block()
+    block: Block = await ctx.client.get_block()
 
     for block_id in {
         None,
-        block["hash"],
-        block["header"]["height"]
+        block.hash,
+        block.header.height
     }:
         # Invoke API.
         obj: AuctionState = await ctx.client.get_auction_state(block_id)
         assert isinstance(obj, AuctionState)
         print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
 
-    assert ctx.client.get_auction_state(block["hash"]) == \
-           ctx.client.get_auction_state(block["header"]["height"])
+    assert ctx.client.get_auction_state(block.hash) == \
+           ctx.client.get_auction_state(block.header.height)
     print("SUCCESS :: get_auction_state - by equivalent block height & hash")
 
 
 async def _get_block(ctx: _Context):
     # Query: get_block.
-    block: dict = await ctx.client.get_block()
+    block: Block = await ctx.client.get_block()
     assert isinstance(block, dict)
     print("SUCCESS :: get_block :: block-id=None")
 
     for block_id in {
-        block["hash"],
-        block["header"]["height"]
+        block.hash,
+        block.header.height
     }:
         block: bytes = await ctx.client.get_block(block_id)
         assert isinstance(block, dict)
         print(f"SUCCESS :: get_block :: block-id={block_id}")
 
-    assert await ctx.client.get_block(block["hash"]) == \
-           await ctx.client.get_block(block["header"]["height"])
+    assert await ctx.client.get_block(block.hash) == \
+           await ctx.client.get_block(block.header.height)
     print("SUCCESS :: get_block - by equivalent height & hash")
 
 
@@ -174,15 +175,15 @@ async def _get_block_at_era_switch(ctx: _Context):
 
 
 async def _get_block_transfers(ctx: _Context):
-    block: dict = await ctx.client.get_block()
+    block: Block = await ctx.client.get_block()
 
     # Query: by hash.
-    entity: BlockTransfers = await ctx.client.get_block_transfers(block["hash"])
+    entity: BlockTransfers = await ctx.client.get_block_transfers(block.hash)
     assert isinstance(entity, BlockTransfers)
     print("SUCCESS :: invoked get_block_transfers - by block hash")
 
     # Query: by height.
-    assert entity == await ctx.client.get_block_transfers(block["header"]["height"])
+    assert entity == await ctx.client.get_block_transfers(block.header.height)
     print("SUCCESS :: invoked get_block_transfers - by block height")
 
 
@@ -192,26 +193,26 @@ async def _get_era_info(ctx: _Context):
 
     for block_id in {
         None,
-        block["hash"],
-        block["header"]["height"]
+        block.hash,
+        block.header.height
     }:
         era_info: dict = await ctx.client.get_era_info(block_id)
         assert isinstance(era_info, dict)
         print(f"SUCCESS :: get_era_info :: block-id={block_id}")
         assert era_info == await ctx.client.get_era_info_by_switch_block(block_id)
 
-    assert ctx.client.get_era_info(block["hash"]) == \
-           ctx.client.get_era_info(block["header"]["height"])
+    assert ctx.client.get_era_info(block.hash) == \
+           ctx.client.get_era_info(block.header.height)
     print("SUCCESS :: get_era_info - by equivalent block height & hash")
 
 
 async def _get_era_summary(ctx: _Context):
-    block: dict = await ctx.client.get_block()
+    block: Block = await ctx.client.get_block()
 
     for block_id in {
         None,
-        block["hash"],
-        block["header"]["height"]
+        block.hash,
+        block.header.height
     }:
         entity: EraSummary = await ctx.client.get_era_summary(block_id, decode=True)
         assert isinstance(entity, EraSummary)
@@ -221,8 +222,8 @@ async def _get_era_summary(ctx: _Context):
 
         print(f"SUCCESS :: get_era_summary :: block-id={block_id}")
 
-    assert ctx.client.get_era_summary(block["hash"]) == \
-           ctx.client.get_era_summary(block["header"]["height"])
+    assert ctx.client.get_era_summary(block.hash) == \
+           ctx.client.get_era_summary(block.header.height)
     print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
 
 
@@ -232,19 +233,19 @@ async def _get_specification(ctx: _Context):
 
 
 async def _get_state_root_hash(ctx: _Context):
-    block: dict = await ctx.client.get_block()
+    block: Block = await ctx.client.get_block()
 
     for block_id in {
         None,
-        block["hash"],
-        block["header"]["height"]
+        block.hash,
+        block.header.height
     }:
         state_root_hash: bytes = await ctx.client.get_state_root_hash(block_id)
         assert isinstance(state_root_hash, bytes)
         print(f"SUCCESS :: get_state_root_hash :: block-id={block_id}")
 
-    assert ctx.client.get_state_root_hash(block["hash"]) == \
-           ctx.client.get_state_root_hash(block["header"]["height"])
+    assert ctx.client.get_state_root_hash(block.hash) == \
+           ctx.client.get_state_root_hash(block.header.height)
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 

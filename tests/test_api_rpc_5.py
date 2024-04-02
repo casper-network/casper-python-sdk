@@ -1,13 +1,13 @@
 from pycspr import NodeRpcClient
-from pycspr.types.cl import CLV_URef
 from pycspr.types.node.rpc import GlobalStateID
 from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import PurseIDType
+from pycspr.types.node.rpc import URef
 
 
 async def test_get_account_balance_under_purse_uref(
     RPC_CLIENT: NodeRpcClient,
-    account_main_purse_uref: CLV_URef,
+    account_main_purse_uref: URef,
     global_state_id: GlobalStateID
 ):
     purse_id = PurseID(account_main_purse_uref, PurseIDType.UREF)

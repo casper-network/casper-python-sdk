@@ -158,6 +158,7 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
 
 
 def _decode_auction_state_era_validators(encoded: dict) -> AuctionStateEraValidators:
+    print(encoded)
     return AuctionStateEraValidators(
         era_id=decode(encoded["era_id"], EraID),
         validator_weights=[decode(i, ValidatorWeight) for i in encoded["validator_weights"]]
@@ -517,7 +518,7 @@ def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
 
 def _decode_validator_weight(encoded: dict) -> ValidatorWeight:
     return ValidatorWeight(
-        validator=decode(encoded.get("public_key", encoded["validator"]), PublicKeyBytes),
+        validator=decode(encoded.get("public_key", encoded.get("validator")), PublicKeyBytes),
         weight=decode(encoded["weight"], Weight)
     )
 
