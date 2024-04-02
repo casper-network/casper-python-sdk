@@ -378,6 +378,13 @@ class DictionaryID_UniqueKey(DictionaryID):
 
 
 @dataclasses.dataclass
+class DictionaryItem():
+    dictionary_key: str 
+    merkle_proof: MerkleProofBytes
+    stored_value: dict 
+
+
+@dataclasses.dataclass
 class EraEnd():
     era_report: EraEndReport
     next_era_validator_weights: typing.List[ValidatorWeight]

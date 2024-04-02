@@ -39,6 +39,7 @@ from pycspr.types.node.rpc import DeployOfStoredContractByName
 from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.types.node.rpc import DeployTimeToLive
+from pycspr.types.node.rpc import DictionaryItem
 from pycspr.types.node.rpc import EraID
 from pycspr.types.node.rpc import EraEnd
 from pycspr.types.node.rpc import EraEndReport
@@ -345,6 +346,14 @@ def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     return DeployTimeToLive(as_ms, encoded)
 
 
+def _decode_dictionary_info(encoded: dict) -> DictionaryItem:
+    return DictionaryItem(
+        dictionary_key=decode(encoded["DictionaryInfo"], str),
+        merkle_proof=decode(encoded["merkle_proof"], MerkleProofBytes),
+        stored_value=decode(encoded["DictionaryInfo"], dict),
+    )
+
+
 def _decode_era_end(encoded: typing.Union[None, dict]) -> typing.Optional[EraEnd]:
     if encoded is not None:
         return EraEnd(
@@ -516,6 +525,7 @@ def _decode_validator_weight(encoded: dict) -> ValidatorWeight:
 _DECODERS = {
     bool: bool,
     bytes: lambda x: bytes.fromhex(x),
+    dict: lambda x: x,
     int: int,
     str: lambda x: x.strip(),
 } | {
@@ -566,6 +576,7 @@ _DECODERS = {
     DeployOfStoredContractByNameVersioned: _decode_deploy_executable_item,
     DeployOfTransfer: _decode_deploy_executable_item,
     DeployTimeToLive: _decode_deploy_time_to_live,
+    DictionaryItem: _decode_dictionary_info,
     EraEnd: _decode_era_end,
     EraEndReport: _decode_era_end_report,
     EraSummary: _decode_era_summary,

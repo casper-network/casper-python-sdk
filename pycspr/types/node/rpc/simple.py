@@ -48,9 +48,9 @@ class GlobalStateID():
 
 
 class GlobalStateIDType(enum.Enum):
-    BLOCK_HASH = enum.auto()
-    BLOCK_HEIGHT = enum.auto()
-    STATE_ROOT_HASH = enum.auto()
+    BLOCK_HASH = "BlockHash"
+    BLOCK_HEIGHT = "BlockHeight"
+    STATE_ROOT_HASH = "StateRootHash"
 
 
 @dataclasses.dataclass

@@ -65,7 +65,7 @@ class Proxy:
         :returns: On-chain block information.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
 
         return await get_response(self.address, constants.RPC_CHAIN_GET_BLOCK, params, "block")
 
@@ -77,7 +77,7 @@ class Proxy:
         :returns: On-chain block transfers information.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
 
         return await get_response(self.address, constants.RPC_CHAIN_GET_BLOCK_TRANSFERS, params)
 
@@ -88,7 +88,7 @@ class Proxy:
         :returns: Era information.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
 
         return await get_response(
             self.address,
@@ -103,7 +103,7 @@ class Proxy:
         :returns: Era summary information.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
 
         return await get_response(
             self.address,
@@ -119,7 +119,7 @@ class Proxy:
         :returns: State root hash at finalised block.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
         response: str = \
             await get_response(
                 self.address,
@@ -161,7 +161,7 @@ class Proxy:
         :returns: On-chain deploy information.
 
         """
-        params: dict = param_utils.get_deploy_hash(deploy_hash) | {
+        params: dict = param_utils.deploy_hash(deploy_hash) | {
             "finalized_approvals": finalized_approvals
         }
 
@@ -215,8 +215,8 @@ class Proxy:
             )
 
         params: dict = \
-            param_utils.get_global_state_id(global_state_id) | \
-            param_utils.get_purse_id(purse_id)
+            param_utils.global_state_id(global_state_id) | \
+            param_utils.purse_id(purse_id)
 
         return int(
             await get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")
@@ -242,7 +242,7 @@ class Proxy:
                 GlobalStateIDType.STATE_ROOT_HASH
                 )
 
-        params: dict = param_utils.get_params_for_query_global_state(key, path, state_id)
+        params: dict = param_utils.for_query_global_state(key, path, state_id)
 
         return await get_response(self.address, constants.RPC_QUERY_GLOBAL_STATE, params)
 
@@ -259,8 +259,8 @@ class Proxy:
 
         """
         params: dict = \
-            param_utils.get_account_key(account_id) | \
-            param_utils.get_block_id(block_id)
+            param_utils.account_key(account_id) | \
+            param_utils.block_id(block_id)
 
         return await get_response(
             self.address,
@@ -276,7 +276,7 @@ class Proxy:
         :returns: Current auction system contract information.
 
         """
-        params: dict = param_utils.get_block_id(block_id, False)
+        params: dict = param_utils.block_id(block_id, False)
 
         return await get_response(
             self.address,
@@ -301,7 +301,7 @@ class Proxy:
             state_root_hash = await self.chain_get_state_root_hash()
 
         params: dict = \
-            param_utils.get_params_for_state_get_dictionary_item(identifier, state_root_hash)
+            param_utils.for_state_get_dictionary_item(identifier, state_root_hash)
 
         return await get_response(self.address, constants.RPC_STATE_GET_DICTIONARY_ITEM, params)
 
@@ -323,7 +323,7 @@ class Proxy:
         path = path if isinstance(path, list) else [path]
         state_root_hash = state_root_hash or await self.chain_get_state_root_hash()
 
-        params: dict = param_utils.get_params_for_state_get_item(key, path, state_root_hash)
+        params: dict = param_utils.for_state_get_item(key, path, state_root_hash)
 
         return await get_response(
             self.address,

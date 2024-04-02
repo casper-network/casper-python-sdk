@@ -32,6 +32,7 @@ from pycspr.types.node.rpc.complex import DictionaryID_AccountNamedKey
 from pycspr.types.node.rpc.complex import DictionaryID_ContractNamedKey
 from pycspr.types.node.rpc.complex import DictionaryID_SeedURef
 from pycspr.types.node.rpc.complex import DictionaryID_UniqueKey
+from pycspr.types.node.rpc.complex import DictionaryItem
 from pycspr.types.node.rpc.complex import EraEnd
 from pycspr.types.node.rpc.complex import EraEndReport
 from pycspr.types.node.rpc.complex import EraSummary

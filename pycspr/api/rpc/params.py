@@ -26,7 +26,13 @@ _GLOBAL_STATE_ID_PARAM_NAME: typing.Dict[GlobalStateIDType, str] = {
 }
 
 
-def get_block_id(block_id: BlockID, allow_none=True) -> dict:
+def account_key(account_id: Address) -> dict:
+    return {
+        "public_key": checksummer.encode_account_key(account_id)
+    }
+
+
+def block_id(block_id: BlockID, allow_none=True) -> dict:
     if block_id is None:
         return dict()
     else:
@@ -48,70 +54,27 @@ def get_block_id(block_id: BlockID, allow_none=True) -> dict:
             }
 
 
-def get_account_key(account_id: Address) -> dict:
-    return {
-        "public_key": checksummer.encode_account_key(account_id)
-    }
-
-
-def get_deploy_hash(deploy_hash: DeployHash) -> dict:
+def deploy_hash(deploy_hash: DeployHash) -> dict:
     return {
         "deploy_hash": checksummer.encode_deploy_hash(deploy_hash)
     }
 
 
-def get_purse_id(purse_id: PurseID) -> dict:
-    id = \
-        purse_id.identifier.hex() if isinstance(purse_id.identifier, bytes) else \
-        purse_id.identifier
-
-    if purse_id.id_type == PurseIDType.ACCOUNT_HASH:
-        id = f"account-hash-{id}"
-        id_type = "main_purse_under_account_hash"
-    elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
-        id_type = "main_purse_under_public_key"
-    elif purse_id.id_type == PurseIDType.UREF:
-        id = serializer.cl_value_to_parsed(purse_id.identifier)
-        id_type = "purse_uref"
-    else:
-        raise ValueError(f"Invalid purse identifier type: {purse_id.id_type}")
-
-    return {
-        "purse_identifier": {
-            id_type: id
-        }
-    }
-
-
-def get_global_state_id(global_state_id: GlobalStateID) -> dict:
+def global_state_id(global_state_id: GlobalStateID) -> dict:
     id = \
         global_state_id.identifier.hex() if isinstance(global_state_id.identifier, bytes) else \
         global_state_id.identifier
 
-    if global_state_id.id_type == GlobalStateIDType.BLOCK_HASH:
-        id_type = "BlockHash"
-    elif global_state_id.id_type == GlobalStateIDType.BLOCK_HEIGHT:
-        id_type = "BlockHeight"
-    elif global_state_id.id_type == GlobalStateIDType.STATE_ROOT_HASH:
-        id_type = "StateRootHash"
-    else:
-        raise ValueError(f"Invalid global state identifier type: {global_state_id.id_type}")
-
     return {
-        id_type: id
+        global_state_id.id_type.value: id
     }
 
 
-def get_params_for_query_global_state(
+def for_query_global_state(
     key: CLV_Key,
     path: typing.List[str],
     state_id: GlobalStateID
 ) -> dict:
-    try:
-        state_id_type = _GLOBAL_STATE_ID_PARAM_NAME[state_id.id_type]
-    except KeyError:
-        raise ValueError(f"Invalid global state identifier type: {state_id.id_type}")
-
     if isinstance(state_id.identifier, bytes):
         state_id = state_id.identifier.hex()
     else:
@@ -121,12 +84,12 @@ def get_params_for_query_global_state(
         "key": serializer.cl_value_to_parsed(key),
         "path": path,
         "state_identifier": {
-            state_id_type: state_id
+            state_id.id_type.value: state_id
         }
     }
 
 
-def get_params_for_state_get_dictionary_item(
+def for_state_get_dictionary_item(
     identifier: DictionaryID,
     state_root_hash: StateRootHash
 ) -> dict:
@@ -167,7 +130,7 @@ def get_params_for_state_get_dictionary_item(
     }
 
 
-def get_params_for_state_get_item(
+def for_state_get_item(
     key: str,
     path: typing.Union[str, typing.List[str]],
     state_root_hash: bytes
@@ -176,4 +139,27 @@ def get_params_for_state_get_item(
         "key": key,
         "path": path,
         "state_root_hash": state_root_hash.hex() if state_root_hash else None
+    }
+
+
+def purse_id(purse_id: PurseID) -> dict:
+    id = \
+        purse_id.identifier.hex() if isinstance(purse_id.identifier, bytes) else \
+        purse_id.identifier
+
+    if purse_id.id_type == PurseIDType.ACCOUNT_HASH:
+        id = f"account-hash-{id}"
+        id_type = "main_purse_under_account_hash"
+    elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
+        id_type = "main_purse_under_public_key"
+    elif purse_id.id_type == PurseIDType.UREF:
+        id = serializer.cl_value_to_parsed(purse_id.identifier)
+        id_type = "purse_uref"
+    else:
+        raise ValueError(f"Invalid purse identifier type: {purse_id.id_type}")
+
+    return {
+        "purse_identifier": {
+            id_type: id
+        }
     }

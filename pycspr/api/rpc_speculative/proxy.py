@@ -36,7 +36,7 @@ class Proxy:
         :returns: Execution effects of virtual deploy processing.
 
         """
-        params: dict = param_utils.get_block_id(block_id) | {
+        params: dict = param_utils.block_id(block_id) | {
             "deploy": serializer.to_json(deploy)
         }
 
