@@ -379,9 +379,9 @@ class DictionaryID_UniqueKey(DictionaryID):
 
 @dataclasses.dataclass
 class DictionaryItem():
-    dictionary_key: str 
+    dictionary_key: str
     merkle_proof: MerkleProofBytes
-    stored_value: dict 
+    stored_value: dict
 
 
 @dataclasses.dataclass

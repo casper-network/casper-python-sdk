@@ -149,19 +149,22 @@ def purse_id(purse_id: PurseID) -> dict:
         purse_id.identifier
 
     if purse_id.id_type == PurseIDType.ACCOUNT_HASH:
-        id = f"account-hash-{id}"
-        id_type = "main_purse_under_account_hash"
+        return {
+            "purse_identifier": {
+                "main_purse_under_account_hash": f"{convertor.str_from_account_key(id)}"
+            }
+        }
     elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
-        id_type = "main_purse_under_public_key"
+        return {
+            "purse_identifier": {
+                "main_purse_under_public_key": id
+            }
+        }
     elif purse_id.id_type == PurseIDType.UREF:
-        con
-        id = serializer.cl_value_to_parsed(purse_id.identifier)
-        id_type = "purse_uref"
+        return {
+            "purse_identifier": {
+                "purse_uref": convertor.str_from_uref(purse_id.identifier)
+            }
+        }
     else:
         raise ValueError(f"Invalid purse identifier type: {purse_id.id_type}")
-
-    return {
-        "purse_identifier": {
-            id_type: id
-        }
-    }

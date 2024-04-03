@@ -158,7 +158,6 @@ def _decode_auction_state(encoded: dict) -> AuctionState:
 
 
 def _decode_auction_state_era_validators(encoded: dict) -> AuctionStateEraValidators:
-    print(encoded)
     return AuctionStateEraValidators(
         era_id=decode(encoded["era_id"], EraID),
         validator_weights=[decode(i, ValidatorWeight) for i in encoded["validator_weights"]]
@@ -534,7 +533,7 @@ _DECODERS = {
     Address: _decode_address,
     BlockHash: lambda x: decode(x, Digest),
     BlockHeight: lambda x: decode(x, int),
-    ContractID:  lambda x: decode(x, bytes),
+    ContractID: lambda x: decode(x, bytes),
     ContractVersion: lambda x: decode(x, int),
     DeployHash: lambda x: decode(x, Digest),
     Digest: lambda x: decode(x, bytes),

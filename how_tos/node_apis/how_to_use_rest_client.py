@@ -4,6 +4,7 @@ import typing
 
 from pycspr import NodeRestClient as NodeClient
 from pycspr import NodeRestConnectionInfo as NodeConnectionInfo
+from pycspr.types.node.rpc import NodeStatus
 
 
 # CLI argument parser.
@@ -48,8 +49,8 @@ async def _main(args: argparse.Namespace):
         _get_chainspec,
         _get_node_metrics,
         _get_node_metric,
-        _get_node_status,
-        _get_rpc_schema,
+        _get_node_status_1,
+        _get_node_status_2,
         _get_validator_changes
     ]:
         await func(ctx)
@@ -73,16 +74,16 @@ async def _get_node_metric(ctx: _Context):
     print("SUCCESS :: get_node_metric")
 
 
-async def _get_node_status(ctx: _Context):
-    node_status: dict = await ctx.client.get_node_status()
+async def _get_node_status_1(ctx: _Context):
+    node_status: dict = await ctx.client.get_node_status(decode=False)
     assert isinstance(node_status, dict)
-    print("SUCCESS :: get_node_status")
+    print("SUCCESS :: get_node_status_1")
 
 
-async def _get_rpc_schema(ctx: _Context):
-    rpc_schema: dict = await ctx.client.get_node_rpc_schema()
-    assert isinstance(rpc_schema, dict)
-    print("SUCCESS :: get_node_rpc_schema")
+async def _get_node_status_2(ctx: _Context):
+    node_status: NodeStatus = await ctx.client.get_node_status()
+    assert isinstance(node_status, NodeStatus)
+    print("SUCCESS :: get_node_status_2")
 
 
 async def _get_validator_changes(ctx: _Context):

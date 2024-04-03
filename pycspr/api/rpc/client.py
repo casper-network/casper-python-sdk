@@ -23,7 +23,6 @@ from pycspr.types.node.rpc import PurseID
 from pycspr.types.node.rpc import StateRootHash
 from pycspr.types.node.rpc import ValidatorChanges
 from pycspr.types.node.rpc import URef
-from pycspr.types.node.rpc import URefAccessRights
 from pycspr.utils import convertor
 
 
@@ -166,7 +165,9 @@ class Client():
         encoded: dict = await self.proxy.info_get_deploy(deploy_hash)
         encoded["deploy"]["execution_info"] = encoded.get("execution_results", None)
 
-        return encoded["deploy"] if decode is False else decoder.decode(encoded["deploy"], Deploy)
+        return \
+            encoded["deploy"] if decode is False else \
+            decoder.decode(encoded["deploy"], Deploy)
 
     async def get_dictionary_item(
         self,
@@ -366,7 +367,7 @@ class ClientExtensions():
         self,
         polling_interval_seconds: float = 1.0,
         max_polling_time_seconds: float = 120.0
-    ) -> dict:
+    ) -> Block:
         """Returns next switch block.
 
         :param polling_interval_seconds: Time interval time before polling for next switch block.

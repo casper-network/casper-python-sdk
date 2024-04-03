@@ -1,5 +1,10 @@
+import typing
+
 from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
+from pycspr.serializer.json.node_rpc import decoder as rpc_decoder
+from pycspr.types.node.rpc import NodePeer
+from pycspr.types.node.rpc import NodeStatus
 
 
 class Client():
@@ -34,13 +39,16 @@ class Client():
         """
         return await self.proxy.get_node_metrics()
 
-    async def get_node_status(self) -> dict:
+    async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
 
+        :param decode: Flag indicating whether to decode API response.
         :returns: Node status information.
 
         """
-        return await self.proxy.get_node_status()
+        encoded: dict = await self.proxy.get_node_status()
+
+        return encoded if decode is False else rpc_decoder.decode(encoded, NodeStatus)
 
     async def get_node_rpc_schema(self) -> dict:
         """Returns node RPC API schema.
