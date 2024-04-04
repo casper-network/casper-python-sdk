@@ -3,8 +3,8 @@ import typing
 from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
 from pycspr.serializer.json.node_rpc import decoder as rpc_decoder
-from pycspr.types.node.rpc import NodePeer
 from pycspr.types.node.rpc import NodeStatus
+from pycspr.types.node.rpc import ValidatorChanges
 
 
 class Client():
@@ -58,13 +58,17 @@ class Client():
         """
         return await self.proxy.get_rpc_schema()
 
-    async def get_validator_changes(self) -> list:
+    async def get_validator_changes(self, decode: bool = True) -> list:
         """Returns validator change information.
 
         :returns: Validator change information.
 
         """
-        return await self.proxy.get_validator_changes()
+        encoded: dict = await self.proxy.get_validator_changes()
+
+        return \
+            encoded if decode is False else \
+            [rpc_decoder.decode(i, ValidatorChanges) for i in encoded]
 
 
 class ClientExtensions():

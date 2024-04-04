@@ -27,7 +27,7 @@ from pycspr.types.node.rpc import ValidatorChanges
 _PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Demo illustrating how to execute native transfers with pycspr.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to invoke a node's JSON-RPC API.")
 
 # CLI argument: path to cp2 account key - defaults to CCTL user 2.
 _ARGS.add_argument(
@@ -94,15 +94,27 @@ async def _main(args: argparse.Namespace):
     ctx = _Context(args)
     for func in [
         _get_node_rpc,
-        _get_node_peers,
-        _get_node_status,
-        _get_block,
+        _get_node_peers_1,
+        _get_node_peers_2,
+        _get_node_status_1,
+        _get_node_status_2,
+        _get_block_1,
+        _get_block_2,
+        _get_block_3,
+        _get_block_4,
         _get_block_at_era_switch,
         _get_block_transfers,
-        _get_era_info,
-        _get_era_summary,
-        _get_auction_state,
-        _get_validator_changes,
+        _get_era_info_1,
+        _get_era_info_2,
+        _get_era_info_3,
+        _get_era_summary_1,
+        _get_era_summary_2,
+        _get_era_summary_3,
+        _get_auction_state_1,
+        _get_auction_state_2,
+        _get_auction_state_3,
+        _get_validator_changes_1,
+        _get_validator_changes_2,
         _get_specification,
         _get_state_root_hash,
         _get_account_info,
@@ -134,30 +146,56 @@ async def _get_account_info(ctx: _Context):
     print("SUCCESS :: get_account_balance")
 
 
-async def _get_auction_state(ctx: _Context):
+async def _get_auction_state_1(ctx: _Context):
     block: Block = await ctx.client.get_block()
-
     for block_id in {
         None,
         block.hash,
         block.header.height
     }:
-        # Invoke API.
+        obj: dict = await ctx.client.get_auction_state(block_id, decode=False)
+        assert isinstance(obj, dict)
+        print(f"SUCCESS :: get_auction_state (raw) :: block-id={block_id}")
+
+
+async def _get_auction_state_2(ctx: _Context):
+    block: Block = await ctx.client.get_block()
+    for block_id in {
+        None,
+        block.hash,
+        block.header.height
+    }:
         obj: AuctionState = await ctx.client.get_auction_state(block_id)
         assert isinstance(obj, AuctionState)
         print(f"SUCCESS :: get_auction_state :: block-id={block_id}")
 
+
+async def _get_auction_state_3(ctx: _Context):
+    block: Block = await ctx.client.get_block()
     assert await ctx.client.get_auction_state(block.hash) == \
            await ctx.client.get_auction_state(block.header.height)
     print("SUCCESS :: get_auction_state - by equivalent block height & hash")
 
 
-async def _get_block(ctx: _Context):
-    # Query: get_block.
+async def _get_block_1(ctx: _Context):
     block: Block = await ctx.client.get_block()
     assert isinstance(block, Block)
     print("SUCCESS :: get_block :: block-id=None")
 
+
+async def _get_block_2(ctx: _Context):
+    block: Block = await ctx.client.get_block()
+    for block_id in {
+        block.hash,
+        block.header.height
+    }:
+        block: dict = await ctx.client.get_block(block_id, decode=False)
+        assert isinstance(block, dict)
+        print(f"SUCCESS :: get_block (raw) :: block-id={block_id}")
+
+
+async def _get_block_3(ctx: _Context):
+    block: Block = await ctx.client.get_block()
     for block_id in {
         block.hash,
         block.header.height
@@ -166,13 +204,15 @@ async def _get_block(ctx: _Context):
         assert isinstance(block, Block)
         print(f"SUCCESS :: get_block :: block-id={block_id}")
 
+
+async def _get_block_4(ctx: _Context):
+    block: Block = await ctx.client.get_block()
     assert await ctx.client.get_block(block.hash) == \
            await ctx.client.get_block(block.header.height)
     print("SUCCESS :: get_block - by equivalent height & hash")
 
 
 async def _get_block_at_era_switch(ctx: _Context):
-    # Query: get_block_at_era_switch - polls until switch block.
     print("POLLING :: get_block_at_era_switch - may take some time")
     block: Block = await ctx.client.get_block_at_era_switch()
     assert isinstance(block, Block)
@@ -192,10 +232,23 @@ async def _get_block_transfers(ctx: _Context):
     print("SUCCESS :: invoked get_block_transfers - by block height")
 
 
-async def _get_era_info(ctx: _Context):
+async def _get_era_info_1(ctx: _Context):
+    print("POLLING :: get_block_at_era_switch (raw) - may take some time")
+    block: Block = await ctx.client.get_block_at_era_switch()
+    for block_id in {
+        None,
+        block.hash,
+        block.header.height
+    }:
+        era_info: dict = await ctx.client.get_era_info(block_id, decode=False)
+        assert isinstance(era_info, dict)
+        print(f"SUCCESS :: get_era_info (raw) :: block-id={block_id}")
+        assert era_info == await ctx.client.get_era_info_by_switch_block(block_id, decode=False)
+
+
+async def _get_era_info_2(ctx: _Context):
     print("POLLING :: get_block_at_era_switch - may take some time")
     block: Block = await ctx.client.get_block_at_era_switch()
-
     for block_id in {
         None,
         block.hash,
@@ -206,12 +259,16 @@ async def _get_era_info(ctx: _Context):
         print(f"SUCCESS :: get_era_info :: block-id={block_id}")
         assert era_info == await ctx.client.get_era_info_by_switch_block(block_id)
 
+
+async def _get_era_info_3(ctx: _Context):
+    print("POLLING :: get_block_at_era_switch - may take some time")
+    block: Block = await ctx.client.get_block_at_era_switch()
     assert await ctx.client.get_era_info(block.hash) == \
            await ctx.client.get_era_info(block.header.height)
     print("SUCCESS :: get_era_info - by equivalent block height & hash")
 
 
-async def _get_era_summary(ctx: _Context):
+async def _get_era_summary_1(ctx: _Context):
     block: Block = await ctx.client.get_block()
 
     for block_id in {
@@ -219,14 +276,25 @@ async def _get_era_summary(ctx: _Context):
         block.hash,
         block.header.height
     }:
-        entity: EraSummary = await ctx.client.get_era_summary(block_id, decode=True)
-        assert isinstance(entity, EraSummary)
-
         entity: dict = await ctx.client.get_era_summary(block_id, decode=False)
         assert isinstance(entity, dict)
+        print(f"SUCCESS :: get_era_summary (raw) :: block-id={block_id}")
 
+
+async def _get_era_summary_2(ctx: _Context):
+    block: Block = await ctx.client.get_block()
+    for block_id in {
+        None,
+        block.hash,
+        block.header.height
+    }:
+        entity: EraSummary = await ctx.client.get_era_summary(block_id)
+        assert isinstance(entity, EraSummary)
         print(f"SUCCESS :: get_era_summary :: block-id={block_id}")
 
+
+async def _get_era_summary_3(ctx: _Context):
+    block: Block = await ctx.client.get_block()
     assert await ctx.client.get_era_summary(block.hash) == \
            await ctx.client.get_era_summary(block.header.height)
     print("SUCCESS :: get_era_summary :: by equivalent block height & hash")
@@ -254,24 +322,15 @@ async def _get_state_root_hash(ctx: _Context):
     print("SUCCESS :: get_state_root_hash :: by equivalent switch block height & hash")
 
 
-async def _get_validator_changes(ctx: _Context):
-    validator_changes: typing.List[ValidatorChanges] = \
-        await ctx.client.get_validator_changes()
-    assert isinstance(validator_changes, list)
-    for item in validator_changes:
-        assert isinstance(item, ValidatorChanges)
-    print("SUCCESS :: get_validator_changes")
-
-
-async def _get_node_peers(ctx: _Context):
-    # get_node_peers - raw.
+async def _get_node_peers_1(ctx: _Context):
     node_peers: typing.List[dict] = await ctx.client.get_node_peers(decode=False)
     assert isinstance(node_peers, list)
     for item in node_peers:
         assert isinstance(item, dict)
     print("SUCCESS :: get_node_peers (raw)")
 
-    # get_node_peers.
+
+async def _get_node_peers_2(ctx: _Context):
     node_peers: typing.List[NodePeer] = await ctx.client.get_node_peers()
     assert isinstance(node_peers, list)
     for item in node_peers:
@@ -279,16 +338,16 @@ async def _get_node_peers(ctx: _Context):
     print("SUCCESS :: get_node_peers")
 
 
-async def _get_node_status(ctx: _Context):
-    # get_node_status.
-    node_status: NodeStatus = await ctx.client.get_node_status()
-    assert isinstance(node_status, NodeStatus)
-    print("SUCCESS :: get_node_status")
-
-    # get_node_status - raw.
+async def _get_node_status_1(ctx: _Context):
     node_status: NodeStatus = await ctx.client.get_node_status(decode=False)
     assert isinstance(node_status, dict)
     print("SUCCESS :: get_node_status (raw)")
+
+
+async def _get_node_status_2(ctx: _Context):
+    node_status: NodeStatus = await ctx.client.get_node_status()
+    assert isinstance(node_status, NodeStatus)
+    print("SUCCESS :: get_node_status")
 
 
 async def _get_node_rpc(ctx: _Context):
@@ -307,6 +366,24 @@ async def _get_node_rpc(ctx: _Context):
         rpc_endpoint_schema: dict = await ctx.client.get_rpc_endpoint("account_put_deploy")
         assert isinstance(rpc_endpoint_schema, dict)
     print("SUCCESS :: get_rpc_endpoint")
+
+
+async def _get_validator_changes_1(ctx: _Context):
+    validator_changes: typing.List[ValidatorChanges] = \
+        await ctx.client.get_validator_changes(decode=False)
+    assert isinstance(validator_changes, list)
+    for item in validator_changes:
+        assert isinstance(item, dict)
+    print("SUCCESS :: get_validator_changes (raw)")
+
+
+async def _get_validator_changes_2(ctx: _Context):
+    validator_changes: typing.List[ValidatorChanges] = \
+        await ctx.client.get_validator_changes()
+    assert isinstance(validator_changes, list)
+    for item in validator_changes:
+        assert isinstance(item, ValidatorChanges)
+    print("SUCCESS :: get_validator_changes")
 
 
 # Entry point.

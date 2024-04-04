@@ -523,11 +523,11 @@ def _decode_validator_weight(encoded: dict) -> ValidatorWeight:
 
 
 _DECODERS = {
-    bool: bool,
-    bytes: lambda x: bytes.fromhex(x),
+    bool: lambda x: None if x is None else bool(x),
+    bytes: lambda x: None if x is None else bytes.fromhex(x),
     dict: lambda x: x,
-    int: int,
-    str: lambda x: x.strip(),
+    int: lambda x: None if x is None else int(x),
+    str: lambda x: None if x is None else x.strip(),
 } | {
     AccountKey: lambda x: decode(x, bytes),
     Address: _decode_address,

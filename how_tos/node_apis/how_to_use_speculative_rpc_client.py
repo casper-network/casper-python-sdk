@@ -19,7 +19,7 @@ from pycspr.types.node.rpc import Deploy
 _PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 # CLI argument parser.
-_ARGS = argparse.ArgumentParser("Illustration of how to execute native transfers.")
+_ARGS = argparse.ArgumentParser("Demo illustrating how to invoke a node's speculative JSON-RPC API.")
 
 # CLI argument: path to cp1 secret key - defaults to CCTL user 1.
 _ARGS.add_argument(
