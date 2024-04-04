@@ -218,6 +218,8 @@ class Proxy:
         params: dict = \
             param_utils.global_state_id(global_state_id) | \
             param_utils.purse_id(purse_id)
+        
+        print(params)
 
         return int(
             await get_response(self.address, constants.RPC_QUERY_BALANCE, params, "balance")

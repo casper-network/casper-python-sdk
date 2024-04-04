@@ -127,7 +127,7 @@ def str_from_uref(value: URef) -> str:
 
 
 def str_from_account_key(value: typing.Union[str, AccountKey]) -> str:
-    if isinstance(value, (bytes, AccountKey)):
+    if isinstance(value, bytes):
         value = value.hex()
 
     return f"account-hash-{value}"

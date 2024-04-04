@@ -1,4 +1,6 @@
 from pycspr import NodeRestClient
+from pycspr.types.node.rpc import NodeStatus
+from pycspr.types.node.rpc import ValidatorChanges
 
 
 async def test_get_chainspec(REST_CLIENT: NodeRestClient):
@@ -26,10 +28,15 @@ async def test_get_node_metric(REST_CLIENT: NodeRestClient):
     assert len(data) == 0
 
 
-async def test_get_node_status(REST_CLIENT: NodeRestClient):
-    data = await REST_CLIENT.get_node_status()
+async def test_get_node_status_1(REST_CLIENT: NodeRestClient):
+    data: dict = await REST_CLIENT.get_node_status(decode=False)
     assert isinstance(data, dict)
     assert len(data) == 14
+
+
+async def test_get_node_status_2(REST_CLIENT: NodeRestClient):
+    data: NodeStatus = await REST_CLIENT.get_node_status()
+    assert isinstance(data, NodeStatus)
 
 
 async def test_get_node_rpc_schema(REST_CLIENT: NodeRestClient):
@@ -38,8 +45,15 @@ async def test_get_node_rpc_schema(REST_CLIENT: NodeRestClient):
     assert len(data) == 5
 
 
-async def test_get_validator_changes(REST_CLIENT: NodeRestClient):
-    data = await REST_CLIENT.get_validator_changes()
+async def test_get_validator_changes_1(REST_CLIENT: NodeRestClient):
+    data = await REST_CLIENT.get_validator_changes(decode=False)
     assert isinstance(data, list)
     for item in data:
         assert isinstance(item, dict)
+
+
+async def test_get_validator_changes_2(REST_CLIENT: NodeRestClient):
+    data = await REST_CLIENT.get_validator_changes()
+    assert isinstance(data, list)
+    for item in data:
+        assert isinstance(item, ValidatorChanges)

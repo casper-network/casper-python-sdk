@@ -147,6 +147,7 @@ def purse_id(purse_id: PurseID) -> dict:
     id = \
         purse_id.identifier.hex() if isinstance(purse_id.identifier, bytes) else \
         purse_id.identifier
+    
 
     if purse_id.id_type == PurseIDType.ACCOUNT_HASH:
         return {
