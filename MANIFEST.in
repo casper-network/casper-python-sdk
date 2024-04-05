@@ -1,4 +1,0 @@
-recursive-include pycspr *.py *.txt
-include LICENSE
-include README.rst
-include requirements.txt
