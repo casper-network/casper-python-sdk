@@ -192,6 +192,7 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
         protocol_version=decode(encoded["protocol_version"], ProtocolVersion),
         random_bit=decode(encoded["random_bit"], bool),
         state_root=decode(encoded["state_root_hash"], StateRootHash),
+        timestamp=decode(encoded["timestamp"], Timestamp),
         )
 
 

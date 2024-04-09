@@ -94,6 +94,16 @@ class Block():
     header: BlockHeader
     proofs: typing.List[BlockSignature]
 
+    @property
+    def height(self) -> int:
+        """Helper attribute: block height."""
+        return self.header.height
+
+    @property
+    def is_switch_block(self) -> int:
+        """Helper attribute: block height."""
+        return self.header.era_end is not None
+
 
 @dataclasses.dataclass
 class BlockBody():
@@ -113,6 +123,7 @@ class BlockHeader():
     protocol_version: ProtocolVersion
     random_bit: bool
     state_root: StateRootHash
+    timestamp: Timestamp
 
 
 @dataclasses.dataclass

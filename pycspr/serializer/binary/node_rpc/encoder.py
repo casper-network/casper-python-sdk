@@ -32,7 +32,7 @@ def encode(entity: object) -> bytes:
     try:
         encoder = _ENCODERS[type(entity)]
     except KeyError:
-        raise ValueError(f"Unknown deploy type: {entity}")
+        raise ValueError(f"Unknown entity type: {entity}")
     else:
         return encoder(entity)
 
