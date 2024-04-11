@@ -6,40 +6,67 @@ from pycspr.types.crypto import Digest
 from pycspr.types.crypto import PublicKeyBytes
 
 
-AccountKey = typing.NewType("On-chain account public key prefixed with ecc algo type.", bytes)
+AccountKey = typing.NewType(
+    "On-chain account public key prefixed with ecc algo type.", bytes
+    )
 
-Address = typing.NewType("Identifier of an on-chain account address.", bytes)
+Address = typing.NewType(
+    "Identifier of an on-chain account address.", bytes
+    )
 
-BlockHash = typing.NewType("Digest over a block.", Digest)
+BlockHash = typing.NewType(
+    "Digest over a block.", Digest
+    )
 
 BlockHeight = typing.NewType(
-    "A specific location in a blockchain, measured by how many finalised blocks precede it.",
-    int
+    "Ordinal identifier of a block measured by how many finalised blocks precede it.", int
 )
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 
-ContractID = typing.NewType("Identifier of an on-chain smart contract.", bytes)
+ContractID = typing.NewType(
+    "Identifier of an on-chain smart contract.", bytes
+    )
 
-ContractVersion = typing.NewType("Version of an on-chain smart contract.", int)
+ContractVersion = typing.NewType(
+    "Version of an on-chain smart contract.", int
+    )
 
-DeployHash = typing.NewType("Identifier of a transaction.", Digest)
+DeployHash = typing.NewType(
+    "Identifier of a transaction.", Digest
+    )
 
-EraID = typing.NewType("Identifier of an era in chain time.", int)
+EraID = typing.NewType(
+    "Identifier of an era in chain time.", int
+    )
 
-Gas = typing.NewType("Atomic unit of constraint over node compute.", int)
+Gas = typing.NewType(
+    "Atomic unit of constraint over node compute.", int
+    )
 
-GasPrice = typing.NewType("Price of gas within an era in chain time.", int)
+GasPrice = typing.NewType(
+    "Price of gas within an era in chain time.", int
+    )
 
-Motes = typing.NewType("Basic unit of crypto economic system.", int)
+Motes = typing.NewType(
+    "Basic unit of crypto economic system.", int
+    )
 
-URefIdentifier = typing.NewType("String encoded UREF identifier.", str)
+URefIdentifier = typing.NewType(
+    "String encoded UREF identifier.", str
+    )
 
-WasmModule = typing.NewType("WASM module payload.", bytes)
+WasmModule = typing.NewType(
+    "WASM module payload.", bytes
+    )
 
-Weight = typing.NewType("Some form of relative relevance measure.", int)
+Weight = typing.NewType(
+    "Some form of relative relevance measure.", int
+    )
 
-StateRootHash = typing.NewType("Root digest of a node's global state.", Digest)
+StateRootHash = typing.NewType(
+    "Root digest of a node's global state.", Digest
+    )
 
 
 @dataclasses.dataclass
