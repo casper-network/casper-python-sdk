@@ -2,11 +2,6 @@ import typing
 
 from pycspr.types.cl.types import CLT_Type
 from pycspr.types.cl.types import CLT_TypeKey
-from pycspr.types.cl.types import CLT_Type_ByteArray
-from pycspr.types.cl.types import CLT_Type_List
-from pycspr.types.cl.types import CLT_Type_Map
-from pycspr.types.cl.types import CLT_Type_Option
-from pycspr.types.cl.types import CLT_Type_Tuple1
 
 
 def encode(entity: CLT_Type) -> typing.Union[str, dict]:
@@ -16,92 +11,83 @@ def encode(entity: CLT_Type) -> typing.Union[str, dict]:
     :returns: A JSON compatible string or dictionary.
 
     """
-    if entity.type_key in _ENCODERS["complex"]:
-        return _ENCODERS["complex"][entity.type_key](entity)
-    elif entity.type_key in _ENCODERS["simple"]:
-        return _ENCODERS["simple"][entity.type_key]
-    else:
+    try:
+        encoder = _ENCODERS[entity.type_key]
+    except KeyError:
         raise ValueError("Invalid CL type")
-
-
-def _encode_byte_array(entity: CLT_Type_ByteArray):
-    return {
-        "ByteArray": entity.size
-    }
-
-
-def _encode_list(entity: CLT_Type_List):
-    return {
-        "List": encode(entity.inner_type)
-    }
-
-
-def _encode_map(entity: CLT_Type_Map):
-    return {
-        "Map": {
-            "key": encode(entity.key_type),
-            "value": encode(entity.value_type)
-        }
-    }
-
-
-def _encode_option(entity: CLT_Type_Option):
-    return {
-        "Option": encode(entity.inner_type)
-    }
-
-
-def _encode_tuple_1(entity: CLT_Type_Tuple1):
-    return {
-        "Tuple1": encode(entity.t0_type)
-    }
-
-
-def _encode_tuple_2(entity: CLT_Type_Tuple1):
-    return {
-        "Tuple2": [
-            encode(entity.t0_type),
-            encode(entity.t1_type),
-        ]
-    }
-
-
-def _encode_tuple_3(entity: CLT_Type_Tuple1):
-    return {
-        "Tuple3": [
-            encode(entity.t0_type),
-            encode(entity.t1_type),
-            encode(entity.t2_type)
-        ]
-    }
+    else:
+        return encoder(entity)
 
 
 _ENCODERS: dict = {
-    "complex": {
-        CLT_TypeKey.BYTE_ARRAY: _encode_byte_array,
-        CLT_TypeKey.LIST: _encode_list,
-        CLT_TypeKey.MAP: _encode_map,
-        CLT_TypeKey.OPTION: _encode_option,
-        CLT_TypeKey.TUPLE_1: _encode_tuple_1,
-        CLT_TypeKey.TUPLE_2: _encode_tuple_2,
-        CLT_TypeKey.TUPLE_3: _encode_tuple_3,
-    },
-    "simple": {
-        CLT_TypeKey.ANY: "Any",
-        CLT_TypeKey.BOOL: "Bool",
-        CLT_TypeKey.I32: "I32",
-        CLT_TypeKey.I64: "I64",
-        CLT_TypeKey.KEY: "Key",
-        CLT_TypeKey.PUBLIC_KEY: "PublicKey",
-        CLT_TypeKey.RESULT: "Result",
-        CLT_TypeKey.STRING: "String",
-        CLT_TypeKey.U8: "U8",
-        CLT_TypeKey.U32: "U32",
-        CLT_TypeKey.U64: "U64",
-        CLT_TypeKey.U128: "U128",
-        CLT_TypeKey.U256: "U256",
-        CLT_TypeKey.U512: "U512",
-        CLT_TypeKey.UNIT: "Unit",
-        CLT_TypeKey.UREF: "URef",
-    }
+    CLT_TypeKey.ANY: 
+        lambda _: "Any",
+    CLT_TypeKey.BOOL:
+        lambda _: "Bool",
+    CLT_TypeKey.BYTE_ARRAY:
+        lambda x: {
+            "ByteArray": x.size
+        },
+    CLT_TypeKey.I32:
+        lambda _: "I32",
+    CLT_TypeKey.I64:
+        lambda _: "I64",
+    CLT_TypeKey.KEY:
+        lambda _: "Key",
+    CLT_TypeKey.LIST:
+        lambda x: {
+            "List": encode(x.inner_type)
+        },
+    CLT_TypeKey.MAP:
+        lambda x: {
+            "Map": {
+                "key": encode(x.key_type),
+                "value": encode(x.value_type)
+            }
+        },
+    CLT_TypeKey.OPTION:
+        lambda x: {
+            "Option": encode(x.inner_type)
+        },
+    CLT_TypeKey.PUBLIC_KEY:
+        lambda _: "PublicKey",
+    CLT_TypeKey.RESULT:
+        lambda _: "Result",
+    CLT_TypeKey.STRING:
+        lambda _: "String",
+    CLT_TypeKey.TUPLE_1:
+        lambda x: {
+            "Tuple1": encode(x.t0_type)
+        },
+    CLT_TypeKey.TUPLE_2:
+        lambda x: {
+            "Tuple2": [
+                encode(x.t0_type),
+                encode(x.t1_type),
+            ]
+        },
+    CLT_TypeKey.TUPLE_3:
+        lambda x: {
+            "Tuple3": [
+                encode(x.t0_type),
+                encode(x.t1_type),
+                encode(x.t2_type)
+            ]
+        },
+    CLT_TypeKey.U8:
+        lambda _: "U8",
+    CLT_TypeKey.U32:
+        lambda _: "U32",
+    CLT_TypeKey.U64:
+        lambda _: "U64",
+    CLT_TypeKey.U128:
+        lambda _: "U128",
+    CLT_TypeKey.U256:
+        lambda _: "U256",
+    CLT_TypeKey.U512:
+        lambda _: "U512",
+    CLT_TypeKey.UNIT:
+        lambda _: "Unit",
+    CLT_TypeKey.UREF:
+        lambda _: "URef",
 }

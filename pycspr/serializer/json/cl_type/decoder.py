@@ -26,71 +26,6 @@ from pycspr.types.cl.types import CLT_Type_Unit
 from pycspr.types.cl.types import CLT_Type_URef
 
 
-def decode(encoded: typing.Union[str, dict]) -> CLT_Type:
-    """Decoder: CL type info <- JSON blob.
-
-    :param encoded: A CL type previously encoded as JSON.
-    :returns: A CL type definition.
-
-    """
-    if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:
-        return _SIMPLE_TYPES[encoded]()
-    elif "ByteArray" in encoded:
-        return _decode_byte_array(encoded)
-    elif "List" in encoded:
-        return _decode_list(encoded)
-    elif "Map" in encoded:
-        return _decode_map(encoded)
-    elif "Option" in encoded:
-        return _decode_option(encoded)
-    elif "Tuple1" in encoded:
-        return _decode_tuple_1(encoded)
-    elif "Tuple2" in encoded:
-        return _decode_tuple_2(encoded)
-    elif "Tuple3" in encoded:
-        return _decode_tuple_3(encoded)
-    else:
-        raise ValueError("Invalid CL type JSON representation")
-
-
-def _decode_byte_array(obj: dict):
-    return CLT_Type_ByteArray(obj["ByteArray"])
-
-
-def _decode_list(obj: dict):
-    return CLT_Type_List(decode(obj["List"]))
-
-
-def _decode_map(obj: dict):
-    return CLT_Type_Map(
-        decode(obj["Map"]["key"]),
-        decode(obj["Map"]["value"])
-        )
-
-
-def _decode_option(obj: dict):
-    return CLT_Type_Option(decode(obj["Option"]))
-
-
-def _decode_tuple_1(obj: dict):
-    return CLT_Type_Tuple1(decode(obj["Tuple1"]))
-
-
-def _decode_tuple_2(obj: dict):
-    return CLT_Type_Tuple2(
-        decode(obj["Tuple2"][0]),
-        decode(obj["Tuple2"][1])
-        )
-
-
-def _decode_tuple_3(obj: dict):
-    return CLT_Type_Tuple3(
-        decode(obj["Tuple3"][0]),
-        decode(obj["Tuple3"][1]),
-        decode(obj["Tuple3"][2])
-        )
-
-
 _SIMPLE_TYPES = {
     "Any": CLT_Type_Any,
     "Bool": CLT_Type_Bool,
@@ -109,3 +44,48 @@ _SIMPLE_TYPES = {
     "Unit": CLT_Type_Unit,
     "URef": CLT_Type_URef,
 }
+
+
+def decode(encoded: typing.Union[dict, str]) -> CLT_Type:
+    """Decoder: CL type info <- JSON blob.
+
+    :param encoded: A CL type previously encoded as JSON.
+    :returns: A CL type definition.
+
+    """
+    if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:
+        return _SIMPLE_TYPES[encoded]()
+    elif "ByteArray" in encoded:
+        return CLT_Type_ByteArray(
+            encoded["ByteArray"]
+        )
+    elif "List" in encoded:
+        return CLT_Type_List(
+            decode(encoded["List"])
+        )
+    elif "Map" in encoded:
+        return CLT_Type_Map(
+            decode(encoded["Map"]["key"]),
+            decode(encoded["Map"]["value"])
+            )
+    elif "Option" in encoded:
+        return CLT_Type_Option(
+            decode(encoded["Option"])
+        )
+    elif "Tuple1" in encoded:
+        return CLT_Type_Tuple1(
+            decode(encoded["Tuple1"])
+        )
+    elif "Tuple2" in encoded:
+        return CLT_Type_Tuple2(
+            decode(encoded["Tuple2"][0]),
+            decode(encoded["Tuple2"][1])
+        )
+    elif "Tuple3" in encoded:
+        return CLT_Type_Tuple3(
+            decode(encoded["Tuple3"][0]),
+            decode(encoded["Tuple3"][1]),
+            decode(encoded["Tuple3"][2])
+            )
+    else:
+        raise ValueError("Invalid CL type JSON representation")

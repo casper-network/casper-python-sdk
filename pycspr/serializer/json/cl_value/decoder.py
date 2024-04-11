@@ -9,18 +9,19 @@ def decode(encoded: dict):
     :returns: A CL value.
 
     """
-    assert "cl_type" in encoded and "bytes" in encoded
+    if "cl_type" not in encoded or "bytes" not in encoded:
+        raise ValueError("Invalid CL value JSON encoding")
 
-    # Set cl type to be decoded.
+    # Set cl type.
     cl_type = decode_cl_type(encoded["cl_type"])
 
-    # Set byte stream to be decoded.
-    bstream = encoded["bytes"]
-    if isinstance(bstream, str):
-        bstream = bytes.fromhex(bstream)
+    # Set byte stream.
+    bstream = bytes.fromhex(encoded["bytes"])
 
-    # Decode cl value & assert that the entire byte stream has been consumed
+    # Decode cl value.
     bstream, cl_value = decode_cl_value(bstream, cl_type)
+
+    # Assert entire byte stream has been consumed,
     assert len(bstream) == 0
 
     return cl_value

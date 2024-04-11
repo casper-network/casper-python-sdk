@@ -7,6 +7,7 @@ from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import SignatureBytes
+
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import AccountKey
