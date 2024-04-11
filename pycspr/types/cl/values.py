@@ -322,3 +322,33 @@ class CLV_URef(CLV_Value):
     def __eq__(self, other) -> bool:
         return self.access_rights == other.access_rights and \
                self.address == other.address
+
+
+TYPESET: set = {
+    CLV_Value,
+    CLV_Any,
+    CLV_Bool,
+    CLV_ByteArray,
+    CLV_I32,
+    CLV_I64,
+    CLV_U8,
+    CLV_U32,
+    CLV_U64,
+    CLV_U128,
+    CLV_U256,
+    CLV_U512,
+    CLV_Key,
+    CLV_KeyType,
+    CLV_List,
+    CLV_Map,
+    CLV_Option,
+    CLV_PublicKey,
+    CLV_Result,
+    CLV_String,
+    CLV_Tuple1,
+    CLV_Tuple2,
+    CLV_Tuple3,
+    CLV_Unit,
+    CLV_URefAccessRights,
+    CLV_URef,
+}

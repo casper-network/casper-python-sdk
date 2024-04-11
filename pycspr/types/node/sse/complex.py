@@ -21,3 +21,8 @@ class NodeEventInfo():
 
     # Event payload ... typically data but sometimes a simple string.
     payload: typing.Union[dict, str]
+
+
+TYPESET: set = {
+    NodeEventInfo,
+}

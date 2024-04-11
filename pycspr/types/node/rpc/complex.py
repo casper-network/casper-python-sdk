@@ -520,7 +520,7 @@ class ValidatorChanges():
 @dataclasses.dataclass
 class ValidatorReward():
     amount: Motes
-    validator: PublicKeyBytes
+    validator: PublicKey
 
 
 @dataclasses.dataclass
@@ -533,3 +533,62 @@ class ValidatorStatusChange():
 class ValidatorWeight():
     validator: PublicKeyBytes
     weight: Weight
+
+
+TYPESET: set = {
+    AccountInfo,
+    ActionThresholds,
+    AssociatedKey,
+    AuctionBidByDelegator,
+    AuctionBidByValidator,
+    AuctionBidByValidatorInfo,
+    AuctionState,
+    AuctionStateEraValidators,
+    Block,
+    BlockBody,
+    BlockHeader,
+    BlockSignature,
+    BlockTransfers,
+    Deploy,
+    DeployApproval,
+    DeployArgument,
+    DeployBody,
+    DeployExecutionInfo,
+    DeployExecutableItem,
+    DeployHeader,
+    DeployOfModuleBytes,
+    DeployOfStoredContract,
+    DeployOfStoredContractByHash,
+    DeployOfStoredContractByHashVersioned,
+    DeployOfStoredContractByName,
+    DeployOfStoredContractByNameVersioned,
+    DeployOfTransfer,
+    DeployParameters,
+    DeployTimeToLive,
+    DictionaryID,
+    DictionaryID_AccountNamedKey,
+    DictionaryID_ContractNamedKey,
+    DictionaryID_SeedURef,
+    DictionaryID_UniqueKey,
+    DictionaryItem,
+    EraEnd,
+    EraEndReport,
+    EraSummary,
+    EraSummaryInfo,
+    MinimalBlockInfo,
+    NamedKey,
+    NextUpgradeInfo,
+    NodePeer,
+    NodeStatus,
+    ProtocolVersion,
+    SeigniorageAllocation,
+    SeigniorageAllocationForDelegator,
+    SeigniorageAllocationForValidator,
+    Timestamp,
+    Transfer,
+    URef,
+    ValidatorChanges,
+    ValidatorReward,
+    ValidatorStatusChange,
+    ValidatorWeight,
+}

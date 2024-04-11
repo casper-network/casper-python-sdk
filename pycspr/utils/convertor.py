@@ -9,6 +9,7 @@ from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.node.rpc import AccountKey
 from pycspr.types.node.rpc import URef
 from pycspr.utils import constants
@@ -30,6 +31,10 @@ def clv_key_from_str(value: str) -> CLV_Key:
 
 def clv_public_key_from_account_key(value: AccountKey) -> CLV_PublicKey:
     return CLV_PublicKey(KeyAlgorithm(value[0]), value[1:])
+
+
+def clv_public_key_from_public_key_bytes(value: PublicKeyBytes) -> CLV_PublicKey:
+    return CLV_PublicKey(value.algo, value.pbk)
 
 
 def clv_public_key_from_public_key(value: PublicKey) -> CLV_PublicKey:

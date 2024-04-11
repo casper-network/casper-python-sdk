@@ -33,10 +33,12 @@ def encode(entity: CLV_Value) -> bytes:
     :returns: An array of bytes.
 
     """
-    if type(entity) not in _ENCODERS:
-        raise ValueError("CL value cannot be encoded as bytes")
-
-    return _ENCODERS[type(entity)](entity)
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError(f"CL value cannot be encoded as bytes: {type(entity)}")
+    else:
+        return encoder(entity)
 
 
 def _encode_any(entity: CLV_Any) -> bytes:

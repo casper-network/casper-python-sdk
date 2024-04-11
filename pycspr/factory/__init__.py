@@ -19,5 +19,6 @@ from pycspr.factory.deploys import create_validator_auction_bid
 from pycspr.factory.deploys import create_validator_auction_bid_withdrawal
 from pycspr.factory.deploys import create_validator_delegation
 from pycspr.factory.deploys import create_validator_delegation_withdrawal
+from pycspr.factory.digests import create_digest_of_block
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body

@@ -11,8 +11,14 @@ MerkleProofBytes = typing.NewType("Cryptographic proof over a merkle trie.", byt
 # Asymmetric private key associated with an account.
 PrivateKeyBytes = typing.NewType("Asymmetric private key associated with an account.", bytes)
 
+# Hexadecimal encoded asymmetric private key associated with an account.
+PrivateKeyHex = typing.NewType("Hexadecimal encoded asymmetric private key associated with an account.", str)
+
 # Asymmetric public key associated with an account.
 PublicKeyBytes = typing.NewType("Asymmetric public key associated with an account.", bytes)
+
+# Hexadecimal encoded asymmetric public key associated with an account.
+PublicKeyHex = typing.NewType("Hexadecimal encoded asymmetric public key associated with an account.", str)
 
 # Cryptographic signature over data - includes single byte algo prefix.
 SignatureBytes = typing.NewType("Cryptographic signature over data.", bytes)
@@ -32,3 +38,17 @@ class KeyAlgorithm(enum.Enum):
     """
     ED25519 = 1
     SECP256K1 = 2
+
+
+TYPESET: set = {
+    Digest,
+    MerkleProofBytes,
+    PrivateKeyBytes,
+    PrivateKeyHex,
+    PublicKeyBytes,
+    PublicKeyHex,
+    SignatureBytes,
+} | {
+    HashAlgorithm,
+    KeyAlgorithm,     
+}

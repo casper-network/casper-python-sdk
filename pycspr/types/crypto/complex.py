@@ -70,3 +70,9 @@ class PrivateKey:
 
         """
         return PublicKey(algo=self.algo, pbk=self.pbk)
+
+
+TYPESET: set = {
+    PublicKey,
+    PrivateKey
+}

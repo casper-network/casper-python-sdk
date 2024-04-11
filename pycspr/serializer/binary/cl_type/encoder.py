@@ -14,7 +14,9 @@ def encode(entity: CLT_Type) -> bytes:
     if entity.type_key in _ENCODERS["simple"]:
         return bytes([entity.type_key.value]) + bytes([])
     elif entity.type_key in _ENCODERS["complex"]:
-        return bytes([entity.type_key.value]) + _ENCODERS["complex"][entity.type_key](entity)
+        return \
+            bytes([entity.type_key.value]) + \
+            _ENCODERS["complex"][entity.type_key](entity)
     else:
         raise ValueError("Unrecognized cl type")
 

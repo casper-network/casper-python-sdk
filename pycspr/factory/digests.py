@@ -1,19 +1,85 @@
 from pycspr import crypto
 from pycspr import serializer
+from pycspr.types.node.rpc import BlockHeader
 from pycspr.types.node.rpc import DeployHeader
+from pycspr.types.cl import CLV_Bool
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_List
+from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
+from pycspr.types.cl import CLT_Type_ByteArray
 from pycspr.types.node.rpc import DeployExecutableItem
 from pycspr.utils import convertor
 
 
+def create_digest_of_block(header: BlockHeader) -> bytes:
+    """Returns a block's digest.
+
+    :param header: Block header information.
+    :returns: Digest of a block.
+
+    """
+    return crypto.get_hash(
+        serializer.to_bytes(
+            CLV_ByteArray(
+                header.parent_hash
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_ByteArray(
+                header.state_root
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_ByteArray(
+                header.body_hash
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_Bool(
+                header.random_bit
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_ByteArray(
+                header.accumulated_seed
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_Option(
+                CLV_ByteArray(
+                    serializer.to_bytes(header.era_end)
+                ),
+                CLT_Type_ByteArray
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_U64(
+                int(header.timestamp.value * 1000)
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_U64(
+                header.era_id
+            )
+        ) +
+        serializer.to_bytes(
+            CLV_U64(
+                header.height
+            )
+        ) +
+        serializer.to_bytes(
+            header.protocol_version
+        )
+    )
+
+
 def create_digest_of_deploy(header: DeployHeader) -> bytes:
-    """Returns a deploy's hash digest.
+    """Returns a deploy's digest.
 
     :param header: Deploy header information.
-    :returns: Hash digest of a deploy.
+    :returns: Digestigest of a deploy.
 
     """
     return crypto.get_hash(

@@ -53,6 +53,7 @@ from pycspr.types.node.rpc.complex import ValidatorChanges
 from pycspr.types.node.rpc.complex import ValidatorReward
 from pycspr.types.node.rpc.complex import ValidatorStatusChange
 from pycspr.types.node.rpc.complex import ValidatorWeight
+from pycspr.types.node.rpc.complex import TYPESET as _TYPESET_COMPLEX
 
 from pycspr.types.node.rpc.simple import AccountKey
 from pycspr.types.node.rpc.simple import Address
@@ -76,3 +77,6 @@ from pycspr.types.node.rpc.simple import URefAccessRights
 from pycspr.types.node.rpc.simple import WasmModule
 from pycspr.types.node.rpc.simple import ValidatorStatusChangeType
 from pycspr.types.node.rpc.simple import Weight
+from pycspr.types.node.rpc.simple import TYPESET as _TYPESET_SIMPLE
+
+TYPESET: set = _TYPESET_COMPLEX | _TYPESET_SIMPLE

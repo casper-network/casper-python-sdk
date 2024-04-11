@@ -306,3 +306,32 @@ class CLT_Type_URef(CLT_Type):
     """
     # CSPR type key.
     type_key: CLT_TypeKey = CLT_TypeKey.UREF
+
+
+TYPESET: set = {
+    CLT_Type,
+    CLT_TypeKey,
+    CLT_Type_Any,
+    CLT_Type_Bool,
+    CLT_Type_ByteArray,
+    CLT_Type_I32,
+    CLT_Type_I64,
+    CLT_Type_U8,
+    CLT_Type_U32,
+    CLT_Type_U64,
+    CLT_Type_U128,
+    CLT_Type_U256,
+    CLT_Type_U512,
+    CLT_Type_Key,
+    CLT_Type_List,
+    CLT_Type_Map,
+    CLT_Type_Option,
+    CLT_Type_PublicKey,
+    CLT_Type_Result,
+    CLT_Type_String,
+    CLT_Type_Tuple1,
+    CLT_Type_Tuple2,
+    CLT_Type_Tuple3,
+    CLT_Type_Unit,
+    CLT_Type_URef,
+}

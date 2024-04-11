@@ -90,3 +90,29 @@ class ValidatorStatusChangeType(enum.Enum):
     BANNED = "Banned"
     CANNOT_PROPOSE = "CannotPropose"
     SEEN_AS_FAULTY = "SeenAsFaulty"
+
+
+TYPESET: set = {
+    AccountKey,
+    Address,
+    BlockHash,
+    BlockHeight,
+    BlockID,
+    ContractID,
+    ContractVersion,
+    DeployHash,
+    EraID,
+    Gas,
+    GasPrice,
+    GlobalStateID,
+    GlobalStateIDType,
+    Motes,
+    PurseID,
+    PurseIDType,
+    ReactorState,
+    StateRootHash,
+    URefAccessRights,
+    WasmModule,
+    ValidatorStatusChangeType,
+    Weight,
+}

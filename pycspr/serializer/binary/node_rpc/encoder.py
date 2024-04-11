@@ -21,6 +21,11 @@ from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
 from pycspr.types.node.rpc import DeployOfTransfer
 from pycspr.utils import convertor
 
+from pycspr.types.node.rpc import EraEnd
+from pycspr.types.node.rpc import EraEndReport
+from pycspr.types.node.rpc import ProtocolVersion
+from pycspr.types.node.rpc import ValidatorWeight
+
 
 def encode(entity: object) -> bytes:
     """Encoder: Domain entity -> an array of bytes.
@@ -29,12 +34,15 @@ def encode(entity: object) -> bytes:
     :returns: An array of bytes.
 
     """
-    try:
-        encoder = _ENCODERS[type(entity)]
-    except KeyError:
-        raise ValueError(f"Unknown entity type: {entity}")
+    if entity is None:
+        return bytes([])
     else:
-        return encoder(entity)
+        try:
+            encoder = _ENCODERS[type(entity)]
+        except KeyError:
+            raise ValueError(f"Unknown entity type: {entity}")
+        else:
+            return encoder(entity)
 
 
 def _encode_deploy(entity: Deploy) -> bytes:
@@ -72,30 +80,52 @@ def _encode_deploy_body(entity: DeployBody) -> bytes:
 
 
 def _encode_deploy_header(entity: DeployHeader) -> bytes:
-    result = bytes([])
-    result += encode_cl_value(
-        convertor.clv_public_key_from_public_key(entity.account)
-    )
-    result += encode_cl_value(
-        CLV_U64(int(entity.timestamp.value * 1000))
-    )
-    result += encode_cl_value(
-        CLV_U64(entity.ttl.as_milliseconds)
-    )
-    result += encode_cl_value(
-        CLV_U64(entity.gas_price)
-    )
-    result += encode_cl_value(
-        CLV_ByteArray(entity.body_hash)
-    )
-    result += encode_cl_value(
-        CLV_List(entity.dependencies)
-    )
-    result += encode_cl_value(
-        CLV_String(entity.chain_name)
-    )
+    return \
+        encode_cl_value(
+            convertor.clv_public_key_from_public_key(entity.account)
+        ) + \
+        encode_cl_value(
+            CLV_U64(int(entity.timestamp.value * 1000))
+        ) + \
+        encode_cl_value(
+            CLV_U64(entity.ttl.as_milliseconds)
+        ) + \
+        encode_cl_value(
+            CLV_U64(entity.gas_price)
+        ) + \
+        encode_cl_value(
+            CLV_ByteArray(entity.body_hash)
+        ) + \
+        encode_cl_value(
+            CLV_List(entity.dependencies)
+        ) + \
+        encode_cl_value(
+            CLV_String(entity.chain_name)
+        )
 
-    return result
+
+def _encode_era_end(entity: EraEnd) -> bytes:
+    return \
+        encode(entity.era_report)
+
+    return \
+        encode(entity.era_report) + \
+        encode_cl_value(
+            CLV_List(entity.next_era_validator_weights)
+        )
+
+
+def _encode_era_end_report(entity: EraEndReport) -> bytes:
+    return \
+        encode_cl_value(
+            CLV_List(entity.equivocators)
+        ) + \
+        encode_cl_value(
+            CLV_List(entity.rewards)
+        ) + \
+        encode_cl_value(
+            CLV_List(entity.inactive_validators)
+        )
 
 
 def _encode_module_bytes(entity: DeployOfModuleBytes) -> bytes:
@@ -103,6 +133,13 @@ def _encode_module_bytes(entity: DeployOfModuleBytes) -> bytes:
         bytes([0]) + \
         _u8_array_to_bytes(list(entity.module_bytes)) + \
         _vector_to_bytes(list(map(encode, entity.arguments)))
+
+
+def _encode_protocol_version(entity: ProtocolVersion) -> bytes:
+    return \
+        encode_cl_value(CLV_U32(entity.major)) + \
+        encode_cl_value(CLV_U32(entity.minor)) + \
+        encode_cl_value(CLV_U32(entity.revision))
 
 
 def _encode_stored_contract_by_hash(entity: DeployOfStoredContractByHash) -> bytes:
@@ -149,6 +186,24 @@ def _encode_transfer(entity: DeployOfTransfer) -> bytes:
         _vector_to_bytes(list(map(encode, entity.arguments)))
 
 
+def _encode_validator_weight(entity: ValidatorWeight) -> bytes:
+    return \
+        encode_cl_value(CLV_U32(entity.validator)) + \
+        encode_cl_value(CLV_U32(entity.weight))
+
+
+def _encode_validator_weight_set(entities: typing.List[ValidatorWeight]) -> bytes:
+    return \
+        encode_cl_value(CLV_U32(len(entities))) + \
+        bytes([encode(i) for i in entities])
+
+    return \
+        bytes([1]) + \
+        encode_cl_value(CLV_ByteArray(entity.hash)) + \
+        encode_cl_value(CLV_String(entity.entry_point)) + \
+        _vector_to_bytes(list(map(encode, entity.arguments)))
+
+
 def _u8_array_to_bytes(value: typing.List[int]) -> bytes:
     return encode_cl_value(CLV_U32(len(value))) + bytes(value)
 
@@ -171,4 +226,8 @@ _ENCODERS = {
     DeployOfStoredContractByName: _encode_stored_contract_by_name,
     DeployOfStoredContractByNameVersioned: _encode_stored_contract_by_name_versioned,
     DeployOfTransfer: _encode_transfer,
+    EraEnd: _encode_era_end,
+    EraEndReport: _encode_era_end_report,
+    ProtocolVersion: _encode_protocol_version,
+    ValidatorWeight: _encode_validator_weight,
 }

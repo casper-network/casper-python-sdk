@@ -45,3 +45,8 @@ SSE_CHANNEL_TO_SSE_EVENT: typing.Dict[NodeEventChannel, typing.Set[NodeEventType
         NodeEventType.FinalitySignature
     }
 }
+
+TYPESET: set = {
+    NodeEventChannel,
+    NodeEventType,
+}
