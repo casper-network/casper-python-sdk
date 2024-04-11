@@ -33,6 +33,8 @@ GasPrice = typing.NewType("Price of gas within an era in chain time.", int)
 
 Motes = typing.NewType("Basic unit of crypto economic system.", int)
 
+URefIdentifier = typing.NewType("String encoded UREF identifier.", str)
+
 WasmModule = typing.NewType("WASM module payload.", bytes)
 
 Weight = typing.NewType("Some form of relative relevance measure.", int)
@@ -54,7 +56,7 @@ class GlobalStateIDType(enum.Enum):
 
 @dataclasses.dataclass
 class PurseID():
-    identifier: typing.Union[Address, PublicKeyBytes, "URef"]
+    identifier: typing.Union[Address, PublicKeyBytes, URefIdentifier]
     id_type: "PurseIDType"
 
 

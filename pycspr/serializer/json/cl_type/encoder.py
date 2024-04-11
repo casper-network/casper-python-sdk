@@ -20,7 +20,7 @@ def encode(entity: CLT_Type) -> typing.Union[str, dict]:
 
 
 _ENCODERS: dict = {
-    CLT_TypeKey.ANY: 
+    CLT_TypeKey.ANY:
         lambda _: "Any",
     CLT_TypeKey.BOOL:
         lambda _: "Bool",

@@ -51,13 +51,12 @@ def encode(entity: CLV_Value) -> CLT_Type:
     :returns: A CL type definition.
 
     """
-    typedef = type(entity)
-    if typedef in _ENCODERS["complex"]:
-        return _ENCODERS["complex"][typedef](entity)
-    elif typedef in _ENCODERS["simple"]:
-        return _ENCODERS["simple"][typedef]()
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError(f"CL value cannot be encoded as CL type: {type(entity)}")
     else:
-        raise NotImplementedError(f"CL value cannot be encoded as CL type: {typedef}")
+        return encoder(entity)
 
 
 def _encode_list(entity: CLV_List):
@@ -85,36 +84,46 @@ def _encode_map(entity: CLV_Map):
 
 
 _ENCODERS: dict = {
-    "complex": {
-        CLV_ByteArray:
-            lambda x: CLT_Type_ByteArray(len(x)),
-        CLV_List:
-            _encode_list,
-        CLV_Map:
-            _encode_map,
-        CLV_Option:
-            lambda x: CLT_Type_Option(x.option_type),
-        CLV_Tuple1:
-            lambda x: CLT_Type_Tuple1(encode(x.v0)),
-        CLV_Tuple2:
-            lambda x: CLT_Type_Tuple2(encode(x.v0), encode(x.v1)),
-        CLV_Tuple3:
-            lambda x: CLT_Type_Tuple3(encode(x.v0), encode(x.v1), encode(x.v2)),
-    },
-    "simple": {
-        CLV_Bool: CLT_Type_Bool,
-        CLV_I32: CLT_Type_I32,
-        CLV_I64: CLT_Type_I64,
-        CLV_Key: CLT_Type_Key,
-        CLV_PublicKey: CLT_Type_PublicKey,
-        CLV_String: CLT_Type_String,
-        CLV_U8: CLT_Type_U8,
-        CLV_U32: CLT_Type_U32,
-        CLV_U64: CLT_Type_U64,
-        CLV_U128: CLT_Type_U128,
-        CLV_U256: CLT_Type_U256,
-        CLV_U512: CLT_Type_U512,
-        CLV_Unit: CLT_Type_Unit,
-        CLV_URef: CLT_Type_URef,
-    }
+    CLV_Bool:
+        lambda _: CLT_Type_Bool(),
+    CLV_ByteArray:
+        lambda x: CLT_Type_ByteArray(len(x)),
+    CLV_I32:
+        lambda _: CLT_Type_I32(),
+    CLV_I64:
+        lambda _: CLT_Type_I64(),
+    CLV_Key:
+        lambda _: CLT_Type_Key(),
+    CLV_List:
+        _encode_list,
+    CLV_Map:
+        _encode_map,
+    CLV_Option:
+        lambda x: CLT_Type_Option(x.option_type),
+    CLV_PublicKey:
+        lambda _: CLT_Type_PublicKey(),
+    CLV_String:
+        lambda _: CLT_Type_String(),
+    CLV_Tuple1:
+        lambda x: CLT_Type_Tuple1(encode(x.v0)),
+    CLV_Tuple2:
+        lambda x: CLT_Type_Tuple2(encode(x.v0), encode(x.v1)),
+    CLV_Tuple3:
+        lambda x: CLT_Type_Tuple3(encode(x.v0), encode(x.v1), encode(x.v2)),
+    CLV_U8:
+        lambda _: CLT_Type_U8(),
+    CLV_U32:
+        lambda _: CLT_Type_U32(),
+    CLV_U64:
+        lambda _: CLT_Type_U64(),
+    CLV_U128:
+        lambda _: CLT_Type_U128(),
+    CLV_U256:
+        lambda _: CLT_Type_U256(),
+    CLV_U512:
+        lambda _: CLT_Type_U512(),
+    CLV_Unit:
+        lambda _: CLT_Type_Unit(),
+    CLV_URef:
+        lambda _: CLT_Type_URef(),
 }
