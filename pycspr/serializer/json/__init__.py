@@ -3,7 +3,7 @@ import typing
 from pycspr.serializer.json import cl_type as serializer_clt
 from pycspr.serializer.json import cl_value as serializer_clv
 from pycspr.serializer.json import crypto as serializer_crypto
-from pycspr.serializer.json import node_rpc as serializer_node
+from pycspr.serializer.json import node as serializer_node
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLV_Value
 from pycspr.types.cl.types import TYPESET as TYPESET_CLT

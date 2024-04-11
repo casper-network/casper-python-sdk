@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
-from pycspr.serializer.json.node_rpc import decoder as rpc_decoder
+from pycspr.serializer.json.node import decoder as rpc_decoder
 from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import ValidatorChanges
 

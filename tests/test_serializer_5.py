@@ -2,7 +2,7 @@ import pycspr
 from pycspr import serializer
 
 
-def test_that_node_rpc_standard_transfer_serialises_to_and_from_json(
+def test_that_node_standard_transfer_serialises_to_and_from_json(
     deploy_params_static,
     deploys_1
 ):
