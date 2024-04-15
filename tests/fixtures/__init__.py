@@ -45,3 +45,6 @@ from tests.fixtures.vectors import crypto_key_pairs
 from tests.fixtures.vectors import crypto_key_pair_specs
 from tests.fixtures.vectors import crypto_signatures
 from tests.fixtures.vectors import deploys_1
+from tests.fixtures.vectors import test_account_key
+from tests.fixtures.vectors import test_bytes
+from tests.fixtures.vectors import test_signature

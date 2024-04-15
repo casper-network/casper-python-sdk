@@ -7,7 +7,7 @@ from pycspr import serializer
 from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
-from pycspr.types.crypto import Digest
+from pycspr.types.crypto import DigestBytes
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import BlockID
@@ -333,7 +333,7 @@ class Proxy:
             "stored_value"
             )
 
-    async def state_get_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+    async def state_get_trie(self, trie_key: DigestBytes) -> typing.Optional[bytes]:
         """Returns results of a query to global state trie store at a specified key.
 
         :param trie_key: Key of an item stored within global state.

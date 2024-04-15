@@ -43,7 +43,7 @@ def decode(bstream: bytes) -> CLT_Type:
 
 
 def _decode_byte_array(bstream: bytes):
-    bstream, size = decode_cl_value(bstream, CLT_Type_U32())
+    bstream, size = decode_cl_value(CLT_Type_U32(), bstream)
 
     return bstream, CLT_Type_ByteArray(size.value)
 

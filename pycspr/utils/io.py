@@ -34,7 +34,7 @@ def read_deploy(fpath: typing.Union[pathlib.Path, str]) -> Deploy:
     """
     fpath = pathlib.Path(fpath) if isinstance(fpath, str) else fpath
     with open(str(fpath), "r") as fstream:
-        return serializer.from_json(json.loads(fstream.read()), Deploy)
+        return serializer.from_json(Deploy, json.loads(fstream.read()))
 
 
 def read_wasm(fpath: typing.Union[pathlib.Path, str]) -> bytes:

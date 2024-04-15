@@ -2,7 +2,7 @@ from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
 from pycspr.types.crypto.complex import PrivateKey
-from pycspr.types.crypto.simple import Digest
+from pycspr.types.crypto.simple import DigestBytes
 from pycspr.types.crypto.simple import HashAlgorithm
 from pycspr.types.crypto.simple import KeyAlgorithm
 from pycspr.types.crypto.simple import SignatureBytes
@@ -51,7 +51,7 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
 
 
 def get_signature_for_deploy_approval(
-    deploy_hash: Digest,
+    deploy_hash: DigestBytes,
     key_of_approver: PrivateKey
 ) -> SignatureBytes:
     """Returns a signature designated to approve a deploy.
@@ -67,7 +67,7 @@ def get_signature_for_deploy_approval(
 
 
 def verify_deploy_approval_signature(
-    deploy_hash: Digest,
+    deploy_hash: DigestBytes,
     sig: SignatureBytes,
     account_key: bytes
 ) -> bool:

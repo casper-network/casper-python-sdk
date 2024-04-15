@@ -14,5 +14,5 @@ def test_that_node_standard_transfer_serialises_to_and_from_json(
             correlation_id=vector["session"]["correlation_id"]
         )
         encoded = serializer.to_json(entity)
-        decoded = serializer.from_json(encoded, type(entity))
+        decoded = serializer.from_json(type(entity), encoded)
         assert entity == decoded

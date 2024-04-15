@@ -1,13 +1,13 @@
 import typing
 
 from pycspr.factory import create_public_key_from_account_key
-from pycspr.serializer.json.cl_value import decode as decode_cl_value
-from pycspr.types.crypto import Digest
-from pycspr.types.crypto import MerkleProofBytes
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyBytes
-from pycspr.types.crypto import SignatureBytes
-
+from pycspr.serializer.json.cl_value import decode as clv_decoder
+from pycspr.serializer.json.crypto import DECODERS as CRYPTO_DECODERS
+from pycspr.serializer.json.primitives import DECODERS as PRIMITIVES_DECODERS
+from pycspr.types.crypto import DigestHex
+from pycspr.types.crypto import MerkleProofHex
+from pycspr.types.crypto import PublicKeyHex
+from pycspr.types.crypto import SignatureHex
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import AccountKey
@@ -85,7 +85,7 @@ def decode(typedef: object, encoded: dict) -> object:
 
     """
     try:
-        decoder = _DECODERS[typedef]
+        decoder = DECODERS[typedef]
     except KeyError:
         raise ValueError(f"Cannot decode {typedef} from json")
     else:
@@ -126,15 +126,15 @@ def _decode_associated_key(encoded: dict) -> AssociatedKey:
 def _decode_auction_bid_by_delegator(encoded: dict) -> AuctionBidByDelegator:
     return AuctionBidByDelegator(
         bonding_purse=decode(URef, encoded["bonding_purse"]),
-        delegatee=decode(PublicKeyBytes, encoded["delegatee"]),
-        public_key=decode(PublicKeyBytes, encoded["public_key"]),
+        delegatee=decode(PublicKeyHex, encoded["delegatee"]),
+        public_key=decode(PublicKeyHex, encoded["public_key"]),
         staked_amount=decode(Motes, encoded["staked_amount"]),
     )
 
 
 def _decode_auction_bid_by_validator(encoded: dict) -> AuctionBidByValidator:
     return AuctionBidByValidator(
-        public_key=decode(PublicKeyBytes, encoded["public_key"]),
+        public_key=decode(PublicKeyHex, encoded["public_key"]),
         bid=decode(AuctionBidByValidatorInfo, encoded["bid"]),
     )
 
@@ -177,7 +177,7 @@ def _decode_block(encoded: dict) -> Block:
 
 def _decode_block_body(encoded: dict) -> BlockBody:
     return BlockBody(
-        proposer=decode(PublicKeyBytes, encoded["proposer"]),
+        proposer=decode(PublicKeyHex, encoded["proposer"]),
         deploy_hashes=[decode(DeployHash, i) for i in encoded["deploy_hashes"]],
         transfer_hashes=[decode(DeployHash, i) for i in encoded["transfer_hashes"]],
     )
@@ -186,7 +186,7 @@ def _decode_block_body(encoded: dict) -> BlockBody:
 def _decode_block_header(encoded: dict) -> BlockHeader:
     return BlockHeader(
         accumulated_seed=decode(bytes, encoded["accumulated_seed"]),
-        body_hash=decode(Digest, encoded["body_hash"]),
+        body_hash=decode(DigestHex, encoded["body_hash"]),
         era_end=decode(EraEnd, encoded["era_end"]),
         era_id=decode(EraID, encoded["era_id"]),
         height=decode(BlockHeight, encoded["height"]),
@@ -200,8 +200,8 @@ def _decode_block_header(encoded: dict) -> BlockHeader:
 
 def _decode_block_signature(encoded: dict) -> BlockSignature:
     return BlockSignature(
-        public_key=decode(PublicKeyBytes, encoded["public_key"]),
-        signature=decode(SignatureBytes, encoded["signature"])
+        public_key=decode(PublicKeyHex, encoded["public_key"]),
+        signature=decode(SignatureHex, encoded["signature"])
     )
 
 
@@ -227,14 +227,14 @@ def _decode_deploy_approval(encoded: dict) -> DeployApproval:
         signer=create_public_key_from_account_key(
             decode(AccountKey, encoded["signer"])
             ),
-        signature=decode(SignatureBytes, encoded["signature"]),
+        signature=decode(SignatureHex, encoded["signature"]),
     )
 
 
 def _decode_deploy_argument(encoded: typing.Tuple[str, dict]) -> DeployArgument:
     return DeployArgument(
         name=decode(str, encoded[0]),
-        value=decode_cl_value(encoded[1])
+        value=clv_decoder(encoded[1])
         )
 
 
@@ -332,7 +332,7 @@ def _decode_deploy_header(encoded: dict) -> DeployHeader:
         ),
         body_hash=decode(bytes, encoded["body_hash"]),
         chain_name=decode(str, encoded["chain_name"]),
-        dependencies=[decode(Digest, i) for i in encoded["dependencies"]],
+        dependencies=[decode(DigestHex, i) for i in encoded["dependencies"]],
         gas_price=decode(GasPrice, encoded["gas_price"]),
         timestamp=decode(Timestamp, encoded["timestamp"]),
         ttl=decode(DeployTimeToLive, encoded["ttl"])
@@ -350,26 +350,31 @@ def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
 def _decode_dictionary_info(encoded: dict) -> DictionaryItem:
     return DictionaryItem(
         dictionary_key=decode(str, encoded["DictionaryInfo"]),
-        merkle_proof=decode(MerkleProofBytes, encoded["merkle_proof"]),
+        merkle_proof=decode(MerkleProofHex, encoded["merkle_proof"]),
         stored_value=decode(dict, encoded["DictionaryInfo"]),
     )
 
 
 def _decode_era_end(encoded: typing.Union[None, dict]) -> typing.Optional[EraEnd]:
     if encoded is not None:
+
+        print(decode(EraEndReport, encoded["era_report"]))
+        print(888)
+
         return EraEnd(
             era_report=decode(EraEndReport, encoded["era_report"]),
-            next_era_validator_weights=[
-                decode(ValidatorWeight, i) for i in encoded["next_era_validator_weights"]
-            ]
+            next_era_validator_weights=[]
+            # next_era_validator_weights=[
+            #     decode(ValidatorWeight, i) for i in encoded["next_era_validator_weights"]
+            # ]
         )
 
 
 def _decode_era_end_report(encoded: dict) -> EraEndReport:
     return EraEndReport(
-        equivocators=[decode(PublicKeyBytes, i) for i in encoded["equivocators"]],
+        equivocators=[decode(PublicKeyHex, i) for i in encoded["equivocators"]],
         rewards=[decode(ValidatorReward, i) for i in encoded["rewards"]],
-        inactive_validators=[decode(PublicKeyBytes, i) for i in encoded["inactive_validators"]],
+        inactive_validators=[decode(PublicKeyHex, i) for i in encoded["inactive_validators"]],
     )
 
 
@@ -378,7 +383,7 @@ def _decode_era_summary(encoded: dict) -> EraSummary:
         block_hash=decode(BlockHash, encoded["block_hash"]),
         era_id=decode(EraID, encoded["era_id"]),
         era_info=decode(EraSummaryInfo, encoded["stored_value"]["EraInfo"]),
-        merkle_proof=decode(MerkleProofBytes, encoded["merkle_proof"]),
+        merkle_proof=decode(MerkleProofHex, encoded["merkle_proof"]),
         state_root=decode(StateRootHash, encoded["state_root_hash"]),
     )
 
@@ -393,7 +398,7 @@ def _decode_era_summary_info(encoded: dict) -> EraSummaryInfo:
 
 def _decode_minimal_block_info(encoded: dict) -> MinimalBlockInfo:
     return MinimalBlockInfo(
-        creator=decode(PublicKeyBytes, encoded["creator"]),
+        creator=decode(PublicKeyHex, encoded["creator"]),
         era_id=decode(EraID, encoded["era_id"]),
         hash=decode(BlockHash, encoded["hash"]),
         height=decode(BlockHeight, encoded["height"]),
@@ -432,7 +437,7 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
         chainspec_name=decode(str, encoded["chainspec_name"]),
         last_added_block_info=decode(MinimalBlockInfo, encoded["last_added_block_info"]),
         next_upgrade=decode(NextUpgradeInfo, encoded["next_upgrade"]),
-        our_public_signing_key=decode(PublicKeyBytes, encoded["our_public_signing_key"]),
+        our_public_signing_key=decode(PublicKeyHex, encoded["our_public_signing_key"]),
         peers=[decode(NodePeer, i) for i in encoded["peers"]],
         reactor_state=decode(ReactorState, encoded["reactor_state"]),
         round_length=decode(str, encoded["round_length"]),
@@ -452,15 +457,15 @@ def _decode_seigniorage_allocation(encoded: dict) -> SeigniorageAllocation:
         encoded = encoded["Delegator"]
         return SeigniorageAllocationForDelegator(
             amount=decode(Motes, encoded["amount"]),
-            delegator_public_key=decode(PublicKeyBytes, encoded["delegator_public_key"]),
-            validator_public_key=decode(PublicKeyBytes, encoded["validator_public_key"]),
+            delegator_public_key=decode(PublicKeyHex, encoded["delegator_public_key"]),
+            validator_public_key=decode(PublicKeyHex, encoded["validator_public_key"]),
         )
 
     if "Validator" in encoded:
         encoded = encoded["Validator"]
         return SeigniorageAllocationForValidator(
             amount=decode(Motes, encoded["amount"]),
-            validator_public_key=decode(PublicKeyBytes, encoded["validator_public_key"]),
+            validator_public_key=decode(PublicKeyHex, encoded["validator_public_key"]),
         )
 
     raise ValueError("Invalid seigniorage allocation.")
@@ -493,7 +498,7 @@ def _decode_uref(encoded: str) -> URef:
 
 def _decode_validator_changes(encoded: list) -> ValidatorChanges:
     return ValidatorChanges(
-        public_key=decode(PublicKeyBytes, encoded["public_key"]),
+        public_key=decode(PublicKeyHex, encoded["public_key"]),
         status_changes=[decode(ValidatorStatusChange, i) for i in encoded["status_changes"]],
     )
 
@@ -501,7 +506,7 @@ def _decode_validator_changes(encoded: list) -> ValidatorChanges:
 def _decode_validator_reward(encoded: dict) -> ValidatorReward:
     return ValidatorReward(
         amount=decode(Motes, encoded["amount"]),
-        validator=decode(PublicKeyBytes, encoded["validator"]),
+        validator=decode(PublicKeyHex, encoded["validator"]),
     )
 
 
@@ -513,36 +518,30 @@ def _decode_validator_status_change(encoded: dict) -> ValidatorStatusChange:
 
 
 def _decode_validator_weight(encoded: dict) -> ValidatorWeight:
+    # Validator weights appear in different JSON data structures with
+    # differing field names.
+    pbk: PublicKeyHex = encoded.get("public_key", encoded.get("validator"))
+
     return ValidatorWeight(
-        validator=decode(PublicKeyBytes, encoded.get("public_key", encoded.get("validator"))),
+        validator=decode(PublicKeyHex, pbk),
         weight=decode(Weight, encoded["weight"])
     )
 
 
-_DECODERS = {
-    bool: lambda x: None if x is None else bool(x),
-    bytes: lambda x: None if x is None else bytes.fromhex(x),
-    dict: lambda x: x,
-    int: lambda x: None if x is None else int(x),
-    str: lambda x: None if x is None else x.strip(),
-} | {
+DECODERS = PRIMITIVES_DECODERS | CRYPTO_DECODERS | {
     AccountKey: lambda x: decode(bytes, x),
     Address: _decode_address,
-    BlockHash: lambda x: decode(Digest, x),
+    BlockHash: lambda x: decode(DigestHex, x),
     BlockHeight: lambda x: decode(int, x),
     ContractID: lambda x: decode(bytes, x),
     ContractVersion: lambda x: decode(int, x),
-    DeployHash: lambda x: decode(Digest, x),
-    Digest: lambda x: decode(bytes, x),
+    DeployHash: lambda x: decode(DigestHex, x),
     EraID: lambda x: decode(int, x),
     Gas: lambda x: decode(int, x),
     GasPrice: lambda x: decode(int, x),
-    PublicKeyBytes: lambda x: decode(bytes, x),
-    MerkleProofBytes: lambda x: decode(bytes, x),
     Motes: lambda x: decode(int, x),
     ReactorState: lambda x: ReactorState(x),
-    SignatureBytes: lambda x: decode(bytes, x),
-    StateRootHash: lambda x: decode(Digest, x),
+    StateRootHash: lambda x: decode(DigestHex, x),
     URefAccessRights: lambda x: URefAccessRights(int(x)),
     Weight: lambda x: decode(int, x),
     WasmModule: lambda x: decode(bytes, x),

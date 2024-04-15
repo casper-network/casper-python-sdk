@@ -2,7 +2,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.types.crypto import Digest
+from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import PublicKeyBytes
 
 
@@ -15,7 +15,7 @@ Address = typing.NewType(
     )
 
 BlockHash = typing.NewType(
-    "Digest over a block.", Digest
+    "Digest over a block.", DigestBytes
     )
 
 BlockHeight = typing.NewType(
@@ -33,7 +33,7 @@ ContractVersion = typing.NewType(
     )
 
 DeployHash = typing.NewType(
-    "Identifier of a transaction.", Digest
+    "Identifier of a transaction.", DigestBytes
     )
 
 EraID = typing.NewType(
@@ -65,7 +65,7 @@ Weight = typing.NewType(
     )
 
 StateRootHash = typing.NewType(
-    "Root digest of a node's global state.", Digest
+    "Root digest of a node's global state.", DigestBytes
     )
 
 

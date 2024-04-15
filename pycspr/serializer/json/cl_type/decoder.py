@@ -55,37 +55,45 @@ def decode(encoded: typing.Union[dict, str]) -> CLT_Type:
     """
     if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:
         return _SIMPLE_TYPES[encoded]()
+
     elif "ByteArray" in encoded:
         return CLT_Type_ByteArray(
             encoded["ByteArray"]
         )
+
     elif "List" in encoded:
         return CLT_Type_List(
             decode(encoded["List"])
         )
+
     elif "Map" in encoded:
         return CLT_Type_Map(
             decode(encoded["Map"]["key"]),
             decode(encoded["Map"]["value"])
             )
+
     elif "Option" in encoded:
         return CLT_Type_Option(
             decode(encoded["Option"])
         )
+
     elif "Tuple1" in encoded:
         return CLT_Type_Tuple1(
             decode(encoded["Tuple1"])
         )
+
     elif "Tuple2" in encoded:
         return CLT_Type_Tuple2(
             decode(encoded["Tuple2"][0]),
             decode(encoded["Tuple2"][1])
         )
+
     elif "Tuple3" in encoded:
         return CLT_Type_Tuple3(
             decode(encoded["Tuple3"][0]),
             decode(encoded["Tuple3"][1]),
             decode(encoded["Tuple3"][2])
             )
+
     else:
         raise ValueError("Invalid CL type JSON representation")

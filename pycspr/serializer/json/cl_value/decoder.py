@@ -1,3 +1,4 @@
+from pycspr.types.cl.types import CLT_Type
 from pycspr.serializer.json.cl_type import decode as decode_cl_type
 from pycspr.serializer.binary.cl_value import decode as decode_cl_value
 
@@ -13,13 +14,13 @@ def decode(encoded: dict):
         raise ValueError("Invalid CL value JSON encoding")
 
     # Set cl type.
-    cl_type = decode_cl_type(encoded["cl_type"])
-
-    # Set byte stream.
-    bstream = bytes.fromhex(encoded["bytes"])
+    cl_typedef: CLT_Type = decode_cl_type(encoded["cl_type"])
 
     # Decode cl value.
-    bstream, cl_value = decode_cl_value(bstream, cl_type)
+    bstream, cl_value = decode_cl_value(
+        cl_typedef,
+        bytes.fromhex(encoded["bytes"])
+        )
 
     # Assert entire byte stream has been consumed,
     assert len(bstream) == 0

@@ -1,7 +1,7 @@
 import pytest
 
 from pycspr import NodeRpcClient
-from pycspr.types.crypto import Digest
+from pycspr.types.crypto import DigestBytes
 from pycspr.types.node.rpc import AccountKey
 from pycspr.types.node.rpc import Block
 from pycspr.types.node.rpc import GlobalStateID
@@ -30,7 +30,7 @@ async def block(RPC_CLIENT: NodeRpcClient) -> Block:
 
 
 @pytest.fixture(scope="session")
-async def block_hash(block: Block) -> Digest:
+async def block_hash(block: Block) -> DigestBytes:
     """Returns hash of most recent block.
 
     """
@@ -62,7 +62,7 @@ async def switch_block(RPC_CLIENT: NodeRpcClient) -> dict:
 
 
 @pytest.fixture(scope="session")
-async def switch_block_hash(switch_block: Block) -> Digest:
+async def switch_block_hash(switch_block: Block) -> DigestBytes:
     """Returns hash of most recent switch block.
 
     """

@@ -1,11 +1,11 @@
 import time
 import typing
 
+from pycspr import serializer
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
-from pycspr.serializer.json.node import decoder
 from pycspr.types.cl import CLV_Key
-from pycspr.types.crypto import Digest
+from pycspr.types.crypto import DigestBytes
 from pycspr.types.node.rpc import Address
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import AuctionState
@@ -93,7 +93,7 @@ class Client():
         """
         encoded: dict = await self.proxy.state_get_account_info(account_id, block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, AccountInfo)
+        return encoded if decode is False else serializer.from_json(AccountInfo, encoded)
 
     async def get_auction_info(
         self,
@@ -108,7 +108,7 @@ class Client():
         """
         encoded: dict = await self.proxy.state_get_auction_info(block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, AuctionState)
+        return encoded if decode is False else serializer.from_json(AuctionState, encoded)
 
     async def get_block(
         self,
@@ -124,7 +124,7 @@ class Client():
         """
         encoded: dict = await self.proxy.chain_get_block(block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, Block)
+        return encoded if decode is False else serializer.from_json(Block, encoded)
 
     async def get_block_transfers(
         self,
@@ -140,7 +140,7 @@ class Client():
         """
         encoded: dict = await self.proxy.chain_get_block_transfers(block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, BlockTransfers)
+        return encoded if decode is False else serializer.from_json(BlockTransfers, encoded)
 
     async def get_chainspec(self) -> dict:
         """Returns canonical network state information.
@@ -167,7 +167,7 @@ class Client():
 
         return \
             encoded["deploy"] if decode is False else \
-            decoder.decode(encoded["deploy"], Deploy)
+            serializer.from_json(Deploy, encoded["deploy"])
 
     async def get_dictionary_item(
         self,
@@ -198,7 +198,7 @@ class Client():
         """
         encoded: dict = await self.proxy.chain_get_era_summary(block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, EraSummary)
+        return encoded if decode is False else serializer.from_json(EraSummary, encoded)
 
     async def get_era_info_by_switch_block(
         self,
@@ -214,7 +214,7 @@ class Client():
         """
         encoded: dict = await self.proxy.chain_get_era_info_by_switch_block(block_id)
 
-        return encoded if decode is False else decoder.decode(encoded, EraSummary)
+        return encoded if decode is False else serializer.from_json(EraSummary, encoded)
 
     async def get_node_peers(
         self,
@@ -228,7 +228,9 @@ class Client():
         """
         encoded: list = await self.proxy.info_get_peers()
 
-        return encoded if decode is False else [decoder.decode(i, NodePeer) for i in encoded]
+        return \
+            encoded if decode is False else \
+            [serializer.from_json(NodePeer, i) for i in encoded]
 
     async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
@@ -239,7 +241,7 @@ class Client():
         """
         encoded: dict = await self.proxy.info_get_status()
 
-        return encoded if decode is False else decoder.decode(encoded, NodeStatus)
+        return encoded if decode is False else serializer.from_json(NodeStatus, encoded)
 
     async def get_rpc_schema(self) -> dict:
         """Returns RPC schema.
@@ -292,7 +294,7 @@ class Client():
         """
         return await self.proxy.chain_get_state_root_hash(block_id)
 
-    async def get_state_trie(self, trie_key: Digest) -> typing.Optional[bytes]:
+    async def get_state_trie(self, trie_key: DigestBytes) -> typing.Optional[bytes]:
         """Returns results of a query to global state trie store at a specified key.
 
         :param trie_key: Key of an item stored within global state.
@@ -313,7 +315,9 @@ class Client():
         """
         obj = await self.proxy.info_get_validator_changes()
 
-        return obj if decode is False else [decoder.decode(i, ValidatorChanges) for i in obj]
+        return \
+            obj if decode is False else \
+            [serializer.from_json(ValidatorChanges, i) for i in obj]
 
 
 class ClientExtensions():

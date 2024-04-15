@@ -5,7 +5,7 @@ import typing
 
 from pycspr import crypto
 from pycspr.types.cl.values import CLV_Value
-from pycspr.types.crypto import Digest
+from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyBytes
@@ -115,7 +115,7 @@ class BlockBody():
 @dataclasses.dataclass
 class BlockHeader():
     accumulated_seed: bytes
-    body_hash: Digest
+    body_hash: DigestBytes
     era_end: typing.Optional[EraEnd]
     era_id: EraID
     height: BlockHeight
@@ -259,7 +259,7 @@ class DeployExecutableItem():
 @dataclasses.dataclass
 class DeployHeader():
     account: PublicKey
-    body_hash: Digest
+    body_hash: DigestBytes
     chain_name: str
     dependencies: typing.List[DeployHash]
     gas_price: GasPrice
@@ -414,7 +414,7 @@ class EraSummary():
     era_id: EraID
     era_info: EraSummaryInfo
     merkle_proof: MerkleProofBytes
-    state_root: Digest
+    state_root: DigestBytes
 
 
 @dataclasses.dataclass
@@ -461,7 +461,7 @@ class NodeStatus():
     peers: typing.List[NodePeer]
     reactor_state: ReactorState
     round_length: str
-    starting_state_root_hash: Digest
+    starting_state_root_hash: DigestBytes
     uptime: str
 
 

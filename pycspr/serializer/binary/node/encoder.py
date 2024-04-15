@@ -197,12 +197,6 @@ def _encode_validator_weight_set(entities: typing.List[ValidatorWeight]) -> byte
         encode_cl_value(CLV_U32(len(entities))) + \
         bytes([encode(i) for i in entities])
 
-    return \
-        bytes([1]) + \
-        encode_cl_value(CLV_ByteArray(entity.hash)) + \
-        encode_cl_value(CLV_String(entity.entry_point)) + \
-        _vector_to_bytes(list(map(encode, entity.arguments)))
-
 
 def _u8_array_to_bytes(value: typing.List[int]) -> bytes:
     return encode_cl_value(CLV_U32(len(value))) + bytes(value)

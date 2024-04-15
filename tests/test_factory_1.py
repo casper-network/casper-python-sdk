@@ -17,14 +17,14 @@ def test_create_deploy_arguments_2(cl_values_vector):
     for cl_value in cl_values_vector:
         arg = DeployArgument("an-argument", cl_value)
         arg_json = serializer.to_json(arg)
-        assert arg == serializer.from_json(arg_json, DeployArgument)
+        assert arg == serializer.from_json(DeployArgument, arg_json)
 
 
 def test_create_deploy_arguments_3(cl_values_vector):
     for cl_value in cl_values_vector:
         entity = DeployArgument("an-argument", cl_value)
         encoded = serializer.to_bytes(entity)
-        _, decoded = serializer.from_bytes(encoded, DeployArgument)
+        _, decoded = serializer.from_bytes(DeployArgument, encoded)
         assert entity == decoded
 
 

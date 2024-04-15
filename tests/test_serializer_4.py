@@ -9,7 +9,7 @@ def test_that_node_standard_payment_serialises_to_and_from_bytes(deploys_1):
         )
         encoded = serializer.to_bytes(entity)
         assert encoded == vector["bytes"]["payment"]
-        _, decoded = serializer.from_bytes(encoded, type(entity))
+        _, decoded = serializer.from_bytes(type(entity), encoded)
         assert entity == decoded
 
 
@@ -19,7 +19,7 @@ def test_that_node_standard_payment_serialises_to_and_from_json(deploys_1):
             vector["payment"]["amount"]
         )
         encoded = serializer.to_json(entity)
-        decoded = serializer.from_json(encoded, type(entity))
+        decoded = serializer.from_json(type(entity), encoded)
         assert entity == decoded
 
 
@@ -32,7 +32,7 @@ def test_that_node_transfer_session_serialises_to_and_from_bytes(deploys_1):
             )
         encoded = serializer.to_bytes(entity)
         assert encoded == vector["bytes"]["session"]
-        _, decoded = serializer.from_bytes(encoded, type(entity))
+        _, decoded = serializer.from_bytes(type(entity), encoded)
         assert entity == decoded
 
 
@@ -44,5 +44,5 @@ def test_that_node_transfer_session_serialises_to_and_from_json(deploys_1):
             vector["session"]["correlation_id"]
             )
         encoded = serializer.to_json(entity)
-        decoded = serializer.from_json(encoded, type(entity))
+        decoded = serializer.from_json(type(entity), encoded)
         assert entity == decoded

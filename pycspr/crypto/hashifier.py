@@ -1,6 +1,6 @@
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
-from pycspr.types.crypto.simple import Digest
+from pycspr.types.crypto.simple import DigestBytes
 from pycspr.types.crypto.simple import HashAlgorithm
 
 
@@ -21,7 +21,7 @@ def get_hash(
     data: bytes,
     size: int = DEFAULT_DIGEST_LENGTH,
     algo: HashAlgorithm = DEFAULT_HASH_ALGO
-) -> Digest:
+) -> DigestBytes:
     """Maps input to a hash function output.
 
     :param data: Data to be hashed.

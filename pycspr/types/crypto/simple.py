@@ -3,13 +3,23 @@ import typing
 
 
 # Cryptographic fingerprint of data.
-Digest = typing.NewType(
+DigestBytes = typing.NewType(
+    "Cryptographic fingerprint of data.", bytes
+    )
+
+# Hexadecimal encoded crryptographic fingerprint of data.
+DigestHex = typing.NewType(
     "Cryptographic fingerprint of data.", bytes
     )
 
 # Cryptographic proof over a merkle trie.
 MerkleProofBytes = typing.NewType(
     "Cryptographic proof over a merkle trie.", bytes
+    )
+
+# Hexadecimal encoded cryptographic proof over a merkle trie.
+MerkleProofHex = typing.NewType(
+    "Hexadecimal encoded cryptographic proof over a merkle trie.", bytes
     )
 
 # Asymmetric private key associated with an account.
@@ -37,6 +47,11 @@ SignatureBytes = typing.NewType(
     "Cryptographic signature over data.", bytes
     )
 
+# Hexadecimal encoded cryptographic signature over data - includes single byte algo prefix.
+SignatureHex = typing.NewType(
+    "Hexadecimal encoded cryptographic signature over data.", bytes
+    )
+
 
 class HashAlgorithm(enum.Enum):
     """Enumeration over set of supported hash algorithms.
@@ -55,13 +70,16 @@ class KeyAlgorithm(enum.Enum):
 
 
 TYPESET: set = {
-    Digest,
+    DigestBytes,
+    DigestHex,
     MerkleProofBytes,
+    MerkleProofHex,
     PrivateKeyBytes,
     PrivateKeyHex,
     PublicKeyBytes,
     PublicKeyHex,
     SignatureBytes,
+    SignatureHex,
 } | {
     HashAlgorithm,
     KeyAlgorithm,

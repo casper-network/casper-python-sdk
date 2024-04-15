@@ -1,6 +1,4 @@
 from pycspr import NodeRpcClient
-from pycspr.types.cl import CLV_URef
-from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.node.rpc import AccountInfo
 from pycspr.types.node.rpc import URef
 from pycspr.types.node.rpc import URefAccessRights

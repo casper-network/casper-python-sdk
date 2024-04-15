@@ -1,8 +1,8 @@
 import typing
 
+from pycspr import serializer
 from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
-from pycspr.serializer.json.node import decoder as rpc_decoder
 from pycspr.types.node.rpc import NodeStatus
 from pycspr.types.node.rpc import ValidatorChanges
 
@@ -48,7 +48,7 @@ class Client():
         """
         encoded: dict = await self.proxy.get_node_status()
 
-        return encoded if decode is False else rpc_decoder.decode(encoded, NodeStatus)
+        return encoded if decode is False else serializer.from_json(NodeStatus, encoded)
 
     async def get_node_rpc_schema(self) -> dict:
         """Returns node RPC API schema.
@@ -68,7 +68,7 @@ class Client():
 
         return \
             encoded if decode is False else \
-            [rpc_decoder.decode(i, ValidatorChanges) for i in encoded]
+            [serializer.from_json(ValidatorChanges, i) for i in encoded]
 
 
 class ClientExtensions():

@@ -17,30 +17,24 @@ from tests.fixtures.deploys import create_deploy_body
 from tests.fixtures.deploys import create_deploy_header
 
 
-_TEST_ACCOUNT_KEY = \
-    bytes.fromhex("011e0ee16a28b65e3cfa74d003eea4811b06173438e920fa38961ce60eb23548f4")
-_TEST_BYTES = _TEST_ACCOUNT_KEY[1:]
-_TEST_SIG = \
-    bytes.fromhex("01f43d8300bbd683b90bd2474d35da7cca664df5a505c47f4d35bf93531dc359bdf50b5e9493a2484306cc5eb41933b9fb118cf7954cf04d6c28441fcb1ee42f02")
-
-
 @pytest.fixture(scope="session")
-def yield_entities() -> typing.Iterator[object]:
+def yield_entities(
+    test_account_key: bytes,
+    test_bytes: bytes,
+    test_signature: bytes
+) -> typing.Iterator[object]:
     def _inner():
-        for func in (
-            create_deploy,
-            _create_deploy_argument,
-            _create_deploy_approval,
-            create_deploy_body,
-            create_deploy_header,
-            _create_module_bytes,
-            _create_stored_contract_by_hash,
-            _create_stored_contract_by_hash_versioned,
-            _create_stored_contract_by_name,
-            _create_stored_contract_by_name_versioned,
-            _create_transfer,
-        ):
-            yield func()
+        yield create_deploy()
+        yield _create_deploy_argument()
+        yield _create_deploy_approval(test_account_key, test_signature)
+        yield create_deploy_body()
+        yield create_deploy_header()
+        yield _create_module_bytes(test_bytes)
+        yield _create_stored_contract_by_hash(test_bytes)
+        yield _create_stored_contract_by_hash_versioned(test_bytes)
+        yield _create_stored_contract_by_name()
+        yield _create_stored_contract_by_name_versioned()
+        yield _create_transfer(test_account_key)
 
     return _inner
 
@@ -57,33 +51,35 @@ def _create_deploy_argument_set() -> typing.List[DeployArgument]:
     ]
 
 
-def _create_deploy_approval() -> DeployApproval:
+def _create_deploy_approval(account_key: bytes, signature: bytes) -> DeployApproval:
     return DeployApproval(
-        signer=pycspr.factory.create_public_key_from_account_key(_TEST_ACCOUNT_KEY),
-        signature=_TEST_SIG
+        signer=pycspr.factory.create_public_key_from_account_key(account_key),
+        signature=signature
     )
 
 
-def _create_module_bytes() -> DeployOfModuleBytes:
+def _create_module_bytes(some_bytes: bytes) -> DeployOfModuleBytes:
     return DeployOfModuleBytes(
         args=_create_deploy_argument_set(),
-        module_bytes=_TEST_BYTES
+        module_bytes=some_bytes
     )
 
 
-def _create_stored_contract_by_hash() -> DeployOfStoredContractByHash:
+def _create_stored_contract_by_hash(some_bytes: bytes) -> DeployOfStoredContractByHash:
     return DeployOfStoredContractByHash(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
-        hash=_TEST_BYTES
+        hash=some_bytes
     )
 
 
-def _create_stored_contract_by_hash_versioned() -> DeployOfStoredContractByHashVersioned:
+def _create_stored_contract_by_hash_versioned(
+    some_bytes: bytes
+) -> DeployOfStoredContractByHashVersioned:
     return DeployOfStoredContractByHashVersioned(
         args=_create_deploy_argument_set(),
         entry_point="an-entry-point",
-        hash=_TEST_BYTES,
+        hash=some_bytes,
         version=123
     )
 
@@ -105,9 +101,9 @@ def _create_stored_contract_by_name_versioned() -> DeployOfStoredContractByNameV
     )
 
 
-def _create_transfer() -> DeployOfTransfer:
+def _create_transfer(account_key: bytes) -> DeployOfTransfer:
     return pycspr.factory.create_transfer_session(
         amount=int(1e14),
         correlation_id=123456,
-        target=_TEST_ACCOUNT_KEY,
+        target=account_key,
     )

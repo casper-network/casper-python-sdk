@@ -115,6 +115,25 @@ def deploys_1() -> list:
     return data
 
 
+@pytest.fixture(scope="session")
+def test_bytes(test_account_key) -> bytes:
+    return test_account_key[1:]
+
+
+@pytest.fixture(scope="session")
+def test_account_key() -> bytes:
+    data = _read_vector("crypto-misc.json")
+
+    return bytes.fromhex(data["account-key"])
+
+
+@pytest.fixture(scope="session")
+def test_signature() -> bytes:
+    data = _read_vector("crypto-misc.json")
+
+    return bytes.fromhex(data["signature"])
+
+
 def _read_vector(fname: str, parser: typing.Callable = json.load):
     with open(_PATH_TO_VECTORS / fname) as fstream:
         return fstream.read() if parser is None else parser(fstream)
