@@ -25,7 +25,7 @@ def to_json(entity: object) -> typing.Union[str, dict]:
     elif typedef in TYPESET_NODE:
         return serializer_node.encode(entity)
     else:
-        raise ValueError("Unsupported type")
+        raise ValueError(f"Unsupported type: {typedef}")
 
 
 def from_json(typedef: object, encoded: dict) -> object:
@@ -38,4 +38,4 @@ def from_json(typedef: object, encoded: dict) -> object:
     elif typedef in TYPESET_NODE:
         return serializer_node.decode(typedef, encoded)
     else:
-        raise ValueError("Unsupported type")
+        raise ValueError(f"Unsupported type: {typedef}")

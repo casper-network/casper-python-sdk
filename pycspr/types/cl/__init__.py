@@ -51,6 +51,6 @@ from pycspr.types.cl.values import CLV_Tuple3
 from pycspr.types.cl.values import CLV_Unit
 from pycspr.types.cl.values import CLV_URefAccessRights
 from pycspr.types.cl.values import CLV_URef
-from pycspr.types.cl.types import TYPESET as TYPESET_CLV
+from pycspr.types.cl.values import TYPESET as TYPESET_CLV
 
 TYPESET: set = TYPESET_CLT | TYPESET_CLV
