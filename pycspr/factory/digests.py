@@ -1,16 +1,16 @@
 from pycspr import crypto
 from pycspr import serializer
-from pycspr.types.node.rpc import BlockHeader
-from pycspr.types.node.rpc import DeployHeader
 from pycspr.types.cl import CLV_Bool
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_Option
+from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLT_Type_ByteArray
+from pycspr.types.node.rpc import BlockHeader
 from pycspr.types.node.rpc import DeployExecutableItem
-from pycspr.utils import convertor
+from pycspr.types.node.rpc import DeployHeader
 
 
 def create_digest_of_block(header: BlockHeader) -> bytes:
@@ -84,7 +84,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
     """
     return crypto.get_hash(
         serializer.to_bytes(
-            convertor.clv_public_key_from_public_key(header.account)
+            CLV_PublicKey.from_public_key(header.account)
         ) +
         serializer.to_bytes(
             CLV_U64(int(header.timestamp.value * 1000))

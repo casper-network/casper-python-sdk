@@ -6,6 +6,7 @@ from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
 from pycspr.types.cl.types import CLT_Type
 from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PublicKey
 
 
 @dataclasses.dataclass
@@ -106,6 +107,20 @@ class CLV_Key(CLV_Value):
     def __eq__(self, other) -> bool:
         return self.identifier == other.identifier and self.key_type == other.key_type
 
+    @staticmethod
+    def from_str(value: str) -> "CLV_Key":
+        identifier: bytes = bytes.fromhex(value.split("-")[-1])
+        if value.startswith("account-hash-"):
+            key_type: CLV_KeyType = CLV_KeyType.ACCOUNT
+        elif value.startswith("hash-"):
+            key_type: CLV_KeyType = CLV_KeyType.HASH
+        elif value.startswith("uref-"):
+            key_type: CLV_KeyType = CLV_KeyType.UREF
+        else:
+            raise ValueError(f"Invalid CL key: {value}")
+
+        return CLV_Key(identifier, key_type)
+
 
 @dataclasses.dataclass
 class CLV_List(CLV_Value):
@@ -163,6 +178,10 @@ class CLV_PublicKey(CLV_Value):
     def account_key(self) -> bytes:
         """Returns on-chain account key."""
         return get_account_key(self.algo, self.pbk)
+
+    @staticmethod
+    def from_public_key(key: PublicKey):
+        return CLV_PublicKey(key.algo, key.pbk)
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pbk == other.pbk
@@ -322,6 +341,15 @@ class CLV_URef(CLV_Value):
     def __eq__(self, other) -> bool:
         return self.access_rights == other.access_rights and \
                self.address == other.address
+
+    @staticmethod
+    def from_str(value: str) -> "CLV_URef":
+        _, address, access_rights = value.split("-")
+
+        return CLV_URef(
+            CLV_URefAccessRights(int(access_rights)),
+            bytes.fromhex(address)
+            )
 
 
 TYPESET: set = {

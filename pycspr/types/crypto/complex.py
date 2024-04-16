@@ -3,6 +3,7 @@ import dataclasses
 from pycspr.types.crypto.simple import KeyAlgorithm
 from pycspr.types.crypto.simple import PrivateKeyBytes
 from pycspr.types.crypto.simple import PublicKeyBytes
+from pycspr.types.crypto.simple import SignatureBytes
 
 
 @dataclasses.dataclass
@@ -72,7 +73,33 @@ class PrivateKey:
         return PublicKey(algo=self.algo, pbk=self.pbk)
 
 
+@dataclasses.dataclass
+class Signature():
+    """Encapsulates information associated with a signature over some data.
+
+    """
+    # Associated ECC algorithm.
+    algo: KeyAlgorithm
+
+    # Signature as raw bytes.
+    sig: SignatureBytes
+
+    @property
+    def as_bytes(self) -> SignatureBytes:
+        return bytes([self.algo.value]) + self.sig
+
+    def __eq__(self, other) -> bool:
+        return self.algo == other.algo and self.sig == other.sig
+
+    def __hash__(self) -> bytes:
+        return hash(self.sig)
+
+    def __len__(self) -> int:
+        return len(self.sig) + 1
+
+
 TYPESET: set = {
     PublicKey,
-    PrivateKey
+    PrivateKey,
+    Signature,
 }

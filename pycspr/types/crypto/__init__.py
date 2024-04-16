@@ -1,5 +1,6 @@
 from pycspr.types.crypto.complex import PrivateKey
 from pycspr.types.crypto.complex import PublicKey
+from pycspr.types.crypto.complex import Signature
 from pycspr.types.crypto.complex import TYPESET as _TYPESET_COMPLEX
 from pycspr.types.crypto.simple import DigestBytes
 from pycspr.types.crypto.simple import DigestHex

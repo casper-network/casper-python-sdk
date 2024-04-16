@@ -13,21 +13,23 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U128
 from pycspr.types.cl import CLV_U256
 from pycspr.types.cl import CLV_U512
+from pycspr.types.cl import CLV_Key
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_Map
 from pycspr.types.cl import CLV_Option
+from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_Tuple1
 from pycspr.types.cl import CLV_Tuple2
 from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
-from pycspr.utils import convertor
+from pycspr.types.cl import CLV_URef
 
 
 def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
     for fixture in fixtures:
-        type_key = fixture["cl_type"]
-        value = fixture["value"]
+        type_key: str = fixture["cl_type"]
+        value: str = fixture["value"]
 
         if type_key == CLT_TypeKey.ANY:
             continue
@@ -45,7 +47,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_I64(value)
 
         elif type_key == CLT_TypeKey.KEY:
-            yield convertor.clv_key_from_str(value)
+            yield CLV_Key.from_str(value)
 
         elif type_key == CLT_TypeKey.LIST:
             yield CLV_List([CLV_U64(i) for i in value])
@@ -59,7 +61,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_Option(CLV_U64(value), CLT_Type_U64())
 
         elif type_key == CLT_TypeKey.PUBLIC_KEY:
-            yield convertor.clv_public_key_from_account_key(bytes.fromhex(value))
+            yield CLV_PublicKey.from_public_key(bytes.fromhex(value))
 
         elif type_key == CLT_TypeKey.RESULT:
             continue
@@ -107,4 +109,4 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_Unit()
 
         elif type_key == CLT_TypeKey.UREF:
-            yield convertor.clv_uref_from_str(value)
+            yield CLV_URef.from_str(value)

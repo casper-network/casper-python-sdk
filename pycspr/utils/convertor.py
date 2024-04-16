@@ -2,52 +2,9 @@ import datetime as dt
 import typing
 
 from pycspr.crypto import checksummer
-from pycspr.types.cl import CLV_Key
-from pycspr.types.cl import CLV_KeyType
-from pycspr.types.cl import CLV_PublicKey
-from pycspr.types.cl import CLV_URef
-from pycspr.types.cl import CLV_URefAccessRights
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.node.rpc import AccountKey
 from pycspr.types.node.rpc import URef
 from pycspr.utils import constants
-
-
-def clv_key_from_str(value: str) -> CLV_Key:
-    identifier = bytes.fromhex(value.split("-")[-1])
-    if value.startswith("account-hash-"):
-        key_type = CLV_KeyType.ACCOUNT
-    elif value.startswith("hash-"):
-        key_type = CLV_KeyType.HASH
-    elif value.startswith("uref-"):
-        key_type = CLV_KeyType.UREF
-    else:
-        raise ValueError(f"Invalid CL key: {value}")
-
-    return CLV_Key(identifier, key_type)
-
-
-def clv_public_key_from_account_key(value: AccountKey) -> CLV_PublicKey:
-    return CLV_PublicKey(KeyAlgorithm(value[0]), value[1:])
-
-
-def clv_public_key_from_public_key_bytes(value: PublicKeyBytes) -> CLV_PublicKey:
-    return CLV_PublicKey(value.algo, value.pbk)
-
-
-def clv_public_key_from_public_key(value: PublicKey) -> CLV_PublicKey:
-    return CLV_PublicKey(value.algo, value.pbk)
-
-
-def clv_uref_from_str(value: str) -> CLV_URef:
-    _, address, access_rights = value.split("-")
-
-    return CLV_URef(
-        CLV_URefAccessRights(int(access_rights)),
-        bytes.fromhex(address)
-        )
 
 
 def humanized_time_interval_from_ms(value: int) -> int:

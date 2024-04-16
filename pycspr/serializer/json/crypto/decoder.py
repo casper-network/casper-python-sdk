@@ -9,6 +9,7 @@ from pycspr.types.crypto import PublicKeyHex
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import PrivateKeyBytes
 from pycspr.types.crypto import PrivateKeyHex
+from pycspr.types.crypto import Signature
 from pycspr.types.crypto import SignatureBytes
 from pycspr.types.crypto import SignatureHex
 from pycspr.types.crypto import TYPESET
@@ -44,6 +45,13 @@ def _decode_private_key(encoded: PrivateKeyBytes) -> PrivateKey:
     raise NotImplementedError("_decode_private_key")
 
 
+def _decode_signature(encoded: SignatureBytes) -> Signature:
+    return Signature(
+        algo=KeyAlgorithm(encoded[0]),
+        sig=encoded[1:]
+    )
+
+
 DECODERS = {
     DigestBytes: lambda x: x,
     DigestHex: lambda x: decode(DigestBytes, bytes.fromhex(x)),
@@ -55,6 +63,7 @@ DECODERS = {
     PrivateKey: _decode_private_key,
     PrivateKeyBytes: lambda x: decode(PrivateKey, x),
     PrivateKeyHex: lambda x: decode(PrivateKeyBytes, bytes.fromhex(x)),
-    SignatureBytes: lambda x: x,
+    Signature: _decode_signature,
+    SignatureBytes: lambda x: decode(Signature, x),
     SignatureHex: lambda x: decode(SignatureBytes, bytes.fromhex(x)),
 }

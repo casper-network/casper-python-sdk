@@ -8,9 +8,8 @@ from pycspr.types.cl.values import CLV_Value
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import SignatureBytes
+from pycspr.types.crypto import Signature
 from pycspr.types.node.rpc.simple import Address
 from pycspr.types.node.rpc.simple import BlockHash
 from pycspr.types.node.rpc.simple import BlockHeight
@@ -53,14 +52,14 @@ class AssociatedKey():
 @dataclasses.dataclass
 class AuctionBidByDelegator():
     bonding_purse: URef
-    public_key: PublicKeyBytes
+    public_key: PublicKey
     delegatee: Address
     staked_amount: Motes
 
 
 @dataclasses.dataclass
 class AuctionBidByValidator():
-    public_key: PublicKeyBytes
+    public_key: PublicKey
     bid: AuctionBidByValidatorInfo
 
 
@@ -128,8 +127,8 @@ class BlockHeader():
 
 @dataclasses.dataclass
 class BlockSignature():
-    public_key: PublicKeyBytes
-    signature: SignatureBytes
+    public_key: PublicKey
+    signature: Signature
 
 
 @dataclasses.dataclass
@@ -205,8 +204,8 @@ class Deploy():
 
 @dataclasses.dataclass
 class DeployApproval():
-    signer: PublicKeyBytes
-    signature: SignatureBytes
+    signer: PublicKey
+    signature: Signature
 
     def __eq__(self, other) -> bool:
         return self.signer == other.signer and self.signature == other.signature
@@ -403,9 +402,9 @@ class EraEnd():
 
 @dataclasses.dataclass
 class EraEndReport():
-    equivocators: typing.List[PublicKeyBytes]
+    equivocators: typing.List[PublicKey]
     rewards: typing.List[ValidatorReward]
-    inactive_validators: typing.List[PublicKeyBytes]
+    inactive_validators: typing.List[PublicKey]
 
 
 @dataclasses.dataclass
@@ -414,7 +413,7 @@ class EraSummary():
     era_id: EraID
     era_info: EraSummaryInfo
     merkle_proof: MerkleProofBytes
-    state_root: DigestBytes
+    state_root: StateRootHash
 
 
 @dataclasses.dataclass
@@ -424,7 +423,7 @@ class EraSummaryInfo():
 
 @dataclasses.dataclass
 class MinimalBlockInfo():
-    creator: PublicKeyBytes
+    creator: PublicKey
     era_id: EraID
     hash: BlockHash
     height: BlockHeight
@@ -461,7 +460,7 @@ class NodeStatus():
     peers: typing.List[NodePeer]
     reactor_state: ReactorState
     round_length: str
-    starting_state_root_hash: DigestBytes
+    starting_state_root_hash: StateRootHash
     uptime: str
 
 
@@ -479,13 +478,13 @@ class SeigniorageAllocation():
 
 @dataclasses.dataclass
 class SeigniorageAllocationForDelegator(SeigniorageAllocation):
-    delegator_public_key: PublicKeyBytes
-    validator_public_key: PublicKeyBytes
+    delegator_public_key: PublicKey
+    validator_public_key: PublicKey
 
 
 @dataclasses.dataclass
 class SeigniorageAllocationForValidator(SeigniorageAllocation):
-    validator_public_key: PublicKeyBytes
+    validator_public_key: PublicKey
 
 
 @dataclasses.dataclass
@@ -497,12 +496,12 @@ class Timestamp():
 class Transfer():
     amount: Motes
     deploy_hash: DeployHash
-    from_: PublicKeyBytes
+    from_: PublicKey
     gas: Gas
     source: URef
     target: URef
     correlation_id: int = None
-    to_: PublicKeyBytes = None
+    to_: PublicKey = None
 
 
 @dataclasses.dataclass
@@ -513,7 +512,7 @@ class URef():
 
 @dataclasses.dataclass
 class ValidatorChanges():
-    public_key: PublicKeyBytes
+    public_key: PublicKey
     status_changes: typing.List[ValidatorStatusChange]
 
 
@@ -531,7 +530,7 @@ class ValidatorStatusChange():
 
 @dataclasses.dataclass
 class ValidatorWeight():
-    validator: PublicKeyBytes
+    validator: PublicKey
     weight: Weight
 
 

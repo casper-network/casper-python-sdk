@@ -18,6 +18,7 @@ from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
+from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
 from pycspr.types.node.rpc import AccountKey
@@ -181,7 +182,8 @@ def create_standard_payment(
     """
     return DeployOfModuleBytes(
         args={
-            "amount": CLV_U512(amount)
+            "amount":
+                CLV_U512(amount)
         },
         module_bytes=bytes([])
         )
@@ -212,7 +214,7 @@ def create_transfer(
 
 def create_transfer_session(
     amount: int,
-    target: AccountKey,
+    target: PublicKey,
     correlation_id: int = None,
 ) -> DeployOfTransfer:
     """Returns session execution information for a native transfer.
@@ -224,11 +226,15 @@ def create_transfer_session(
 
     """
     correlation_id = correlation_id or random.randint(1, constants.MAX_TRANSFER_ID)
+
     return DeployOfTransfer(
         args={
-            "amount": CLV_U512(amount),
-            "target": convertor.clv_public_key_from_account_key(target),
-            "id": CLV_Option(CLV_U64(correlation_id), CLT_Type_U64()),
+            "amount":
+                CLV_U512(amount),
+            "target":
+                CLV_PublicKey.from_public_key(target),
+            "id":
+                CLV_Option(CLV_U64(correlation_id), CLT_Type_U64()),
         }
     )
 
@@ -254,9 +260,12 @@ def create_validator_auction_bid(
     session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CLV_U512(amount),
-            "delegation_rate": CLV_U8(delegation_rate),
-            "public_key": convertor.clv_public_key_from_public_key(public_key),
+            "amount":
+                CLV_U512(amount),
+            "delegation_rate":
+                CLV_U8(delegation_rate),
+            "public_key":
+                CLV_PublicKey.from_public_key(public_key),
         }
     )
 
@@ -284,11 +293,13 @@ def create_validator_auction_bid_withdrawal(
     session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CLV_U512(amount),
-            "public_key": convertor.clv_public_key_from_public_key(public_key),
+            "amount":
+                CLV_U512(amount),
+            "public_key":
+                CLV_PublicKey.from_public_key(public_key),
             "unbond_purse":
-                unbond_purse_ref if isinstance(unbond_purse_ref, CLV_URef) else
-                convertor.clv_uref_from_str(unbond_purse_ref)
+                CLV_URef.from_str(unbond_purse_ref) if isinstance(unbond_purse_ref, str) else
+                unbond_purse_ref
         }
     )
 
@@ -315,20 +326,14 @@ def create_validator_delegation(
     payment = create_standard_payment(constants.STANDARD_PAYMENT_FOR_DELEGATION)
     session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
-        args=[
-            DeployArgument(
-                "amount",
-                CLV_U512(amount)
-                ),
-            DeployArgument(
-                "delegator",
-                convertor.clv_public_key_from_public_key(public_key_of_delegator)
-                ),
-            DeployArgument(
-                "validator",
-                convertor.clv_public_key_from_public_key(public_key_of_validator)
-                ),
-        ]
+        args={
+            "amount":
+                CLV_U512(amount),
+            "delegator":
+                CLV_PublicKey.from_public_key(public_key_of_delegator),
+            "validator":
+                CLV_PublicKey.from_public_key(public_key_of_validator),
+        }
     )
 
     return create_deploy(params, payment, session)
@@ -355,9 +360,12 @@ def create_validator_delegation_withdrawal(
     session = DeployOfModuleBytes(
         module_bytes=_io.read_wasm(path_to_wasm),
         args={
-            "amount": CLV_U512(amount),
-            "delegator": convertor.clv_public_key_from_public_key(public_key_of_delegator),
-            "validator": convertor.clv_public_key_from_public_key(public_key_of_validator)
+            "amount":
+                CLV_U512(amount),
+            "delegator":
+                CLV_PublicKey.from_public_key(public_key_of_delegator),
+            "validator":
+                CLV_PublicKey.from_public_key(public_key_of_validator)
         }
     )
 
