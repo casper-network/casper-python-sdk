@@ -3,7 +3,10 @@ import typing
 import pytest
 
 import pycspr
-from pycspr import types
+from pycspr.types.cl import CLV_U64
+from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import Signature
+from pycspr.types.crypto import SignatureBytes
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
 from pycspr.types.node.rpc import DeployOfModuleBytes
@@ -40,21 +43,21 @@ def yield_entities(
 
 
 def _create_deploy_argument() -> DeployArgument:
-    return DeployArgument("test-arg", types.cl.CLV_U64(1000000))
+    return DeployArgument("test-arg", CLV_U64(1000000))
 
 
 def _create_deploy_argument_set() -> typing.List[DeployArgument]:
     return [
-        DeployArgument("test-arg-1", types.cl.CLV_U64(1000001)),
-        DeployArgument("test-arg-2", types.cl.CLV_U64(1000002)),
-        DeployArgument("test-arg-3", types.cl.CLV_U64(1000003)),
+        DeployArgument("test-arg-1", CLV_U64(1000001)),
+        DeployArgument("test-arg-2", CLV_U64(1000002)),
+        DeployArgument("test-arg-3", CLV_U64(1000003)),
     ]
 
 
 def _create_deploy_approval(account_key: bytes, signature: bytes) -> DeployApproval:
     return DeployApproval(
-        signer=pycspr.factory.create_public_key_from_account_key(account_key),
-        signature=signature
+        signer=PublicKey.from_bytes(account_key),
+        signature=Signature.from_bytes(signature)
     )
 
 
@@ -105,5 +108,5 @@ def _create_transfer(account_key: bytes) -> DeployOfTransfer:
     return pycspr.factory.create_transfer_session(
         amount=int(1e14),
         correlation_id=123456,
-        target=account_key,
+        target=PublicKey.from_bytes(account_key),
     )

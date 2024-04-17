@@ -1,11 +1,13 @@
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
-from pycspr.types.crypto.complex import PrivateKey
-from pycspr.types.crypto.simple import DigestBytes
-from pycspr.types.crypto.simple import HashAlgorithm
-from pycspr.types.crypto.simple import KeyAlgorithm
-from pycspr.types.crypto.simple import SignatureBytes
+from pycspr.types.crypto import DigestBytes
+from pycspr.types.crypto import HashAlgorithm
+from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import PrivateKey
+from pycspr.types.crypto import Signature
+from pycspr.types.crypto import SignatureBytes
 
 
 # Desired length of hash digest.
@@ -53,7 +55,7 @@ def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
 def get_signature_for_deploy_approval(
     deploy_hash: DigestBytes,
     key_of_approver: PrivateKey
-) -> SignatureBytes:
+) -> Signature:
     """Returns a signature designated to approve a deploy.
 
     :param deploy_hash: Digest of a deploy to be signed.
@@ -61,15 +63,16 @@ def get_signature_for_deploy_approval(
     :returns: Digital signature over deploy digest.
 
     """
-    return \
-        bytes([key_of_approver.algo.value]) + \
+    sig: SignatureBytes = \
         get_signature(deploy_hash, key_of_approver.pvk, key_of_approver.algo)
+    
+    return Signature(key_of_approver.algo, sig)
 
 
 def verify_deploy_approval_signature(
     deploy_hash: DigestBytes,
-    sig: SignatureBytes,
-    account_key: bytes
+    signature: Signature,
+    account_public_key: PublicKey,
 ) -> bool:
     """Returns a flag indicating whether a deploy signature was signed by private key
        associated with the passed account key.
@@ -82,12 +85,12 @@ def verify_deploy_approval_signature(
     """
     assert len(deploy_hash) == 32, \
            "Invalid deploy hash.  Expected length = 32"
-    assert len(sig) == 65, \
+    assert len(signature.to_bytes) == 65, \
            "Invalid deploy approval signature.  Expected length = 65"
 
     return is_signature_valid(
         deploy_hash,
-        sig[1:],
-        account_key[1:],
-        KeyAlgorithm(account_key[0])
+        signature.sig,
+        account_public_key.pbk,
+        account_public_key.algo,
         )

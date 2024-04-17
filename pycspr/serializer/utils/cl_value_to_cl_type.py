@@ -1,8 +1,8 @@
 from pycspr.types.cl import CLT_Type
-from pycspr.types.cl import CLT_Type_Bool
-from pycspr.types.cl import CLT_Type_ByteArray
-from pycspr.types.cl import CLT_Type_I32
-from pycspr.types.cl import CLT_Type_I64
+from pycspr.types.cl import CLT_Bool
+from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.cl import CLT_I32
+from pycspr.types.cl import CLT_I64
 from pycspr.types.cl import CLT_Type_U8
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -85,13 +85,13 @@ def _encode_map(entity: CLV_Map):
 
 _ENCODERS: dict = {
     CLV_Bool:
-        lambda _: CLT_Type_Bool(),
+        lambda _: CLT_Bool(),
     CLV_ByteArray:
-        lambda x: CLT_Type_ByteArray(len(x)),
+        lambda x: CLT_ByteArray(len(x)),
     CLV_I32:
-        lambda _: CLT_Type_I32(),
+        lambda _: CLT_I32(),
     CLV_I64:
-        lambda _: CLT_Type_I64(),
+        lambda _: CLT_I64(),
     CLV_Key:
         lambda _: CLT_Type_Key(),
     CLV_List:

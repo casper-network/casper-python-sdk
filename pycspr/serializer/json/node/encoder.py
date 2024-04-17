@@ -23,10 +23,11 @@ def encode(entity: object) -> dict:
     :returns: A JSON compatible dictionary.
 
     """
+    typedef = type(entity)
     try:
-        encoder = _ENCODERS[type(entity)]
+        encoder = _ENCODERS[typedef]
     except KeyError:
-        raise ValueError(f"Unknown entity type: {entity}")
+        raise ValueError(f"Unknown entity type: {typedef} :: {entity}")
     else:
         return encoder(entity)
 
@@ -42,6 +43,7 @@ def _encode_deploy(entity: Deploy) -> dict:
 
 
 def _encode_deploy_approval(entity: DeployApproval) -> dict:
+    print(321, entity.signature)
     return {
         "signature": checksummer.encode_signature(entity.signature),
         "signer": checksummer.encode_account_key(entity.signer.account_key)

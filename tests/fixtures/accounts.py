@@ -57,7 +57,7 @@ def cp1():
     """Returns counter-party 1 test account key.
 
     """
-    return get_account_of_nctl_faucet()
+    return get_account_of_cctl_faucet()
 
 
 @pytest.fixture(scope="session")
@@ -65,7 +65,7 @@ def cp2():
     """Returns counter-party 2 test account key.
 
     """
-    return get_account_of_nctl_user(1)
+    return get_account_of_cctl_user(1)
 
 
 @pytest.fixture(scope="session")
@@ -87,7 +87,7 @@ def account_hash(account_key: bytes) -> bytes:
     return pycspr.get_account_hash(account_key)
 
 
-def get_account_of_nctl_faucet():
+def get_account_of_cctl_faucet():
     """Returns account information related to CCTL faucet.
 
     """
@@ -96,7 +96,7 @@ def get_account_of_nctl_faucet():
     return pycspr.parse_private_key(path, pycspr.KeyAlgorithm.ED25519)
 
 
-def get_account_of_nctl_user(user_id: int):
+def get_account_of_cctl_user(user_id: int):
     """Returns account information related to CCTL user 1.
 
     """

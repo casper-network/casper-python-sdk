@@ -49,10 +49,7 @@ def deploy_params(a_test_chain_id, a_test_ttl_humanized, cp1):
 @pytest.fixture(scope="function")
 def deploy_params_static(a_test_chain_id, test_account_1):
     return pycspr.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
-                test_account_1.algo,
-                test_account_1.pbk
-            ),
+            account=test_account_1.to_public_key(),
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=10,
@@ -67,7 +64,7 @@ def a_deploy(deploy_params, cp1, cp2):
         deploy_params,
         amount=2500000000,
         correlation_id=1,
-        target=cp2.account_key,
+        target=cp2.to_public_key(),
         )
     deploy.set_approval(pycspr.create_deploy_approval(deploy, cp1))
 
@@ -91,7 +88,7 @@ def create_transfer() -> Deploy:
         params=params,
         amount=2500000000,
         correlation_id=1,
-        target=cp2.account_key,
+        target=cp2.to_public_key(),
         )
     deploy.set_approval(pycspr.create_deploy_approval(deploy, cp1))
 
@@ -122,11 +119,8 @@ def create_deploy_params(
     ttl_humanized = ttl_humanized or create_deploy_ttl_humanized()
 
     return pycspr.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
-                account.algo,
-                account.pbk
-            ),
-            chain_name=chain_id or create_chain_id(),
+            account=account.to_public_key(),
+            chain_name=chain_id,
             dependencies=[],
             gas_price=10,
             timestamp=timestamp or create_timestamp(),

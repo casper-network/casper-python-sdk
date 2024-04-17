@@ -21,6 +21,10 @@ class PublicKey():
     def account_key(self) -> bytes:
         return bytes([self.algo.value]) + self.pbk
 
+    @property
+    def as_bytes(self) -> bytes:
+        return bytes([self.algo.value]) + self.pbk
+
     def to_account_hash(self) -> bytes:
         """Returns on-chain account address.
 
@@ -37,6 +41,10 @@ class PublicKey():
 
     def __len__(self) -> int:
         return len(self.pbk) + 1
+    
+    @staticmethod
+    def from_bytes(account_key: bytes) -> "PublicKey":
+        return PublicKey(KeyAlgorithm(account_key[0]), account_key[1:])
 
 
 @dataclasses.dataclass
@@ -85,7 +93,7 @@ class Signature():
     sig: SignatureBytes
 
     @property
-    def as_bytes(self) -> SignatureBytes:
+    def to_bytes(self) -> bytes:
         return bytes([self.algo.value]) + self.sig
 
     def __eq__(self, other) -> bool:
@@ -96,6 +104,13 @@ class Signature():
 
     def __len__(self) -> int:
         return len(self.sig) + 1
+
+    @staticmethod
+    def from_bytes(encoded: bytes) -> "Signature":
+        return Signature(
+            algo=KeyAlgorithm(encoded[0]),
+            sig=encoded[1:]
+            )
 
 
 TYPESET: set = {

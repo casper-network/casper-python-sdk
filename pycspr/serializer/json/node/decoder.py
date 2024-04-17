@@ -1,11 +1,11 @@
 import typing
 
-from pycspr.factory import create_public_key_from_account_key
 from pycspr.serializer.json.cl_value import decode as clv_decoder
 from pycspr.serializer.json.crypto import DECODERS as CRYPTO_DECODERS
 from pycspr.serializer.json.primitives import DECODERS as PRIMITIVES_DECODERS
 from pycspr.types.crypto import DigestHex
 from pycspr.types.crypto import MerkleProofHex
+from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PublicKeyHex
 from pycspr.types.crypto import SignatureHex
 from pycspr.types.node.rpc import Address
@@ -224,8 +224,8 @@ def _decode_deploy(encoded: dict) -> Deploy:
 
 def _decode_deploy_approval(encoded: dict) -> DeployApproval:
     return DeployApproval(
-        signer=create_public_key_from_account_key(
-            decode(AccountKey, encoded["signer"])
+        signer=PublicKey.from_bytes(
+            decode(bytes, encoded["signer"])
             ),
         signature=decode(SignatureHex, encoded["signature"]),
     )
@@ -327,7 +327,7 @@ def _decode_deploy_executable_item(encoded: dict) -> DeployExecutableItem:
 
 def _decode_deploy_header(encoded: dict) -> DeployHeader:
     return DeployHeader(
-        account=create_public_key_from_account_key(
+        account=PublicKey.from_bytes(
             decode(bytes, encoded["account"])
         ),
         body_hash=decode(bytes, encoded["body_hash"]),

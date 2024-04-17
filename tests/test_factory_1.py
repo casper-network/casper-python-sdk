@@ -29,6 +29,7 @@ def test_create_deploy_arguments_3(cl_values_vector):
 
 
 def test_create_deploy_approval_1(a_deploy, a_test_account):
+    print(123, a_test_account)
     approval = pycspr.create_deploy_approval(a_deploy, a_test_account)
 
     assert isinstance(approval, DeployApproval)
@@ -45,10 +46,7 @@ def test_create_deploy_approval_2(a_deploy, a_test_account):
 def test_create_deploy_parameters(a_test_account, a_test_chain_id, a_test_timestamp):
     assert isinstance(
         pycspr.create_deploy_parameters(
-            account=pycspr.factory.create_public_key(
-                a_test_account.algo,
-                a_test_account.pbk
-            ),
+            account=a_test_account.to_public_key(),
             chain_name=a_test_chain_id,
             dependencies=[],
             gas_price=random.randint(0, 65),
@@ -73,7 +71,7 @@ def test_create_transfer_session(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.account_key,
+            target=a_test_account.to_public_key(),
             ),
         pycspr.types.node.rpc.DeployOfTransfer
         )
@@ -87,7 +85,7 @@ def test_create_transfer_body(a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.account_key,
+            target=a_test_account.to_public_key(),
         )
     )
     assert isinstance(body, pycspr.types.node.rpc.DeployBody)
@@ -103,7 +101,7 @@ def test_create_transfer_header(deploy_params, a_test_account):
         pycspr.factory.create_transfer_session(
             amount=random.randint(0, int(1e9)),
             correlation_id=random.randint(0, int(1e9)),
-            target=a_test_account.account_key,
+            target=a_test_account.to_public_key(),
         )
     )
     header = pycspr.factory.create_deploy_header(
@@ -119,7 +117,7 @@ def test_create_transfer(deploy_params, a_test_account):
     deploy = pycspr.create_transfer(
         params=deploy_params,
         amount=random.randint(0, int(1e5)),
-        target=a_test_account.account_key,
+        target=a_test_account.to_public_key(),
         correlation_id=random.randint(0, int(1e9))
     )
     assert isinstance(deploy, pycspr.types.node.rpc.Deploy)

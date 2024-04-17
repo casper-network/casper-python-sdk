@@ -7,7 +7,7 @@ from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
-from pycspr.types.cl import CLT_Type_ByteArray
+from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.node.rpc import BlockHeader
 from pycspr.types.node.rpc import DeployExecutableItem
 from pycspr.types.node.rpc import DeployHeader
@@ -51,7 +51,7 @@ def create_digest_of_block(header: BlockHeader) -> bytes:
                 CLV_ByteArray(
                     serializer.to_bytes(header.era_end)
                 ),
-                CLT_Type_ByteArray
+                CLT_ByteArray
             )
         ) +
         serializer.to_bytes(

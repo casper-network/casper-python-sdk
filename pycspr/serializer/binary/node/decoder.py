@@ -1,15 +1,16 @@
 import typing
 
-from pycspr.factory import create_public_key
 from pycspr.serializer.binary.cl_type import decode as decode_cl_type
 from pycspr.serializer.binary.cl_value import decode as decode_cl_value
-from pycspr.types.cl import CLT_Type_ByteArray
+from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLT_Type_List
 from pycspr.types.cl import CLT_Type_PublicKey
 from pycspr.types.cl import CLT_Type_String
 from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import Signature
 from pycspr.types.node.rpc import Deploy
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
@@ -45,7 +46,7 @@ def decode(typedef: object, bstream: bytes) -> typing.Tuple[bytes, object]:
 
 def _decode_deploy(bstream: bytes) -> typing.Tuple[bytes, Deploy]:
     bstream, header = decode(DeployHeader, bstream)
-    bstream, deploy_hash = decode_cl_value(CLT_Type_ByteArray(32), bstream)
+    bstream, deploy_hash = decode_cl_value(CLT_ByteArray(32), bstream)
     bstream, payment = decode(DeployExecutableItem, bstream)
     bstream, session = decode(DeployExecutableItem, bstream)
     bstream, approvals = _decode_deploy_approval_set(bstream)
@@ -62,19 +63,18 @@ def _decode_deploy(bstream: bytes) -> typing.Tuple[bytes, Deploy]:
 def _decode_deploy_approval(bstream: bytes) -> typing.Tuple[bytes, DeployApproval]:
     algo = KeyAlgorithm(bstream[0])
     if algo == KeyAlgorithm.ED25519:
-        key_length = 32
+        pbk_length: int = 32
     elif algo == KeyAlgorithm.SECP256K1:
-        key_length = 33
+        pbk_length: int = 33
     else:
         raise ValueError("Invalid Key Algorithm")
-    pbk = bstream[1:key_length + 1]
-    sig = bstream[key_length + 1:key_length + 66]
-    bstream = bstream[1 + key_length + 66:]
 
-    return bstream, DeployApproval(
-        signer=create_public_key(algo, pbk),
-        signature=sig
-    )
+    return \
+        bstream[1 + pbk_length + 66:], \
+        DeployApproval(
+            signer=PublicKey.from_bytes(bstream[:pbk_length + 1]),
+            signature=Signature.from_bytes(bstream[pbk_length + 1:pbk_length + 66])
+        )
 
 
 def _decode_deploy_approval_set(
@@ -113,7 +113,7 @@ def _decode_deploy_argument_set(
 def _decode_deploy_body(bstream: bytes) -> typing.Tuple[bytes, DeployBody]:
     bstream, payment = _decode_deploy_executable_item(bstream)
     bstream, session = _decode_deploy_executable_item(bstream)
-    bstream, body_hash = decode_cl_value(CLT_Type_ByteArray(32), bstream)
+    bstream, body_hash = decode_cl_value(CLT_ByteArray(32), bstream)
 
     return bstream, DeployBody(payment, session, body_hash.value)
 
@@ -142,9 +142,9 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
     bstream, timestamp = decode(Timestamp, bstream)
     bstream, ttl = decode(DeployTimeToLive, bstream)
     bstream, gas_price = decode_cl_value(CLT_Type_U64(), bstream)
-    bstream, body_hash = decode_cl_value(CLT_Type_ByteArray(32), bstream)
+    bstream, body_hash = decode_cl_value(CLT_ByteArray(32), bstream)
     bstream, dependencies = decode_cl_value(
-        CLT_Type_List(CLT_Type_ByteArray(32)), bstream
+        CLT_Type_List(CLT_ByteArray(32)), bstream
         )
     bstream, chain_name = decode_cl_value(CLT_Type_String(), bstream)
 
@@ -185,7 +185,7 @@ def _decode_stored_contract_by_hash(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByHash]:
     bstream = bstream[1:]
-    bstream, contract_hash = decode_cl_value(CLT_Type_ByteArray(32), bstream)
+    bstream, contract_hash = decode_cl_value(CLT_ByteArray(32), bstream)
     bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)
 
@@ -200,7 +200,7 @@ def _decode_stored_contract_by_hash_versioned(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByHashVersioned]:
     bstream = bstream[1:]
-    bstream, contract_hash = decode_cl_value(CLT_Type_ByteArray(32), bstream)
+    bstream, contract_hash = decode_cl_value(CLT_ByteArray(32), bstream)
     bstream, contract_version = decode_cl_value(CLT_Type_U32(), bstream)
     bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)

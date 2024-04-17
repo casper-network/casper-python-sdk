@@ -24,6 +24,7 @@ from pycspr.types.cl import CLV_Tuple2
 from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URef
+from pycspr.types.crypto import PublicKey
 
 
 def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
@@ -61,7 +62,9 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             yield CLV_Option(CLV_U64(value), CLT_Type_U64())
 
         elif type_key == CLT_TypeKey.PUBLIC_KEY:
-            yield CLV_PublicKey.from_public_key(bytes.fromhex(value))
+            yield CLV_PublicKey.from_public_key(
+                PublicKey.from_bytes(bytes.fromhex(value))
+                )
 
         elif type_key == CLT_TypeKey.RESULT:
             continue

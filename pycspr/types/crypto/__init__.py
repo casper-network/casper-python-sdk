@@ -10,6 +10,7 @@ from pycspr.types.crypto.simple import MerkleProofBytes
 from pycspr.types.crypto.simple import MerkleProofHex
 from pycspr.types.crypto.simple import PrivateKeyBytes
 from pycspr.types.crypto.simple import PrivateKeyHex
+from pycspr.types.crypto.simple import PrivateKeyPem
 from pycspr.types.crypto.simple import PublicKeyBytes
 from pycspr.types.crypto.simple import PublicKeyHex
 from pycspr.types.crypto.simple import SignatureBytes

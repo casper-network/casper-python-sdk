@@ -32,6 +32,11 @@ PrivateKeyHex = typing.NewType(
     "Hexadecimal encoded asymmetric private key associated with an account.", str
     )
 
+# PEM encoded asymmetric private key associated with an account.
+PrivateKeyPem = typing.NewType(
+    "PEM encoded asymmetric private key associated with an account.", bytes
+    )
+
 # Asymmetric public key associated with an account.
 PublicKeyBytes = typing.NewType(
     "Asymmetric public key associated with an account.", bytes

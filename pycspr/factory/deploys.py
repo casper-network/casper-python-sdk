@@ -5,7 +5,6 @@ import typing
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
-from pycspr.factory.accounts import create_public_key
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
 from pycspr.types.node.rpc import Deploy
@@ -137,9 +136,7 @@ def create_deploy_parameters(
     :param ttl: Humanized time interval prior to which deploy must be processed.
 
     """
-    public_key = \
-        account if isinstance(account, PublicKey) else \
-        create_public_key(account.algo, account.pbk)
+    public_key = account if isinstance(account, PublicKey) else account.to_public_key()
     timestamp = timestamp or datetime.datetime.now(tz=datetime.timezone.utc).timestamp()
     timestamp = Timestamp(round(timestamp, 3))
     ttl = create_deploy_ttl(ttl) if isinstance(ttl, str) else ttl
@@ -192,7 +189,7 @@ def create_standard_payment(
 def create_transfer(
     params: DeployParameters,
     amount: int,
-    target: AccountKey,
+    target: PublicKey,
     correlation_id: int = None,
     payment: int = constants.STANDARD_PAYMENT_FOR_NATIVE_TRANSFERS
 ) -> Deploy:
@@ -200,7 +197,7 @@ def create_transfer(
 
     :param params: Standard parameters used when creating a deploy.
     :param amount: Amount in motes to be transferred.
-    :param target: Target account key.
+    :param target: Public key of target account.
     :param correlation_id: Identifier used to correlate transfer to internal systems.
     :returns: A native transfer deploy.
 
@@ -220,7 +217,7 @@ def create_transfer_session(
     """Returns session execution information for a native transfer.
 
     :param amount: Amount in motes to be transferred.
-    :param target: Target account key.
+    :param target: Public key of target account.
     :param correlation_id: Identifier used to correlate transfer to internal systems.
     :returns: A native transfer session logic.
 

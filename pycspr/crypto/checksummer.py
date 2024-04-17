@@ -2,7 +2,8 @@ import itertools
 import typing
 
 from pycspr.crypto.hashifier import get_hash
-from pycspr.types.crypto.simple import HashAlgorithm
+from pycspr.types.crypto import HashAlgorithm
+from pycspr.types.crypto import Signature
 
 
 # The number of input bytes, at or below which [`encode`] will checksum-encode the output.
@@ -121,17 +122,23 @@ def encode_digest(digest: typing.Union[str, bytes]) -> str:
     return encode_bytes(digest)
 
 
-def encode_signature(signature: typing.Union[str, bytes]) -> str:
+def encode_signature(signature: Signature) -> str:
     """Encodes a digital signature as a checksummed hexadecimal string.
 
     :param signature: A digital signature.
     :returns: Checksummed hexadecimal string.
 
     """
-    if isinstance(signature, str):
-        signature = bytes.fromhex(signature)
+    print(123, signature)
+    return signature.to_bytes[:1].hex() + encode_bytes(signature.to_bytes[1:])
 
-    return signature[:1].hex() + encode_bytes(signature[1:])
+    # return signature.as_bytes
+    # print(123, signature)
+
+    # if isinstance(signature, str):
+    #     signature = bytes.fromhex(signature)
+
+    # return bytes([signature.algo.value]) + signature.sig
 
 
 def _encode(input: bytes) -> typing.Iterator[str]:

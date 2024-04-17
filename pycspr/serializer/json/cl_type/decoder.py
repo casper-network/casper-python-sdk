@@ -1,11 +1,11 @@
 import typing
 
 from pycspr.types.cl.types import CLT_Type
-from pycspr.types.cl.types import CLT_Type_Any
-from pycspr.types.cl.types import CLT_Type_Bool
-from pycspr.types.cl.types import CLT_Type_ByteArray
-from pycspr.types.cl.types import CLT_Type_I32
-from pycspr.types.cl.types import CLT_Type_I64
+from pycspr.types.cl.types import CLT_Any
+from pycspr.types.cl.types import CLT_Bool
+from pycspr.types.cl.types import CLT_ByteArray
+from pycspr.types.cl.types import CLT_I32
+from pycspr.types.cl.types import CLT_I64
 from pycspr.types.cl.types import CLT_Type_U8
 from pycspr.types.cl.types import CLT_Type_U32
 from pycspr.types.cl.types import CLT_Type_U64
@@ -27,10 +27,10 @@ from pycspr.types.cl.types import CLT_Type_URef
 
 
 _SIMPLE_TYPES = {
-    "Any": CLT_Type_Any,
-    "Bool": CLT_Type_Bool,
-    "I32": CLT_Type_I32,
-    "I64": CLT_Type_I64,
+    "Any": CLT_Any,
+    "Bool": CLT_Bool,
+    "I32": CLT_I32,
+    "I64": CLT_I64,
     "Key": CLT_Type_Key,
     "PublicKey": CLT_Type_PublicKey,
     "Result": CLT_Type_Result,
@@ -57,7 +57,7 @@ def decode(encoded: typing.Union[dict, str]) -> CLT_Type:
         return _SIMPLE_TYPES[encoded]()
 
     elif "ByteArray" in encoded:
-        return CLT_Type_ByteArray(
+        return CLT_ByteArray(
             encoded["ByteArray"]
         )
 

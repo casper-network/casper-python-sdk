@@ -41,7 +41,7 @@ class CLT_Type():
 
 
 @dataclasses.dataclass
-class CLT_Type_Any(CLT_Type):
+class CLT_Any(CLT_Type):
     """Encapsulates CL type information associated with any value.
 
     """
@@ -50,7 +50,7 @@ class CLT_Type_Any(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Bool(CLT_Type):
+class CLT_Bool(CLT_Type):
     """Encapsulates CL type information associated with a Boolean value.
 
     """
@@ -59,7 +59,7 @@ class CLT_Type_Bool(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_ByteArray(CLT_Type):
+class CLT_ByteArray(CLT_Type):
     """Encapsulates CL type information associated with a byte array value.
 
     """
@@ -74,7 +74,7 @@ class CLT_Type_ByteArray(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_I32(CLT_Type):
+class CLT_I32(CLT_Type):
     """Encapsulates CL type information associated with a I32 value.
 
     """
@@ -83,7 +83,7 @@ class CLT_Type_I32(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_I64(CLT_Type):
+class CLT_I64(CLT_Type):
     """Encapsulates CL type information associated with a I64 value.
 
     """
@@ -311,11 +311,11 @@ class CLT_Type_URef(CLT_Type):
 TYPESET: set = {
     CLT_Type,
     CLT_TypeKey,
-    CLT_Type_Any,
-    CLT_Type_Bool,
-    CLT_Type_ByteArray,
-    CLT_Type_I32,
-    CLT_Type_I64,
+    CLT_Any,
+    CLT_Bool,
+    CLT_ByteArray,
+    CLT_I32,
+    CLT_I64,
     CLT_Type_U8,
     CLT_Type_U32,
     CLT_Type_U64,

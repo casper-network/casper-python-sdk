@@ -2,11 +2,11 @@ import typing
 
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLT_Type_Any
-from pycspr.types.cl import CLT_Type_Bool
-from pycspr.types.cl import CLT_Type_ByteArray
-from pycspr.types.cl import CLT_Type_I32
-from pycspr.types.cl import CLT_Type_I64
+from pycspr.types.cl import CLT_Any
+from pycspr.types.cl import CLT_Bool
+from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.cl import CLT_I32
+from pycspr.types.cl import CLT_I64
 from pycspr.types.cl import CLT_Type_U8
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -32,19 +32,19 @@ def yield_cl_types(fixtures: list) -> typing.Iterator[CLT_Type]:
         type_key = fixture["cl_type"]
 
         if type_key == CLT_TypeKey.ANY:
-            yield CLT_Type_Any()
+            yield CLT_Any()
 
         elif type_key == CLT_TypeKey.BOOL:
-            yield CLT_Type_Bool()
+            yield CLT_Bool()
 
         elif type_key == CLT_TypeKey.BYTE_ARRAY:
-            yield CLT_Type_ByteArray(fixture["cl_type_size"])
+            yield CLT_ByteArray(fixture["cl_type_size"])
 
         elif type_key == CLT_TypeKey.I32:
-            yield CLT_Type_I32()
+            yield CLT_I32()
 
         elif type_key == CLT_TypeKey.I64:
-            yield CLT_Type_I64()
+            yield CLT_I64()
 
         elif type_key == CLT_TypeKey.KEY:
             yield CLT_Type_Key()
@@ -54,7 +54,7 @@ def yield_cl_types(fixtures: list) -> typing.Iterator[CLT_Type]:
                 yield CLT_Type_List(inner_type)
 
         elif type_key == CLT_TypeKey.MAP:
-            yield CLT_Type_Map(CLT_Type_String(), CLT_Type_I32())
+            yield CLT_Type_Map(CLT_Type_String(), CLT_I32())
 
         elif type_key == CLT_TypeKey.OPTION:
             for inner_type in _get_inner_types():
@@ -107,14 +107,14 @@ def yield_cl_types(fixtures: list) -> typing.Iterator[CLT_Type]:
 
 def _get_inner_types():
     return [
-        CLT_Type_Any(),
-        CLT_Type_Bool(),
-        CLT_Type_ByteArray(32),
-        CLT_Type_I32(),
-        CLT_Type_I64(),
+        CLT_Any(),
+        CLT_Bool(),
+        CLT_ByteArray(32),
+        CLT_I32(),
+        CLT_I64(),
         CLT_Type_Key(),
         CLT_Type_List(CLT_Type_U64()),
-        CLT_Type_Map(CLT_Type_String(), CLT_Type_I32()),
+        CLT_Type_Map(CLT_Type_String(), CLT_I32()),
         CLT_Type_PublicKey(),
         CLT_Type_Result(),
         CLT_Type_String(),

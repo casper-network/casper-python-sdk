@@ -2,11 +2,11 @@ import typing
 
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLT_Type_Any
-from pycspr.types.cl import CLT_Type_Bool
-from pycspr.types.cl import CLT_Type_ByteArray
-from pycspr.types.cl import CLT_Type_I32
-from pycspr.types.cl import CLT_Type_I64
+from pycspr.types.cl import CLT_Any
+from pycspr.types.cl import CLT_Bool
+from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.cl import CLT_I32
+from pycspr.types.cl import CLT_I64
 from pycspr.types.cl import CLT_Type_U8
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -71,19 +71,19 @@ def decode(typedef: CLT_Type, bstream: bytes) -> typing.Tuple[bytes, CLV_Value]:
 
 
 def _decode_any(
-    typedef: CLT_Type_Any,
+    typedef: CLT_Any,
     bstream: bytes,
 ) -> typing.Tuple[bytes, CLV_Any]:
     raise NotImplementedError()
 
 
-def _decode_bool(_: CLT_Type_Bool, bstream: bytes) -> CLV_Bool:
+def _decode_bool(_: CLT_Bool, bstream: bytes) -> CLV_Bool:
     assert len(bstream) >= 1
     return bstream[1:], CLV_Bool(bool(bstream[0]))
 
 
 def _decode_byte_array(
-    typedef: CLT_Type_ByteArray,
+    typedef: CLT_ByteArray,
     bstream: bytes
 ) -> typing.Tuple[bytes, CLV_ByteArray]:
     assert len(bstream) >= typedef.size
@@ -105,14 +105,14 @@ def _decode_int(
 
 
 def _decode_i32(
-    _: CLT_Type_I32,
+    _: CLT_I32,
     bstream: bytes
 ) -> typing.Tuple[bytes, CLV_I32]:
     return _decode_int(bstream, 4, CLV_I32, True)
 
 
 def _decode_i64(
-    _: CLT_Type_I64,
+    _: CLT_I64,
     bstream: bytes
 ) -> typing.Tuple[bytes, CLV_I64]:
     return _decode_int(bstream, 8, CLV_I64, True)

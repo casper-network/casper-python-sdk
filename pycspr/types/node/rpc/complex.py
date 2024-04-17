@@ -183,7 +183,7 @@ class Deploy():
         if not crypto.verify_deploy_approval_signature(
             self.hash,
             approval.signature,
-            approval.signer.account_key
+            approval.signer
         ):
             raise ValueError("Invalid signature - please review your processes.")
 

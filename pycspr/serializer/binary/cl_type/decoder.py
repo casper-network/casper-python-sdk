@@ -1,11 +1,11 @@
 from pycspr.serializer.binary.cl_value import decode as decode_cl_value
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLT_Type_Any
-from pycspr.types.cl import CLT_Type_Bool
-from pycspr.types.cl import CLT_Type_ByteArray
-from pycspr.types.cl import CLT_Type_I32
-from pycspr.types.cl import CLT_Type_I64
+from pycspr.types.cl import CLT_Any
+from pycspr.types.cl import CLT_Bool
+from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.cl import CLT_I32
+from pycspr.types.cl import CLT_I64
 from pycspr.types.cl import CLT_Type_U8
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -45,7 +45,7 @@ def decode(bstream: bytes) -> CLT_Type:
 def _decode_byte_array(bstream: bytes):
     bstream, size = decode_cl_value(CLT_Type_U32(), bstream)
 
-    return bstream, CLT_Type_ByteArray(size.value)
+    return bstream, CLT_ByteArray(size.value)
 
 
 def _decode_list(bstream: bytes):
@@ -99,10 +99,10 @@ _DECODERS = {
         CLT_TypeKey.TUPLE_3: _decode_tuple_3,
     },
     "simple": {
-        CLT_TypeKey.ANY: CLT_Type_Any,
-        CLT_TypeKey.BOOL: CLT_Type_Bool,
-        CLT_TypeKey.I32: CLT_Type_I32,
-        CLT_TypeKey.I64: CLT_Type_I64,
+        CLT_TypeKey.ANY: CLT_Any,
+        CLT_TypeKey.BOOL: CLT_Bool,
+        CLT_TypeKey.I32: CLT_I32,
+        CLT_TypeKey.I64: CLT_I64,
         CLT_TypeKey.KEY: CLT_Type_Key,
         CLT_TypeKey.PUBLIC_KEY: CLT_Type_PublicKey,
         CLT_TypeKey.RESULT: CLT_Type_Result,
