@@ -146,8 +146,8 @@ def get_pvk_pem_file_from_bytes(
 
 def get_signature(
     msg_hash: DigestBytes,
+    algo: KeyAlgorithm,
     pvk: PrivateKeyBytes,
-    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> SignatureBytes:
     """Returns digital signature of data signed by a private key.
 
@@ -175,14 +175,14 @@ def get_signature_from_pem_file(
     """
     pvk, _ = get_key_pair_from_pem_file(fpath, algo)
 
-    return get_signature(msg_hash, pvk, algo)
+    return get_signature(msg_hash, algo, pvk)
 
 
 def is_signature_valid(
     msg_hash: DigestBytes,
+    algo: KeyAlgorithm,
     sig: SignatureBytes,
-    vk: PublicKeyBytes,
-    algo: KeyAlgorithm = DEFAULT_KEY_ALGO
+    vk: PublicKeyBytes
 ) -> bool:
     """Returns a flag indicating whether a signature was signed by a signing key.
 

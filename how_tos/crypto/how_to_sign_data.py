@@ -40,7 +40,7 @@ def _main(args: argparse.Namespace):
     for algo in pycspr.KeyAlgorithm:
         # Sign over digest with a private key.
         pvk, _ = pycspr.get_key_pair(algo)
-        sig: bytes = pycspr.get_signature(digest, pvk, algo)
+        sig: bytes = pycspr.get_signature(digest, algo, pvk)
 
         print("Signature over hash of data")
         print(f"  Algo:  {algo.name}")

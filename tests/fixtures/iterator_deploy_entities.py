@@ -6,7 +6,6 @@ import pycspr
 from pycspr.types.cl import CLV_U64
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import Signature
-from pycspr.types.crypto import SignatureBytes
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
 from pycspr.types.node.rpc import DeployOfModuleBytes

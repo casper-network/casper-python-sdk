@@ -20,7 +20,6 @@ from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
-from pycspr.types.node.rpc import AccountKey
 from pycspr.types.node.rpc import DeployApproval
 from pycspr.types.node.rpc import DeployArgument
 from pycspr.types.node.rpc import DeployExecutableItem

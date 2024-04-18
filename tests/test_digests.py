@@ -1,4 +1,5 @@
 import pycspr
+from pycspr.types.crypto import PublicKey
 
 
 def test_derivation_of_a_deploy_body_hash(deploys_1):
@@ -9,7 +10,7 @@ def test_derivation_of_a_deploy_body_hash(deploys_1):
                 ),
             pycspr.factory.create_transfer_session(
                 vector["session"]["amount"],
-                vector["session"]["target"],
+                PublicKey.from_bytes(vector["session"]["target"]),
                 vector["session"]["correlation_id"]
                 )
         )
@@ -25,13 +26,9 @@ def test_derivation_of_a_deploy_hash(deploy_params_static, deploys_1):
                 ),
             pycspr.factory.create_transfer_session(
                 vector["session"]["amount"],
-                vector["session"]["target"],
+                PublicKey.from_bytes(vector["session"]["target"]),
                 vector["session"]["correlation_id"]
                 )
         )
-
-        print(entity.hash.hex())
-
-        print(vector["hashes"]["deploy"].hex())
 
         assert entity.hash == vector["hashes"]["deploy"]

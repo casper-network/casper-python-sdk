@@ -7,7 +7,6 @@ from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import Signature
-from pycspr.types.crypto import SignatureBytes
 
 
 # Desired length of hash digest.
@@ -38,35 +37,32 @@ def get_account_hash(account_key: bytes) -> bytes:
     return get_hash(as_bytes, _DIGEST_LENGTH, HashAlgorithm.BLAKE2B)
 
 
-def get_account_key(key_algo: KeyAlgorithm, public_key: bytes) -> bytes:
+def get_account_key(algo: KeyAlgorithm, pbk: bytes) -> bytes:
     """Returns an on-chain account key.
 
-    :param key_algo: Algorithm used to generate ECC public key.
-    :param public_key: A byte array representation of an ECC public (aka verifying) key.
+    :param algo: Algorithm used to generate ECC public key.
+    :param pbk: A byte array representation of an ECC public (aka verifying) key.
     :returns: An on-chain account key.
 
     """
-    assert len(public_key) == _PUBLIC_KEY_LENGTHS[key_algo], \
-           f"Invalid {key_algo.name} public key length."
+    assert len(pbk) == _PUBLIC_KEY_LENGTHS[algo], \
+           f"Invalid {algo.name} public key length."
 
-    return bytes([key_algo.value]) + public_key
+    return bytes([algo.value]) + pbk
 
 
-def get_signature_for_deploy_approval(
-    deploy_hash: DigestBytes,
-    key_of_approver: PrivateKey
-) -> Signature:
+def get_signature_for_deploy_approval(digest: DigestBytes, approver: PrivateKey) -> Signature:
     """Returns a signature designated to approve a deploy.
 
-    :param deploy_hash: Digest of a deploy to be signed.
+    :param digest: Digest of a deploy to be signed.
     :param key_of_approver: Private key of approver.
     :returns: Digital signature over deploy digest.
 
     """
-    sig: SignatureBytes = \
-        get_signature(deploy_hash, key_of_approver.pvk, key_of_approver.algo)
-    
-    return Signature(key_of_approver.algo, sig)
+    return Signature(
+        approver.algo,
+        get_signature(digest, approver.algo, approver.pvk)
+        )
 
 
 def verify_deploy_approval_signature(
@@ -90,7 +86,7 @@ def verify_deploy_approval_signature(
 
     return is_signature_valid(
         deploy_hash,
+        signature.algo,
         signature.sig,
         account_public_key.pbk,
-        account_public_key.algo,
         )

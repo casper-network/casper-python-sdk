@@ -41,7 +41,7 @@ class PublicKey():
 
     def __len__(self) -> int:
         return len(self.pbk) + 1
-    
+
     @staticmethod
     def from_bytes(account_key: bytes) -> "PublicKey":
         return PublicKey(KeyAlgorithm(account_key[0]), account_key[1:])

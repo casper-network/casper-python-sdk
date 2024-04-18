@@ -15,7 +15,7 @@ def _create_deploy(deploy_params, cp1, cp2):
     deploy = pycspr.factory.create_transfer(
         deploy_params,
         amount=123456789,
-        target=cp2.account_key,
+        target=cp2.to_public_key(),
         correlation_id=1
         )
     deploy.approve(cp1)
