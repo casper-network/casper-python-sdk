@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import enum
 import typing
 
 from pycspr import crypto
@@ -8,24 +9,112 @@ from pycspr.types.cl.values import CLV_Value
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import PublicKeyBytes
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import Signature
-from pycspr.types.node.rpc.simple import Address
-from pycspr.types.node.rpc.simple import BlockHash
-from pycspr.types.node.rpc.simple import BlockHeight
-from pycspr.types.node.rpc.simple import ContractID
-from pycspr.types.node.rpc.simple import ContractVersion
-from pycspr.types.node.rpc.simple import DeployHash
-from pycspr.types.node.rpc.simple import EraID
-from pycspr.types.node.rpc.simple import Gas
-from pycspr.types.node.rpc.simple import GasPrice
-from pycspr.types.node.rpc.simple import Motes
-from pycspr.types.node.rpc.simple import ReactorState
-from pycspr.types.node.rpc.simple import StateRootHash
-from pycspr.types.node.rpc.simple import URefAccessRights
-from pycspr.types.node.rpc.simple import ValidatorStatusChangeType
-from pycspr.types.node.rpc.simple import WasmModule
-from pycspr.types.node.rpc.simple import Weight
+
+
+AccountKey = typing.NewType(
+    "On-chain account public key prefixed with ecc algo type.", bytes
+    )
+
+Address = typing.NewType(
+    "Identifier of an on-chain account address.", bytes
+    )
+
+BlockHash = typing.NewType(
+    "Digest over a block.", DigestBytes
+    )
+
+BlockHeight = typing.NewType(
+    "Ordinal identifier of a block measured by how many finalised blocks precede it.", int
+)
+
+BlockID = typing.Union[BlockHash, BlockHeight]
+
+ContractID = typing.NewType(
+    "Identifier of an on-chain smart contract.", bytes
+    )
+
+ContractVersion = typing.NewType(
+    "Version of an on-chain smart contract.", int
+    )
+
+DeployHash = typing.NewType(
+    "Identifier of a transaction.", DigestBytes
+    )
+
+EraID = typing.NewType(
+    "Identifier of an era in chain time.", int
+    )
+
+Gas = typing.NewType(
+    "Atomic unit of constraint over node compute.", int
+    )
+
+GasPrice = typing.NewType(
+    "Price of gas within an era in chain time.", int
+    )
+
+Motes = typing.NewType(
+    "Basic unit of crypto economic system.", int
+    )
+
+URefIdentifier = typing.NewType(
+    "String encoded UREF identifier.", str
+    )
+
+WasmModule = typing.NewType(
+    "WASM module payload.", bytes
+    )
+
+Weight = typing.NewType(
+    "Some form of relative relevance measure.", int
+    )
+
+StateRootHash = typing.NewType(
+    "Root digest of a node's global state.", DigestBytes
+    )
+
+
+class GlobalStateIDType(enum.Enum):
+    BLOCK_HASH = "BlockHash"
+    BLOCK_HEIGHT = "BlockHeight"
+    STATE_ROOT_HASH = "StateRootHash"
+
+
+class PurseIDType(enum.Enum):
+    PUBLIC_KEY = enum.auto()
+    ACCOUNT_HASH = enum.auto()
+    UREF = enum.auto()
+
+
+class ReactorState(enum.Enum):
+    INITIALIZE = "Initialize"
+    CATCH_UP = "CatchUp"
+    UPGRADING = "Upgrading"
+    KEEP_UP = "KeepUp"
+    VALIDATE = "Validate"
+    SHUTDOWN_FOR_UPGRADE = "ShutdownForUpgrade"
+
+
+class URefAccessRights(enum.Enum):
+    NONE = 0
+    READ = 1
+    WRITE = 2
+    ADD = 4
+    READ_WRITE = 3
+    READ_ADD = 5
+    ADD_WRITE = 6
+    READ_ADD_WRITE = 7
+
+
+class ValidatorStatusChangeType(enum.Enum):
+    ADDED = "Added"
+    REMOVED = "Removed"
+    BANNED = "Banned"
+    CANNOT_PROPOSE = "CannotPropose"
+    SEEN_AS_FAULTY = "SeenAsFaulty"
 
 
 @dataclasses.dataclass
@@ -422,6 +511,12 @@ class EraSummaryInfo():
 
 
 @dataclasses.dataclass
+class GlobalStateID():
+    identifier: typing.Union[BlockHash, BlockHeight, StateRootHash]
+    id_type: "GlobalStateIDType"
+
+
+@dataclasses.dataclass
 class MinimalBlockInfo():
     creator: PublicKey
     era_id: EraID
@@ -469,6 +564,12 @@ class ProtocolVersion():
     major: int
     minor: int
     revision: int
+
+
+@dataclasses.dataclass
+class PurseID():
+    identifier: typing.Union[Address, PublicKeyBytes, URefIdentifier]
+    id_type: "PurseIDType"
 
 
 @dataclasses.dataclass
@@ -535,6 +636,30 @@ class ValidatorWeight():
 
 
 TYPESET: set = {
+    AccountKey,
+    Address,
+    BlockHash,
+    BlockHeight,
+    BlockID,
+    ContractID,
+    ContractVersion,
+    DeployHash,
+    EraID,
+    Gas,
+    GasPrice,
+    Motes,
+    StateRootHash,
+    WasmModule,
+    Weight,
+} | {
+    GlobalStateID,
+    GlobalStateIDType,
+    PurseID,
+    PurseIDType,
+    ReactorState,
+    URefAccessRights,
+    ValidatorStatusChangeType,
+} | {
     AccountInfo,
     ActionThresholds,
     AssociatedKey,

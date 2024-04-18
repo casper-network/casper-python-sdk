@@ -1,3 +1,4 @@
+import dataclasses
 import enum
 import typing
 
@@ -46,7 +47,27 @@ SSE_CHANNEL_TO_SSE_EVENT: typing.Dict[NodeEventChannel, typing.Set[NodeEventType
     }
 }
 
+@dataclasses.dataclass
+class NodeEventInfo():
+    """Encapsulates emitted event information.
+
+    """
+    # Channel over which event emitted by a node.
+    channel: NodeEventChannel
+
+    # Type of event emitted by a node.
+    typeof: NodeEventType
+
+    # Event ordinal identifier - acts as an offset.
+    idx: int
+
+    # Event payload ... typically data but sometimes a simple string.
+    payload: typing.Union[dict, str]
+
+
 TYPESET: set = {
     NodeEventChannel,
     NodeEventType,
+} | {
+    NodeEventInfo,
 }
