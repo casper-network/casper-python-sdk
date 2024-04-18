@@ -2,17 +2,17 @@ import typing
 
 from pycspr.crypto import checksummer
 from pycspr.serializer.json.cl_value import encode as encode_cl_value
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployHeader
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployHeader
 from pycspr.types.cl import CLV_Value
-from pycspr.types.node.rpc import DeployApproval
-from pycspr.types.node.rpc import DeployArgument
-from pycspr.types.node.rpc import DeployOfModuleBytes
-from pycspr.types.node.rpc import DeployOfStoredContractByHash
-from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.node.rpc import DeployOfStoredContractByName
-from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.node.rpc import DeployOfTransfer
+from pycspr.types.node import DeployApproval
+from pycspr.types.node import DeployArgument
+from pycspr.types.node import DeployOfModuleBytes
+from pycspr.types.node import DeployOfStoredContractByHash
+from pycspr.types.node import DeployOfStoredContractByHashVersioned
+from pycspr.types.node import DeployOfStoredContractByName
+from pycspr.types.node import DeployOfStoredContractByNameVersioned
+from pycspr.types.node import DeployOfTransfer
 from pycspr.utils import convertor
 
 

@@ -2,8 +2,8 @@ import datetime as dt
 import typing
 
 from pycspr.crypto import checksummer
-from pycspr.types.node.rpc import AccountKey
-from pycspr.types.node.rpc import URef
+from pycspr.types.node import AccountKey
+from pycspr.types.node import URef
 from pycspr.utils import constants
 
 

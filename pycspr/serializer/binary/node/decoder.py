@@ -11,20 +11,20 @@ from pycspr.types.cl import CLT_Type_String
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import Signature
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployApproval
-from pycspr.types.node.rpc import DeployArgument
-from pycspr.types.node.rpc import DeployBody
-from pycspr.types.node.rpc import DeployExecutableItem
-from pycspr.types.node.rpc import DeployHeader
-from pycspr.types.node.rpc import DeployTimeToLive
-from pycspr.types.node.rpc import DeployOfModuleBytes
-from pycspr.types.node.rpc import DeployOfStoredContractByHash
-from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.node.rpc import DeployOfStoredContractByName
-from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.node.rpc import DeployOfTransfer
-from pycspr.types.node.rpc import Timestamp
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployApproval
+from pycspr.types.node import DeployArgument
+from pycspr.types.node import DeployBody
+from pycspr.types.node import DeployExecutableItem
+from pycspr.types.node import DeployHeader
+from pycspr.types.node import DeployTimeToLive
+from pycspr.types.node import DeployOfModuleBytes
+from pycspr.types.node import DeployOfStoredContractByHash
+from pycspr.types.node import DeployOfStoredContractByHashVersioned
+from pycspr.types.node import DeployOfStoredContractByName
+from pycspr.types.node import DeployOfStoredContractByNameVersioned
+from pycspr.types.node import DeployOfTransfer
+from pycspr.types.node import Timestamp
 from pycspr.utils import convertor
 
 

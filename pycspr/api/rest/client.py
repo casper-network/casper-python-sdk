@@ -3,8 +3,8 @@ import typing
 from pycspr import serializer
 from pycspr.api.rest.connection import ConnectionInfo
 from pycspr.api.rest.proxy import Proxy
-from pycspr.types.node.rpc import NodeStatus
-from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.types.node import NodeStatus
+from pycspr.types.node import ValidatorChanges
 
 
 class Client():

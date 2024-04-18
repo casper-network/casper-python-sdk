@@ -6,23 +6,23 @@ from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.api.rpc.proxy import Proxy
 from pycspr.types.cl import CLV_Key
 from pycspr.types.crypto import DigestBytes
-from pycspr.types.node.rpc import Address
-from pycspr.types.node.rpc import AccountInfo
-from pycspr.types.node.rpc import AuctionState
-from pycspr.types.node.rpc import Block
-from pycspr.types.node.rpc import BlockID
-from pycspr.types.node.rpc import BlockTransfers
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployHash
-from pycspr.types.node.rpc import DictionaryID
-from pycspr.types.node.rpc import EraSummary
-from pycspr.types.node.rpc import GlobalStateID
-from pycspr.types.node.rpc import NodePeer
-from pycspr.types.node.rpc import NodeStatus
-from pycspr.types.node.rpc import PurseID
-from pycspr.types.node.rpc import StateRootHash
-from pycspr.types.node.rpc import ValidatorChanges
-from pycspr.types.node.rpc import URef
+from pycspr.types.node import Address
+from pycspr.types.node import AccountInfo
+from pycspr.types.node import AuctionState
+from pycspr.types.node import Block
+from pycspr.types.node import BlockID
+from pycspr.types.node import BlockTransfers
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployHash
+from pycspr.types.node import DictionaryID
+from pycspr.types.node import EraSummary
+from pycspr.types.node import GlobalStateID
+from pycspr.types.node import NodePeer
+from pycspr.types.node import NodeStatus
+from pycspr.types.node import PurseID
+from pycspr.types.node import StateRootHash
+from pycspr.types.node import ValidatorChanges
+from pycspr.types.node import URef
 
 
 class Client():

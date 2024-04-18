@@ -8,9 +8,9 @@ from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLT_ByteArray
-from pycspr.types.node.rpc import BlockHeader
-from pycspr.types.node.rpc import DeployExecutableItem
-from pycspr.types.node.rpc import DeployHeader
+from pycspr.types.node import BlockHeader
+from pycspr.types.node import DeployExecutableItem
+from pycspr.types.node import DeployHeader
 
 
 def create_digest_of_block(header: BlockHeader) -> bytes:

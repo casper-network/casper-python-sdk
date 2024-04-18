@@ -1,8 +1,8 @@
 from pycspr import NodeRpcClient
-from pycspr.types.node.rpc import GlobalStateID
-from pycspr.types.node.rpc import PurseID
-from pycspr.types.node.rpc import PurseIDType
-from pycspr.types.node.rpc import URef
+from pycspr.types.node import GlobalStateID
+from pycspr.types.node import PurseID
+from pycspr.types.node import PurseIDType
+from pycspr.types.node import URef
 
 
 async def test_get_account_balance_under_purse_uref(

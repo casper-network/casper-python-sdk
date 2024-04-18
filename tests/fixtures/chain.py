@@ -2,12 +2,12 @@ import pytest
 
 from pycspr import NodeRpcClient
 from pycspr.types.crypto import DigestBytes
-from pycspr.types.node.rpc import AccountKey
-from pycspr.types.node.rpc import Block
-from pycspr.types.node.rpc import GlobalStateID
-from pycspr.types.node.rpc import GlobalStateIDType
-from pycspr.types.node.rpc import StateRootHash
-from pycspr.types.node.rpc import URef
+from pycspr.types.node import AccountKey
+from pycspr.types.node import Block
+from pycspr.types.node import GlobalStateID
+from pycspr.types.node import GlobalStateIDType
+from pycspr.types.node import StateRootHash
+from pycspr.types.node import URef
 
 
 @pytest.fixture(scope="session")

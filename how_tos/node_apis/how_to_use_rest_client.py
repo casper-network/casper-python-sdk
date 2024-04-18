@@ -4,8 +4,8 @@ import typing
 
 from pycspr import NodeRestClient as NodeClient
 from pycspr import NodeRestConnectionInfo as NodeConnectionInfo
-from pycspr.types.node.rpc import NodeStatus
-from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.types.node import NodeStatus
+from pycspr.types.node import ValidatorChanges
 
 
 # CLI argument parser.

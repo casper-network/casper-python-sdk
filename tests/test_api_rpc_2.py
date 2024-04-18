@@ -1,9 +1,9 @@
 import typing
 
 from pycspr import NodeRpcClient
-from pycspr.types.node.rpc import ValidatorChanges
-from pycspr.types.node.rpc import NodePeer
-from pycspr.types.node.rpc import NodeStatus
+from pycspr.types.node import ValidatorChanges
+from pycspr.types.node import NodePeer
+from pycspr.types.node import NodeStatus
 
 
 async def test_get_node_peers_1(RPC_CLIENT: NodeRpcClient):

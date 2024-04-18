@@ -1,6 +1,6 @@
 from pycspr import NodeRpcClient
-from pycspr.types.node.rpc import StateRootHash
-from pycspr.types.node.rpc import Address
+from pycspr.types.node import StateRootHash
+from pycspr.types.node import Address
 
 
 async def test_get_state_item(

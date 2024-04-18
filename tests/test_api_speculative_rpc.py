@@ -1,5 +1,5 @@
 from pycspr import NodeSpeculativeRpcClient
-from pycspr.types.node.rpc import Deploy
+from pycspr.types.node import Deploy
 
 
 def test_pre_requisites(SPECULATIVE_RPC_CLIENT: NodeSpeculativeRpcClient, a_deploy: Deploy):

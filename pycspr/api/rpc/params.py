@@ -3,19 +3,19 @@ import typing
 from pycspr import serializer
 from pycspr.crypto import checksummer
 from pycspr.types.cl import CLV_Key
-from pycspr.types.node.rpc import Address
-from pycspr.types.node.rpc import BlockID
-from pycspr.types.node.rpc import DeployHash
-from pycspr.types.node.rpc import DictionaryID
-from pycspr.types.node.rpc import DictionaryID_AccountNamedKey
-from pycspr.types.node.rpc import DictionaryID_ContractNamedKey
-from pycspr.types.node.rpc import DictionaryID_SeedURef
-from pycspr.types.node.rpc import DictionaryID_UniqueKey
-from pycspr.types.node.rpc import GlobalStateID
-from pycspr.types.node.rpc import GlobalStateIDType
-from pycspr.types.node.rpc import PurseID
-from pycspr.types.node.rpc import PurseIDType
-from pycspr.types.node.rpc import StateRootHash
+from pycspr.types.node import Address
+from pycspr.types.node import BlockID
+from pycspr.types.node import DeployHash
+from pycspr.types.node import DictionaryID
+from pycspr.types.node import DictionaryID_AccountNamedKey
+from pycspr.types.node import DictionaryID_ContractNamedKey
+from pycspr.types.node import DictionaryID_SeedURef
+from pycspr.types.node import DictionaryID_UniqueKey
+from pycspr.types.node import GlobalStateID
+from pycspr.types.node import GlobalStateIDType
+from pycspr.types.node import PurseID
+from pycspr.types.node import PurseIDType
+from pycspr.types.node import StateRootHash
 from pycspr.utils import convertor
 
 

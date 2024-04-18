@@ -1,7 +1,7 @@
 from pycspr import NodeRpcClient
-from pycspr.types.node.rpc import AccountInfo
-from pycspr.types.node.rpc import URef
-from pycspr.types.node.rpc import URefAccessRights
+from pycspr.types.node import AccountInfo
+from pycspr.types.node import URef
+from pycspr.types.node import URefAccessRights
 
 
 async def test_get_state_root(RPC_CLIENT: NodeRpcClient):

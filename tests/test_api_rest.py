@@ -1,6 +1,6 @@
 from pycspr import NodeRestClient
-from pycspr.types.node.rpc import NodeStatus
-from pycspr.types.node.rpc import ValidatorChanges
+from pycspr.types.node import NodeStatus
+from pycspr.types.node import ValidatorChanges
 
 
 async def test_get_chainspec(REST_CLIENT: NodeRestClient):

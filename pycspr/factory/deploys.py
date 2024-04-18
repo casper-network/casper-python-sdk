@@ -7,11 +7,11 @@ from pycspr.types.crypto import PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployBody
-from pycspr.types.node.rpc import DeployHeader
-from pycspr.types.node.rpc import DeployParameters
-from pycspr.types.node.rpc import DeployTimeToLive
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployBody
+from pycspr.types.node import DeployHeader
+from pycspr.types.node import DeployParameters
+from pycspr.types.node import DeployTimeToLive
 from pycspr.types.cl import CLV_Option
 from pycspr.types.cl import CLT_Type_U64
 from pycspr.types.cl import CLV_U8
@@ -20,12 +20,12 @@ from pycspr.types.cl import CLV_U512
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_URef
 from pycspr.types.cl import CLV_Value
-from pycspr.types.node.rpc import DeployApproval
-from pycspr.types.node.rpc import DeployArgument
-from pycspr.types.node.rpc import DeployExecutableItem
-from pycspr.types.node.rpc import DeployOfModuleBytes
-from pycspr.types.node.rpc import DeployOfTransfer
-from pycspr.types.node.rpc import Timestamp
+from pycspr.types.node import DeployApproval
+from pycspr.types.node import DeployArgument
+from pycspr.types.node import DeployExecutableItem
+from pycspr.types.node import DeployOfModuleBytes
+from pycspr.types.node import DeployOfTransfer
+from pycspr.types.node import Timestamp
 from pycspr.utils import constants
 from pycspr.utils import convertor
 from pycspr.utils import io as _io

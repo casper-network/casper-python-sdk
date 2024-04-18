@@ -8,15 +8,15 @@ from pycspr.api import constants
 from pycspr.api.rpc import params as param_utils
 from pycspr.api.rpc.connection import ConnectionInfo
 from pycspr.types.crypto import DigestBytes
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import Address
-from pycspr.types.node.rpc import BlockID
-from pycspr.types.node.rpc import DeployHash
-from pycspr.types.node.rpc import DictionaryID
-from pycspr.types.node.rpc import GlobalStateID
-from pycspr.types.node.rpc import GlobalStateIDType
-from pycspr.types.node.rpc import PurseID
-from pycspr.types.node.rpc import StateRootHash
+from pycspr.types.node import Deploy
+from pycspr.types.node import Address
+from pycspr.types.node import BlockID
+from pycspr.types.node import DeployHash
+from pycspr.types.node import DictionaryID
+from pycspr.types.node import GlobalStateID
+from pycspr.types.node import GlobalStateIDType
+from pycspr.types.node import PurseID
+from pycspr.types.node import StateRootHash
 
 
 class Proxy:

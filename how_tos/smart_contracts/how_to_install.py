@@ -11,9 +11,9 @@ from pycspr.types.crypto import PrivateKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployParameters
-from pycspr.types.node.rpc import DeployOfModuleBytes
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployParameters
+from pycspr.types.node import DeployOfModuleBytes
 
 
 # Path to CCTL assets.

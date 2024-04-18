@@ -6,7 +6,7 @@ from pycspr.api.rpc_speculative import Client as NodeSpeculativeRpcClient
 from pycspr.api.rpc_speculative import ConnectionInfo as NodeSpeculativeRpcConnectionInfo
 from pycspr.api.sse import Client as NodeSseClient
 from pycspr.api.sse import ConnectionInfo as NodeSseConnectionInfo
-from pycspr.types.node.sse import NodeEventChannel
-from pycspr.types.node.sse import NodeEventInfo
-from pycspr.types.node.sse import NodeEventType
-from pycspr.types.node.sse import SSE_CHANNEL_TO_SSE_EVENT
+from pycspr.types.node import NodeEventChannel
+from pycspr.types.node import NodeEventInfo
+from pycspr.types.node import NodeEventType
+from pycspr.types.node import SSE_CHANNEL_TO_SSE_EVENT

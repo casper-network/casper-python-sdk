@@ -12,7 +12,7 @@ from pycspr.api import NodeSpeculativeRpcConnectionInfo as NodeConnection
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import PublicKey
-from pycspr.types.node.rpc import Deploy
+from pycspr.types.node import Deploy
 
 
 # Path to CCTL assets.

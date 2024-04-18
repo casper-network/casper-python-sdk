@@ -12,10 +12,10 @@ from pycspr.types.crypto import PrivateKey
 from pycspr.types.crypto import PublicKey
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U256
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployParameters
-from pycspr.types.node.rpc import DeployOfModuleBytes
-from pycspr.types.node.rpc import DeployOfStoredContractByHash
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployParameters
+from pycspr.types.node import DeployOfModuleBytes
+from pycspr.types.node import DeployOfStoredContractByHash
 
 
 # Path to CCTL network assets.

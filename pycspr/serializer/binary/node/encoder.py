@@ -9,22 +9,22 @@ from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_List
 from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
-from pycspr.types.node.rpc import Deploy
-from pycspr.types.node.rpc import DeployApproval
-from pycspr.types.node.rpc import DeployArgument
-from pycspr.types.node.rpc import DeployBody
-from pycspr.types.node.rpc import DeployHeader
-from pycspr.types.node.rpc import DeployOfModuleBytes
-from pycspr.types.node.rpc import DeployOfStoredContractByHash
-from pycspr.types.node.rpc import DeployOfStoredContractByHashVersioned
-from pycspr.types.node.rpc import DeployOfStoredContractByName
-from pycspr.types.node.rpc import DeployOfStoredContractByNameVersioned
-from pycspr.types.node.rpc import DeployOfTransfer
-from pycspr.types.node.rpc import EraEnd
-from pycspr.types.node.rpc import EraEndReport
-from pycspr.types.node.rpc import ProtocolVersion
-from pycspr.types.node.rpc import ValidatorReward
-from pycspr.types.node.rpc import ValidatorWeight
+from pycspr.types.node import Deploy
+from pycspr.types.node import DeployApproval
+from pycspr.types.node import DeployArgument
+from pycspr.types.node import DeployBody
+from pycspr.types.node import DeployHeader
+from pycspr.types.node import DeployOfModuleBytes
+from pycspr.types.node import DeployOfStoredContractByHash
+from pycspr.types.node import DeployOfStoredContractByHashVersioned
+from pycspr.types.node import DeployOfStoredContractByName
+from pycspr.types.node import DeployOfStoredContractByNameVersioned
+from pycspr.types.node import DeployOfTransfer
+from pycspr.types.node import EraEnd
+from pycspr.types.node import EraEndReport
+from pycspr.types.node import ProtocolVersion
+from pycspr.types.node import ValidatorReward
+from pycspr.types.node import ValidatorWeight
 
 
 def encode(entity: object) -> bytes:
