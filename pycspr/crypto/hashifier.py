@@ -1,7 +1,7 @@
 from pycspr.crypto.hashifier_blake2b import get_hash as blake2b
 from pycspr.crypto.hashifier_blake3 import get_hash as blake3
-from pycspr.types.crypto.simple import DigestBytes
-from pycspr.types.crypto.simple import HashAlgorithm
+from pycspr.types.crypto import DigestBytes
+from pycspr.types.crypto import HashAlgorithm
 
 
 # Map: Hash Algo Type -> Hash Algo Implementation.
