@@ -1,4 +1,4 @@
-from pycspr.types.cl.types import CLT_Type
+from pycspr.types.cl import CLT_Type
 from pycspr.serializer.json.cl_type import decode as decode_cl_type
 from pycspr.serializer.binary.cl_value import decode as decode_cl_value
 

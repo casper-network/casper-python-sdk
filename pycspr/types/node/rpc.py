@@ -5,7 +5,7 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl.values import CLV_Value
+from pycspr.types.cl import CLV_Value
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import MerkleProofBytes
 from pycspr.types.crypto import PublicKey

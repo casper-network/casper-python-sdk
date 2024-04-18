@@ -1,29 +1,29 @@
 import typing
 
-from pycspr.types.cl.types import CLT_Type
-from pycspr.types.cl.types import CLT_Any
-from pycspr.types.cl.types import CLT_Bool
-from pycspr.types.cl.types import CLT_ByteArray
-from pycspr.types.cl.types import CLT_I32
-from pycspr.types.cl.types import CLT_I64
-from pycspr.types.cl.types import CLT_Type_U8
-from pycspr.types.cl.types import CLT_Type_U32
-from pycspr.types.cl.types import CLT_Type_U64
-from pycspr.types.cl.types import CLT_Type_U128
-from pycspr.types.cl.types import CLT_Type_U256
-from pycspr.types.cl.types import CLT_Type_U512
-from pycspr.types.cl.types import CLT_Type_Key
-from pycspr.types.cl.types import CLT_Type_List
-from pycspr.types.cl.types import CLT_Type_Map
-from pycspr.types.cl.types import CLT_Type_Option
-from pycspr.types.cl.types import CLT_Type_PublicKey
-from pycspr.types.cl.types import CLT_Type_Result
-from pycspr.types.cl.types import CLT_Type_String
-from pycspr.types.cl.types import CLT_Type_Tuple1
-from pycspr.types.cl.types import CLT_Type_Tuple2
-from pycspr.types.cl.types import CLT_Type_Tuple3
-from pycspr.types.cl.types import CLT_Type_Unit
-from pycspr.types.cl.types import CLT_Type_URef
+from pycspr.types.cl import CLT_Type
+from pycspr.types.cl import CLT_Any
+from pycspr.types.cl import CLT_Bool
+from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.cl import CLT_I32
+from pycspr.types.cl import CLT_I64
+from pycspr.types.cl import CLT_Type_U8
+from pycspr.types.cl import CLT_Type_U32
+from pycspr.types.cl import CLT_Type_U64
+from pycspr.types.cl import CLT_Type_U128
+from pycspr.types.cl import CLT_Type_U256
+from pycspr.types.cl import CLT_Type_U512
+from pycspr.types.cl import CLT_Type_Key
+from pycspr.types.cl import CLT_Type_List
+from pycspr.types.cl import CLT_Type_Map
+from pycspr.types.cl import CLT_Type_Option
+from pycspr.types.cl import CLT_Type_PublicKey
+from pycspr.types.cl import CLT_Type_Result
+from pycspr.types.cl import CLT_Type_String
+from pycspr.types.cl import CLT_Type_Tuple1
+from pycspr.types.cl import CLT_Type_Tuple2
+from pycspr.types.cl import CLT_Type_Tuple3
+from pycspr.types.cl import CLT_Type_Unit
+from pycspr.types.cl import CLT_Type_URef
 
 
 _SIMPLE_TYPES = {

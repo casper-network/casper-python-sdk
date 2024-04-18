@@ -1,7 +1,7 @@
 import typing
 
-from pycspr.types.cl.types import CLT_Type
-from pycspr.types.cl.types import CLT_TypeKey
+from pycspr.types.cl import CLT_Type
+from pycspr.types.cl import CLT_TypeKey
 
 
 def encode(entity: CLT_Type) -> typing.Union[str, dict]:
