@@ -43,7 +43,6 @@ def _encode_deploy(entity: Deploy) -> dict:
 
 
 def _encode_deploy_approval(entity: DeployApproval) -> dict:
-    print(321, entity.signature)
     return {
         "signature": checksummer.encode_signature(entity.signature),
         "signer": checksummer.encode_account_key(entity.signer.account_key)
