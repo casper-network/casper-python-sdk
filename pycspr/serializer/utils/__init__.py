@@ -1,2 +1,2 @@
-from pycspr.serializer.utils.cl_value_to_cl_type import encode as cl_value_to_cl_type
-from pycspr.serializer.utils.cl_value_to_parsed import encode as cl_value_to_parsed
+from pycspr.serializer.utils.clv_to_clt import encode as clv_to_clt
+from pycspr.serializer.utils.clv_to_parsed import encode as clv_to_parsed

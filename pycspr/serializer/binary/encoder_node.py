@@ -2,7 +2,7 @@ import typing
 
 from pycspr.serializer.binary.encoder_clt import encode as encode_clt
 from pycspr.serializer.binary.encoder_clv import encode as encode_clv
-from pycspr.serializer.utils import cl_value_to_cl_type
+from pycspr.serializer.utils import clv_to_clt
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U32
 from pycspr.types.cl import CLV_U64
@@ -81,7 +81,7 @@ def _encode_deploy_argument(entity: DeployArgument) -> bytes:
             encode_clv(entity.value)
         ) + \
         encode_clt(
-            cl_value_to_cl_type(entity.value)
+            clv_to_clt(entity.value)
         )
 
 

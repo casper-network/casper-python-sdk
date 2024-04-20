@@ -82,7 +82,7 @@ def for_query_global_state(
         state_id = state_id.identifier
 
     return {
-        "key": serializer.cl_value_to_parsed(key),
+        "key": serializer.clv_to_parsed(key),
         "path": path,
         "state_identifier": {
             state_id.id_type.value: state_id
