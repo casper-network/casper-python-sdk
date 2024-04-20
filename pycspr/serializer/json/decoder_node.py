@@ -1,8 +1,8 @@
 import typing
 
-from pycspr.serializer.json.cl_value import decode as clv_decoder
-from pycspr.serializer.json.crypto import DECODERS as CRYPTO_DECODERS
-from pycspr.serializer.json.primitives import DECODERS as PRIMITIVES_DECODERS
+from pycspr.serializer.json.decoder_clv import decode as decode_clv
+from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
+from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
 from pycspr.types.crypto import DigestHex
 from pycspr.types.crypto import MerkleProofHex
 from pycspr.types.crypto import PublicKey
@@ -234,7 +234,7 @@ def _decode_deploy_approval(encoded: dict) -> DeployApproval:
 def _decode_deploy_argument(encoded: typing.Tuple[str, dict]) -> DeployArgument:
     return DeployArgument(
         name=decode(str, encoded[0]),
-        value=clv_decoder(encoded[1])
+        value=decode_clv(encoded[1])
         )
 
 

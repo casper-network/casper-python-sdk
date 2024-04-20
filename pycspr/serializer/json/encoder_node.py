@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.crypto import checksummer
-from pycspr.serializer.json.cl_value import encode as encode_cl_value
+from pycspr.serializer.json.encoder_clv import encode as encode_clv
 from pycspr.types.node import Deploy
 from pycspr.types.node import DeployHeader
 from pycspr.types.cl import CLV_Value
@@ -50,7 +50,7 @@ def _encode_deploy_approval(entity: DeployApproval) -> dict:
 
 
 def _encode_deploy_argument(entity: DeployArgument) -> typing.Tuple[str, CLV_Value]:
-    return (entity.name, encode_cl_value(entity.value))
+    return (entity.name, encode_clv(entity.value))
 
 
 def _encode_deploy_header(entity: DeployHeader) -> dict:
