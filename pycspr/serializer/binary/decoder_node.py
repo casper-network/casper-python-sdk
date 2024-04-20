@@ -1,7 +1,7 @@
 import typing
 
-from pycspr.serializer.binary.decoder_clt import decode as decode_cl_type
-from pycspr.serializer.binary.decoder_clv import decode as decode_cl_value
+from pycspr.serializer.binary.decoder_clt import decode as decode_clt
+from pycspr.serializer.binary.decoder_clv import decode as decode_clv
 from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64
@@ -46,7 +46,7 @@ def decode(typedef: object, bstream: bytes) -> typing.Tuple[bytes, object]:
 
 def _decode_deploy(bstream: bytes) -> typing.Tuple[bytes, Deploy]:
     bstream, header = decode(DeployHeader, bstream)
-    bstream, deploy_hash = decode_cl_value(CLT_ByteArray(32), bstream)
+    bstream, deploy_hash = decode_clv(CLT_ByteArray(32), bstream)
     bstream, payment = decode(DeployExecutableItem, bstream)
     bstream, session = decode(DeployExecutableItem, bstream)
     bstream, approvals = _decode_deploy_approval_set(bstream)
@@ -81,7 +81,7 @@ def _decode_deploy_approval_set(
     bstream: bytes
 ) -> typing.Tuple[bytes, typing.List[DeployApproval]]:
     approvals = []
-    bstream, args_length = decode_cl_value(CLT_Type_U32(), bstream)
+    bstream, args_length = decode_clv(CLT_Type_U32(), bstream)
     for _ in range(args_length.value):
         bstream, approval = decode(DeployApproval, bstream)
         approvals.append(approval)
@@ -90,10 +90,10 @@ def _decode_deploy_approval_set(
 
 
 def _decode_deploy_argument(bstream: bytes) -> typing.Tuple[bytes, DeployArgument]:
-    bstream, name = decode_cl_value(CLT_Type_String(), bstream)
-    bstream, val_bytes_length = decode_cl_value(CLT_Type_U32(), bstream)
-    bstream_rem, arg_typedef = decode_cl_type(bstream[val_bytes_length.value:])
-    _, arg_clv = decode_cl_value(arg_typedef, bstream)
+    bstream, name = decode_clv(CLT_Type_String(), bstream)
+    bstream, val_bytes_length = decode_clv(CLT_Type_U32(), bstream)
+    bstream_rem, arg_typedef = decode_clt(bstream[val_bytes_length.value:])
+    _, arg_clv = decode_clv(arg_typedef, bstream)
 
     return bstream_rem, DeployArgument(name.value, arg_clv)
 
@@ -102,7 +102,7 @@ def _decode_deploy_argument_set(
     bstream: bytes
 ) -> typing.Tuple[bytes, typing.List[DeployArgument]]:
     args = []
-    bstream, args_length = decode_cl_value(CLT_Type_U32(), bstream)
+    bstream, args_length = decode_clv(CLT_Type_U32(), bstream)
     for _ in range(args_length.value):
         bstream, arg = decode(DeployArgument, bstream)
         args.append(arg)
@@ -113,7 +113,7 @@ def _decode_deploy_argument_set(
 def _decode_deploy_body(bstream: bytes) -> typing.Tuple[bytes, DeployBody]:
     bstream, payment = _decode_deploy_executable_item(bstream)
     bstream, session = _decode_deploy_executable_item(bstream)
-    bstream, body_hash = decode_cl_value(CLT_ByteArray(32), bstream)
+    bstream, body_hash = decode_clv(CLT_ByteArray(32), bstream)
 
     return bstream, DeployBody(payment, session, body_hash.value)
 
@@ -136,17 +136,17 @@ def _decode_deploy_executable_item(bstream: bytes) -> DeployExecutableItem:
 
 
 def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
-    bstream, account_public_key = decode_cl_value(
+    bstream, account_public_key = decode_clv(
         CLT_Type_PublicKey(), bstream
         )
     bstream, timestamp = decode(Timestamp, bstream)
     bstream, ttl = decode(DeployTimeToLive, bstream)
-    bstream, gas_price = decode_cl_value(CLT_Type_U64(), bstream)
-    bstream, body_hash = decode_cl_value(CLT_ByteArray(32), bstream)
-    bstream, dependencies = decode_cl_value(
+    bstream, gas_price = decode_clv(CLT_Type_U64(), bstream)
+    bstream, body_hash = decode_clv(CLT_ByteArray(32), bstream)
+    bstream, dependencies = decode_clv(
         CLT_Type_List(CLT_ByteArray(32)), bstream
         )
-    bstream, chain_name = decode_cl_value(CLT_Type_String(), bstream)
+    bstream, chain_name = decode_clv(CLT_Type_String(), bstream)
 
     return bstream, DeployHeader(
         account=account_public_key,
@@ -160,7 +160,7 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
 
 
 def _decode_deploy_time_to_live(bstream: bytes) -> typing.Tuple[bytes, DeployTimeToLive]:
-    bstream, ttl = decode_cl_value(CLT_Type_U64(), bstream)
+    bstream, ttl = decode_clv(CLT_Type_U64(), bstream)
 
     return bstream, DeployTimeToLive(
         ttl.value,
@@ -170,7 +170,7 @@ def _decode_deploy_time_to_live(bstream: bytes) -> typing.Tuple[bytes, DeployTim
 
 def _decode_module_bytes(bstream: bytes) -> typing.Tuple[bytes, DeployOfModuleBytes]:
     bstream = bstream[1:]
-    bstream, length = decode_cl_value(CLT_Type_U32(), bstream)
+    bstream, length = decode_clv(CLT_Type_U32(), bstream)
     if length.value > 0:
         module_bytes = bstream[:length.value]
         bstream = bstream[length.value:]
@@ -185,8 +185,8 @@ def _decode_stored_contract_by_hash(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByHash]:
     bstream = bstream[1:]
-    bstream, contract_hash = decode_cl_value(CLT_ByteArray(32), bstream)
-    bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
+    bstream, contract_hash = decode_clv(CLT_ByteArray(32), bstream)
+    bstream, entry_point = decode_clv(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, DeployOfStoredContractByHash(
@@ -200,9 +200,9 @@ def _decode_stored_contract_by_hash_versioned(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByHashVersioned]:
     bstream = bstream[1:]
-    bstream, contract_hash = decode_cl_value(CLT_ByteArray(32), bstream)
-    bstream, contract_version = decode_cl_value(CLT_Type_U32(), bstream)
-    bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
+    bstream, contract_hash = decode_clv(CLT_ByteArray(32), bstream)
+    bstream, contract_version = decode_clv(CLT_Type_U32(), bstream)
+    bstream, entry_point = decode_clv(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, DeployOfStoredContractByHashVersioned(
@@ -217,8 +217,8 @@ def _decode_stored_contract_by_name(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByName]:
     bstream = bstream[1:]
-    bstream, contract_name = decode_cl_value(CLT_Type_String(), bstream)
-    bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
+    bstream, contract_name = decode_clv(CLT_Type_String(), bstream)
+    bstream, entry_point = decode_clv(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, DeployOfStoredContractByName(
@@ -232,9 +232,9 @@ def _decode_stored_contract_by_name_versioned(
     bstream: bytes
 ) -> typing.Tuple[bytes, DeployOfStoredContractByNameVersioned]:
     bstream = bstream[1:]
-    bstream, contract_name = decode_cl_value(CLT_Type_String(), bstream)
-    bstream, contract_version = decode_cl_value(CLT_Type_U32(), bstream)
-    bstream, entry_point = decode_cl_value(CLT_Type_String(), bstream)
+    bstream, contract_name = decode_clv(CLT_Type_String(), bstream)
+    bstream, contract_version = decode_clv(CLT_Type_U32(), bstream)
+    bstream, entry_point = decode_clv(CLT_Type_String(), bstream)
     bstream, args = _decode_deploy_argument_set(bstream)
 
     return bstream, DeployOfStoredContractByNameVersioned(
@@ -246,7 +246,7 @@ def _decode_stored_contract_by_name_versioned(
 
 
 def _decode_timestamp(bstream: bytes) -> typing.Tuple[bytes, Timestamp]:
-    bstream, ts_ns = decode_cl_value(CLT_Type_U64(), bstream)
+    bstream, ts_ns = decode_clv(CLT_Type_U64(), bstream)
 
     return bstream, Timestamp(ts_ns.value / 1000)
 
