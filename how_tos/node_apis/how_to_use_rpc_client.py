@@ -102,7 +102,7 @@ async def _main(args: argparse.Namespace):
         _get_block_2,
         _get_block_3,
         _get_block_4,
-        _get_block_at_era_switch,
+        # _get_block_at_era_switch,
         _get_block_transfers,
         _get_era_info_1,
         _get_era_info_2,

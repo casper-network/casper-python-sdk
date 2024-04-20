@@ -39,12 +39,14 @@ def _main(args: argparse.Namespace):
         # Create a digest - default size = 32.
         digest: bytes = pycspr.get_hash(args.data, algo=algo, size=32)
         assert isinstance(digest, bytes) and len(digest) == 32
-        print(f"Hash -> 32 bytes :: {algo.name} = {digest.hex()}")
+        print("Hash of data")
+        print(f"    Algo:  {algo.name}")
+        print(f"    Hash -> 32 bytes :: {algo.name} = {digest.hex()}")
 
         # Create a digest - size = 64.
         digest: bytes = pycspr.get_hash(args.data, algo=algo, size=64)
         assert isinstance(digest, bytes) and len(digest) == 64
-        print(f"Hash -> 64 bytes :: {algo.name} = {digest.hex()}")
+        print(f"    Hash -> 64 bytes :: {algo.name} = {digest.hex()}")
 
 
 # Entry point.

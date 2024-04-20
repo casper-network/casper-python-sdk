@@ -23,6 +23,11 @@ MerkleProofHex = typing.NewType(
     "Hexadecimal encoded cryptographic proof over a merkle trie.", bytes
     )
 
+# Base64 encoded asymmetric private key associated with an account.
+PrivateKeyBase64 = typing.NewType(
+    "Base64 encoded asymmetric private key associated with an account.", str
+    )
+
 # Asymmetric private key associated with an account.
 PrivateKeyBytes = typing.NewType(
     "Asymmetric private key associated with an account.", bytes
@@ -187,6 +192,7 @@ TYPESET: set = {
     DigestHex,
     MerkleProofBytes,
     MerkleProofHex,
+    PrivateKeyBase64,
     PrivateKeyBytes,
     PrivateKeyHex,
     PublicKeyBytes,

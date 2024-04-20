@@ -6,6 +6,7 @@ from pycspr.crypto import ecc_ed25519 as ed25519
 from pycspr.crypto import ecc_secp256k1 as secp256k1
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.crypto import KeyAlgorithm
+from pycspr.types.crypto import PrivateKeyBase64
 from pycspr.types.crypto import PrivateKeyBytes
 from pycspr.types.crypto import PrivateKeyHex
 from pycspr.types.crypto import PrivateKeyPem
@@ -54,7 +55,7 @@ def get_key_pair_from_bytes(
 
 
 def get_key_pair_from_base64(
-    pvk_b64: str,
+    pvk_b64: PrivateKeyBase64,
     algo: KeyAlgorithm = DEFAULT_KEY_ALGO
 ) -> typing.Tuple[PrivateKeyBytes, PublicKeyBytes]:
     """Returns a key pair mapped from a base 64 representation of a private key.

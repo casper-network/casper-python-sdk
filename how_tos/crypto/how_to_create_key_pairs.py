@@ -37,10 +37,12 @@ def _main(args: argparse.Namespace):
     # Create new key pair.
     key_pair: typing.Union[bytes, bytes] = pycspr.get_key_pair(algo=algo)
     assert len(key_pair) == 2
+    print("... new key pair")
 
     # Destructure key pair.
     pvk, pbk = key_pair
     assert isinstance(pvk, bytes) and isinstance(pbk, bytes)
+    print("... key pair from private bytes")
 
     # Create key pair from private key as bytes.
     key_pair_1 = pycspr.get_key_pair_from_bytes(pvk, algo=algo)
@@ -50,16 +52,21 @@ def _main(args: argparse.Namespace):
     pvk_as_hex = pvk.hex()
     key_pair_2 = pycspr.get_key_pair_from_hex_string(pvk_as_hex, algo=algo)
     assert key_pair_2 == key_pair
+    print("... key pair from private hex")
 
     # Create key pair from private key as base64.
     pvk_as_base64 = base64.b64encode(pvk)
     key_pair_3 = pycspr.get_key_pair_from_base64(pvk_as_base64, algo=algo)
     assert key_pair_3 == key_pair
+    print("... key pair from private base64")
 
     # Create key pair from private key as pem file.
     pvk_as_pem_file = pycspr.get_pvk_pem_file_from_bytes(pvk, algo)
     key_pair_4 = pycspr.get_key_pair_from_pem_file(pvk_as_pem_file, algo=algo)
     assert key_pair_4 == key_pair
+    print("... key pair from private pem")
+
+    print("-" * 74)
 
 
 # Entry point.
