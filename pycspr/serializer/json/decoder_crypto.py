@@ -16,11 +16,11 @@ from pycspr.types.crypto import TYPESET
 
 
 def decode(typedef: object, encoded: dict) -> object:
-    """Decoder: Domain entity <- JSON blob.
+    """Decodes a domain entity instance from JSON encoded data.
 
-    :param encoded: A JSON compatible dictionary.
-    :param typedef: Deploy related type definition.
-    :returns: A deploy related type.
+    :param typedef: Domain type to be instantiated.
+    :param encoded: JSON encoded data.
+    :returns: A crypto related type instance.
 
     """
     if typedef not in TYPESET:

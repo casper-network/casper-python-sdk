@@ -17,10 +17,10 @@ from pycspr.utils import convertor
 
 
 def encode(entity: object) -> dict:
-    """Encoder: Domain entity instance -> JSON blob.
+    """Encodes a domain entity instance to a JSON encodeable dictionary.
 
-    :param entity: A deploy related type instance to be encoded.
-    :returns: A JSON compatible dictionary.
+    :param entity: A node related type instance to be encoded.
+    :returns: A JSON encodeable dictionary.
 
     """
     typedef = type(entity)

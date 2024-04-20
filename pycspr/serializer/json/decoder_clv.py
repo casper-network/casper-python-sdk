@@ -4,10 +4,10 @@ from pycspr.serializer.binary.decoder_clv import decode as decode_cl_value
 
 
 def decode(encoded: dict):
-    """Decoder: CL value <- JSON blob.
+    """Decodes a domain entity instance from JSON encoded data.
 
-    :param encoded: A CL value encoded as a JSON compatible dictionary.
-    :returns: A CL value.
+    :param encoded: JSON encoded data.
+    :returns: A CL value related type instance.
 
     """
     if "cl_type" not in encoded or "bytes" not in encoded:

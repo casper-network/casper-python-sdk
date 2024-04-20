@@ -5,10 +5,10 @@ from pycspr.types.cl import CLT_TypeKey
 
 
 def encode(entity: CLT_Type) -> typing.Union[str, dict]:
-    """Encoder: CL type -> JSON blob.
+    """Encodes a domain entity instance to a JSON encodeable dictionary.
 
-    :param entity: A CL type to be encoded.
-    :returns: A JSON compatible string or dictionary.
+    :param entity: A Cl type related type instance to be encoded.
+    :returns: A JSON encodeable dictionary.
 
     """
     try:

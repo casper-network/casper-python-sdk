@@ -7,10 +7,10 @@ from pycspr.types.cl import CLV_Value
 
 
 def encode(entity: CLV_Value) -> dict:
-    """Encoder: CL value -> JSON blob.
+    """Encodes a domain entity instance to a JSON encodeable dictionary.
 
-    :param entity: A CL value to be encoded.
-    :returns: A JSON compatible dictionary.
+    :param entity: A CL value related type instance to be encoded.
+    :returns: A JSON encodeable dictionary.
 
     """
     return {

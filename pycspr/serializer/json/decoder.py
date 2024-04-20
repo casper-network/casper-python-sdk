@@ -9,6 +9,13 @@ from pycspr.types import TYPESET_NODE
 
 
 def decode(typedef: object, encoded: dict) -> object:
+    """Decodes a domain entity instance from JSON encoded data.
+
+    :param typedef: Domain type to be instantiated.
+    :param encoded: JSON encoded data.
+    :returns: A domain type instance.
+
+    """
     if typedef in TYPESET_CLT:
         return decoder_clt.decode(encoded)
     elif typedef in TYPESET_CLV:

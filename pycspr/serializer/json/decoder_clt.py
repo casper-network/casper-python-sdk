@@ -47,10 +47,10 @@ _SIMPLE_TYPES = {
 
 
 def decode(encoded: typing.Union[dict, str]) -> CLT_Type:
-    """Decoder: CL type info <- JSON blob.
+    """Decodes a domain entity instance from JSON encoded data.
 
-    :param encoded: A CL type previously encoded as JSON.
-    :returns: A CL type definition.
+    :param encoded: JSON encoded data.
+    :returns: A CL type related type instance.
 
     """
     if isinstance(encoded, str) and encoded in _SIMPLE_TYPES:

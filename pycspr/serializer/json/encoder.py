@@ -5,6 +5,12 @@ from pycspr.types import TYPESET_CLT, TYPESET_CLV, TYPESET_CRYPTO, TYPESET_NODE
 
 
 def encode(entity: object) -> typing.Union[str, dict]:
+    """Encodes a domain entity instance to a JSON encodeable dictionary.
+
+    :param entity: A node related type instance to be encoded.
+    :returns: A JSON encodeable dictionary or string.
+
+    """
     typedef = type(entity)
     if typedef in TYPESET_CLT:
         return encoder_clt.encode(entity)
