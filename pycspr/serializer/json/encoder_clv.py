@@ -1,6 +1,6 @@
 from pycspr.crypto import checksummer
-from pycspr.serializer.binary.encoder_clv import encode as clv_binary_encoder
-from pycspr.serializer.json import encoder_clt
+from pycspr.serializer.binary.encoder_clv import encode as encode_clv
+from pycspr.serializer.json.encoder_clt import encode as encode_clt
 from pycspr.serializer.utils import clv_to_clt
 from pycspr.serializer.utils import clv_to_parsed
 from pycspr.types.cl import CLV_Value
@@ -14,11 +14,11 @@ def encode(entity: CLV_Value) -> dict:
 
     """
     return {
-        "cl_type": encoder_clt.encode(
+        "cl_type": encode_clt(
             clv_to_clt(entity)
         ),
         "bytes": checksummer.encode_bytes(
-            clv_binary_encoder(entity)
+            encode_clv(entity)
         ),
         "parsed": clv_to_parsed(entity)
     }
