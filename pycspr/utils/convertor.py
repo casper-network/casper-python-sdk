@@ -1,9 +1,5 @@
 import datetime as dt
-import typing
 
-from pycspr.crypto import checksummer
-from pycspr.types.node import AccountKey
-from pycspr.types.node import URef
 from pycspr.utils import constants
 
 
@@ -82,14 +78,3 @@ def timestamp_from_iso_datetime(value: str) -> float:
         value = f"{value}+00:00"
 
     return dt.datetime.fromisoformat(value).timestamp()
-
-
-def str_from_uref(value: URef) -> str:
-    return f"uref-{checksummer.encode_bytes(value.address)}-{value.access_rights.value:03}"
-
-
-def str_from_account_key(value: typing.Union[str, AccountKey]) -> str:
-    if isinstance(value, bytes):
-        value = value.hex()
-
-    return f"account-hash-{value}"

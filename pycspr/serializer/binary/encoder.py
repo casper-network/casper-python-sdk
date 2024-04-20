@@ -3,8 +3,6 @@ from pycspr.serializer.binary import encoder_clv
 from pycspr.serializer.binary import encoder_node
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLV_Value
-from pycspr.types.cl import TYPESET_CLT
-from pycspr.types.node import TYPESET as TYPESET_NODE
 
 
 def encode(entity: object) -> bytes:

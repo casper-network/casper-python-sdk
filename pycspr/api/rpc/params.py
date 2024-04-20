@@ -16,7 +16,7 @@ from pycspr.types.node import GlobalStateIDType
 from pycspr.types.node import PurseID
 from pycspr.types.node import PurseIDType
 from pycspr.types.node import StateRootHash
-from pycspr.utils import convertor
+from pycspr.types.node import URef
 
 
 # Map: global state identifier type to JSON-RPC paramater name.
@@ -151,7 +151,7 @@ def purse_id(purse_id: PurseID) -> dict:
     if purse_id.id_type == PurseIDType.ACCOUNT_HASH:
         return {
             "purse_identifier": {
-                "main_purse_under_account_hash": f"{convertor.str_from_account_key(id)}"
+                "main_purse_under_account_hash": f"account-hash-{id}"
             }
         }
     elif purse_id.id_type == PurseIDType.PUBLIC_KEY:
@@ -163,8 +163,12 @@ def purse_id(purse_id: PurseID) -> dict:
     elif purse_id.id_type == PurseIDType.UREF:
         return {
             "purse_identifier": {
-                "purse_uref": convertor.str_from_uref(purse_id.identifier)
+                "purse_uref": _str_from_uref(purse_id.identifier)
             }
         }
     else:
         raise ValueError(f"Invalid purse identifier type: {purse_id.id_type}")
+
+
+def _str_from_uref(value: URef) -> str:
+    return f"uref-{checksummer.encode_bytes(value.address)}-{value.access_rights.value:03}"
