@@ -1,4 +1,4 @@
-from pycspr.serializer.binary.cl_value import encode as encode_cl_value
+from pycspr.serializer.binary.encoder_clv import encode as encode_cl_value
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
 from pycspr.types.cl import CLV_U32

@@ -1,5 +1,5 @@
 from pycspr.crypto import checksummer
-from pycspr.serializer.binary.cl_value import encode as clv_binary_encoder
+from pycspr.serializer.binary.encoder_clv import encode as clv_binary_encoder
 from pycspr.serializer.json import encoder_clt
 from pycspr.serializer.utils import cl_value_to_cl_type
 from pycspr.serializer.utils import cl_value_to_parsed

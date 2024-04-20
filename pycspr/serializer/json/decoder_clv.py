@@ -1,6 +1,6 @@
 from pycspr.types.cl import CLT_Type
 from pycspr.serializer.json.decoder_clt import decode as decoder_clt
-from pycspr.serializer.binary.cl_value import decode as decode_cl_value
+from pycspr.serializer.binary.decoder_clv import decode as decode_cl_value
 
 
 def decode(encoded: dict):

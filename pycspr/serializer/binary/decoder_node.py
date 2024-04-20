@@ -1,7 +1,7 @@
 import typing
 
-from pycspr.serializer.binary.cl_type import decode as decode_cl_type
-from pycspr.serializer.binary.cl_value import decode as decode_cl_value
+from pycspr.serializer.binary.decoder_clt import decode as decode_cl_type
+from pycspr.serializer.binary.decoder_clv import decode as decode_cl_value
 from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.cl import CLT_Type_U32
 from pycspr.types.cl import CLT_Type_U64

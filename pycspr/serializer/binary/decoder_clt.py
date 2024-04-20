@@ -1,4 +1,4 @@
-from pycspr.serializer.binary.cl_value import decode as decode_cl_value
+from pycspr.serializer.binary.decoder_clv import decode as decode_clv
 from pycspr.types.cl import CLT_Type
 from pycspr.types.cl import CLT_TypeKey
 from pycspr.types.cl import CLT_Any
@@ -43,7 +43,7 @@ def decode(bstream: bytes) -> CLT_Type:
 
 
 def _decode_byte_array(bstream: bytes):
-    bstream, size = decode_cl_value(CLT_Type_U32(), bstream)
+    bstream, size = decode_clv(CLT_Type_U32(), bstream)
 
     return bstream, CLT_ByteArray(size.value)
 
