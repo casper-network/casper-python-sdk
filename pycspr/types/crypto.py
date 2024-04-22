@@ -10,7 +10,7 @@ DigestBytes = typing.NewType(
 
 # Hexadecimal encoded crryptographic fingerprint of data.
 DigestHex = typing.NewType(
-    "Cryptographic fingerprint of data.", bytes
+    "Cryptographic fingerprint of data.", str
     )
 
 # Cryptographic proof over a merkle trie.
@@ -20,7 +20,7 @@ MerkleProofBytes = typing.NewType(
 
 # Hexadecimal encoded cryptographic proof over a merkle trie.
 MerkleProofHex = typing.NewType(
-    "Hexadecimal encoded cryptographic proof over a merkle trie.", bytes
+    "Hexadecimal encoded cryptographic proof over a merkle trie.", str
     )
 
 # Base64 encoded asymmetric private key associated with an account.
@@ -60,7 +60,7 @@ SignatureBytes = typing.NewType(
 
 # Hexadecimal encoded cryptographic signature over data - includes single byte algo prefix.
 SignatureHex = typing.NewType(
-    "Hexadecimal encoded cryptographic signature over data.", bytes
+    "Hexadecimal encoded cryptographic signature over data.", str
     )
 
 
