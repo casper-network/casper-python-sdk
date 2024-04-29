@@ -357,10 +357,7 @@ def _decode_dictionary_info(encoded: dict) -> DictionaryItem:
 
 def _decode_era_end(encoded: typing.Union[None, dict]) -> typing.Optional[EraEnd]:
     if encoded is not None:
-
-        print(decode(EraEndReport, encoded["era_report"]))
-        print(888)
-
+        # print(decode(EraEndReport, encoded["era_report"]))
         return EraEnd(
             era_report=decode(EraEndReport, encoded["era_report"]),
             next_era_validator_weights=[]

@@ -95,9 +95,11 @@ class PublicKey():
     def account_key(self) -> bytes:
         return bytes([self.algo.value]) + self.pbk
 
-    @property
-    def as_bytes(self) -> bytes:
+    def to_bytes(self) -> PublicKeyBytes:
         return bytes([self.algo.value]) + self.pbk
+
+    def to_hex(self) -> PublicKeyHex:
+        return self.to_bytes().hex()
 
     def to_account_hash(self) -> bytes:
         """Returns on-chain account address.
@@ -166,9 +168,11 @@ class Signature():
     # Signature as raw bytes.
     sig: SignatureBytes
 
-    @property
-    def to_bytes(self) -> bytes:
+    def to_bytes(self) -> SignatureBytes:
         return bytes([self.algo.value]) + self.sig
+
+    def to_hex(self) -> SignatureHex:
+        return self.to_bytes().hex()
 
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.sig == other.sig

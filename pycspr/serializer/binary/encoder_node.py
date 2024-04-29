@@ -57,9 +57,9 @@ def _encode_deploy(entity: Deploy) -> bytes:
 def _encode_deploy_approval(entity: DeployApproval) -> bytes:
     # TODO: check why this logic is required
     if isinstance(entity.signer, bytes):
-        return entity.signer + entity.signature.to_bytes
+        return entity.signer + entity.signature.to_bytes()
     else:
-        return entity.signer.as_bytes + entity.signature.to_bytes
+        return entity.signer.to_bytes() + entity.signature.to_bytes()
 
 
 def _encode_deploy_approval_set(entities: typing.List[DeployApproval]) -> bytes:

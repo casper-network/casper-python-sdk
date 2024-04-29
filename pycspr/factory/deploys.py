@@ -13,7 +13,7 @@ from pycspr.types.node import DeployHeader
 from pycspr.types.node import DeployParameters
 from pycspr.types.node import DeployTimeToLive
 from pycspr.types.cl import CLV_Option
-from pycspr.types.cl import CLT_Type_U64
+from pycspr.types.cl import CLT_U64
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLV_U512
@@ -230,7 +230,7 @@ def create_transfer_session(
             "target":
                 CLV_PublicKey.from_public_key(target),
             "id":
-                CLV_Option(CLV_U64(correlation_id), CLT_Type_U64()),
+                CLV_Option(CLV_U64(correlation_id), CLT_U64()),
         }
     )
 

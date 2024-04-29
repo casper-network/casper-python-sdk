@@ -236,13 +236,16 @@ class Block():
     def is_switch_block(self) -> int:
         """Helper attribute: block height."""
         return self.header.era_end is not None
-
+    
 
 @dataclasses.dataclass
 class BlockBody():
     proposer: Address
     deploy_hashes: typing.List[DeployHash]
     transfer_hashes: typing.List[DeployHash]
+
+    def tx_hashes(self) -> typing.List[DeployHash]:
+        return self.deploy_hashes + self.transfer_hashes
 
 
 @dataclasses.dataclass

@@ -8,12 +8,14 @@ from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLT_ByteArray
+from pycspr.types.crypto import DigestBytes
+from pycspr.types.node import Block
 from pycspr.types.node import BlockHeader
 from pycspr.types.node import DeployExecutableItem
 from pycspr.types.node import DeployHeader
 
 
-def create_digest_of_block(header: BlockHeader) -> bytes:
+def create_digest_of_block(header: BlockHeader) -> DigestBytes:
     """Returns a block's digest.
 
     :param header: Block header information.
@@ -75,7 +77,13 @@ def create_digest_of_block(header: BlockHeader) -> bytes:
     )
 
 
-def create_digest_of_deploy(header: DeployHeader) -> bytes:
+def create_digest_of_block_for_finality_signature(block: Block) -> DigestBytes:
+    return block.hash + serializer.to_bytes(
+        CLV_U64(block.header.era_id)
+    )
+
+
+def create_digest_of_deploy(header: DeployHeader) -> DigestBytes:
     """Returns a deploy's digest.
 
     :param header: Deploy header information.
@@ -110,7 +118,7 @@ def create_digest_of_deploy(header: DeployHeader) -> bytes:
 def create_digest_of_deploy_body(
     payment: DeployExecutableItem,
     session: DeployExecutableItem
-) -> bytes:
+) -> DigestBytes:
     """Returns a deploy body's hash digest.
 
     :param payment: Deploy payment execution logic.

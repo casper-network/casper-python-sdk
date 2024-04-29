@@ -54,6 +54,7 @@ from pycspr.factory import create_deploy_arguments
 from pycspr.factory import create_deploy_parameters
 from pycspr.factory import create_deploy_ttl
 from pycspr.factory import create_digest_of_block
+from pycspr.factory import create_digest_of_block_for_finality_signature
 from pycspr.factory import create_digest_of_deploy
 from pycspr.factory import create_digest_of_deploy_body
 from pycspr.factory import create_transfer
@@ -78,9 +79,12 @@ from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PrivateKey
 
 from pycspr.utils.io import get_deploy_size_bytes
+from pycspr.utils.io import read_block
 from pycspr.utils.io import read_deploy
 from pycspr.utils.io import read_wasm
 from pycspr.utils.io import write_deploy
 
+from pycspr.utils.validation import validate_block
 from pycspr.utils.validation import validate_deploy
+from pycspr.utils.validation import InvalidBlockException
 from pycspr.utils.validation import InvalidDeployException

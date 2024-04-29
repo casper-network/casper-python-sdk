@@ -6,24 +6,24 @@ from pycspr.types.cl import CLT_Bool
 from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.cl import CLT_I32
 from pycspr.types.cl import CLT_I64
-from pycspr.types.cl import CLT_Type_U8
-from pycspr.types.cl import CLT_Type_U32
-from pycspr.types.cl import CLT_Type_U64
-from pycspr.types.cl import CLT_Type_U128
-from pycspr.types.cl import CLT_Type_U256
-from pycspr.types.cl import CLT_Type_U512
-from pycspr.types.cl import CLT_Type_Key
-from pycspr.types.cl import CLT_Type_List
-from pycspr.types.cl import CLT_Type_Map
-from pycspr.types.cl import CLT_Type_Option
-from pycspr.types.cl import CLT_Type_PublicKey
-from pycspr.types.cl import CLT_Type_Result
-from pycspr.types.cl import CLT_Type_String
-from pycspr.types.cl import CLT_Type_Tuple1
-from pycspr.types.cl import CLT_Type_Tuple2
-from pycspr.types.cl import CLT_Type_Tuple3
-from pycspr.types.cl import CLT_Type_Unit
-from pycspr.types.cl import CLT_Type_URef
+from pycspr.types.cl import CLT_U8
+from pycspr.types.cl import CLT_U32
+from pycspr.types.cl import CLT_U64
+from pycspr.types.cl import CLT_U128
+from pycspr.types.cl import CLT_U256
+from pycspr.types.cl import CLT_U512
+from pycspr.types.cl import CLT_Key
+from pycspr.types.cl import CLT_List
+from pycspr.types.cl import CLT_Map
+from pycspr.types.cl import CLT_Option
+from pycspr.types.cl import CLT_PublicKey
+from pycspr.types.cl import CLT_Result
+from pycspr.types.cl import CLT_String
+from pycspr.types.cl import CLT_Tuple1
+from pycspr.types.cl import CLT_Tuple2
+from pycspr.types.cl import CLT_Tuple3
+from pycspr.types.cl import CLT_Unit
+from pycspr.types.cl import CLT_URef
 
 
 def decode(bstream: bytes) -> CLT_Type:
@@ -43,7 +43,7 @@ def decode(bstream: bytes) -> CLT_Type:
 
 
 def _decode_byte_array(bstream: bytes):
-    bstream, size = decode_clv(CLT_Type_U32(), bstream)
+    bstream, size = decode_clv(CLT_U32(), bstream)
 
     return bstream, CLT_ByteArray(size.value)
 
@@ -51,33 +51,33 @@ def _decode_byte_array(bstream: bytes):
 def _decode_list(bstream: bytes):
     bstream, item_type = decode(bstream)
 
-    return bstream, CLT_Type_List(item_type)
+    return bstream, CLT_List(item_type)
 
 
 def _decode_map(bstream: bytes):
     bstream, key_type = decode(bstream)
     bstream, value_type = decode(bstream)
 
-    return bstream, CLT_Type_Map(key_type, value_type)
+    return bstream, CLT_Map(key_type, value_type)
 
 
 def _decode_option(bstream: bytes):
     bstream, option_type = decode(bstream)
 
-    return bstream, CLT_Type_Option(option_type)
+    return bstream, CLT_Option(option_type)
 
 
 def _decode_tuple_1(bstream: bytes):
     bstream, t0_type = decode(bstream)
 
-    return bstream, CLT_Type_Tuple1(t0_type)
+    return bstream, CLT_Tuple1(t0_type)
 
 
 def _decode_tuple_2(bstream: bytes):
     bstream, t0_type = decode(bstream)
     bstream, t1_type = decode(bstream)
 
-    return bstream, CLT_Type_Tuple2(t0_type, t1_type)
+    return bstream, CLT_Tuple2(t0_type, t1_type)
 
 
 def _decode_tuple_3(bstream: bytes):
@@ -85,7 +85,7 @@ def _decode_tuple_3(bstream: bytes):
     bstream, t1_type = decode(bstream)
     bstream, t2_type = decode(bstream)
 
-    return bstream, CLT_Type_Tuple3(t0_type, t1_type, t2_type)
+    return bstream, CLT_Tuple3(t0_type, t1_type, t2_type)
 
 
 _DECODERS = {
@@ -103,17 +103,17 @@ _DECODERS = {
         CLT_TypeKey.BOOL: CLT_Bool,
         CLT_TypeKey.I32: CLT_I32,
         CLT_TypeKey.I64: CLT_I64,
-        CLT_TypeKey.KEY: CLT_Type_Key,
-        CLT_TypeKey.PUBLIC_KEY: CLT_Type_PublicKey,
-        CLT_TypeKey.RESULT: CLT_Type_Result,
-        CLT_TypeKey.STRING: CLT_Type_String,
-        CLT_TypeKey.U8: CLT_Type_U8,
-        CLT_TypeKey.U32: CLT_Type_U32,
-        CLT_TypeKey.U64: CLT_Type_U64,
-        CLT_TypeKey.U128: CLT_Type_U128,
-        CLT_TypeKey.U256: CLT_Type_U256,
-        CLT_TypeKey.U512: CLT_Type_U512,
-        CLT_TypeKey.UNIT: CLT_Type_Unit,
-        CLT_TypeKey.UREF: CLT_Type_URef,
+        CLT_TypeKey.KEY: CLT_Key,
+        CLT_TypeKey.PUBLIC_KEY: CLT_PublicKey,
+        CLT_TypeKey.RESULT: CLT_Result,
+        CLT_TypeKey.STRING: CLT_String,
+        CLT_TypeKey.U8: CLT_U8,
+        CLT_TypeKey.U32: CLT_U32,
+        CLT_TypeKey.U64: CLT_U64,
+        CLT_TypeKey.U128: CLT_U128,
+        CLT_TypeKey.U256: CLT_U256,
+        CLT_TypeKey.U512: CLT_U512,
+        CLT_TypeKey.UNIT: CLT_Unit,
+        CLT_TypeKey.UREF: CLT_URef,
     }
 }

@@ -129,16 +129,7 @@ def encode_signature(signature: Signature) -> str:
     :returns: Checksummed hexadecimal string.
 
     """
-    print(123, signature)
-    return signature.to_bytes[:1].hex() + encode_bytes(signature.to_bytes[1:])
-
-    # return signature.as_bytes
-    # print(123, signature)
-
-    # if isinstance(signature, str):
-    #     signature = bytes.fromhex(signature)
-
-    # return bytes([signature.algo.value]) + signature.sig
+    return signature.to_bytes()[:1].hex() + encode_bytes(signature.to_bytes()[1:])
 
 
 def _encode(input: bytes) -> typing.Iterator[str]:

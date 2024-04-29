@@ -3,23 +3,23 @@ from pycspr.types.cl import CLT_Bool
 from pycspr.types.cl import CLT_ByteArray
 from pycspr.types.cl import CLT_I32
 from pycspr.types.cl import CLT_I64
-from pycspr.types.cl import CLT_Type_U8
-from pycspr.types.cl import CLT_Type_U32
-from pycspr.types.cl import CLT_Type_U64
-from pycspr.types.cl import CLT_Type_U128
-from pycspr.types.cl import CLT_Type_U256
-from pycspr.types.cl import CLT_Type_U512
-from pycspr.types.cl import CLT_Type_Key
-from pycspr.types.cl import CLT_Type_List
-from pycspr.types.cl import CLT_Type_Map
-from pycspr.types.cl import CLT_Type_Option
-from pycspr.types.cl import CLT_Type_PublicKey
-from pycspr.types.cl import CLT_Type_String
-from pycspr.types.cl import CLT_Type_Tuple1
-from pycspr.types.cl import CLT_Type_Tuple2
-from pycspr.types.cl import CLT_Type_Tuple3
-from pycspr.types.cl import CLT_Type_Unit
-from pycspr.types.cl import CLT_Type_URef
+from pycspr.types.cl import CLT_U8
+from pycspr.types.cl import CLT_U32
+from pycspr.types.cl import CLT_U64
+from pycspr.types.cl import CLT_U128
+from pycspr.types.cl import CLT_U256
+from pycspr.types.cl import CLT_U512
+from pycspr.types.cl import CLT_Key
+from pycspr.types.cl import CLT_List
+from pycspr.types.cl import CLT_Map
+from pycspr.types.cl import CLT_Option
+from pycspr.types.cl import CLT_PublicKey
+from pycspr.types.cl import CLT_String
+from pycspr.types.cl import CLT_Tuple1
+from pycspr.types.cl import CLT_Tuple2
+from pycspr.types.cl import CLT_Tuple3
+from pycspr.types.cl import CLT_Unit
+from pycspr.types.cl import CLT_URef
 from pycspr.types.cl import CLV_Value
 from pycspr.types.cl import CLV_Bool
 from pycspr.types.cl import CLV_ByteArray
@@ -68,7 +68,7 @@ def _encode_list(entity: CLV_List):
         if type(i) is not type(i1):
             raise ValueError("Inconsistent list item types")
 
-    return CLT_Type_List(encode(i))
+    return CLT_List(encode(i))
 
 
 def _encode_map(entity: CLV_Map):
@@ -80,7 +80,7 @@ def _encode_map(entity: CLV_Map):
         if type(k1) is not type(k) or type(v1) is not type(v):
             raise ValueError("Inconsistent value name/key pairs")
 
-    return CLT_Type_Map(encode(k), encode(v))
+    return CLT_Map(encode(k), encode(v))
 
 
 _ENCODERS: dict = {
@@ -93,37 +93,37 @@ _ENCODERS: dict = {
     CLV_I64:
         lambda _: CLT_I64(),
     CLV_Key:
-        lambda _: CLT_Type_Key(),
+        lambda _: CLT_Key(),
     CLV_List:
         _encode_list,
     CLV_Map:
         _encode_map,
     CLV_Option:
-        lambda x: CLT_Type_Option(x.option_type),
+        lambda x: CLT_Option(x.option_type),
     CLV_PublicKey:
-        lambda _: CLT_Type_PublicKey(),
+        lambda _: CLT_PublicKey(),
     CLV_String:
-        lambda _: CLT_Type_String(),
+        lambda _: CLT_String(),
     CLV_Tuple1:
-        lambda x: CLT_Type_Tuple1(encode(x.v0)),
+        lambda x: CLT_Tuple1(encode(x.v0)),
     CLV_Tuple2:
-        lambda x: CLT_Type_Tuple2(encode(x.v0), encode(x.v1)),
+        lambda x: CLT_Tuple2(encode(x.v0), encode(x.v1)),
     CLV_Tuple3:
-        lambda x: CLT_Type_Tuple3(encode(x.v0), encode(x.v1), encode(x.v2)),
+        lambda x: CLT_Tuple3(encode(x.v0), encode(x.v1), encode(x.v2)),
     CLV_U8:
-        lambda _: CLT_Type_U8(),
+        lambda _: CLT_U8(),
     CLV_U32:
-        lambda _: CLT_Type_U32(),
+        lambda _: CLT_U32(),
     CLV_U64:
-        lambda _: CLT_Type_U64(),
+        lambda _: CLT_U64(),
     CLV_U128:
-        lambda _: CLT_Type_U128(),
+        lambda _: CLT_U128(),
     CLV_U256:
-        lambda _: CLT_Type_U256(),
+        lambda _: CLT_U256(),
     CLV_U512:
-        lambda _: CLT_Type_U512(),
+        lambda _: CLT_U512(),
     CLV_Unit:
-        lambda _: CLT_Type_Unit(),
+        lambda _: CLT_Unit(),
     CLV_URef:
-        lambda _: CLT_Type_URef(),
+        lambda _: CLT_URef(),
 }

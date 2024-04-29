@@ -98,7 +98,7 @@ class CLT_I64(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Key(CLT_Type):
+class CLT_Key(CLT_Type):
     """Encapsulates CL type information associated with a key value.
 
     """
@@ -107,7 +107,7 @@ class CLT_Type_Key(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_List(CLT_Type):
+class CLT_List(CLT_Type):
     """Encapsulates CL type information associated with a list value.
 
     """
@@ -122,7 +122,7 @@ class CLT_Type_List(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Map(CLT_Type):
+class CLT_Map(CLT_Type):
     """Encapsulates CL type information associated with a byte array value.
 
     """
@@ -142,7 +142,7 @@ class CLT_Type_Map(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Option(CLT_Type):
+class CLT_Option(CLT_Type):
     """Encapsulates CL type information associated with an optional value.
 
     """
@@ -157,7 +157,7 @@ class CLT_Type_Option(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_PublicKey(CLT_Type):
+class CLT_PublicKey(CLT_Type):
     """Encapsulates CL type information associated with a PublicKey value.
 
     """
@@ -166,7 +166,7 @@ class CLT_Type_PublicKey(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Result(CLT_Type):
+class CLT_Result(CLT_Type):
     """Encapsulates CL type information associated with a result value.
 
     """
@@ -175,7 +175,7 @@ class CLT_Type_Result(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_String(CLT_Type):
+class CLT_String(CLT_Type):
     """Encapsulates CL type information associated with any value.
 
     """
@@ -184,7 +184,7 @@ class CLT_Type_String(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Tuple1(CLT_Type):
+class CLT_Tuple1(CLT_Type):
     """Encapsulates CL type information associated with a 1-ary tuple value value.
 
     """
@@ -199,7 +199,7 @@ class CLT_Type_Tuple1(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Tuple2(CLT_Type):
+class CLT_Tuple2(CLT_Type):
     """Encapsulates CL type information associated with a 2-ary tuple value value.
 
     """
@@ -219,7 +219,7 @@ class CLT_Type_Tuple2(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Tuple3(CLT_Type):
+class CLT_Tuple3(CLT_Type):
     """Encapsulates CL type information associated with a 3-ary tuple value value.
 
     """
@@ -243,7 +243,7 @@ class CLT_Type_Tuple3(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U8(CLT_Type):
+class CLT_U8(CLT_Type):
     """Encapsulates CL type information associated with a U8 value.
 
     """
@@ -252,7 +252,7 @@ class CLT_Type_U8(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U32(CLT_Type):
+class CLT_U32(CLT_Type):
     """Encapsulates CL type information associated with a U32 value.
 
     """
@@ -261,7 +261,7 @@ class CLT_Type_U32(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U64(CLT_Type):
+class CLT_U64(CLT_Type):
     """Encapsulates CL type information associated with a U64 value.
 
     """
@@ -270,7 +270,7 @@ class CLT_Type_U64(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U128(CLT_Type):
+class CLT_U128(CLT_Type):
     """Encapsulates CL type information associated with a U128 value.
 
     """
@@ -279,7 +279,7 @@ class CLT_Type_U128(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U256(CLT_Type):
+class CLT_U256(CLT_Type):
     """Encapsulates CL type information associated with a U256 value.
 
     """
@@ -288,7 +288,7 @@ class CLT_Type_U256(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_U512(CLT_Type):
+class CLT_U512(CLT_Type):
     """Encapsulates CL type information associated with a U512 value.
 
     """
@@ -297,7 +297,7 @@ class CLT_Type_U512(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_Unit(CLT_Type):
+class CLT_Unit(CLT_Type):
     """Encapsulates CL type information associated with a result value.
 
     """
@@ -306,7 +306,7 @@ class CLT_Type_Unit(CLT_Type):
 
 
 @dataclasses.dataclass
-class CLT_Type_URef(CLT_Type):
+class CLT_URef(CLT_Type):
     """Encapsulates CL type information associated with a result value.
 
     """
@@ -665,24 +665,24 @@ TYPESET_CLT: set = {
     CLT_ByteArray,
     CLT_I32,
     CLT_I64,
-    CLT_Type_U8,
-    CLT_Type_U32,
-    CLT_Type_U64,
-    CLT_Type_U128,
-    CLT_Type_U256,
-    CLT_Type_U512,
-    CLT_Type_Key,
-    CLT_Type_List,
-    CLT_Type_Map,
-    CLT_Type_Option,
-    CLT_Type_PublicKey,
-    CLT_Type_Result,
-    CLT_Type_String,
-    CLT_Type_Tuple1,
-    CLT_Type_Tuple2,
-    CLT_Type_Tuple3,
-    CLT_Type_Unit,
-    CLT_Type_URef,
+    CLT_U8,
+    CLT_U32,
+    CLT_U64,
+    CLT_U128,
+    CLT_U256,
+    CLT_U512,
+    CLT_Key,
+    CLT_List,
+    CLT_Map,
+    CLT_Option,
+    CLT_PublicKey,
+    CLT_Result,
+    CLT_String,
+    CLT_Tuple1,
+    CLT_Tuple2,
+    CLT_Tuple3,
+    CLT_Unit,
+    CLT_URef,
 }
 
 

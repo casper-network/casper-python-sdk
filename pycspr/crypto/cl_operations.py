@@ -81,7 +81,7 @@ def verify_deploy_approval_signature(
     """
     assert len(deploy_hash) == 32, \
            "Invalid deploy hash.  Expected length = 32"
-    assert len(signature.to_bytes) == 65, \
+    assert len(signature.to_bytes()) == 65, \
            "Invalid deploy approval signature.  Expected length = 65"
 
     return is_signature_valid(

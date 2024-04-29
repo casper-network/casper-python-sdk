@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLT_Type_U64
+from pycspr.types.cl import CLT_U64
 from pycspr.types.cl import CLV_Value
 from pycspr.types.cl import CLV_Bool
 from pycspr.types.cl import CLV_ByteArray
@@ -59,7 +59,7 @@ def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:
             )
 
         elif type_key == CLT_TypeKey.OPTION:
-            yield CLV_Option(CLV_U64(value), CLT_Type_U64())
+            yield CLV_Option(CLV_U64(value), CLT_U64())
 
         elif type_key == CLT_TypeKey.PUBLIC_KEY:
             yield CLV_PublicKey.from_public_key(
