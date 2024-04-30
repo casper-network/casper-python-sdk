@@ -233,10 +233,15 @@ class Block():
         return self.header.height
 
     @property
-    def is_switch_block(self) -> int:
+    def is_switch_block(self) -> bool:
         """Helper attribute: block height."""
         return self.header.era_end is not None
     
+    @property
+    def signatories(self) -> typing.Set[PublicKey]:
+        """Helper attribute: block signatories."""
+        return set([i.public_key for i in self.proofs])
+
 
 @dataclasses.dataclass
 class BlockBody():
