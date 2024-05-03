@@ -54,12 +54,13 @@ def validate_block(
     block: Block,
     parent_block: Block = None,
     switch_block_of_previous_era: Block = None,
-    ):
+    ) -> Block:
     """Validates a block.
 
     :block: A block to be validated.
     :parent_block: The block's parent.
     :switch_block_of_previous_era: The switch block of the previous consensus era.
+    :returns: The block if considered valid, otherwise raises exception.
 
     """
     # Rule 1: Verify block was downloaded.
@@ -106,40 +107,47 @@ def validate_block(
 
 def validate_block_at_era_end(
     block: Block,
-    era_validator_weights: typing.List[ValidatorWeight] = None
-    ):
+    parent_block: Block = None,
+    switch_block_of_previous_era: Block = None,
+    ) -> Block:
     """Validates last block in an era of consensus.
 
-    :block: Switch block to be validated.
-    :era_validator_weights: Weight of validators during the era in which the block was produced.
+    :block: A block to be validated.
+    :parent_block: The block's parent.
+    :switch_block_of_previous_era: The switch block of the previous consensus era.
+    :returns: The block if considered valid, otherwise raises exception.
 
     """
+    # Rule 1: Verify block was downloaded.
     if block is None:
         raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
 
+    # Rule 2: Verify block is a switch block.
     if block.is_switch is False:
         raise InvalidBlockException(InvalidBlockExceptionType.ExpectedSwitchBlock)
 
-    return validate_block(block, era_validator_weights)
+    # Apply standard block validation rules.
+    return validate_block(block, parent_block, switch_block_of_previous_era)
 
 
-def validate_deploy(deploy: Deploy):
+def validate_deploy(deploy: Deploy) -> Deploy:
     """Validates a deploy.
 
     :deploy: Deploy to be validated.
+    :returns: The deploy if considered valid, otherwise raises exception.
 
     """
-    # Recomputed body hash must match actual body hash.
+    # Rule 1: Verify deploy body hash.
     body_hash: bytes = factory.create_digest_of_deploy_body(deploy.payment, deploy.session)
     if deploy.header.body_hash != body_hash:
         raise InvalidDeployException(InvalidDeployExceptionType.InvalidBodyHash)
 
-    # Recomputed hash must match actual hash.
+    # Rule 2: Verify deploy hash.
     deploy_hash: bytes = factory.create_digest_of_deploy(deploy.header)
     if deploy.hash != deploy_hash:
         raise InvalidDeployException(InvalidDeployExceptionType.InvalidHash)
 
-    # Signatures must be valid.
+    # Rule 3: Verify signature authenticity.
     for approval in deploy.approvals:
         if not crypto.is_signature_valid(
             deploy.hash,
@@ -148,3 +156,5 @@ def validate_deploy(deploy: Deploy):
             approval.signer.pbk,
         ):
             raise InvalidDeployException(InvalidDeployExceptionType.InvalidApproval)
+
+    return deploy
