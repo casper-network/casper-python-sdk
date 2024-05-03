@@ -136,7 +136,7 @@ def _decode_deploy_executable_item(bstream: bytes) -> DeployExecutableItem:
 
 
 def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
-    bstream, account_public_key = decode_clv(
+    bstream, account = decode_clv(
         CLT_PublicKey(), bstream
         )
     bstream, timestamp = decode(Timestamp, bstream)
@@ -149,7 +149,7 @@ def _decode_deploy_header(bstream: bytes) -> typing.Tuple[bytes, DeployHeader]:
     bstream, chain_name = decode_clv(CLT_String(), bstream)
 
     return bstream, DeployHeader(
-        account=account_public_key,
+        account=account,
         body_hash=body_hash.value,
         chain_name=chain_name.value,
         dependencies=dependencies.vector,

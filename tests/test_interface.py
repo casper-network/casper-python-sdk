@@ -60,6 +60,7 @@ _INTERFACE_OF_LIBRARY = {
         "NodeRestConnectionInfo",
         "NodeRpcClient",
         "NodeRpcConnectionInfo",
+        "NodeRpcProxyError",
         "NodeSpeculativeRpcClient",
         "NodeSpeculativeRpcConnectionInfo",
         "NodeSseClient",

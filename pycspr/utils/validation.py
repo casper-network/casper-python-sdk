@@ -14,8 +14,11 @@ class InvalidBlockExceptionType(enum.Enum):
     """Enumeration over set of invalid block exception types.
     
     """
+    ExpectedSwitchBlock = enum.auto()
+    NotFound = enum.auto()
     InvalidFinalitySignature = enum.auto()
     InvalidHash = enum.auto()
+    InvalidParent = enum.auto()
     InvalidProposer = enum.auto()
     InsufficientFinalitySignatureWeight = enum.auto()
 
@@ -49,56 +52,75 @@ class InvalidDeployException(Exception):
 
 def validate_block(
     block: Block,
-    era_validator_weights: typing.List[ValidatorWeight] = None
+    parent_block: Block = None,
+    switch_block_of_previous_era: Block = None,
     ):
     """Validates a block.
 
-    :block: Block to be validated.
-    :era_validator_weights: Weight of validators during the era in which the block was produced.
+    :block: A block to be validated.
+    :parent_block: The block's parent.
+    :switch_block_of_previous_era: The switch block of the previous consensus era.
 
     """
-    # Recomputed hash must match actual hash.
-    # TODO: fix era_end binary serialisation error.
-    # if block.hash != factory.create_digest_of_block(block.header):
-    #     raise InvalidBlockException(InvalidBlockExceptionType.InvalidHash)
+    # Rule 1: Verify block was downloaded.
+    if block is None:
+        raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
     
-    # Proposer must be a signatory.
-    if block.body.proposer not in [i.public_key for i in block.proofs]:
+    # Rule 2: Verify block's parent.
+    if parent_block is not None:
+        if parent_block.hash != block.header.parent_hash:
+            raise InvalidBlockException(InvalidBlockExceptionType.InvalidParent)
+
+    # Rule 3: Verify block's hash.
+    if block.hash != factory.create_digest_of_block(block.header):
+        pass
+        # raise InvalidBlockException(InvalidBlockExceptionType.InvalidHash)
+    
+    # Rule 4: Verify proposer is a signatory.
+    if block.body.proposer not in block.signatories:
         raise InvalidBlockException(InvalidBlockExceptionType.InvalidProposer)
 
-    # Signatures must be valid.
-    digest_of_block_for_finality_signature: bytes = \
+    # Rule 5: Verify signature authenticity.
+    block_digest_for_finality_signature: bytes = \
         factory.create_digest_of_block_for_finality_signature(block)
     for proof in block.proofs:
         if not crypto.is_signature_valid(
-            digest_of_block_for_finality_signature,
+            block_digest_for_finality_signature,
             proof.signature.algo,
             proof.signature.sig,
             proof.public_key.pbk,
         ):
             raise InvalidBlockException(InvalidBlockExceptionType.InvalidFinalitySignature)
 
-    # Signatures must have sufficient weight.
-    if era_validator_weights is not None:
-        validate_block_finality_signature_weight(block.signatories, era_validator_weights)
+    # Rule 6: Verify signature finality weight.
+    if switch_block_of_previous_era is not None:
+        proven_weight: int = \
+            block.get_finality_signature_weight(switch_block_of_previous_era)
+        required_weight: int = \
+            switch_block_of_previous_era.validator_weight_required_for_finality_in_next_era
+        if proven_weight < required_weight:
+            raise InvalidBlockException(InvalidBlockExceptionType.InsufficientFinalitySignatureWeight)
+
+    return block
 
 
-def validate_block_finality_signature_weight(
-    signatories: typing.Set[PublicKey],
-    weights: typing.List[ValidatorWeight]
+def validate_block_at_era_end(
+    block: Block,
+    era_validator_weights: typing.List[ValidatorWeight] = None
     ):
-    """Validates weight of finality signatures over a block.
+    """Validates last block in an era of consensus.
 
-    :signatories: A set of signatories over a block.
-    :weights: A set of validator weights pertinent to the era in which the block was produced.
+    :block: Switch block to be validated.
+    :era_validator_weights: Weight of validators during the era in which the block was produced.
 
     """
-    total_weight: int = sum([i.weight for i in weights])
-    required_weight: int = int(total_weight / 3) + 1
-    proven_weight: int = sum([i.weight for i in weights if i.validator in signatories])
+    if block is None:
+        raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
 
-    if proven_weight < required_weight:
-        raise InvalidBlockException(InvalidBlockExceptionType.InsufficientFinalitySignatureWeight)
+    if block.is_switch is False:
+        raise InvalidBlockException(InvalidBlockExceptionType.ExpectedSwitchBlock)
+
+    return validate_block(block, era_validator_weights)
 
 
 def validate_deploy(deploy: Deploy):

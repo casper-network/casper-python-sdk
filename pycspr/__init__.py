@@ -19,6 +19,7 @@ from pycspr.api import NodeRestClient
 from pycspr.api import NodeRestConnectionInfo
 from pycspr.api import NodeRpcClient
 from pycspr.api import NodeRpcConnectionInfo
+from pycspr.api import NodeRpcProxyError
 from pycspr.api import NodeSpeculativeRpcClient
 from pycspr.api import NodeSpeculativeRpcConnectionInfo
 from pycspr.api import NodeSseClient
@@ -85,6 +86,7 @@ from pycspr.utils.io import read_wasm
 from pycspr.utils.io import write_deploy
 
 from pycspr.utils.validation import validate_block
+from pycspr.utils.validation import validate_block_at_era_end
 from pycspr.utils.validation import validate_deploy
 from pycspr.utils.validation import InvalidBlockException
 from pycspr.utils.validation import InvalidDeployException

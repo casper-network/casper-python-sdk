@@ -228,19 +228,34 @@ class Block():
     proofs: typing.List[BlockSignature]
 
     @property
-    def height(self) -> int:
+    def era_id(self) -> EraID:
+        """Helper attribute: era id."""
+        return self.header.era_id
+
+    @property
+    def height(self) -> BlockHeight:
         """Helper attribute: block height."""
         return self.header.height
 
     @property
-    def is_switch_block(self) -> bool:
-        """Helper attribute: block height."""
+    def is_switch(self) -> bool:
+        """Helper attribute: is a switch block."""
         return self.header.era_end is not None
     
     @property
     def signatories(self) -> typing.Set[PublicKey]:
         """Helper attribute: block signatories."""
         return set([i.public_key for i in self.proofs])
+    
+    @property
+    def validator_weight_required_for_finality_in_next_era(self) -> int:
+        return self.header.era_end.validator_weight_required_for_finality
+
+    def get_finality_signature_weight(self, parent_switch_block: Block) -> int:
+        return sum([
+            i.weight for i in parent_switch_block.header.era_end.next_era_validator_weights \
+            if i.validator in self.signatories
+            ])
 
 
 @dataclasses.dataclass
@@ -540,6 +555,14 @@ class DictionaryItem():
 class EraEnd():
     era_report: EraEndReport
     next_era_validator_weights: typing.List[ValidatorWeight]
+
+    @property
+    def validator_weight(self) -> int:
+        return sum([i.weight for i in self.next_era_validator_weights])
+
+    @property
+    def validator_weight_required_for_finality(self) -> int:
+        return int(self.validator_weight / 3) + 1
 
 
 @dataclasses.dataclass

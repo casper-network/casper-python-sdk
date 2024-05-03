@@ -133,7 +133,7 @@ def _encode_era_end_report(entity: EraEndReport) -> bytes:
     return \
         encode_clv(
             CLV_List(
-                [CLV_ByteArray(encode(i)) for i in entity.equivocators]
+                [CLV_PublicKey(encode(i)) for i in entity.equivocators]
             )
         ) + \
         encode_clv(
@@ -143,7 +143,7 @@ def _encode_era_end_report(entity: EraEndReport) -> bytes:
         ) + \
         encode_clv(
             CLV_List(
-                [CLV_ByteArray(encode(i)) for i in entity.inactive_validators]
+                [CLV_PublicKey(encode(i)) for i in entity.inactive_validators]
             )
         )
 
