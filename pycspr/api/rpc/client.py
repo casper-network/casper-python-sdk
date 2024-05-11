@@ -125,6 +125,14 @@ class Client():
 
         return encoded if decode is False else serializer.from_json(Block, encoded)
 
+    async def get_block_range(self) -> typing.Union[dict, typing.Tuple[int, int]]:
+        """Returns available block range.
+
+        :returns: Available block range.
+
+        """
+        return (await self.get_node_status()).available_block_range
+
     async def get_block_transfers(
         self,
         block_id: BlockID = None,

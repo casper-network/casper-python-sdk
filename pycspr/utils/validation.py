@@ -1,12 +1,9 @@
 import enum
-import typing
 
 from pycspr import crypto
 from pycspr import factory
-from pycspr.types.crypto import PublicKey
 from pycspr.types.node import Block
 from pycspr.types.node import Deploy
-from pycspr.types.node import ValidatorWeight
 from pycspr.types.node import Weight
 
 
@@ -63,10 +60,10 @@ def validate_block(
     :returns: The block if considered valid, otherwise raises exception.
 
     """
-    # Rule 1: Verify block was downloaded.
+    # Rule 1: Verify block was sucessfully downloaded.
     if block is None:
         raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
-    
+
     # Rule 2: Verify block's parent.
     if parent_block is not None:
         if parent_block.hash != block.header.parent_hash:
@@ -76,7 +73,7 @@ def validate_block(
     if block.hash != factory.create_digest_of_block(block.header):
         pass
         # raise InvalidBlockException(InvalidBlockExceptionType.InvalidHash)
-    
+
     # Rule 4: Verify proposer is a signatory.
     if block.body.proposer not in block.signatories:
         raise InvalidBlockException(InvalidBlockExceptionType.InvalidProposer)
@@ -95,12 +92,7 @@ def validate_block(
 
     # Rule 6: Verify signature finality weight.
     if switch_block_of_previous_era is not None:
-        proven_weight: int = \
-            block.get_finality_signature_weight(switch_block_of_previous_era)
-        required_weight: int = \
-            switch_block_of_previous_era.validator_weight_required_for_finality_in_next_era
-        if proven_weight < required_weight:
-            raise InvalidBlockException(InvalidBlockExceptionType.InsufficientFinalitySignatureWeight)
+        validate_block_finality_signature_weight(block, switch_block_of_previous_era)
 
     return block
 
@@ -126,8 +118,20 @@ def validate_block_at_era_end(
     if block.is_switch is False:
         raise InvalidBlockException(InvalidBlockExceptionType.ExpectedSwitchBlock)
 
-    # Apply standard block validation rules.
+    # Rule 3: Apply standard block validation rules.
     return validate_block(block, parent_block, switch_block_of_previous_era)
+
+
+def validate_block_finality_signature_weight(
+    block: Block,
+    switch_block_of_previous_era: Block = None,        
+):
+    proven_weight: int = \
+        block.get_finality_signature_weight(switch_block_of_previous_era)
+    required_weight: int = \
+        switch_block_of_previous_era.validator_weight_required_for_finality_in_next_era
+    if proven_weight < required_weight:
+        raise InvalidBlockException(InvalidBlockExceptionType.InsufficientFinalitySignatureWeight)
 
 
 def validate_deploy(deploy: Deploy) -> Deploy:

@@ -1,8 +1,33 @@
+from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import PublicKeyHex
+from pycspr.types.crypto import Signature
+
+
 def encode(entity: object) -> dict:
     """Encodes a domain entity instance to a JSON encodeable dictionary.
 
-    :param entity: A crypto related type instance to be encoded.
+    :param entity: A node related type instance to be encoded.
     :returns: A JSON encodeable dictionary.
 
     """
-    raise NotImplementedError()
+    typedef = type(entity)
+    try:
+        encoder = ENCODERS[typedef]
+    except KeyError:
+        raise ValueError(f"Unknown entity type: {typedef} :: {entity}")
+    else:
+        return encoder(entity)
+
+
+def _encode_public_key(entity: PublicKey) -> PublicKeyHex:
+    return entity.to_hex()
+
+
+def _encode_signature(entity: Signature) -> str:
+    return entity.to_hex()
+
+
+ENCODERS = {
+    PublicKey: _encode_public_key,
+    Signature: _encode_signature,
+}

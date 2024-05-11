@@ -641,6 +641,7 @@ class NodePeer():
 @dataclasses.dataclass
 class NodeStatus():
     api_version: str
+    available_block_range: typing.Tuple[int, int]
     build_version: str
     chainspec_name: str
     last_added_block_info: MinimalBlockInfo
@@ -658,6 +659,9 @@ class ProtocolVersion():
     major: int
     minor: int
     revision: int
+
+    def __str__(self) -> str:
+        return f"{self.major}.{self.minor}.{self.revision}"
 
 
 @dataclasses.dataclass

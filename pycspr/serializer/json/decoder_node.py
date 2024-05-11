@@ -428,6 +428,10 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
     # TODO: decode round length correctly
     return NodeStatus(
         api_version=decode(str, encoded["api_version"]),
+        available_block_range=(
+            encoded["available_block_range"]["low"],
+            encoded["available_block_range"]["high"],
+        ),
         build_version=decode(str, encoded["build_version"]),
         chainspec_name=decode(str, encoded["chainspec_name"]),
         last_added_block_info=decode(MinimalBlockInfo, encoded["last_added_block_info"]),
