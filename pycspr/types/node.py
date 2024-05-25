@@ -557,6 +557,10 @@ class EraEnd():
     next_era_validator_weights: typing.List[ValidatorWeight]
 
     @property
+    def next_era_signatories(self) -> typing.Set[PublicKey]:
+        return set([i.validator for i in self.next_era_validator_weights])
+
+    @property
     def validator_weight(self) -> int:
         return sum([i.weight for i in self.next_era_validator_weights])
 
