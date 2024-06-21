@@ -14,6 +14,7 @@ __license__ = "Apache 2.0"
 from pycspr import types
 from pycspr import crypto
 from pycspr import factory
+from pycspr import verifier
 
 from pycspr.api import NodeRestClient
 from pycspr.api import NodeRestConnectionInfo
@@ -78,6 +79,8 @@ from pycspr.types.crypto import HashAlgorithm
 from pycspr.types.crypto import KeyAlgorithm
 from pycspr.types.crypto import PublicKey
 from pycspr.types.crypto import PrivateKey
+
+from pycspr.utils import convertor
 
 from pycspr.utils.io import get_deploy_size_bytes
 from pycspr.utils.io import read_block

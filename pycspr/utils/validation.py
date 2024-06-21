@@ -9,7 +9,7 @@ from pycspr.types.node import Weight
 
 class InvalidBlockExceptionType(enum.Enum):
     """Enumeration over set of invalid block exception types.
-    
+
     """
     ExpectedSwitchBlock = enum.auto()
     NotFound = enum.auto()
@@ -31,7 +31,7 @@ class InvalidBlockException(Exception):
 
 class InvalidDeployExceptionType(enum.Enum):
     """Enumeration over set of invalid deploy exception types.
-    
+
     """
     InvalidApproval = enum.auto()
     InvalidBodyHash = enum.auto()
@@ -60,11 +60,14 @@ def validate_block(
     :returns: The block if considered valid, otherwise raises exception.
 
     """
+    # TODO: extend input parameters -> blockID: if hash then ina  descent, if height then ascending & switch block must be available
+
     # BL-000: Verify block was sucessfully downloaded.
     if block is None:
         raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
 
     # BL-001: Verify block hash of parent.
+    # TODO: remove
     if parent_block is not None:
         if parent_block.hash != block.header.parent_hash:
             raise InvalidBlockException(InvalidBlockExceptionType.InvalidParent)
@@ -75,16 +78,17 @@ def validate_block(
         # raise InvalidBlockException(InvalidBlockExceptionType.InvalidHash)
 
     # Rule 4: Verify proposer is a signatory.
+    # TODO: remove not absolutely necessary
     if block.body.proposer not in block.signatories:
         raise InvalidBlockException(InvalidBlockExceptionType.InvalidProposer)
-    
+
     # Rule 5: Verify block signatories are era signatories.
     if switch_block_of_previous_era is not None:
         for signatory in block.signatories:
             if signatory not in switch_block_of_previous_era.header.era_end.next_era_signatories:
                 raise InvalidBlockException(InvalidBlockExceptionType.InvalidProposer)
 
-    # Rule 5: Verify finality signature authenticity.
+    # Rule 6: Verify finality signature authenticity.
     block_digest_for_finality_signature: bytes = \
         factory.create_digest_of_block_for_finality_signature(block)
     for proof in block.proofs:
@@ -130,7 +134,7 @@ def validate_block_at_era_end(
 
 def validate_block_finality_signature_weight(
     block: Block,
-    switch_block_of_previous_era: Block = None,        
+    switch_block_of_previous_era: Block = None,
 ):
     proven_weight: int = \
         block.get_finality_signature_weight(switch_block_of_previous_era)

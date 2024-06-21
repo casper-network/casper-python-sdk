@@ -7,8 +7,9 @@ def test_that_deploy_size_in_bytes_is_deterministic(deploy_params, cp1, cp2):
 
 
 def test_that_deploy_validation_succeeds(deploy_params, cp1, cp2):
-    deploy = _create_deploy(deploy_params, cp1, cp2)
-    assert pycspr.validate_deploy(deploy) is None
+    assert pycspr.validate_deploy(
+        _create_deploy(deploy_params, cp1, cp2)
+    )
 
 
 def _create_deploy(deploy_params, cp1, cp2):
