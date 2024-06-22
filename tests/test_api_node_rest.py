@@ -6,6 +6,10 @@ from pycspr.api.node.rest.types import NodeStatus
 from pycspr.types.node import ValidatorChanges, ValidatorStatusChange
 
 
+async def test_that_client_is_instantiated(NODE_REST_CLIENT: Client):
+    assert NODE_REST_CLIENT is not None
+
+
 async def test_get_chainspec(NODE_REST_CLIENT: Client):
     data = await NODE_REST_CLIENT.get_chainspec()
     assert isinstance(data, dict)

@@ -7,7 +7,7 @@
 #  88              d8'                              88
 
 __title__ = "pycspr"
-__version__ = "1.2.1"
+__version__ = "2.0.0"
 __author__ = "Mark A. Greenslade et al"
 __license__ = "Apache 2.0"
 
@@ -16,9 +16,10 @@ from pycspr import crypto
 from pycspr import factory
 from pycspr import verifier
 
+from pycspr.api.node.bin import Client as NodeBinaryClient
+from pycspr.api.node.bin import ConnectionInfo as NodeBinaryConnectionInfo
 from pycspr.api.node.rest import Client as NodeRestClient
 from pycspr.api.node.rest import ConnectionInfo as NodeRestConnectionInfo
-
 from pycspr.api.node.sse import Client as NodeSseClient
 from pycspr.api.node.sse import ConnectionInfo as NodeSseConnectionInfo
 from pycspr.api.node.sse import EventInfo as NodeSseEventInfo

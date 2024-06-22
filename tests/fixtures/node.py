@@ -18,6 +18,25 @@ def SPECULATIVE_RPC_CLIENT(
 
 
 @pytest.fixture(scope="session")
+def NODE_BINARY_CLIENT(
+    NODE_BINARY_CONNECTION_INFO: pycspr.NodeBinaryConnectionInfo
+) -> pycspr.NodeBinaryClient:
+    return pycspr.NodeBinaryClient(NODE_BINARY_CONNECTION_INFO)
+
+@pytest.fixture(scope="session")
+def NODE_BINARY_CONNECTION_INFO(
+    NODE_HOST: str,
+    NODE_BINARY_PORT: int
+) -> pycspr.NodeBinaryConnectionInfo:
+    return pycspr.NodeBinaryConnectionInfo(NODE_HOST, NODE_BINARY_PORT)
+
+
+@pytest.fixture(scope="session")
+def NODE_BINARY_PORT() -> int:
+    return int(os.getenv("PYCSPR_TEST_NODE_BINARY_PORT", 14101))
+
+
+@pytest.fixture(scope="session")
 def NODE_HOST() -> str:
     return os.getenv("PYCSPR_TEST_NODE_HOST", "localhost")
 
@@ -52,10 +71,9 @@ def NODE_SSE_CLIENT(
 @pytest.fixture(scope="session")
 def NODE_SSE_CONNECTION_INFO(
     NODE_HOST: str,
-    NODE_SSE_PORT: int,
-    PORT_RPC: int
+    NODE_SSE_PORT: int
 ) -> pycspr.NodeSseConnectionInfo:
-    return pycspr.NodeSseConnectionInfo(NODE_HOST, NODE_SSE_PORT, PORT_RPC)
+    return pycspr.NodeSseConnectionInfo(NODE_HOST, NODE_SSE_PORT)
 
 
 @pytest.fixture(scope="session")

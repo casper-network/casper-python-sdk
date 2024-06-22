@@ -71,7 +71,6 @@ _INTERFACE_OF_LIBRARY = {
     _has_enum: {
         "HashAlgorithm",
         "KeyAlgorithm",
-        "NodeEventChannel",
         "NodeEventType",
     },
     _has_constant: {

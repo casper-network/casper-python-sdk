@@ -25,6 +25,9 @@ from tests.fixtures.deploys import deploy_params_static
 from tests.fixtures.deploys import a_deploy
 from tests.fixtures.iterator_deploy_entities import yield_entities as deploy_entities_iterator
 
+from tests.fixtures.node import NODE_BINARY_CLIENT
+from tests.fixtures.node import NODE_BINARY_CONNECTION_INFO
+from tests.fixtures.node import NODE_BINARY_PORT
 from tests.fixtures.node import NODE_HOST
 from tests.fixtures.node import NODE_REST_CLIENT
 from tests.fixtures.node import NODE_REST_CONNECTION_INFO
