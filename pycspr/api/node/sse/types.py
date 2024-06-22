@@ -9,6 +9,7 @@ class EventType(enum.Enum):
     """Enumeration over set of exposed node SEE event types.
 
     """
+    All = enum.auto()
     ApiVersion = enum.auto()
     BlockAdded = enum.auto()
     DeployAccepted = enum.auto()

@@ -79,18 +79,6 @@ async def main(args: argparse.Namespace):
     await sse_client.await_n_eras(1)
     assert await rest_client.get_era_height() == era_height + 1
 
-    # Await a future block.
-    future_block_height = (await rest_client.get_block_height()) + 2
-    print(f"awaiting until block {future_block_height} ...")
-    await sse_client.await_until_block_n(future_block_height)
-    assert future_block_height == await rest_client.get_block_height()
-
-    # Await a future era.
-    future_era_height = (await rest_client.get_era_height()) + 1
-    print(f"awaiting until era {future_era_height} ...")
-    await sse_client.await_until_era_n(future_era_height)
-    assert future_era_height == await rest_client.get_era_height()
-
     # Listen to node events.
     etype = None if args.event == "all" else NodeSseEventType[args.event]
     sse_client.get_events(etype, 0, _on_event_callback)
@@ -102,22 +90,19 @@ def _get_clients(args: argparse.Namespace) -> typing.Tuple[NodeSseClient, NodeRe
     """Returns SSE & REST client instances.
 
     """
-    rest_client: NodeRestClient = NodeRestClient(
-        NodeRestConnectionInfo(
-            args.node_host,
-            args.node_port_rest
+    return \
+        NodeSseClient(
+            NodeSseConnectionInfo(
+                args.node_host,
+                args.node_port_sse
+            )
+        ), \
+        NodeRestClient(
+            NodeRestConnectionInfo(
+                args.node_host,
+                args.node_port_rest
+            )
         )
-    )
-
-    sse_client: NodeSseClient = NodeSseClient(
-        NodeSseConnectionInfo(
-            args.node_host,
-            args.node_port_sse
-        ),
-        rest_client
-    )
-
-    return sse_client, rest_client
 
 
 def _on_event_callback(event_info: NodeSseEventInfo):

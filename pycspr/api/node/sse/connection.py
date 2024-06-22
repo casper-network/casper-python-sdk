@@ -16,5 +16,9 @@ class ConnectionInfo:
     # Number of exposed speculative SSE port.
     port: int = DEFAULT_PORT
 
-    # Number of exposed REST port.
-    port_rest: int = DEFAULT_PORT_REST
+    @property
+    def address(self) -> str:
+        """Return address of remote SSE server.
+
+        """
+        return f"http://{self.host}:{self.port}/events"

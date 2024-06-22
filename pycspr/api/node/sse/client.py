@@ -1,7 +1,5 @@
 import typing
 
-from pycspr.api.node.rest.client import Client as RestClient
-from pycspr.api.node.rest.connection import ConnectionInfo as RestClientConnectionInfo
 from pycspr.api.node.sse.connection import ConnectionInfo
 from pycspr.api.node.sse.proxy import Proxy
 from pycspr.api.node.sse.types import EventInfo
@@ -12,20 +10,13 @@ class Client():
     """Node SSE server client.
 
     """
-    def __init__(self, connection_info: ConnectionInfo, rest_client: RestClient = None):
+    def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node's SSE port.
-        :param rest_client: Node REST client.
 
         """
         self.proxy = Proxy(connection_info)
-        self._rest_client = rest_client or RestClient(
-                RestClientConnectionInfo(
-                    connection_info.host,
-                    connection_info.port_rest
-                )
-            )
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -33,10 +24,7 @@ class Client():
         :param offset: Number of blocks to await.
 
         """
-        await self.await_n_events(
-            offset,
-            EventType.BlockAdded
-        )
+        await self.await_n_events(offset, EventType.BlockAdded)
 
     async def await_n_eras(self, offset: int):
         """Awaits until consensus has advanced by N eras.
@@ -47,11 +35,7 @@ class Client():
         await self.await_n_events(offset, EventType.Step)
         await self.await_n_blocks(1)
 
-    async def await_n_events(
-        self,
-        offset: int,
-        etype: EventType = None
-    ) -> dict:
+    async def await_n_events(self, offset: int, etype: EventType) -> dict:
         """Awaits until the Nth event of a certain type.
 
         :param offset: Number of events to await.
@@ -65,30 +49,6 @@ class Client():
             count += 1
             if count == offset:
                 return einfo.payload
-
-    async def await_until_block_n(self, future: int) -> dict:
-        """Awaits until linear block chain has advanced to block N.
-
-        :param future: Height of a future block to await.
-        :returns: On-chain block information N block in the future.
-
-        """
-        current = await self._rest_client.get_block_height()
-        offset = future - current
-        if offset > 0:
-            await self.await_n_blocks(offset)
-
-    async def await_until_era_n(self, future: int) -> dict:
-        """Awaits until consensus has advanced to era N.
-
-        :param future: Height of a future era to await.
-        :returns: On-chain era information N eras in the future.
-
-        """
-        current = await self._rest_client.get_era_height()
-        offset = future - current
-        if offset > 0:
-            await self.await_n_eras(offset)
 
     def get_events(
         self,
@@ -108,7 +68,7 @@ class Client():
 
     def yield_events(
         self,
-        etype: EventType = None,
+        etype: EventType,
         eid: int = 0
     ) -> typing.Generator[EventInfo, None, None]:
         """Binds to a node's event stream - and yields consumed events.
