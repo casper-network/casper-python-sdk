@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from pycspr.api import constants
+from pycspr.api.node.rest import constants
 from pycspr.api.node.rest.connection import ConnectionInfo
 
 
@@ -33,9 +33,9 @@ class Proxy:
         :returns: Network chainspec.
 
         """
-        response: str = await self._get_response(constants.REST_GET_CHAINSPEC)
-
-        return json.loads(response)["chainspec_bytes"]
+        return json.loads(
+            await self._get_response(constants.ENDPOINT_GET_CHAINSPEC)
+        )["chainspec_bytes"]
 
     async def get_node_metrics(self) -> list:
         """Returns set of node metrics.
@@ -43,19 +43,9 @@ class Proxy:
         :returns: Node metrics information.
 
         """
-        response = await self._get_response(constants.REST_GET_METRICS)
+        response = await self._get_response(constants.ENDPOINT_GET_METRICS)
 
         return sorted([i.strip() for i in response.split("\n") if not i.startswith("#")])
-
-    async def get_rpc_schema(self) -> dict:
-        """Returns node RPC API schema.
-
-        :returns: Node RPC API schema.
-
-        """
-        response: str = await self._get_response(constants.REST_GET_RPC_SCHEMA)
-
-        return json.loads(response)
 
     async def get_node_status(self) -> dict:
         """Returns node status information.
@@ -63,7 +53,19 @@ class Proxy:
         :returns: Node status information.
 
         """
-        return json.loads(await self._get_response(constants.REST_GET_STATUS))
+        return json.loads(
+            await self._get_response(constants.ENDPOINT_GET_STATUS)
+        )
+
+    async def get_rpc_schema(self) -> dict:
+        """Returns node RPC API schema.
+
+        :returns: Node RPC API schema.
+
+        """
+        return json.loads(
+            await self._get_response(constants.ENDPOINT_GET_RPC_SCHEMA)
+        )
 
     async def get_validator_changes(self) -> list:
         """Returns validator change information.
@@ -71,9 +73,9 @@ class Proxy:
         :returns: Validator change information.
 
         """
-        response = await self._get_response(constants.REST_GET_VALIDATOR_CHANGES)
-
-        return json.loads(response)["changes"]
+        return json.loads(
+            await self._get_response(constants.ENDPOINT_GET_VALIDATOR_CHANGES)
+        )["changes"]
 
     async def _get_response(self, endpoint: str) -> dict:
         """Invokes remote REST API and returns parsed response.

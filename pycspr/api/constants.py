@@ -2,7 +2,6 @@
 DEFAULT_HOST = "localhost"
 
 # Default node ports.
-DEFAULT_PORT_REST = 8888
 DEFAULT_PORT_RPC = 7777
 DEFAULT_PORT_SPECULATIVE_RPC = 7778
 DEFAULT_PORT_SSE = 9999
@@ -49,13 +48,6 @@ RPC_ENDPOINTS: set = {
     RPC_STATE_GET_DICTIONARY_ITEM,
     RPC_STATE_GET_ITEM,
     }
-
-# Node REST endpoints.
-REST_GET_CHAINSPEC = "chainspec"
-REST_GET_METRICS = "metrics"
-REST_GET_RPC_SCHEMA = "rpc-schema"
-REST_GET_STATUS = "status"
-REST_GET_VALIDATOR_CHANGES = "validator-changes"
 
 # Node RPC endpoints.
 SPECULATIVE_RPC_EXEC_DEPLOY = "speculative_exec"
