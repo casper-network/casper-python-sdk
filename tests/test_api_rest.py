@@ -37,8 +37,6 @@ async def test_get_node_status_1(NODE_REST_CLIENT: Client):
 
 async def test_get_node_status_2(NODE_REST_CLIENT: Client):
     data: NodeStatus = await NODE_REST_CLIENT.get_node_status()
-    print(NodeStatus)
-    print(type(data))
     assert isinstance(data, NodeStatus)
 
 

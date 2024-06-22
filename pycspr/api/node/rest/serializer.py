@@ -1,4 +1,5 @@
 from pycspr.api.node.rest.types import BlockHash
+from pycspr.api.node.rest.types import BlockRange
 from pycspr.api.node.rest.types import BlockHeight
 from pycspr.api.node.rest.types import EraID
 from pycspr.api.node.rest.types import MinimalBlockInfo
@@ -34,13 +35,20 @@ def decode(encoded: object, typedef: object) -> object:
     else:
         return decoder(encoded)
 
+def _decode_block_range(encoded: dict) -> BlockRange:
+    return BlockRange(
+        low=encoded["low"],
+        high=encoded["high"]
+    )
+
+
 def _decode_minimal_block_info(encoded: dict) -> MinimalBlockInfo:
     return MinimalBlockInfo(
         creator=decode(encoded["creator"], PublicKeyHex),
         era_id=decode(encoded["era_id"], EraID),
         hash=decode(encoded["hash"], BlockHash),
         height=decode(encoded["height"], BlockHeight),
-        state_root=decode(encoded["state_root_hash"], StateRootHash),
+        state_root_hash=decode(encoded["state_root_hash"], StateRootHash),
         timestamp=decode(encoded["timestamp"], Timestamp),
     )
 
@@ -64,13 +72,11 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
     # TODO: decode round length -> time duration
     return NodeStatus(
         api_version=decode(encoded["api_version"], str),
-        available_block_range=(
-            encoded["available_block_range"]["low"],
-            encoded["available_block_range"]["high"],
-        ),
+        available_block_range=decode(encoded["available_block_range"], BlockRange),
         build_version=decode(encoded["build_version"], str),
         chainspec_name=decode(encoded["chainspec_name"], str),
         last_added_block_info=decode(encoded["last_added_block_info"], MinimalBlockInfo),
+        last_progress=decode(encoded["last_progress"], Timestamp),
         next_upgrade=decode(encoded["next_upgrade"], NextUpgradeInfo),
         our_public_signing_key=decode(encoded["our_public_signing_key"], PublicKeyHex),
         peers=[decode(i, NodePeer) for i in encoded["peers"]],
@@ -100,6 +106,7 @@ DECODERS = PRIMITIVES_DECODERS | CRYPTO_DECODERS | {
     StateRootHash: lambda x: decode(x, DigestHex),
     ValidatorStatusChangeType: lambda x: ValidatorStatusChangeType(x),
 } | {
+    BlockRange: _decode_block_range,
     MinimalBlockInfo: _decode_minimal_block_info,
     NextUpgradeInfo: _decode_next_upgrade_info,
     NodePeer: _decode_node_peer,

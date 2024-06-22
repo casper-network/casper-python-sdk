@@ -43,12 +43,18 @@ class ValidatorStatusChangeType(enum.Enum):
 
 
 @dataclasses.dataclass
+class BlockRange():
+    low: int
+    high: int
+
+
+@dataclasses.dataclass
 class MinimalBlockInfo():
     creator: PublicKey
     era_id: EraID
     hash: BlockHash
     height: BlockHeight
-    state_root: StateRootHash
+    state_root_hash: StateRootHash
     timestamp: Timestamp
 
 
@@ -67,10 +73,11 @@ class NodePeer():
 @dataclasses.dataclass
 class NodeStatus():
     api_version: str
-    available_block_range: typing.Tuple[int, int]
+    available_block_range: BlockRange
     build_version: str
     chainspec_name: str
     last_added_block_info: MinimalBlockInfo
+    last_progress: Timestamp
     next_upgrade: NextUpgradeInfo
     our_public_signing_key: PublicKey
     peers: typing.List[NodePeer]
