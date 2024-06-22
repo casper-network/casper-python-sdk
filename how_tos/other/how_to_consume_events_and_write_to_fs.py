@@ -3,8 +3,8 @@ import asyncio
 import json
 
 from pycspr import NodeEventChannel
-from pycspr import NodeEventInfo
-from pycspr import NodeEventType
+from pycspr import NodeSseEventInfo
+from pycspr import NodeSseEventType
 from pycspr import NodeSseClient as NodeClient
 from pycspr import NodeSseConnectionInfo as NodeConnectionInfo
 
@@ -47,7 +47,7 @@ _ARGS.add_argument(
     dest="event",
     help="Type of event to which to listen to - defaults to all.",
     type=str,
-    choices=["all"] + [i.name for i in NodeEventType],
+    choices=["all"] + [i.name for i in NodeSseEventType],
     )
 
 # CLI argument: Path to output file.
@@ -82,7 +82,7 @@ async def _main(args: argparse.Namespace):
             client.get_events(
                 ecallback=lambda x: _on_event(x, fhandle),
                 echannel=NodeEventChannel[args.channel],
-                etype=None if args.event == "all" else NodeEventType[args.event],
+                etype=None if args.event == "all" else NodeSseEventType[args.event],
                 eid=0
             )
         except KeyboardInterrupt:
@@ -99,7 +99,7 @@ def _get_client(args: argparse.Namespace) -> NodeClient:
     return NodeClient(NodeConnectionInfo(args.node_host, args.node_port_sse))
 
 
-def _on_event(event_info: NodeEventInfo, fhandle):
+def _on_event(event_info: NodeSseEventInfo, fhandle):
     """Event callback handler.
 
     """

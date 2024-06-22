@@ -1,12 +1,14 @@
 import argparse
 import asyncio
 import json
+import typing
 
-from pycspr import NodeEventChannel
-from pycspr import NodeEventType
-from pycspr import NodeEventInfo
-from pycspr import NodeSseClient as NodeClient
-from pycspr import NodeSseConnectionInfo as NodeConnectionInfo
+from pycspr import NodeSseEventType
+from pycspr import NodeSseEventInfo
+from pycspr import NodeRestClient
+from pycspr import NodeRestConnectionInfo
+from pycspr import NodeSseClient
+from pycspr import NodeSseConnectionInfo
 
 
 # CLI argument parser.
@@ -21,32 +23,22 @@ _ARGS.add_argument(
     type=str,
     )
 
-# CLI argument: Node API JSON-RPC port - defaults to 11101 @ CCTL node 1.
+# CLI argument: Node API REST port - defaults to 11101 @ CCTL node 1.
 _ARGS.add_argument(
-    "--node-port-rpc",
-    default=11101,
-    dest="node_port_rpc",
-    help="Node API JSON-RPC port.  Typically 7777 on most nodes.",
+    "--node-port-rest",
+    default=13101,
+    dest="node_port_rest",
+    help="Node API JSON-RPC port.  Typically 8888 on most nodes.",
     type=int,
     )
 
-# CLI argument: Node API SSE port - defaults to 18101 @ CCTL node 1.
+# CLI argument: Node API SSE port - defaults to 14101 @ CCTL node 1.
 _ARGS.add_argument(
     "--node-port-sse",
-    default=18101,
+    default=14101,
     dest="node_port_sse",
     help="Node API SSE port.  Typically 9999 on most nodes.",
     type=int,
-    )
-
-# CLI argument: SSE channel type - defaults to main.
-_ARGS.add_argument(
-    "--channel",
-    default=NodeEventChannel.main.name,
-    dest="channel",
-    help="Node event channel to which to bind - defaults to main.",
-    type=str,
-    choices=[i.name for i in NodeEventChannel],
     )
 
 # CLI argument: SSE event type - defaults to all.
@@ -56,7 +48,7 @@ _ARGS.add_argument(
     dest="event",
     help="Type of event to which to listen to - defaults to all.",
     type=str,
-    choices=["all"] + [i.name for i in NodeEventType],
+    choices=["all"] + [i.name for i in NodeSseEventType],
     )
 
 
@@ -72,57 +64,68 @@ async def main(args: argparse.Namespace):
     print("Illustrates usage of pycspr.NodeClient.await_* functions.")
     print("-" * 74)
 
-    # Set node client.
-    client: NodeClient = _get_client(args)
+    # Set node clients.
+    sse_client, rest_client = _get_clients(args)
 
     # Await until 2 blocks have been added to linear chain.
     print("awaiting 2 blocks ...")
-    block_height = await client.rpc.get_block_height()
-    await client.await_n_blocks(2)
-    assert await client.rpc.get_block_height() == block_height + 2
+    block_height = await rest_client.get_block_height()
+    await sse_client.await_n_blocks(2)
+    assert await rest_client.get_block_height() == block_height + 2
 
-    # Await until 1 consensus era has elapsed.
+    # Await next era.
     print("awaiting 1 era ...")
-    era_height = await client.rpc.get_era_height()
-    await client.await_n_eras(1)
-    assert await client.rpc.get_era_height() == era_height + 1
+    era_height = await rest_client.get_era_height()
+    await sse_client.await_n_eras(1)
+    assert await rest_client.get_era_height() == era_height + 1
 
-    # Await until a block in the future.
-    future_block_height = await client.rpc.get_block_height() + 2
+    # Await a future block.
+    future_block_height = (await rest_client.get_block_height()) + 2
     print(f"awaiting until block {future_block_height} ...")
-    await client.await_until_block_n(future_block_height)
-    assert await client.rpc.get_block_height() == future_block_height
+    await sse_client.await_until_block_n(future_block_height)
+    assert future_block_height == await rest_client.get_block_height()
 
-    # Await until a consensus era in the future.
-    future_era_height = await client.rpc.get_era_height() + 1
+    # Await a future era.
+    future_era_height = (await rest_client.get_era_height()) + 1
     print(f"awaiting until era {future_era_height} ...")
-    await client.await_until_era_n(future_era_height)
-    assert future_era_height == await client.rpc.get_era_height()
+    await sse_client.await_until_era_n(future_era_height)
+    assert future_era_height == await rest_client.get_era_height()
 
     # Listen to node events.
-    client.get_events(
-        ecallback=_on_event_callback,
-        echannel=NodeEventChannel[args.channel],
-        etype=None if args.event == "all" else NodeEventType[args.event],
-        eid=0
-    )
+    etype = None if args.event == "all" else NodeSseEventType[args.event]
+    sse_client.get_events(etype, 0, _on_event_callback)
 
     print("-" * 74)
 
 
-def _get_client(args: argparse.Namespace) -> NodeClient:
-    """Returns a pycspr client instance.
+def _get_clients(args: argparse.Namespace) -> typing.Tuple[NodeSseClient, NodeRestClient]:
+    """Returns SSE & REST client instances.
 
     """
-    return NodeClient(NodeConnectionInfo(args.node_host, args.node_port_sse, args.node_port_rpc))
+    rest_client: NodeRestClient = NodeRestClient(
+        NodeRestConnectionInfo(
+            args.node_host,
+            args.node_port_rest
+        )
+    )
+
+    sse_client: NodeSseClient = NodeSseClient(
+        NodeSseConnectionInfo(
+            args.node_host,
+            args.node_port_sse
+        ),
+        rest_client
+    )
+
+    return sse_client, rest_client
 
 
-def _on_event_callback(event_info: NodeEventInfo):
+def _on_event_callback(event_info: NodeSseEventInfo):
     """Event callback handler.
 
     """
     print("-" * 74)
-    print(f"Event #{event_info.idx or 0} :: {event_info.channel} :: {event_info.typeof}")
+    print(f"Event #{event_info.idx or 0} :: {event_info.typeof}")
     print("-" * 74)
     print(json.dumps(event_info.payload, indent=4))
     print("-" * 74)

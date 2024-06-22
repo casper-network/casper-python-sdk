@@ -19,17 +19,16 @@ from pycspr import verifier
 from pycspr.api.node.rest import Client as NodeRestClient
 from pycspr.api.node.rest import ConnectionInfo as NodeRestConnectionInfo
 
+from pycspr.api.node.sse import Client as NodeSseClient
+from pycspr.api.node.sse import ConnectionInfo as NodeSseConnectionInfo
+from pycspr.api.node.sse import EventInfo as NodeSseEventInfo
+from pycspr.api.node.sse import EventType as NodeSseEventType
+
 from pycspr.api import NodeRpcClient
 from pycspr.api import NodeRpcConnectionInfo
 from pycspr.api import NodeRpcProxyError
 from pycspr.api import NodeSpeculativeRpcClient
 from pycspr.api import NodeSpeculativeRpcConnectionInfo
-from pycspr.api import NodeSseClient
-from pycspr.api import NodeSseConnectionInfo
-from pycspr.api import NodeEventChannel
-from pycspr.api import NodeEventInfo
-from pycspr.api import NodeEventType
-from pycspr.api import SSE_CHANNEL_TO_SSE_EVENT
 
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO

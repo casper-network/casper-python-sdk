@@ -241,12 +241,12 @@ class Block():
     def is_switch(self) -> bool:
         """Helper attribute: is a switch block."""
         return self.header.era_end is not None
-    
+
     @property
     def signatories(self) -> typing.Set[PublicKey]:
         """Helper attribute: block signatories."""
         return set([i.public_key for i in self.proofs])
-    
+
     @property
     def validator_weight_required_for_finality_in_next_era(self) -> int:
         return self.header.era_end.validator_weight_required_for_finality
