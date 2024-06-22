@@ -16,9 +16,12 @@ class ConnectionInfo:
     # Number of exposed speculative SSE port.
     port: int = DEFAULT_PORT
 
-    @property
-    def address(self) -> str:
-        """Return address of remote SSE server.
+    def get_url(self, eid: int = 0) -> str:
+        """Returns URL for remote SSE server connection.
 
         """
-        return f"http://{self.host}:{self.port}/events"
+        url: str = f"http://{self.host}:{self.port}/events"
+        if eid:
+            url = f"{url}?start_from={eid}"
+
+        return url

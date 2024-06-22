@@ -59,13 +59,23 @@ async def main(args: argparse.Namespace):
 
     """
     print("-" * 74)
-    print("PYCSPR :: How To Apply Await Events")
-    print("")
-    print("Illustrates usage of pycspr.NodeClient.await_* functions.")
+    print("PYCSPR :: How To Consume Node SSE API")
     print("-" * 74)
+
+    # Parse arg: event type.
+    etype = NodeSseEventType.All if args.event == "all" else NodeSseEventType[args.event]
 
     # Set node clients.
     sse_client, rest_client = _get_clients(args)
+
+    # Bind to event stream.
+    print("binding to event stream ...")
+    event_count = 0
+    for einfo in sse_client.yield_events(etype, 0):
+        print(f"\tEvent Id = {einfo.idx} :: Event Type = {einfo.typeof}")
+        event_count += 1
+        if event_count == 5:
+            break
 
     # Await until 2 blocks have been added to linear chain.
     print("awaiting 2 blocks ...")
@@ -80,7 +90,6 @@ async def main(args: argparse.Namespace):
     assert await rest_client.get_era_height() == era_height + 1
 
     # Listen to node events.
-    etype = None if args.event == "all" else NodeSseEventType[args.event]
     sse_client.get_events(etype, 0, _on_event_callback)
 
     print("-" * 74)

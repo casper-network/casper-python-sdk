@@ -12,13 +12,13 @@ class EventType(enum.Enum):
     All = enum.auto()
     ApiVersion = enum.auto()
     BlockAdded = enum.auto()
-    DeployAccepted = enum.auto()
-    DeployProcessed = enum.auto()
-    DeployExpired = enum.auto()
     Fault = enum.auto()
     FinalitySignature = enum.auto()
     Shutdown = enum.auto()
     Step = enum.auto()
+    TransactionAccepted = enum.auto()
+    TransactionsExpired = enum.auto()
+    TransactionProcessed = enum.auto()
 
 
 @dataclasses.dataclass

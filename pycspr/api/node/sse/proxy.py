@@ -19,7 +19,7 @@ class Proxy:
         :param connection_info: Information required to connect to a node.
 
         """
-        self.connection_info = connection_info
+        self._connection_info = connection_info
 
     def yield_events(
         self,
@@ -33,11 +33,11 @@ class Proxy:
 
         """
         # Set client.
-        url = self.connection_info.address
-        if eid:
-            url = f"{url}?start_from={eid}"
         sse_client: sseclient.SSEClient = sseclient.SSEClient(
-            requests.get(url, stream=True)
+            requests.get(
+                self._connection_info.get_url(eid),
+                stream=True
+            )
         )
 
         # Open connection & iterate event stream.
