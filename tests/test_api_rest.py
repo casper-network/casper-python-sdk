@@ -19,11 +19,13 @@ async def test_get_node_metrics(NODE_REST_CLIENT: Client):
     assert len(data) > 300
 
 
-async def test_get_node_metric(NODE_REST_CLIENT: Client):
-    data = await NODE_REST_CLIENT.get_node_metric("mem_deploy_gossiper")
+async def test_get_node_metric_1(NODE_REST_CLIENT: Client):
+    data = await NODE_REST_CLIENT.get_node_metric("address_gossiper_items_received")
     assert isinstance(data, list)
     assert len(data) == 1
 
+
+async def test_get_node_metric_2(NODE_REST_CLIENT: Client):
     data = await NODE_REST_CLIENT.get_node_metric("xxxxxxxxxxxxxxxxxxxxx")
     assert isinstance(data, list)
     assert len(data) == 0
@@ -32,18 +34,12 @@ async def test_get_node_metric(NODE_REST_CLIENT: Client):
 async def test_get_node_status_1(NODE_REST_CLIENT: Client):
     data: dict = await NODE_REST_CLIENT.get_node_status(decode=False)
     assert isinstance(data, dict)
-    assert len(data) == 14
+    assert len(data) == 15
 
 
 async def test_get_node_status_2(NODE_REST_CLIENT: Client):
     data: NodeStatus = await NODE_REST_CLIENT.get_node_status()
     assert isinstance(data, NodeStatus)
-
-
-async def test_get_node_rpc_schema(NODE_REST_CLIENT: Client):
-    data = await NODE_REST_CLIENT.get_node_rpc_schema()
-    assert isinstance(data, dict)
-    assert len(data) == 5
 
 
 async def test_get_validator_changes_1(NODE_REST_CLIENT: Client):

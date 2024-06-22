@@ -76,6 +76,7 @@ def _decode_node_status(encoded: dict) -> NodeStatus:
         build_version=decode(encoded["build_version"], str),
         chainspec_name=decode(encoded["chainspec_name"], str),
         last_added_block_info=decode(encoded["last_added_block_info"], MinimalBlockInfo),
+        latest_switch_block_hash=decode(encoded["latest_switch_block_hash"], BlockHash),
         last_progress=decode(encoded["last_progress"], Timestamp),
         next_upgrade=decode(encoded["next_upgrade"], NextUpgradeInfo),
         our_public_signing_key=decode(encoded["our_public_signing_key"], PublicKeyHex),

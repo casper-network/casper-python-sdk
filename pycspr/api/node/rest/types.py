@@ -74,9 +74,11 @@ class NodePeer():
 class NodeStatus():
     api_version: str
     available_block_range: BlockRange
+    # block_sync: TODO
     build_version: str
     chainspec_name: str
     last_added_block_info: MinimalBlockInfo
+    latest_switch_block_hash: BlockHash
     last_progress: Timestamp
     next_upgrade: NextUpgradeInfo
     our_public_signing_key: PublicKey

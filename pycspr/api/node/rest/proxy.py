@@ -57,16 +57,6 @@ class Proxy:
             await self._get_response(constants.ENDPOINT_GET_STATUS)
         )
 
-    async def get_rpc_schema(self) -> dict:
-        """Returns node RPC API schema.
-
-        :returns: Node RPC API schema.
-
-        """
-        return json.loads(
-            await self._get_response(constants.ENDPOINT_GET_RPC_SCHEMA)
-        )
-
     async def get_validator_changes(self) -> list:
         """Returns validator change information.
 

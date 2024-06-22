@@ -58,14 +58,6 @@ class Client():
 
         return encoded if decode is False else serializer.decode(encoded, NodeStatus)
 
-    async def get_node_rpc_schema(self) -> dict:
-        """Returns node RPC API schema.
-
-        :returns: Node RPC API schema.
-
-        """
-        return await self.proxy.get_rpc_schema()
-
     async def get_validator_changes(self, decode: bool = True) -> typing.List[typing.Union[dict, NodeStatus]]:
         """Returns validator change information.
 

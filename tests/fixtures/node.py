@@ -39,7 +39,7 @@ def NODE_REST_CONNECTION_INFO(
 
 @pytest.fixture(scope="session")
 def NODE_REST_PORT() -> int:
-    return int(os.getenv("PYCSPR_TEST_NODE_REST_PORT", 14101))
+    return int(os.getenv("PYCSPR_TEST_NODE_REST_PORT", 13101))
 
 
 @pytest.fixture(scope="session")
@@ -60,7 +60,7 @@ def NODE_SSE_CONNECTION_INFO(
 
 @pytest.fixture(scope="session")
 def NODE_SSE_PORT() -> int:
-    return int(os.getenv("PYCSPR_TEST_NODE_SSE_PORT", 18101))
+    return int(os.getenv("PYCSPR_TEST_NODE_SSE_PORT", 14101))
 
 
 
