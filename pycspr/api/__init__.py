@@ -1,5 +1,8 @@
-from pycspr.api.rest import Client as NodeRestClient
-from pycspr.api.rest import ConnectionInfo as NodeRestConnectionInfo
+from pycspr.api import node
+
+from pycspr.api.node.rest import Client as NodeRestClient
+from pycspr.api.node.rest import ConnectionInfo as NodeRestConnectionInfo
+
 from pycspr.api.rpc import Client as NodeRpcClient
 from pycspr.api.rpc import ConnectionInfo as NodeRpcConnectionInfo
 from pycspr.api.rpc import ProxyError as NodeRpcProxyError

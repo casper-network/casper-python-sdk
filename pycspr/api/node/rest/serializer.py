@@ -1,0 +1,109 @@
+from pycspr.api.node.rest.types import BlockHash
+from pycspr.api.node.rest.types import BlockHeight
+from pycspr.api.node.rest.types import EraID
+from pycspr.api.node.rest.types import MinimalBlockInfo
+from pycspr.api.node.rest.types import NextUpgradeInfo
+from pycspr.api.node.rest.types import NodePeer
+from pycspr.api.node.rest.types import NodeStatus
+from pycspr.api.node.rest.types import ReactorState
+from pycspr.api.node.rest.types import StateRootHash
+from pycspr.api.node.rest.types import Timestamp
+from pycspr.api.node.rest.types import ValidatorChanges
+from pycspr.api.node.rest.types import ValidatorStatusChangeType
+
+from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
+from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
+from pycspr.types.crypto import DigestHex
+from pycspr.types.crypto import PublicKey
+from pycspr.types.crypto import PublicKeyHex
+from pycspr.utils import convertor
+
+
+def decode(encoded: object, typedef: object) -> object:
+    """Decodes a domain type instance from JSON encoded type instance.
+
+    :param typedef: Domain type to be instantiated.
+    :param encoded: JSON encoded type instance.
+    :returns: Domain type instance.
+
+    """
+    try:
+        decoder = DECODERS[typedef]
+    except KeyError:
+        raise ValueError(f"Cannot decode {typedef} from json")
+    else:
+        return decoder(encoded)
+
+def _decode_minimal_block_info(encoded: dict) -> MinimalBlockInfo:
+    return MinimalBlockInfo(
+        creator=decode(encoded["creator"], PublicKeyHex),
+        era_id=decode(encoded["era_id"], EraID),
+        hash=decode(encoded["hash"], BlockHash),
+        height=decode(encoded["height"], BlockHeight),
+        state_root=decode(encoded["state_root_hash"], StateRootHash),
+        timestamp=decode(encoded["timestamp"], Timestamp),
+    )
+
+
+def _decode_next_upgrade_info(encoded: dict) -> NextUpgradeInfo:
+    if encoded is not None:
+        return NextUpgradeInfo(
+            activation_point=decode(encoded["activation_point"], str),
+            protocol_version=decode(encoded["protocol_version"], str),
+        )
+
+
+def _decode_node_peer(encoded: dict) -> NodePeer:
+    return NodePeer(
+        address=decode(encoded["address"], str),
+        node_id=decode(encoded["node_id"], str),
+    )
+
+
+def _decode_node_status(encoded: dict) -> NodeStatus:
+    # TODO: decode round length -> time duration
+    return NodeStatus(
+        api_version=decode(encoded["api_version"], str),
+        available_block_range=(
+            encoded["available_block_range"]["low"],
+            encoded["available_block_range"]["high"],
+        ),
+        build_version=decode(encoded["build_version"], str),
+        chainspec_name=decode(encoded["chainspec_name"], str),
+        last_added_block_info=decode(encoded["last_added_block_info"], MinimalBlockInfo),
+        next_upgrade=decode(encoded["next_upgrade"], NextUpgradeInfo),
+        our_public_signing_key=decode(encoded["our_public_signing_key"], PublicKeyHex),
+        peers=[decode(i, NodePeer) for i in encoded["peers"]],
+        reactor_state=decode(encoded["reactor_state"], ReactorState),
+        round_length=decode(encoded["round_length"], str),
+        starting_state_root_hash=decode(encoded["starting_state_root_hash"], StateRootHash),
+        uptime=decode(encoded["uptime"], str),
+    )
+
+
+def _decode_timestamp(encoded: str) -> Timestamp:
+    return Timestamp(convertor.timestamp_from_iso_datetime(encoded))
+
+
+def _decode_validator_changes(encoded: list) -> ValidatorChanges:
+    return ValidatorChanges(
+        public_key=decode(PublicKeyHex, encoded["public_key"]),
+        status_changes=[decode(ValidatorStatusChange, i) for i in encoded["status_changes"]],
+    )
+
+
+DECODERS = PRIMITIVES_DECODERS | CRYPTO_DECODERS | {
+    BlockHash: lambda x: decode(x, DigestHex),
+    BlockHeight: lambda x: decode(x, int),
+    EraID: lambda x: decode(x, int),
+    ReactorState: lambda x: ReactorState(x),
+    StateRootHash: lambda x: decode(x, DigestHex),
+    ValidatorStatusChangeType: lambda x: ValidatorStatusChangeType(x),
+} | {
+    MinimalBlockInfo: _decode_minimal_block_info,
+    NextUpgradeInfo: _decode_next_upgrade_info,
+    NodePeer: _decode_node_peer,
+    NodeStatus: _decode_node_status,
+    Timestamp: _decode_timestamp,
+    ValidatorChanges: _decode_validator_changes,
+}

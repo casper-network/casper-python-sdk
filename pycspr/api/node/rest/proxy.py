@@ -3,7 +3,7 @@ import json
 import requests
 
 from pycspr.api import constants
-from pycspr.api.rest.connection import ConnectionInfo
+from pycspr.api.node.rest.connection import ConnectionInfo
 
 
 class Proxy:

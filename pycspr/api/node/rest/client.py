@@ -1,10 +1,10 @@
 import typing
 
-from pycspr import serializer
-from pycspr.api.rest.connection import ConnectionInfo
-from pycspr.api.rest.proxy import Proxy
-from pycspr.types.node import NodeStatus
-from pycspr.types.node import ValidatorChanges
+from pycspr.api.node.rest import serializer
+from pycspr.api.node.rest.connection import ConnectionInfo
+from pycspr.api.node.rest.proxy import Proxy
+from pycspr.api.node.rest.types import NodeStatus
+from pycspr.api.node.rest.types import ValidatorChanges
 
 
 class Client():
@@ -19,10 +19,6 @@ class Client():
         """
         self.proxy = Proxy(connection_info)
 
-        # Extension methods -> 2nd order functions.
-        ext = ClientExtensions(self)
-        self.get_node_metric = ext.get_node_metric
-
     async def get_chainspec(self) -> dict:
         """Returns network chainspec.
 
@@ -30,6 +26,17 @@ class Client():
 
         """
         return await self.proxy.get_chainspec()
+
+    async def get_node_metric(self, metric_id: str) -> list:
+        """Returns node metrics information filtered by a particular metric.
+
+        :param metric_id: Identifier of node metric.
+        :returns: Node metrics information filtered by a particular metric.
+
+        """
+        metrics: list = await self.get_node_metrics()
+
+        return [i for i in metrics if i.lower().startswith(metric_id.lower())]
 
     async def get_node_metrics(self) -> list:
         """Returns set of node metrics.
@@ -48,7 +55,7 @@ class Client():
         """
         encoded: dict = await self.proxy.get_node_status()
 
-        return encoded if decode is False else serializer.from_json(NodeStatus, encoded)
+        return encoded if decode is False else serializer.decode(encoded, NodeStatus)
 
     async def get_node_rpc_schema(self) -> dict:
         """Returns node RPC API schema.
@@ -58,7 +65,7 @@ class Client():
         """
         return await self.proxy.get_rpc_schema()
 
-    async def get_validator_changes(self, decode: bool = True) -> list:
+    async def get_validator_changes(self, decode: bool = True) -> typing.List[typing.Union[dict, NodeStatus]]:
         """Returns validator change information.
 
         :returns: Validator change information.
@@ -68,28 +75,4 @@ class Client():
 
         return \
             encoded if decode is False else \
-            [serializer.from_json(ValidatorChanges, i) for i in encoded]
-
-
-class ClientExtensions():
-    """Node REST server client extensions, i.e. 2nd order functions.
-
-    """
-    def __init__(self, client: Client):
-        """Instance constructor.
-
-        :param client: Node REST client.
-
-        """
-        self.client = client
-
-    async def get_node_metric(self, metric_id: str) -> list:
-        """Returns node metrics information filtered by a particular metric.
-
-        :param metric_id: Identifier of node metric.
-        :returns: Node metrics information filtered by a particular metric.
-
-        """
-        metrics: list = await self.client.get_node_metrics()
-
-        return [i for i in metrics if i.lower().startswith(metric_id.lower())]
+            [serializer.decode(i, ValidatorChanges) for i in encoded]

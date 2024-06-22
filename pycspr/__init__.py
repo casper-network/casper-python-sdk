@@ -16,8 +16,9 @@ from pycspr import crypto
 from pycspr import factory
 from pycspr import verifier
 
-from pycspr.api import NodeRestClient
-from pycspr.api import NodeRestConnectionInfo
+from pycspr.api.node.rest import Client as NodeRestClient
+from pycspr.api.node.rest import ConnectionInfo as NodeRestConnectionInfo
+
 from pycspr.api import NodeRpcClient
 from pycspr.api import NodeRpcConnectionInfo
 from pycspr.api import NodeRpcProxyError
