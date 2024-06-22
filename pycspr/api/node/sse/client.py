@@ -1,39 +1,36 @@
 import typing
 
-from pycspr.api.rpc import Client as RpcClient
-from pycspr.api.rpc import ConnectionInfo as RpcClientConnectionInfo
-from pycspr.api.sse.connection import ConnectionInfo
-from pycspr.api.sse.proxy import Proxy
-from pycspr.types.node import NodeEventChannel
-from pycspr.types.node import NodeEventInfo
-from pycspr.types.node import NodeEventType
-from pycspr.types.node import SSE_CHANNEL_TO_SSE_EVENT
+from pycspr.api.node.rest.client import Client as RestClient
+from pycspr.api.node.rest.connection import ConnectionInfo as RestClientConnectionInfo
+from pycspr.api.node.sse.connection import ConnectionInfo
+from pycspr.api.node.sse.proxy import Proxy
+from pycspr.api.node.sse.types import NodeEventChannel
+from pycspr.api.node.sse.types import NodeEventInfo
+from pycspr.api.node.sse.types import NodeEventType
+from pycspr.api.node.sse.types import SSE_CHANNEL_TO_SSE_EVENT
 
 
 class Client():
     """Node SSE server client.
 
     """
-    def __init__(self, connection_info: ConnectionInfo, rpc_client: RpcClient = None):
+    def __init__(self, connection_info: ConnectionInfo, rest_client: RestClient = None):
         """Instance constructor.
 
-        :param connection_info: Information required to connect to a node.
-        :param rpc_client: Node RPC client.
+        :param connection_info: Information required to connect to a node's SSE port.
+        :param rest_client: Node REST client.
 
         """
         self.proxy = Proxy(connection_info)
-        self.rpc = rpc_client or RpcClient(
-            RpcClientConnectionInfo(connection_info.host, connection_info.port_rpc)
-        )
+        if rest_client is None:
+            rest_client = RestClient(
+                RestClientConnectionInfo(
+                    connection_info.host,
+                    connection_info.port_rest
+                )
+            )
+        self.ext = ClientExtensions(self, rest_client)
 
-        # Extension methods -> 2nd order functions.
-        ext = ClientExtensions(self)
-        self.await_n_blocks = ext.await_n_blocks
-        self.await_n_eras = ext.await_n_eras
-        self.await_n_events = ext.await_n_events
-        self.await_until_block_n = ext.await_until_block_n
-        self.await_until_era_n = ext.await_until_era_n
-        self.get_events = ext.get_events
 
     def yield_events(
         self,
@@ -68,7 +65,7 @@ class ClientExtensions():
 
         """
         self.client = client
-        self.rpc_client = client.rpc
+        self.rest_client = client.rpc
 
     async def await_n_blocks(self, offset: int):
         """Awaits until linear block chain has advanced by N blocks.
@@ -115,7 +112,7 @@ class ClientExtensions():
         :returns: On-chain block information N block in the future.
 
         """
-        _, current = await self.rpc_client.get_chain_heights()
+        current = await self.rest_client.ext.get_block_height()
         offset = future - current
         if offset > 0:
             await self.await_n_blocks(offset)
@@ -127,7 +124,7 @@ class ClientExtensions():
         :returns: On-chain era information N eras in the future.
 
         """
-        current, _ = await self.rpc_client.get_chain_heights()
+        current = await self.rest_client.ext.get_era_height()
         offset = future - current
         if offset > 0:
             await self.await_n_eras(offset)

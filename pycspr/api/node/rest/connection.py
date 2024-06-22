@@ -1,6 +1,7 @@
 import dataclasses
 
-from pycspr.api.node.rest import constants
+from pycspr.api.node.rest.constants import DEFAULT_HOST
+from pycspr.api.node.rest.constants import DEFAULT_PORT
 
 
 @dataclasses.dataclass
@@ -9,7 +10,7 @@ class ConnectionInfo:
 
     """
     # Host address.
-    host: str = constants.DEFAULT_HOST
+    host: str = DEFAULT_HOST
 
     # Number of exposed REST port.
-    port: int = constants.DEFAULT_PORT
+    port: int = DEFAULT_PORT

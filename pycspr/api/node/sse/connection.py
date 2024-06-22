@@ -1,6 +1,8 @@
 import dataclasses
 
-from pycspr.api import constants
+from pycspr.api.node.sse.constants import DEFAULT_HOST
+from pycspr.api.node.sse.constants import DEFAULT_PORT
+from pycspr.api.node.sse.constants import DEFAULT_PORT_REST
 
 
 @dataclasses.dataclass
@@ -9,10 +11,10 @@ class ConnectionInfo:
 
     """
     # Host address.
-    host: str = constants.DEFAULT_HOST
+    host: str = DEFAULT_HOST
 
     # Number of exposed speculative SSE port.
-    port: int = constants.DEFAULT_PORT_SSE
+    port: int = DEFAULT_PORT
 
-    # Number of exposed JSON-RPC port.
-    port_rpc: int = constants.DEFAULT_PORT_RPC
+    # Number of exposed REST port.
+    port_rest: int = DEFAULT_PORT_REST
