@@ -28,7 +28,11 @@ def NODE_BINARY_CONNECTION_INFO(
     NODE_HOST: str,
     NODE_BINARY_PORT: int
 ) -> pycspr.NodeBinaryConnectionInfo:
-    return pycspr.NodeBinaryConnectionInfo(NODE_HOST, NODE_BINARY_PORT)
+    return pycspr.NodeBinaryConnectionInfo(
+        "2.0.0",
+        NODE_HOST,
+        NODE_BINARY_PORT
+    )
 
 
 @pytest.fixture(scope="session")

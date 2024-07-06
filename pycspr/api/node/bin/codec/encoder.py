@@ -6,48 +6,52 @@ from pycspr.api.node.bin import types
 ENCODERS: typing.Dict[typing.Type, typing.Callable] = \
 {
     types.domain.BlockHash: \
-        lambda x:\
+        lambda x: \
             encode_u8(0) + \
             encode_bytes(x),
 
     types.domain.BlockHeight: \
-        lambda x:\
+        lambda x: \
             encode_u8(1) + \
             encode_u64(x),
 
     types.domain.ProtocolVersion: \
-        lambda x:\
+        lambda x: \
             encode_u8(x.major) + \
             encode_u8(x.minor) + \
             encode_u8(x.patch),
 } | {
     types.request.get.information.GetBlockHeaderRequest: \
-        lambda x:\
+        lambda x: \
             encode(types.request.core.RequestType_Get_Information.BlockHeader) + \
-            encode_optional(x.block_id, encode_block_id)
+            encode_optional(x.block_id, encode_block_id),
+
+    types.request.get.information.GetUptimeRequest: \
+        lambda x: \
+            encode(types.request.core.RequestType_Get_Information.Uptime)
 } | {
     types.request.core.Request: \
-        lambda x:\
+        lambda x: \
             encode(x.header) + \
             encode(x.body),
 
     types.request.core.RequestHeader: \
-        lambda x:\
+        lambda x: \
             encode_u16(x.binary_request_version) + \
             encode(x.chain_protocol_version) + \
             encode(x.type_tag) + \
             encode_u16(x.id),
 
     types.request.core.RequestType: \
-        lambda x:\
+        lambda x: \
             encode_u8(x.value),
 
     types.request.core.RequestType_Get: \
-        lambda x:\
+        lambda x: \
             encode_u8(x.value),
 
     types.request.core.RequestType_Get_Information: \
-        lambda x:\
+        lambda x: \
             encode(types.request.core.RequestType_Get.Information) + \
             encode_u8(x.value),
 }

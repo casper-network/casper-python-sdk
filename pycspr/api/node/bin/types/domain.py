@@ -31,6 +31,11 @@ class BlockHeader():
 
 
 @dataclasses.dataclass
+class BlockRange():
+    pass
+
+
+@dataclasses.dataclass
 class NodeUptimeInfo():
     pass
 
@@ -43,3 +48,13 @@ class ProtocolVersion():
     minor: int
     # Patch semantic version.
     patch: int
+
+    @staticmethod
+    def from_semvar(val: str):
+        major, minor, patch = val.split(".")
+
+        return ProtocolVersion(
+            int(major),
+            int(minor),
+            int(patch)
+        )

@@ -8,29 +8,46 @@ from pycspr.api.node.bin.types.request.core import RequestHeader
 from pycspr.api.node.bin.types.request.core import RequestType
 
 
-def get_request(request_type: RequestType, request_body: object, request_id: int = 0) -> Request:
+def get_request(
+    connection_info: ConnectionInfo,
+    request_type: RequestType,
+    request_body: object,
+    request_id: int = None
+) -> Request:
     return Request(
         body = request_body,
-        header = get_request_header(request_type, request_id),
+        header = get_request_header(connection_info, request_type, request_id),
     )
 
 
-def get_request_header(request_type: RequestType, request_id: int = 0) -> RequestHeader:
+def get_request_header(
+    connection_info: ConnectionInfo,
+    request_type: RequestType,
+    request_id: int = None
+) -> RequestHeader:
     return RequestHeader(
-        binary_request_version = 0,
-        chain_protocol_version = ProtocolVersion(major=2, minor=0, patch=0),
+        binary_request_version = connection_info.binary_request_version,
+        chain_protocol_version = \
+            ProtocolVersion.from_semvar(connection_info.chain_protocol_version),
         type_tag = request_type,
-        id = 0,
+        id = request_id or 0,
     )
 
 
-async def get_response(connection: ConnectionInfo, request: Request) -> bytes:
+async def get_response(
+    connection_info: ConnectionInfo,
+    request_type: RequestType,
+    request_body: object,
+    request_id: int = None
+) -> bytes:
     # Set TCP stream reader & writer.
-    reader, writer = await asyncio.open_connection(connection.host, connection.port)
+    reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
+
+    # Set request.
+    request: Request = get_request(connection_info, request_type, request_body, request_id)
 
     # Set message.
     msg: bytes = codec.encode(request)
-    print(msg)
 
     # Dispatch request.
     writer.write(codec.encode_u32(len(msg)) + msg)
