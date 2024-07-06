@@ -43,7 +43,7 @@ async def get_response(connection: ConnectionInfo, request: Request) -> bytes:
     writer.close()
     await writer.wait_closed()
 
-    return response
+    return parse_response(response)
 
 
 def parse_response(response: bytes) -> bytes:

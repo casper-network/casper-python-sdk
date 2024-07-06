@@ -12,9 +12,26 @@ BlockHeight = typing.NewType(
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 
+EraID = typing.NewType(
+    "Ordinal identifier of an era measured by how many era precede it.", int
+)
+
+PublicKey = typing.NewType(
+    "Public key associated with an account.", bytes
+    )
+
+TransactionHash = typing.NewType(
+    "Digest over a transaction.", bytes
+    )
+
 
 @dataclasses.dataclass
 class BlockHeader():
+    pass
+
+
+@dataclasses.dataclass
+class NodeUptimeInfo():
     pass
 
 

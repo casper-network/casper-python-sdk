@@ -2,6 +2,17 @@ import dataclasses
 import typing
 
 from pycspr.api.node.bin.types.domain import BlockID
+from pycspr.api.node.bin.types.domain import EraID
+from pycspr.api.node.bin.types.domain import PublicKey
+from pycspr.api.node.bin.types.domain import TransactionHash
+
+
+@dataclasses.dataclass
+class GetAvailableBlockRangeRequest():
+    """Request payload: Get.Information.AvailableBlockRange endpoint.
+
+    """
+    pass
 
 
 @dataclasses.dataclass
@@ -13,11 +24,75 @@ class GetBlockHeaderRequest():
 
 
 @dataclasses.dataclass
-class GetSignedBlockRequest():
-    """Request payload: Get.Information.SignedBlock endpoint.
+class GetBlockSynchronizerStatusRequest():
+    """Request payload: Get.Information.BlockSynchronizerStatus endpoint.
 
     """
-    block_id: typing.Optional[BlockID]
+    pass
+
+
+@dataclasses.dataclass
+class GetChainspecRawBytesRequest():
+    """Request payload: Get.Information.ChainspecRawBytes endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetConsensusStatusRequest():
+    """Request payload: Get.Information.ConsensusStatus endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetConsensusValidatorChangesRequest():
+    """Request payload: Get.Information.ConsensusValidatorChanges endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetLastProgressRequest():
+    """Request payload: Get.Information.LastProgress endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetLatestSwitchBlockHeaderRequest():
+    """Request payload: Get.Information.LatestSwitchBlockHeader endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetNetworkNameRequest():
+    """Request payload: Get.Information.NetworkName endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetNextUpgradeRequest():
+    """Request payload: Get.Information.NextUpgrade endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetNodeStatusRequest():
+    """Request payload: Get.Information.NodeStatus endpoint.
+
+    """
+    pass
 
 
 @dataclasses.dataclass
@@ -26,6 +101,44 @@ class GetPeersRequest():
 
     """
     pass
+
+
+@dataclasses.dataclass
+class GetReactorStateRequest():
+    """Request payload: Get.Information.ReactorState endpoint.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class GetRewardRequest():
+    """Request payload: Get.Information.Reward endpoint.
+
+    """
+    delegator: typing.Optional[PublicKey]
+    era_id: typing.Optional[EraID]
+    validator: PublicKey
+
+
+@dataclasses.dataclass
+class GetSignedBlockRequest():
+    """Request payload: Get.Information.SignedBlock endpoint.
+
+    """
+    block_id: typing.Optional[BlockID]
+
+
+@dataclasses.dataclass
+class GetTransactionRequest():
+    """Request payload: Get.Information.Transaction endpoint.
+
+    """
+    # Hash of the transaction to retrieve.
+    hash: TransactionHash
+
+    # Whether to return the deploy with the finalized approvals substituted.
+    with_finalized_approvals: bool
 
 
 @dataclasses.dataclass
