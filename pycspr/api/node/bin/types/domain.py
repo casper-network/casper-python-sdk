@@ -12,6 +12,12 @@ BlockHeight = typing.NewType(
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 
+
+@dataclasses.dataclass
+class BlockHeader():
+    pass
+
+
 @dataclasses.dataclass
 class ProtocolVersion():
     # Major semantic version.

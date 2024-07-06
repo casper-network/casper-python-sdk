@@ -33,7 +33,7 @@ def NODE_BINARY_CONNECTION_INFO(
 
 @pytest.fixture(scope="session")
 def NODE_BINARY_PORT() -> int:
-    return int(os.getenv("PYCSPR_TEST_NODE_BINARY_PORT", 14101))
+    return int(os.getenv("PYCSPR_TEST_NODE_BINARY_PORT", 12101))
 
 
 @pytest.fixture(scope="session")

@@ -1,4 +1,9 @@
+from pycspr.api.node.bin import codec
+from pycspr.api.node.bin import types
+from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.connection import ConnectionInfo
+from pycspr.api.node.bin.types.request.core import RequestType
+from pycspr.api.node.bin.types.domain import BlockID
 
 
 class Proxy:
@@ -13,5 +18,12 @@ class Proxy:
         """
         self._connection_info = connection_info
 
-    def get_block_header(self) -> bytes:
-        pass
+    async def get_block_header(self, block_id: BlockID = None) -> bytes:
+        request = utils.get_request(
+            RequestType.Get,
+            types.request.get.information.GetBlockHeaderRequest(block_id)
+        )
+
+        return utils.parse_response(
+            await utils.get_response(self._connection_info, request)
+        )

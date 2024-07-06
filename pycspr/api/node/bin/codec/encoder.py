@@ -20,9 +20,8 @@ ENCODERS: typing.Dict[typing.Type, typing.Callable] = \
             encode_u8(x.major) + \
             encode_u8(x.minor) + \
             encode_u8(x.patch),
-} | \
-{
-    types.request.get.information.GetInformationBlockHeaderRequest: \
+} | {
+    types.request.get.information.GetBlockHeaderRequest: \
         lambda x:\
             encode(types.request.core.RequestType_Get_Information.BlockHeader) + \
             encode_optional(x.block_id, encode_block_id)
