@@ -15,3 +15,7 @@ class Client():
 
         """
         self.proxy = Proxy(connection_info)
+
+    def get_block_header(self, decode=True):
+        self.proxy.get_block_header()
+        pass

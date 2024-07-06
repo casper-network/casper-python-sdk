@@ -69,7 +69,7 @@ async def main(args: argparse.Namespace):
     sse_client, rest_client = _get_clients(args)
 
     # Bind to event stream.
-    print("binding to event stream ...")
+    print("pycspr.NodeSseClient.yield_events :: binding to event stream ...")
     event_count = 0
     for einfo in sse_client.yield_events(etype, 0):
         print(f"\tEvent Id = {einfo.idx} :: Event Type = {einfo.typeof}")
@@ -78,18 +78,19 @@ async def main(args: argparse.Namespace):
             break
 
     # Await until 2 blocks have been added to linear chain.
-    print("awaiting 2 blocks ...")
+    print("pycspr.NodeSseClient.await_n_blocks :: awaiting 2 blocks ...")
     block_height = await rest_client.get_block_height()
     await sse_client.await_n_blocks(2)
     assert await rest_client.get_block_height() == block_height + 2
 
     # Await next era.
-    print("awaiting 1 era ...")
+    print("pycspr.NodeSseClient.await_n_eras :: awaiting 1 era ...")
     era_height = await rest_client.get_era_height()
     await sse_client.await_n_eras(1)
     assert await rest_client.get_era_height() == era_height + 1
 
     # Listen to node events.
+    print("pycspr.NodeSseClient.get_events :: listen to events and handoff to callback handler ...")
     sse_client.get_events(etype, 0, _on_event_callback)
 
     print("-" * 74)
