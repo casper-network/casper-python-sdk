@@ -1,13 +1,15 @@
 import asyncio
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.connection import ConnectionInfo
-from pycspr.api.node.bin.types.domain import ProtocolVersion
-from pycspr.api.node.bin.types.request import Request
-from pycspr.api.node.bin.types.request import RequestHeader
-from pycspr.api.node.bin.types.request import RequestType
-from pycspr.api.node.bin.types.response import Response
-from pycspr.api.node.bin.types.response import ResponseHeader
+from pycspr.api.node.bin.types import \
+    ConnectionInfo, \
+    Request, \
+    RequestHeader, \
+    RequestType, \
+    Response, \
+    ResponseHeader
+from pycspr.api.node.bin.types.domain import \
+    ProtocolVersion
 
 
 def get_request(

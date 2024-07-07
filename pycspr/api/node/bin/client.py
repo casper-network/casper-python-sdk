@@ -1,12 +1,15 @@
 import typing
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.connection import ConnectionInfo
-from pycspr.api.node.bin.proxy import Proxy
-from pycspr.api.node.bin.types.domain import BlockID
-from pycspr.api.node.bin.types.domain import BlockHeader
-from pycspr.api.node.bin.types.domain import BlockRange
-from pycspr.api.node.bin.types.domain import NodeUptimeInfo
+from pycspr.api.node.bin.proxy import \
+    Proxy
+from pycspr.api.node.bin.types import \
+    ConnectionInfo
+from pycspr.api.node.bin.types.domain import \
+    BlockID, \
+    BlockHeader, \
+    BlockRange, \
+    NodeUptimeInfo
 
 
 class Client():
