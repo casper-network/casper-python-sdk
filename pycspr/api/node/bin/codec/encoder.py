@@ -23,36 +23,36 @@ ENCODERS: typing.Dict[typing.Type, typing.Callable] = \
 } | {
     types.request.get.information.GetBlockHeaderRequest: \
         lambda x: \
-            encode(types.request.core.RequestType_Get_Information.BlockHeader) + \
+            encode(types.request.RequestType_Get_Information.BlockHeader) + \
             encode_optional(x.block_id, encode_block_id),
 
     types.request.get.information.GetUptimeRequest: \
         lambda x: \
-            encode(types.request.core.RequestType_Get_Information.Uptime)
+            encode(types.request.RequestType_Get_Information.Uptime)
 } | {
-    types.request.core.Request: \
+    types.request.Request: \
         lambda x: \
             encode(x.header) + \
             encode(x.body),
 
-    types.request.core.RequestHeader: \
+    types.request.RequestHeader: \
         lambda x: \
             encode_u16(x.binary_request_version) + \
             encode(x.chain_protocol_version) + \
             encode(x.type_tag) + \
             encode_u16(x.id),
 
-    types.request.core.RequestType: \
+    types.request.RequestType: \
         lambda x: \
             encode_u8(x.value),
 
-    types.request.core.RequestType_Get: \
+    types.request.RequestType_Get: \
         lambda x: \
             encode_u8(x.value),
 
-    types.request.core.RequestType_Get_Information: \
+    types.request.RequestType_Get_Information: \
         lambda x: \
-            encode(types.request.core.RequestType_Get.Information) + \
+            encode(types.request.RequestType_Get.Information) + \
             encode_u8(x.value),
 }
 

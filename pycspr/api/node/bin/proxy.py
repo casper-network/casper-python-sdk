@@ -4,8 +4,8 @@ from pycspr.api.node.bin import codec
 from pycspr.api.node.bin import types
 from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.connection import ConnectionInfo
-from pycspr.api.node.bin.types.request.core import Request
-from pycspr.api.node.bin.types.request.core import RequestType
+from pycspr.api.node.bin.types.request import Request
+from pycspr.api.node.bin.types.request import RequestType
 from pycspr.api.node.bin.types.domain import BlockID
 
 

@@ -1,1 +1,3 @@
-from pycspr.api.node.bin.types.response import core
+from pycspr.api.node.bin.types.response.core import \
+    Response, \
+    ResponseHeader
