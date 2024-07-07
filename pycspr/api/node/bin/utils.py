@@ -80,7 +80,7 @@ def get_response_decoded(bstream: bytes) -> Response:
         raise ValueError("Invalid byte stream: length prefix mismatch")
 
     # Assert byte stream is consumed after decoding.
-    bstream, response = codec.decode_entity(bstream, Response)
+    bstream, response = codec.decode(bstream, Response)
     if len(bstream) != 0:
         raise ValueError("Invalid byte stream: only partially consumed")
 
