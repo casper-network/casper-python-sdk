@@ -4,7 +4,8 @@ from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.proxy import \
     Proxy
 from pycspr.api.node.bin.types import \
-    ConnectionInfo
+    ConnectionInfo, \
+    RequestID
 from pycspr.api.node.bin.types.domain import \
     BlockID, \
     BlockHeader, \
@@ -26,7 +27,7 @@ class Client():
 
     async def get_information_available_block_range(
         self,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> BlockRange:
         """Returns a node's available block range.
 
@@ -41,7 +42,7 @@ class Client():
     async def get_information_block_header(
         self,
         block_id: typing.Optional[BlockID] = None,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> BlockHeader:
         """Returns a block header.
 
@@ -57,7 +58,7 @@ class Client():
 
     async def get_information_uptime(
         self,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> NodeUptimeInfo:
         """Returns node uptime information.
 

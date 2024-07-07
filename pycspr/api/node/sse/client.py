@@ -1,9 +1,11 @@
 import typing
 
-from pycspr.api.node.sse.connection import ConnectionInfo
-from pycspr.api.node.sse.proxy import Proxy
-from pycspr.api.node.sse.types import EventInfo
-from pycspr.api.node.sse.types import EventType
+from pycspr.api.node.sse.proxy import \
+    Proxy
+from pycspr.api.node.sse.types import \
+    ConnectionInfo, \
+    EventInfo, \
+    EventType
 
 
 class Client():

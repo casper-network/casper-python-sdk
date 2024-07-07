@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import enum
+import typing
 
 from pycspr.api.node.bin.types.domain import ProtocolVersion
 
@@ -28,6 +29,11 @@ class RequestHeader():
 
     # Request correlation identifier.
     id: int
+
+
+RequestID = typing.NewType(
+    "Request identifier specified by end user typically used to correlate responses.", int
+)
 
 
 class RequestType(enum.Enum):

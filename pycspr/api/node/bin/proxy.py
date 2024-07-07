@@ -6,6 +6,7 @@ from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.types import \
     ConnectionInfo, \
     Request, \
+    RequestID, \
     RequestType
 from pycspr.api.node.bin.types.domain import BlockID
 
@@ -24,7 +25,7 @@ class Proxy:
 
     async def get_information_available_block_range(
         self,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> bytes:
         return await utils.get_response(
             self._connection_info,
@@ -36,7 +37,7 @@ class Proxy:
     async def get_information_block_header(
         self,
         block_id: typing.Optional[BlockID] = None,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> bytes:
         return await utils.get_response(
             self._connection_info,
@@ -47,7 +48,7 @@ class Proxy:
 
     async def get_information_uptime(
         self,
-        request_id: int = None
+        request_id: RequestID = None
     ) -> bytes:
         return await utils.get_response(
             self._connection_info,

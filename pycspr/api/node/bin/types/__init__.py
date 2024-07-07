@@ -4,6 +4,7 @@ from pycspr.api.node.bin.types.connection import \
 from pycspr.api.node.bin.types.request import \
     Request, \
     RequestHeader, \
+    RequestID, \
     RequestType, \
     RequestType_Get, \
     RequestType_Get_Information
