@@ -64,10 +64,10 @@ async def get_response(
     writer.close()
     await writer.wait_closed()
 
-    return get_parsed_response(bstream_in)
+    return get_response_decoded(bstream_in)
 
 
-def get_parsed_response(bstream: bytes) -> Response:
+def get_response_decoded(bstream: bytes) -> Response:
     # Assert byte stream is parseable.
     if isinstance(bstream, bytes) is False:
         raise ValueError("Invalid byte stream: empty")
