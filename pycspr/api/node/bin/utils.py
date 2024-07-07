@@ -6,6 +6,8 @@ from pycspr.api.node.bin.types.domain import ProtocolVersion
 from pycspr.api.node.bin.types.request.core import Request
 from pycspr.api.node.bin.types.request.core import RequestHeader
 from pycspr.api.node.bin.types.request.core import RequestType
+from pycspr.api.node.bin.types.response.core import Response
+from pycspr.api.node.bin.types.response.core import ResponseHeader
 
 
 def get_request(
@@ -39,40 +41,45 @@ async def get_response(
     request_type: RequestType,
     request_body: object,
     request_id: int = None
-) -> bytes:
+) -> Response:
     # Set TCP stream reader & writer.
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
     # Set request.
     request: Request = get_request(connection_info, request_type, request_body, request_id)
 
-    # Set message.
-    msg: bytes = codec.encode(request)
+    # Set request byte stream.
+    bstream_out: bytes = codec.encode(request)
 
     # Dispatch request.
-    writer.write(codec.encode_u32(len(msg)) + msg)
+    writer.write(codec.encode_u32(len(bstream_out)) + bstream_out)
     writer.write_eof()
 
-    # Set response.
-    response: bytes = (await reader.read(-1))
+    # Set response byte stream.
+    bstream_in: bytes = (await reader.read(-1))
 
     # Close stream.
     writer.close()
     await writer.wait_closed()
 
-    return parse_response(response)
+    return get_parsed_response(bstream_in)
 
 
-def parse_response(response: bytes) -> bytes:
-    # Validate that a response was returned.
-    if isinstance(response, bytes) is False:
-        raise ValueError("Invalid response: expected bytes")
+def get_parsed_response(bstream: bytes) -> Response:
+    # Assert byte stream is parseable.
+    if isinstance(bstream, bytes) is False:
+        raise ValueError("Invalid byte stream: empty")
+    if len(bstream) <= 4:
+        raise ValueError("Invalid byte stream: too small")
 
-    # Validate length of bytes.
-    length = codec.decode_u32(response[0:4])
-    if length != len(response[4:]):
-        raise ValueError("Invalid response: length prefix mismatch")
+    # Assert inner byte stream length.
+    bstream, length = codec.decode_u32(bstream)
+    if length != len(bstream):
+        raise ValueError("Invalid byte stream: length prefix mismatch")
 
-    # Destructure response header.
-    # TODO
-    return response[4:]
+    # Assert byte stream is consumed after decoding.
+    bstream, response = codec.decode_entity(bstream, Response)
+    if len(bstream) != 0:
+        raise ValueError("Invalid byte stream: only partially consumed")
+
+    return response

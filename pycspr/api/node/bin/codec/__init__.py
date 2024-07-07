@@ -1,4 +1,5 @@
 from pycspr.api.node.bin.codec.decoder import decode
+from pycspr.api.node.bin.codec.decoder import decode_entity
 from pycspr.api.node.bin.codec.decoder import decode_u8
 from pycspr.api.node.bin.codec.decoder import decode_u16
 from pycspr.api.node.bin.codec.decoder import decode_u32

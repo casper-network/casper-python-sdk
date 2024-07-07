@@ -48,7 +48,8 @@ class Client():
 
         """
         return codec.decode(
-            await self.proxy.get_information_block_header(block_id, request_id)
+            await self.proxy.get_information_block_header(block_id, request_id),
+            BlockHeader
         )
 
     async def get_information_uptime(

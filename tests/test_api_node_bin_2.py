@@ -7,7 +7,7 @@ async def test_get_block_header_endpoint(NODE_BINARY_CLIENT: Client):
     raise ValueError(ddd)
 
 
-async def test_get_uptime_endpoint(NODE_BINARY_CLIENT: Client):
-    ddd = await NODE_BINARY_CLIENT.get_information_uptime()
+# async def test_get_uptime_endpoint(NODE_BINARY_CLIENT: Client):
+#     ddd = await NODE_BINARY_CLIENT.get_information_uptime()
 
-    raise ValueError(ddd)
+#     raise ValueError(ddd)
