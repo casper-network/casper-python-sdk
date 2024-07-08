@@ -3,14 +3,20 @@ import typing
 from pycspr.api.node.bin.types.request import \
     Request, \
     RequestHeader, \
-    RequestType, \
-    RequestType_Get, \
-    RequestType_Get_Information
+    RequestType
 from pycspr.api.node.bin.codec.encoder.primitives import \
     encode_u8, \
     encode_u16
 from pycspr.api.node.bin.codec.encoder.domain import \
     encode_protocol_version
+from pycspr.api.node.bin.codec.encoder.request_get_information import \
+    ENCODERS as _ENCODERS_1
+from pycspr.api.node.bin.codec.encoder.request_get_record import \
+    ENCODERS as _ENCODERS_2
+from pycspr.api.node.bin.codec.encoder.request_get_state import \
+    ENCODERS as _ENCODERS_3
+
+_ENCODERS = _ENCODERS_1 | _ENCODERS_2 | _ENCODERS_3
 
 
 def encode_request(entity: Request) -> bytes:
@@ -20,8 +26,12 @@ def encode_request(entity: Request) -> bytes:
 
 
 def encode_request_body(entity: object) -> bytes:
-    return b''
-    return entity
+    try:
+        encoder = _ENCODERS[type(entity)]
+    except KeyError:
+        raise ValueError("Non-encodeable request body.")
+    else:
+        return encoder(entity)
 
 
 def encode_request_header(entity: RequestHeader) -> bytes:
@@ -36,18 +46,8 @@ def encode_request_type(entity: RequestType) -> bytes:
     return encode_u8(entity.value)
 
 
-def encode_request_type_get(entity: RequestType_Get) -> bytes:
-    return encode_u8(entity.value)
-
-
-def encode_request_type_get_information(entity: RequestType_Get_Information) -> bytes:
-    return encode_u8(RequestType_Get.Information.value) + encode_u8(entity.value)
-
-
 ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
     Request: encode_request,
     RequestHeader: encode_request_header,
     RequestType: encode_request_type,
-    RequestType_Get: encode_request_type_get,
-    RequestType_Get_Information: encode_request_type_get_information,
 }

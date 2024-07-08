@@ -1,6 +1,7 @@
 import typing
 
 from pycspr.api.node.bin import codec
+from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.proxy import \
     Proxy
 from pycspr.api.node.bin.types import \
@@ -51,10 +52,14 @@ class Client():
         :returns: A block header.
 
         """
-        return codec.decode(
-            await self.proxy.get_information_block_header(block_id, request_id),
-            BlockHeader
-        )
+        response: bytes = await self.proxy.get_information_block_header(block_id, request_id)
+
+        print(utils.parse_response(response, request_id))
+
+        # return codec.decode(
+        #     await self.proxy.get_information_block_header(block_id, request_id),
+        #     BlockHeader
+        # )
 
     async def get_information_uptime(
         self,

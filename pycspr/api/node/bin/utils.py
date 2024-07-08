@@ -1,4 +1,5 @@
 import asyncio
+import typing
 
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.types import \
@@ -18,6 +19,9 @@ def get_request(
     request_body: object,
     request_id: int = None
 ) -> Request:
+    """Returns a remote binary server request.
+
+    """
     return Request(
         body = request_body,
         header = get_request_header(connection_info, request_type, request_id),
@@ -29,6 +33,9 @@ def get_request_header(
     request_type: RequestType,
     request_id: int = None
 ) -> RequestHeader:
+    """Returns a remote binary server request header.
+
+    """
     return RequestHeader(
         binary_request_version = connection_info.binary_request_version,
         chain_protocol_version = \
@@ -43,7 +50,10 @@ async def get_response(
     request_type: RequestType,
     request_body: object,
     request_id: int = None
-) -> Response:
+) -> bytes:
+    """Dispatches a remote binary server request and returns the request/response pair.
+
+    """
     # Set TCP stream reader & writer.
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
@@ -51,8 +61,7 @@ async def get_response(
     request: Request = get_request(connection_info, request_type, request_body, request_id)
 
     # Set request byte stream.
-    bstream_out: bytes = codec.encode(request)
-    bstream_out = codec.encode_u32(len(bstream_out)) + bstream_out
+    bstream_out: bytes = codec.encode(request, True)
     print(bstream_out)
 
     # Dispatch request.
@@ -61,17 +70,16 @@ async def get_response(
 
     # Set response byte stream.
     bstream_in: bytes = (await reader.read(-1))
+    assert bstream_out in bstream_in
 
     # Close stream.
     writer.close()
     await writer.wait_closed()
 
-    return get_response_decoded(bstream_in, request_id)
+    return bstream_in
 
 
-def get_response_decoded(bstream: bytes, request_id: int) -> Response:
-    print(bstream)
-
+def parse_response(bstream: bytes, request_id: int) -> typing.Tuple[Request, Response]:
     # Assert byte stream is parseable.
     if isinstance(bstream, bytes) is False:
         raise ValueError("Invalid response: byte stream is empty")
@@ -83,7 +91,7 @@ def get_response_decoded(bstream: bytes, request_id: int) -> Response:
     if length != len(bstream):
         raise ValueError("Invalid response: bytes length prefix mismatch")
 
-    # Decode request.
+    # Assert request decoding and request id match.
     bstream, length = codec.decode_u32(bstream[2:])
     remaining, request = codec.decode(bstream[:length], Request)
     if len(remaining) != 0:
@@ -91,11 +99,9 @@ def get_response_decoded(bstream: bytes, request_id: int) -> Response:
     if request.header.id != request_id:
         raise ValueError("Invalid response: request id mismatch")
 
-    # Decode response.
+    # Assert response decoding.
     bstream, response = codec.decode(bstream[length:], Response)
     if len(bstream) != 0:
         raise ValueError("Invalid byte stream: only partially consumed")
 
-    print(response)
-
-    return response
+    return request, response

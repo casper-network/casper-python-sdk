@@ -22,10 +22,11 @@ def decode(bstream: bytes, typedef: type) -> typing.Tuple[bytes, object]:
         return decoder(bstream)
 
 
-def encode(entity: object) -> bytes:
+def encode(entity: object, prepend_length: bool = False) -> bytes:
     """Encodes an entity as a byte stream.
 
     :param entity: Entity to be encoded.
+    :param prepend_length: Flag indicating whether to prepend byte stream length.
     :returns: A byte stream.
 
     """
@@ -34,10 +35,7 @@ def encode(entity: object) -> bytes:
     except KeyError:
         raise ValueError(f"Non-encodeable type: {type(entity)}")
     else:
-        return encoder(entity)
-
-
-__all__ = [
-    "decode",
-    "encode",
-]
+        bstream: bytes = encoder(entity)
+        return \
+            bstream if prepend_length is False else \
+            encode_u32(len(bstream)) + bstream
