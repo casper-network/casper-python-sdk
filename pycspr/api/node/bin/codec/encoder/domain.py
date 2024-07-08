@@ -32,7 +32,7 @@ def encode_protocol_version(entity: ProtocolVersion):
     return \
         encode_u8(entity.major) + \
         encode_u8(entity.minor) + \
-        encode_u8(entity.patch),
+        encode_u8(entity.patch)
 
 
 ENCODERS: typing.Dict[typing.Type, typing.Callable] = {

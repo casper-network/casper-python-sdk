@@ -1,7 +1,9 @@
 import typing
 
 from pycspr.api.node.bin.codec.encoder import ENCODERS
+from pycspr.api.node.bin.codec.encoder.primitives import encode_u32
 from pycspr.api.node.bin.codec.decoder import DECODERS
+from pycspr.api.node.bin.codec.decoder.primitives import decode_u32
 
 
 def decode(bstream: bytes, typedef: type) -> typing.Tuple[bytes, object]:

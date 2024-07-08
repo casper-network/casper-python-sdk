@@ -9,30 +9,35 @@ from pycspr.api.node.bin.types.request import \
 from pycspr.api.node.bin.codec.encoder.primitives import \
     encode_u8, \
     encode_u16
+from pycspr.api.node.bin.codec.encoder.domain import \
+    encode_protocol_version
 
 
 def encode_request(entity: Request) -> bytes:
-    return _encode_request_header(entity.header) + encode_request_body(entity.body)
+    return \
+        encode_request_header(entity.header) + \
+        encode_request_body(entity.body)
 
 
 def encode_request_body(entity: object) -> bytes:
-    raise NotImplementedError()
+    return b''
+    return entity
 
 
 def encode_request_header(entity: RequestHeader) -> bytes:
     return \
         encode_u16(entity.binary_request_version) + \
-        encode(entity.chain_protocol_version) + \
+        encode_protocol_version(entity.chain_protocol_version) + \
         encode_request_type(entity.type_tag) + \
-        encode_u16(entity.id),
+        encode_u16(entity.id)
 
 
 def encode_request_type(entity: RequestType) -> bytes:
-    return encode_u8(x.value)
+    return encode_u8(entity.value)
 
 
 def encode_request_type_get(entity: RequestType_Get) -> bytes:
-    return encode_u8(x.value)
+    return encode_u8(entity.value)
 
 
 def encode_request_type_get_information(entity: RequestType_Get_Information) -> bytes:
