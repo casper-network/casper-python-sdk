@@ -9,5 +9,5 @@ from pycspr.api.node.bin.types.domain.simple import \
 from pycspr.api.node.bin.types.domain.complex import \
     BlockHeader, \
     BlockRange, \
-    NodeUptimeInfo, \
+    NodeUptime, \
     ProtocolVersion

@@ -21,7 +21,7 @@ class BlockRange():
 
 
 @dataclasses.dataclass
-class NodeUptimeInfo():
+class NodeUptime():
     pass
 
 

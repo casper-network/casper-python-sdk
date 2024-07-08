@@ -11,7 +11,7 @@ from pycspr.api.node.bin.types.domain import \
     ProtocolVersion
 
 
-def _decode_protocol_version(bstream: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
+def decode_protocol_version(bstream: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
     bstream, major = decode_u32(bstream)
     bstream, minor = decode_u32(bstream)
     bstream, patch = decode_u32(bstream)
@@ -19,14 +19,14 @@ def _decode_protocol_version(bstream: bytes) -> typing.Tuple[bytes, ProtocolVers
     return bstream, ProtocolVersion(major, minor, patch)
 
 
-def _decode_response(bstream: bytes) -> typing.Tuple[bytes, Response]:
-    bstream, header = _decode_response_header(bstream)
+def decode_response(bstream: bytes) -> typing.Tuple[bytes, Response]:
+    bstream, header = decode_response_header(bstream)
 
     return b'', Response(header, payload=bstream)
 
 
-def _decode_response_header(bstream: bytes) -> typing.Tuple[bytes, ResponseHeader]:
-    bstream, protocol_version = _decode_protocol_version(bstream)
+def decode_response_header(bstream: bytes) -> typing.Tuple[bytes, ResponseHeader]:
+    bstream, protocol_version = decode_protocol_version(bstream)
     bstream, error = decode_u16(bstream)
     bstream, returned_data_type_tag = decode_u8(bstream)
 
@@ -38,7 +38,7 @@ def _decode_response_header(bstream: bytes) -> typing.Tuple[bytes, ResponseHeade
 
 
 DECODERS: typing.Dict[typing.Type, typing.Callable] = {
-    Response: _decode_response,
-    ResponseHeader: _decode_response_header,
-    ProtocolVersion: _decode_protocol_version,
+    Response: decode_response,
+    ResponseHeader: decode_response_header,
+    ProtocolVersion: decode_protocol_version,
 }

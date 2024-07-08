@@ -10,7 +10,7 @@ from pycspr.api.node.bin.types.domain import \
     BlockID, \
     BlockHeader, \
     BlockRange, \
-    NodeUptimeInfo
+    NodeUptime
 
 
 class Client():
@@ -59,7 +59,7 @@ class Client():
     async def get_information_uptime(
         self,
         request_id: RequestID = None
-    ) -> NodeUptimeInfo:
+    ) -> NodeUptime:
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
