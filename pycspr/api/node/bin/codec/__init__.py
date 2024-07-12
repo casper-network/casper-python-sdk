@@ -6,10 +6,10 @@ from pycspr.api.node.bin.codec.decoder import DECODERS
 from pycspr.api.node.bin.codec.decoder.primitives import decode_u32
 
 
-def decode(bstream: bytes, typedef: type) -> typing.Tuple[bytes, object]:
+def decode(encoded: bytes, typedef: type) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
-    :param bstream: A stream of bytes.
+    :param encoded: A stream of bytes.
     :param typedef: Type to be decoded.
     :returns: A decoded entity.
 
@@ -19,7 +19,7 @@ def decode(bstream: bytes, typedef: type) -> typing.Tuple[bytes, object]:
     except KeyError:
         raise ValueError(f"Non-decodeable type: {typedef}")
     else:
-        return decoder(bstream)
+        return decoder(encoded)
 
 
 def encode(entity: object, prepend_length: bool = False) -> bytes:
@@ -30,12 +30,13 @@ def encode(entity: object, prepend_length: bool = False) -> bytes:
     :returns: A byte stream.
 
     """
+    def _prepend_length(encoded: bytes):
+        return encode_u32(len(encoded)) + encoded
+
     try:
         encoder = ENCODERS[type(entity)]
     except KeyError:
         raise ValueError(f"Non-encodeable type: {type(entity)}")
     else:
-        bstream: bytes = encoder(entity)
         return \
-            bstream if prepend_length is False else \
-            encode_u32(len(bstream)) + bstream
+            _prepend_length(encoder(entity)) if prepend_length is True else encoder(entity)
