@@ -30,7 +30,7 @@ class Proxy:
         return await utils.get_response(
             self._connection_info,
             RequestType.Get,
-            types.request.get.information.GetAvailableBlockRangeRequest(),
+            types.requests.get.information.GetAvailableBlockRangeRequest(),
             request_id
         )
 
@@ -42,7 +42,7 @@ class Proxy:
         return await utils.get_response(
             self._connection_info,
             RequestType.Get,
-            types.request.get.information.GetBlockHeaderRequest(block_id),
+            types.requests.get.information.GetBlockHeaderRequest(block_id),
             request_id
         )
 
@@ -53,6 +53,6 @@ class Proxy:
         return await utils.get_response(
             self._connection_info,
             RequestType.Get,
-            types.request.get.information.GetUptimeRequest(),
+            types.requests.get.information.GetUptimeRequest(),
             request_id
         )

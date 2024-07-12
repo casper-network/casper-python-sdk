@@ -66,3 +66,11 @@ class RequestType_Get_Information(enum.Enum):
     SignedBlock = 1
     Transaction = 2
     Uptime = 4
+
+
+class RequestType_Get_Record(enum.Enum):
+    pass
+
+
+class RequestType_Get_State(enum.Enum):
+    pass

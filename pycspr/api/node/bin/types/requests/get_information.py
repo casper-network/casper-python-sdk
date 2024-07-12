@@ -1,10 +1,11 @@
 import dataclasses
 import typing
 
-from pycspr.api.node.bin.types.domain import BlockID
-from pycspr.api.node.bin.types.domain import EraID
-from pycspr.api.node.bin.types.domain import PublicKey
-from pycspr.api.node.bin.types.domain import TransactionHash
+from pycspr.api.node.bin.types.domain import \
+    BlockID, \
+    EraID, \
+    PublicKey, \
+    TransactionHash
 
 
 @dataclasses.dataclass
