@@ -5,10 +5,9 @@ from pycspr.api.node.bin import types
 from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.types import \
     ConnectionInfo, \
+    Endpoint, \
     Request, \
-    RequestID, \
-    RequestType
-from pycspr.api.node.bin.types.domain import BlockID
+    RequestID
 
 
 class Proxy:
@@ -21,38 +20,13 @@ class Proxy:
         :param connection_info: Information required to connect to a node.
 
         """
-        self._connection_info = connection_info
+        self.connection_info = connection_info
 
-    async def get_information_available_block_range(
-        self,
-        request_id: RequestID = None
-    ) -> bytes:
-        return await utils.get_response(
-            self._connection_info,
-            RequestType.Get,
-            types.requests.get.information.GetAvailableBlockRangeRequest(),
-            request_id
-        )
+    async def get_response(self, request: Request) -> bytes:
+        # Map request -> bytes
+        #
+        print(107, request)
 
-    async def get_information_block_header(
-        self,
-        block_id: typing.Optional[BlockID] = None,
-        request_id: RequestID = None
-    ) -> bytes:
-        return await utils.get_response(
-            self._connection_info,
-            RequestType.Get,
-            types.requests.get.information.GetBlockHeaderRequest(block_id),
-            request_id
-        )
+        bstream_out: bytes = codec.encode(request, True)
 
-    async def get_information_uptime(
-        self,
-        request_id: RequestID = None
-    ) -> bytes:
-        return await utils.get_response(
-            self._connection_info,
-            RequestType.Get,
-            types.requests.get.information.GetUptimeRequest(),
-            request_id
-        )
+        return bstream_out

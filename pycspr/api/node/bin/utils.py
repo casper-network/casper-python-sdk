@@ -4,18 +4,23 @@ import typing
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.types import \
     ConnectionInfo, \
+    Endpoint, \
     Request, \
     RequestHeader, \
-    RequestType, \
+    RequestID, \
     Response, \
     ResponseHeader
 from pycspr.api.node.bin.types.domain import \
     ProtocolVersion
 
 
+def get_request_1(header, payload) -> Request:
+    return Request(header, payload)
+
+
 def get_request(
     connection_info: ConnectionInfo,
-    request_type: RequestType,
+    endpoint: Endpoint,
     request_body: object,
     request_id: int = None
 ) -> Request:
@@ -24,14 +29,13 @@ def get_request(
     """
     return Request(
         body = request_body,
-        header = get_request_header(connection_info, request_type, request_id),
+        header = get_request_header(connection_info, request_id),
     )
 
 
 def get_request_header(
     connection_info: ConnectionInfo,
-    request_type: RequestType,
-    request_id: int = None
+    request_id: typing.Optional[RequestID] = None
 ) -> RequestHeader:
     """Returns a remote binary server request header.
 
@@ -40,15 +44,14 @@ def get_request_header(
         binary_request_version = connection_info.binary_request_version,
         chain_protocol_version = \
             ProtocolVersion.from_semvar(connection_info.chain_protocol_version),
-        type_tag = request_type,
         id = request_id or 0,
     )
 
 
 async def get_response(
     connection_info: ConnectionInfo,
-    request_type: RequestType,
-    request_body: object,
+    endpoint: Endpoint,
+    request_payload: object,
     request_id: int = None
 ) -> bytes:
     """Dispatches a remote binary server request and returns the request/response pair.
@@ -58,7 +61,7 @@ async def get_response(
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
     # Set request.
-    request: Request = get_request(connection_info, request_type, request_body, request_id)
+    request: Request = get_request(connection_info, request_type, request_payload, request_id)
 
     # Set request byte stream.
     bstream_out: bytes = codec.encode(request, True)

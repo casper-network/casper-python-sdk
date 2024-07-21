@@ -1,9 +1,13 @@
 import typing
 
-from pycspr.api.node.bin.codec.encoder.requests.core import \
-    ENCODERS as _ENCODERS_1
-from pycspr.api.node.bin.codec.encoder.requests.get import \
-    ENCODERS as _ENCODERS_2
+from pycspr.api.node.bin.codec.encoder.requests.core import encode_request
+from pycspr.api.node.bin.types.requests import Request
 
 
-ENCODERS: typing.Dict[typing.Type, typing.Callable] = _ENCODERS_1 | _ENCODERS_2
+from pycspr.api.node.bin.codec.encoder.requests.get_information import \
+    ENCODERS as _ENCODERS_GET_INFORMATION
+
+
+ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
+    Request: encode_request
+} | _ENCODERS_GET_INFORMATION

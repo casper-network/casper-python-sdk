@@ -8,7 +8,7 @@ from pycspr.api.node.bin.codec.decoder.primitives import \
 from pycspr.api.node.bin.types.requests.core import \
     Request, \
     RequestHeader, \
-    RequestType
+    Endpoint
 
 
 def decode_request(bstream: bytes) -> typing.Tuple[bytes, Request]:
@@ -32,7 +32,7 @@ def decode_request_header(bstream: bytes) -> typing.Tuple[bytes, RequestHeader]:
     return bstream, RequestHeader(
         binary_request_version=binary_request_version,
         chain_protocol_version=chain_protocol_version,
-        type_tag=RequestType(request_type_raw),
+        type_tag=Endpoint(request_type_raw),
         id=request_id
     )
 
