@@ -1,4 +1,5 @@
 from pycspr.api import node
+from pycspr.api import sidecar
 
 
 from pycspr.api.rpc import Client as NodeRpcClient
