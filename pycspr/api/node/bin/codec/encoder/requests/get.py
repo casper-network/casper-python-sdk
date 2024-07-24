@@ -17,7 +17,6 @@ def encode_get_block_header_request(payload: Get_Information_BlockHeader_Request
         encode_optional(payload.block_id, encode_block_id)
 
 
-# Set of encoders within current scope.
 ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
     Get_Information_BlockHeader_RequestPayload: encode_get_block_header_request,
 }

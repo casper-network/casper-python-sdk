@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.api.node.bin.types.requests import \
     Endpoint, \
     Request
@@ -47,3 +49,8 @@ def encode_request(entity: Request) -> bytes:
             return b''
 
     return encode_header() + encode_payload_tag() + encode_payload()
+
+
+ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
+    Request: encode_request,
+}
