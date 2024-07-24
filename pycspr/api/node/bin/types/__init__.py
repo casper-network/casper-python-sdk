@@ -1,8 +1,8 @@
 from pycspr.api.node.bin.types import domain
-from pycspr.api.node.bin.types.connection import \
-    ConnectionInfo
+from pycspr.api.node.bin.types.core import \
+    ConnectionInfo, \
+    Endpoint
 from pycspr.api.node.bin.types.requests.core import \
-    Endpoint, \
     Request, \
     RequestHeader, \
     RequestID

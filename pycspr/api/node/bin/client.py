@@ -6,6 +6,7 @@ from pycspr.api.node.bin.proxy import \
     Proxy
 from pycspr.api.node.bin.types import \
     ConnectionInfo, \
+    Endpoint, \
     Request, \
     RequestID
 from pycspr.api.node.bin.types.domain import \
@@ -13,8 +14,6 @@ from pycspr.api.node.bin.types.domain import \
     BlockHeader, \
     BlockRange, \
     NodeUptime
-
-from pycspr.api.node.bin.types.requests.core import Endpoint
 
 
 class Client():

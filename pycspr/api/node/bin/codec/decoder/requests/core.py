@@ -5,10 +5,11 @@ from pycspr.api.node.bin.codec.decoder.domain import \
 from pycspr.api.node.bin.codec.decoder.primitives import \
     decode_u8, \
     decode_u16
+from pycspr.api.node.bin.types.core import \
+    Endpoint
 from pycspr.api.node.bin.types.requests.core import \
     Request, \
-    RequestHeader, \
-    Endpoint
+    RequestHeader
 
 
 def decode_request(bstream: bytes) -> typing.Tuple[bytes, Request]:

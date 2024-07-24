@@ -1,13 +1,13 @@
 import dataclasses
 import typing
 
+from pycspr.api.node.bin.types.core import \
+    Endpoint
 from pycspr.api.node.bin.types.domain import \
     BlockID, \
     EraID, \
     PublicKey, \
     TransactionHash
-from pycspr.api.node.bin.types.requests.core import \
-    Endpoint
 
 
 @dataclasses.dataclass

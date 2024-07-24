@@ -5,7 +5,7 @@ from pycspr.api.node.bin.codec.encoder.domain import \
 from pycspr.api.node.bin.codec.encoder.primitives import \
     encode_optional, \
     encode_u8
-from pycspr.api.node.bin.types.requests.core import \
+from pycspr.api.node.bin.types.core import \
     Endpoint
 from pycspr.api.node.bin.types.requests.get import \
     Get_Information_BlockHeader_RequestPayload
