@@ -24,12 +24,8 @@ def encode_request(entity: Request) -> bytes:
         def encode_endpoint() -> bytes:
             if entity.endpoint.name.startswith("Get_"):
                 return encode_u8(TYPE_TAG_REQUEST_GET)
-            elif entity.endpoint == Endpoint.Try_AcceptTransaction:
-                return encode_u8(TYPE_TAG_REQUEST_TRY_ACCEPT_TRANSACTION)
-            elif entity.endpoint == Endpoint.Try_SpeculativeExec:
-                return encode_u8(TYPE_TAG_REQUEST_TRY_SPECULATIVE_TRANSACTION)
             else:
-                raise ValueError("Invalid request type")
+                return encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
 
         return \
             encode_u16(entity.header.binary_request_version) + \
