@@ -5,6 +5,7 @@ from pycspr.api.node.bin.types.core import \
 from pycspr.api.node.bin.types.requests import \
     Request
 from pycspr.api.node.bin.codec.constants import \
+    TYPE_TAG_ENDPOINT, \
     TYPE_TAG_REQUEST_GET, \
     TYPE_TAG_REQUEST_GET_INFORMATION, \
     TYPE_TAG_REQUEST_GET_RECORD, \
@@ -46,11 +47,17 @@ def encode_request(entity: Request) -> bytes:
     def encode_payload_tag() -> bytes:
         if entity.endpoint.name.startswith("Get_"):
             if entity.endpoint.name.startswith("Get_Information"):
-                return encode_u8(TYPE_TAG_REQUEST_GET_INFORMATION) + encode_u8(entity.endpoint.value)
+                return \
+                    encode_u8(TYPE_TAG_REQUEST_GET_INFORMATION) + \
+                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
             elif entity.endpoint.name.startswith("Get_Record"):
-                return encode_u8(TYPE_TAG_REQUEST_GET_RECORD) + encode_u8(entity.endpoint.value)
+                return \
+                    encode_u8(TYPE_TAG_REQUEST_GET_RECORD) + \
+                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
             elif entity.endpoint.name.startswith("Get_State"):
-                return encode_u8(TYPE_TAG_REQUEST_GET_STATE) + encode_u8(entity.endpoint.value)
+                return \
+                    encode_u8(TYPE_TAG_REQUEST_GET_STATE) + \
+                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
             else:
                 raise ValueError("Invalid endpoint")
         else:

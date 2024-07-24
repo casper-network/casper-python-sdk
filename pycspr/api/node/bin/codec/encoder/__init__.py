@@ -2,10 +2,12 @@ import typing
 
 from pycspr.api.node.bin.codec.encoder.domain import ENCODERS as _ENCODERS_DOMAIN
 from pycspr.api.node.bin.codec.encoder.primitives import encode_bytes
-from pycspr.api.node.bin.codec.encoder.requests import ENCODERS as _ENCODERS_REQUESTS
+from pycspr.api.node.bin.codec.encoder.requests_core import ENCODERS as _ENCODERS_REQUESTS_CORE
+from pycspr.api.node.bin.codec.encoder.requests_get import ENCODERS as _ENCODERS_REQUESTS_GET
 
 
-ENCODERS: typing.Dict[typing.Type, typing.Callable] = _ENCODERS_DOMAIN | _ENCODERS_REQUESTS
+ENCODERS: typing.Dict[typing.Type, typing.Callable] = \
+    _ENCODERS_DOMAIN | _ENCODERS_REQUESTS_CORE | _ENCODERS_REQUESTS_GET
 
 
 def encode(entity: object, prepend_length: bool = False) -> bytes:

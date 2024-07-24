@@ -37,22 +37,22 @@ class Endpoint(enum.Enum):
     """Enumeration over set of supported endpoints.
 
     """
-    Get_Information_AvailableBlockRange = 10
-    Get_Information_BlockHeader = 0
-    Get_Information_BlockSynchronizerStatus = 9
-    Get_Information_ChainspecRawBytes = 13
-    Get_Information_ConsensusStatus = 12
-    Get_Information_ConsensusValidatorChanges = 8
-    Get_Information_LastProgress = 5
-    Get_Information_LatestSwitchBlockHeader = 15
-    Get_Information_NetworkName = 7
-    Get_Information_NextUpgrade = 11
-    Get_Information_NodeStatus = 14
-    Get_Information_Peers = 3
-    Get_Information_ReactorState = 6
-    Get_Information_Reward = 16
-    Get_Information_SignedBlock = 1
-    Get_Information_Transaction = 2
-    Get_Information_Uptime = 4
-    Try_AcceptTransaction = 1
-    Try_SpeculativeExec = 2
+    Get_Information_AvailableBlockRange = enum.auto()
+    Get_Information_BlockHeader = enum.auto()
+    Get_Information_BlockSynchronizerStatus = enum.auto()
+    Get_Information_ChainspecRawBytes = enum.auto()
+    Get_Information_ConsensusStatus = enum.auto()
+    Get_Information_ConsensusValidatorChanges = enum.auto()
+    Get_Information_LastProgress = enum.auto()
+    Get_Information_LatestSwitchBlockHeader = enum.auto()
+    Get_Information_NetworkName = enum.auto()
+    Get_Information_NextUpgrade = enum.auto()
+    Get_Information_NodeStatus = enum.auto()
+    Get_Information_Peers = enum.auto()
+    Get_Information_ReactorState = enum.auto()
+    Get_Information_Reward = enum.auto()
+    Get_Information_SignedBlock = enum.auto()
+    Get_Information_Transaction = enum.auto()
+    Get_Information_Uptime = enum.auto()
+    Try_AcceptTransaction = enum.auto()
+    Try_SpeculativeExec = enum.auto()

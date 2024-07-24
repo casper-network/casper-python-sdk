@@ -3,13 +3,6 @@ import typing
 from pycspr.api.node.bin.types.core import Endpoint
 
 
-TYPE_TAG_REQUEST_GET: int = 0
-TYPE_TAG_REQUEST_GET_INFORMATION: int = 0
-TYPE_TAG_REQUEST_GET_RECORD: int = 0
-TYPE_TAG_REQUEST_GET_STATE: int = 0
-TYPE_TAG_REQUEST_TRY_ACCEPT_TRANSACTION: int = 1
-TYPE_TAG_REQUEST_TRY_SPECULATIVE_TRANSACTION: int = 2
-
 TYPE_TAG_ENDPOINT: typing.Dict[Endpoint, int] = {
     Endpoint.Get_Information_AvailableBlockRange: 10,
     Endpoint.Get_Information_BlockHeader: 0,
@@ -31,3 +24,9 @@ TYPE_TAG_ENDPOINT: typing.Dict[Endpoint, int] = {
     Endpoint.Try_AcceptTransaction: 1,
     Endpoint.Try_SpeculativeExec: 2,
 }
+TYPE_TAG_REQUEST_GET: int = 0
+TYPE_TAG_REQUEST_GET_INFORMATION: int = 0
+TYPE_TAG_REQUEST_GET_RECORD: int = 0
+TYPE_TAG_REQUEST_GET_STATE: int = 0
+TYPE_TAG_REQUEST_TRY_ACCEPT_TRANSACTION: int = 1
+TYPE_TAG_REQUEST_TRY_SPECULATIVE_TRANSACTION: int = 2
