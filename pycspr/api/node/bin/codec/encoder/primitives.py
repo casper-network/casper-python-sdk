@@ -1,8 +1,8 @@
 import typing
 
 from pycspr.api.node.bin.codec.constants import \
-    TYPE_TAG_PRIMITIVE_OPTIONAL_NONE, \
-    TYPE_TAG_PRIMITIVE_OPTIONAL_VALUE
+    TYPE_TAG_OPTIONAL_NONE, \
+    TYPE_TAG_OPTIONAL_VALUE
 
 
 def encode_bytes(val: bytes) -> bytes:
@@ -11,9 +11,9 @@ def encode_bytes(val: bytes) -> bytes:
 
 def encode_optional(entity: object, encoder: typing.Callable) -> bytes:
     if entity is None:
-        return encode_u8(TYPE_TAG_PRIMITIVE_OPTIONAL_NONE)
+        return encode_u8(TYPE_TAG_OPTIONAL_NONE)
     else:
-        return encode_u8(TYPE_TAG_PRIMITIVE_OPTIONAL_VALUE) + encoder(entity)
+        return encode_u8(TYPE_TAG_OPTIONAL_VALUE) + encoder(entity)
 
 
 def encode_u8(val: int) -> bytes:

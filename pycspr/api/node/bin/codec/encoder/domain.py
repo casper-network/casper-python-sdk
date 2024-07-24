@@ -1,5 +1,8 @@
 import typing
 
+from pycspr.api.node.bin.codec.constants import \
+    TYPE_TAG_DOMAIN_BLOCK_HASH, \
+    TYPE_TAG_DOMAIN_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.encoder.primitives import \
     encode_bytes, \
     encode_u8, \
@@ -12,11 +15,11 @@ from pycspr.api.node.bin.types.domain import \
 
 
 def encode_block_hash(val: BlockHash):
-    return encode_u8(0) + encode_bytes(val)
+    return encode_u8(TYPE_TAG_DOMAIN_BLOCK_HASH) + encode_bytes(val)
 
 
 def encode_block_height(val: BlockHeight):
-    return encode_u8(1) + encode_u64(val)
+    return encode_u8(TYPE_TAG_DOMAIN_BLOCK_HEIGHT) + encode_u64(val)
 
 
 def encode_block_id(val: BlockID):
