@@ -8,15 +8,6 @@ from pycspr.api.node.bin.types.domain import ProtocolVersion
 
 
 @dataclasses.dataclass
-class BaseRequest():
-    """Base class encpasualting a request to be dispatched to remote binary port.
-
-    """
-    # Header encapsulates API metadata.
-    header: "RequestHeader"
-
-
-@dataclasses.dataclass
 class Request():
     """Encapsulates information required to dispatch an API request.
 
@@ -51,19 +42,10 @@ RequestID = typing.NewType(
 )
 
 
-@dataclasses.dataclass
-class RequestPayload():
-    """Base class encpasualting payload of a request to be dispatched to remote binary port.
-
-    """
-    pass
-
-
 class Endpoint(enum.Enum):
     """Enumeration over set of supported endpoints.
 
     """
-    Get = 0
     Get_Information_AvailableBlockRange = 10
     Get_Information_BlockHeader = 0
     Get_Information_BlockSynchronizerStatus = 9

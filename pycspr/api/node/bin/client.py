@@ -15,7 +15,6 @@ from pycspr.api.node.bin.types.domain import \
     NodeUptime
 
 from pycspr.api.node.bin.types.requests.core import Endpoint
-from pycspr.api.node.bin.types.requests.get_information import GetUptimeRequest1
 
 
 class Client():
