@@ -93,7 +93,10 @@ class Client():
         """
         request = Request(
             Endpoint.Get_Information_Uptime,
-            utils.get_request_header(self.proxy.connection_info, request_id)
+            utils.get_request_header(
+                self.proxy.connection_info,
+                request_id
+            )
         )
 
         return await self.proxy.get_response(request)
