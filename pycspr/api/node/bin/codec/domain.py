@@ -1,18 +1,23 @@
 import typing
 
+from pycspr.api.node.bin.codec.constants import \
+    TAG_DOMAIN_BLOCK_HASH, \
+    TAG_DOMAIN_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.primitives import \
-    decode_u8
+    decode_u8, \
+    encode_bytes, \
+    encode_u8, \
+    encode_u64
 from pycspr.api.node.bin.types.domain import \
-    BlockID, \
     BlockHash, \
+    BlockHeader, \
     BlockHeight, \
+    BlockID, \
     EraID, \
+    NodeUptime, \
+    ProtocolVersion, \
     PublicKey, \
     TransactionHash
-from pycspr.api.node.bin.types.domain import \
-    BlockHeader, \
-    NodeUptime, \
-    ProtocolVersion
 
 
 def decode_block_header(bstream: bytes) -> typing.Tuple[bytes, BlockHeader]:
@@ -31,12 +36,43 @@ def decode_protocol_version(bstream: bytes) -> typing.Tuple[bytes, ProtocolVersi
     return bstream, ProtocolVersion(major, minor, patch)
 
 
+def encode_block_hash(val: BlockHash):
+    return encode_u8(TAG_DOMAIN_BLOCK_HASH) + encode_bytes(val)
+
+
+def encode_block_height(val: BlockHeight):
+    return encode_u8(TAG_DOMAIN_BLOCK_HEIGHT) + encode_u64(val)
+
+
+def encode_block_id(val: BlockID):
+    if isinstance(val, bytes):
+        return encode_block_hash(val)
+    elif isinstance(val, int):
+        return encode_block_height(val)
+    else:
+        raise ValueError("Invalid BlockID")
+
+
+def encode_protocol_version(entity: ProtocolVersion):
+    return \
+        encode_u8(entity.major) + \
+        encode_u8(entity.minor) + \
+        encode_u8(entity.patch)
+
+
 DECODERS: typing.Dict[typing.Type, typing.Callable] = {
     BlockHeader: decode_block_header,
     NodeUptime: decode_node_uptime,
     ProtocolVersion: decode_protocol_version,
 }
 
+
+ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
+    BlockHash: encode_block_hash,
+    BlockHeight: encode_block_height,
+    BlockID: encode_block_id,
+    ProtocolVersion: encode_protocol_version,
+}
 
 
 # /// A type of the payload being returned in a binary response.
