@@ -1,4 +1,5 @@
 import os
+import random
 
 import pytest
 
@@ -33,7 +34,6 @@ def NODE_BINARY_CONNECTION_INFO(
         NODE_HOST,
         NODE_BINARY_PORT
     )
-
 
 @pytest.fixture(scope="session")
 def NODE_BINARY_PORT() -> int:
@@ -85,6 +85,9 @@ def NODE_SSE_PORT() -> int:
     return int(os.getenv("PYCSPR_TEST_NODE_SSE_PORT", 14101))
 
 
+@pytest.fixture()
+def REQUEST_ID() -> int:
+    return random.randint(0, int(1e4))
 
 
 @pytest.fixture(scope="session")

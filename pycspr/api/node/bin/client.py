@@ -40,9 +40,6 @@ class Client():
 
         """
         pass
-        # return codec.decode(
-        #     await self.proxy.get_information_available_block_range(request_id)
-        # )
 
     async def get_information_block_header(
         self,
@@ -57,32 +54,8 @@ class Client():
 
         """
         pass
-        # response: bytes = await self.proxy.get_information_block_header(block_id, request_id)
-
-        # print(utils.parse_response(response, request_id))
-
-        # return codec.decode(
-        #     await self.proxy.get_information_block_header(block_id, request_id),
-        #     BlockHeader
-        # )
 
     async def get_information_uptime(
-        self,
-        request_id: RequestID = None
-    ) -> NodeUptime:
-        """Returns node uptime information.
-
-        :param request_id: Request correlation identifier.
-        :returns: Node uptime information.
-
-        """
-        pass
-        # return codec.decode(
-        #     await self.proxy.get_information_uptime(request_id)
-        # )
-
-
-    async def get_information_uptime_1(
         self,
         request_id: RequestID = None,
         decode: bool = True
@@ -94,13 +67,12 @@ class Client():
         :returns: Node uptime information.
 
         """
-        request: Request = utils.get_request(
+        response: Response = await self.proxy.get_response(
             Endpoint.Get_Information_Uptime,
-            self.proxy.connection_info,
-            request_id
+            request_id,
         )
 
-        return await self._get_response(request, decode)
+        return response
 
 
     async def _get_response(self, request: Request, decode: bool) -> typing.Union[bytes, Response]:

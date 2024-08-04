@@ -20,35 +20,35 @@ from pycspr.api.node.bin.types.domain import \
     TransactionHash
 
 
-def decode_block_header(bstream: bytes) -> typing.Tuple[bytes, BlockHeader]:
+def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     raise NotImplementedError()
 
 
-def decode_node_uptime(bstream: bytes) -> typing.Tuple[bytes, NodeUptime]:
+def decode_node_uptime(bytes_in: bytes) -> typing.Tuple[bytes, NodeUptime]:
     raise NotImplementedError()
 
 
-def decode_protocol_version(bstream: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
-    bstream, major = decode_u8(bstream)
-    bstream, minor = decode_u8(bstream)
-    bstream, patch = decode_u8(bstream)
+def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
+    bytes_rem, major = decode_u8(bytes_in)
+    bytes_rem, minor = decode_u8(bytes_rem)
+    bytes_rem, patch = decode_u8(bytes_rem)
 
-    return bstream, ProtocolVersion(major, minor, patch)
-
-
-def encode_block_hash(val: BlockHash):
-    return encode_u8(TAG_DOMAIN_BLOCK_HASH) + encode_bytes(val)
+    return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
-def encode_block_height(val: BlockHeight):
-    return encode_u8(TAG_DOMAIN_BLOCK_HEIGHT) + encode_u64(val)
+def encode_block_hash(entity: BlockHash):
+    return encode_u8(TAG_DOMAIN_BLOCK_HASH) + encode_bytes(entity)
 
 
-def encode_block_id(val: BlockID):
-    if isinstance(val, bytes):
-        return encode_block_hash(val)
-    elif isinstance(val, int):
-        return encode_block_height(val)
+def encode_block_height(entity: BlockHeight):
+    return encode_u8(TAG_DOMAIN_BLOCK_HEIGHT) + encode_u64(entity)
+
+
+def encode_block_id(entity: BlockID):
+    if isinstance(entity, bytes):
+        return encode_block_hash(entity)
+    elif isinstance(entity, int):
+        return encode_block_height(entity)
     else:
         raise ValueError("Invalid BlockID")
 
@@ -65,7 +65,6 @@ DECODERS: typing.Dict[typing.Type, typing.Callable] = {
     NodeUptime: decode_node_uptime,
     ProtocolVersion: decode_protocol_version,
 }
-
 
 ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
     BlockHash: encode_block_hash,

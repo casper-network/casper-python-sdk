@@ -8,7 +8,9 @@ from pycspr.api.node.bin.codec.domain import \
     ENCODERS as _ENCODERS_DOMAIN
 from pycspr.api.node.bin.codec.requests import \
     ENCODERS as _ENCODERS_REQUESTS
-from pycspr.api.node.bin.codec.primitives import encode_bytes
+from pycspr.api.node.bin.codec.primitives import \
+    decode_u32, \
+    encode_bytes
 
 
 DECODERS: typing.Dict[typing.Type, typing.Callable] = \

@@ -110,16 +110,22 @@ class Response():
     """Response wrapper over raw bytes returned from server.
 
     """
+    # Raw bytes.
+    bytes_raw: bytes
+
+    # Raw inner payload.
+    bytes_payload: bytes
+
     # Decoded header.
     header: "ResponseHeader"
 
-    # Raw inner payload.
-    payload: bytes
+    # Original request.
+    request: Request
 
 
 @dataclasses.dataclass
 class ResponseHeader():
-    """Response header wrapper over raw bytes returned from server.
+    """Decoded response header.
 
     """
     # Chain protocol version.

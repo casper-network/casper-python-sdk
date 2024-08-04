@@ -35,6 +35,7 @@ from tests.fixtures.node import NODE_REST_PORT
 from tests.fixtures.node import NODE_SSE_CLIENT
 from tests.fixtures.node import NODE_SSE_CONNECTION_INFO
 from tests.fixtures.node import NODE_SSE_PORT
+from tests.fixtures.node import REQUEST_ID
 
 from tests.fixtures.node import CONNECTION_RPC
 from tests.fixtures.node import CONNECTION_RPC_SPECULATIVE

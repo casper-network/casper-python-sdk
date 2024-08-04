@@ -7,13 +7,8 @@ from pycspr.api.node.bin import Client
 #     raise ValueError(ddd)
 
 
-async def test_get_uptime_endpoint_1(NODE_BINARY_CLIENT: Client):
-    ddd = await NODE_BINARY_CLIENT.get_information_uptime_1()
+async def test_get_uptime_endpoint(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    endpoint = NODE_BINARY_CLIENT.get_information_uptime
+    ddd = await endpoint(request_id=REQUEST_ID)
 
     raise ValueError(ddd)
-
-
-# async def test_get_uptime_endpoint(NODE_BINARY_CLIENT: Client):
-#     ddd = await NODE_BINARY_CLIENT.get_information_uptime()
-
-#     raise ValueError(ddd)
