@@ -1,7 +1,3 @@
-from pycspr.api.node.bin.types.requests.core import \
-    Request, \
-    RequestHeader, \
-    RequestID
 from pycspr.api.node.bin.types.requests.get import \
     Get_Information_BlockHeader_RequestPayload, \
     Get_Information_Reward_RequestPayload, \

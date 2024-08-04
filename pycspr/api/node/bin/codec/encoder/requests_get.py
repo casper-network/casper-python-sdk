@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.node.bin.codec.encoder.domain import \
     encode_block_id
-from pycspr.api.node.bin.codec.encoder.primitives import \
+from pycspr.api.node.bin.codec.primitives import \
     encode_optional, \
     encode_u8
 from pycspr.api.node.bin.types.core import \

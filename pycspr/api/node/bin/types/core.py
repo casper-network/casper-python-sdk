@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 import dataclasses
 import enum
+import typing
 
-from pycspr.api.node.bin.constants import DEFAULT_HOST
-from pycspr.api.node.bin.constants import DEFAULT_PORT
+from pycspr.api.node.bin.constants import \
+    DEFAULT_HOST, \
+    DEFAULT_PORT, \
+    DEFAULT_REQUEST_VERSION
+from pycspr.api.node.bin.types.domain import ProtocolVersion
 
 
 @dataclasses.dataclass
@@ -20,7 +26,7 @@ class ConnectionInfo:
     port: int = DEFAULT_PORT
 
     # Version of binary server API.
-    binary_request_version: int = 0
+    binary_request_version: int = DEFAULT_REQUEST_VERSION
 
     def get_url(self, eid: int = 0) -> str:
         """Returns URL for remote BIN server connection.
@@ -56,3 +62,71 @@ class Endpoint(enum.Enum):
     Get_Information_Uptime = enum.auto()
     Try_AcceptTransaction = enum.auto()
     Try_SpeculativeExec = enum.auto()
+
+
+@dataclasses.dataclass
+class Request():
+    """Encapsulates information required to dispatch an API request.
+
+    """
+    # Request endpoint.
+    endpoint: Endpoint
+
+    # Request header encapsulating API metadata.
+    header: "RequestHeader"
+
+    # Request payload, i.e. endpoint params.
+    payload: object = None
+
+    def __eq__(self, other: Request) -> bool:
+        return \
+            self.endpoint == other.endpoint and \
+            self.header == other.header and \
+            self.payload == self.payload
+
+
+@dataclasses.dataclass
+class RequestHeader():
+    """Encapsulates API request header information.
+
+    """
+    # Version of binary server API.
+    binary_request_version: int
+
+    # Version of chain protocol.
+    chain_protocol_version: ProtocolVersion
+
+    # Request correlation identifier.
+    id: "RequestID"
+
+
+RequestID = typing.NewType(
+    "Request identifier specified by end user typically used to correlate responses.", int
+)
+
+
+@dataclasses.dataclass
+class Response():
+    """Response wrapper over raw bytes returned from server.
+
+    """
+    # Decoded header.
+    header: "ResponseHeader"
+
+    # Raw inner payload.
+    payload: bytes
+
+
+@dataclasses.dataclass
+class ResponseHeader():
+    """Response header wrapper over raw bytes returned from server.
+
+    """
+    # Chain protocol version.
+    protocol_version: ProtocolVersion
+
+    # Server error code.
+    error: int
+
+    # Server data type.
+    returned_data_type_tag: typing.Optional[int]

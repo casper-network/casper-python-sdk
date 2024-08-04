@@ -87,6 +87,7 @@ class Client():
 
         :param account_id: An account holder's public key prefixed with a key type identifier.
         :param block_id: Identifier of a finalised block.
+        :param decode: Flag indicating whether to decode API response.
         :returns: Account information in JSON format.
 
         """
@@ -102,6 +103,7 @@ class Client():
         """Returns current auction system contract information.
 
         :param block_id: Identifier of a finalised block.
+        :param decode: Flag indicating whether to decode API response.
         :returns: Current auction system contract information.
 
         """

@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.encoder.domain import ENCODERS as _ENCODERS_DOMAIN
-from pycspr.api.node.bin.codec.encoder.primitives import encode_bytes
+from pycspr.api.node.bin.codec.primitives import encode_bytes
 from pycspr.api.node.bin.codec.encoder.requests_core import ENCODERS as _ENCODERS_REQUESTS_CORE
 from pycspr.api.node.bin.codec.encoder.requests_get import ENCODERS as _ENCODERS_REQUESTS_GET
 

@@ -1,18 +1,18 @@
 import typing
 
 from pycspr.api.node.bin.types.core import \
-    Endpoint
-from pycspr.api.node.bin.types.requests import \
+    Endpoint, \
     Request
 from pycspr.api.node.bin.codec.constants import \
-    TYPE_TAG_ENDPOINT, \
-    TYPE_TAG_REQUEST_GET, \
-    TYPE_TAG_REQUEST_GET_INFORMATION, \
-    TYPE_TAG_REQUEST_GET_RECORD, \
-    TYPE_TAG_REQUEST_GET_STATE, \
-    TYPE_TAG_REQUEST_TRY_ACCEPT_TRANSACTION, \
-    TYPE_TAG_REQUEST_TRY_SPECULATIVE_TRANSACTION
-from pycspr.api.node.bin.codec.encoder.primitives import \
+    ENDPOINT_TO_TAGS, \
+    ENDPOINT_TO_TAG_BYTES, \
+    TAG_GET, \
+    TAG_GET_INFORMATION, \
+    TAG_GET_RECORD, \
+    TAG_GET_STATE, \
+    TAG_TRY_ACCEPT_TRANSACTION, \
+    TAG_TRY_SPECULATIVE_TRANSACTION
+from pycspr.api.node.bin.codec.primitives import \
     encode_u8, \
     encode_u16
 from pycspr.api.node.bin.codec.encoder.domain import \
@@ -21,16 +21,10 @@ from pycspr.api.node.bin.codec.encoder.domain import \
 
 def encode_request(entity: Request) -> bytes:
     def encode_header() -> bytes:
-        def encode_endpoint() -> bytes:
-            if entity.endpoint.name.startswith("Get_"):
-                return encode_u8(TYPE_TAG_REQUEST_GET)
-            else:
-                return encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
-
         return \
             encode_u16(entity.header.binary_request_version) + \
             encode_protocol_version(entity.header.chain_protocol_version) + \
-            encode_endpoint() + \
+            ENDPOINT_TO_TAG_BYTES[entity.endpoint][:1] + \
             encode_u16(entity.header.id)
 
     def encode_payload() -> bytes:
@@ -41,23 +35,7 @@ def encode_request(entity: Request) -> bytes:
         return b''
 
     def encode_payload_tag() -> bytes:
-        if entity.endpoint.name.startswith("Get_"):
-            if entity.endpoint.name.startswith("Get_Information"):
-                return \
-                    encode_u8(TYPE_TAG_REQUEST_GET_INFORMATION) + \
-                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
-            elif entity.endpoint.name.startswith("Get_Record"):
-                return \
-                    encode_u8(TYPE_TAG_REQUEST_GET_RECORD) + \
-                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
-            elif entity.endpoint.name.startswith("Get_State"):
-                return \
-                    encode_u8(TYPE_TAG_REQUEST_GET_STATE) + \
-                    encode_u8(TYPE_TAG_ENDPOINT[entity.endpoint])
-            else:
-                raise ValueError("Invalid endpoint")
-        else:
-            return b''
+        return ENDPOINT_TO_TAG_BYTES[entity.endpoint][1:]
 
     return encode_header() + encode_payload_tag() + encode_payload()
 

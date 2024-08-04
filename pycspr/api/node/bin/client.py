@@ -8,7 +8,8 @@ from pycspr.api.node.bin.types import \
     ConnectionInfo, \
     Endpoint, \
     Request, \
-    RequestID
+    RequestID, \
+    Response
 from pycspr.api.node.bin.types.domain import \
     BlockID, \
     BlockHeader, \
@@ -83,20 +84,36 @@ class Client():
 
     async def get_information_uptime_1(
         self,
-        request_id: RequestID = None
-    ) -> NodeUptime:
+        request_id: RequestID = None,
+        decode: bool = True
+    ) -> typing.Union[bytes, Response]:
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode API response.
         :returns: Node uptime information.
 
         """
-        request = Request(
+        request: Request = utils.get_request(
             Endpoint.Get_Information_Uptime,
-            utils.get_request_header(
-                self.proxy.connection_info,
-                request_id
-            )
+            self.proxy.connection_info,
+            request_id
         )
 
-        return await self.proxy.get_response(request)
+        return await self._get_response(request, decode)
+
+
+    async def _get_response(self, request: Request, decode: bool) -> typing.Union[bytes, Response]:
+        """Encodes & hands request to proxy, awaits & optionally decodes response.
+
+        """
+        # codec.encode(request, True)
+        response: Response = await self.proxy.get_response(request)
+        # if decode is False:
+        #     return response_bytes
+
+        # bstream, response = codec.decode(response_bytes, Response)
+        # assert \
+        #     len(bstream) == 0, \
+        #     "Response decoding error: unconsumed bytes"
+        return response

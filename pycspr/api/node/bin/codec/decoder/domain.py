@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.codec.decoder.primitives import \
+from pycspr.api.node.bin.codec.primitives import \
     decode_u8
 from pycspr.api.node.bin.types.domain import \
     BlockID, \
