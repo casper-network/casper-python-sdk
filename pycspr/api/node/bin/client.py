@@ -1,7 +1,6 @@
 import typing
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.proxy import \
     Proxy
 from pycspr.api.node.bin.types import \
@@ -31,7 +30,7 @@ class Client():
 
     async def get_information_available_block_range(
         self,
-        request_id: RequestID = None
+        request_id: RequestID
     ) -> BlockRange:
         """Returns a node's available block range.
 
@@ -43,8 +42,8 @@ class Client():
 
     async def get_information_block_header(
         self,
+        request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
-        request_id: RequestID = None
     ) -> BlockHeader:
         """Returns a block header.
 
@@ -57,9 +56,9 @@ class Client():
 
     async def get_information_uptime(
         self,
-        request_id: RequestID = None,
+        request_id: RequestID,
         decode: bool = True
-    ) -> typing.Union[bytes, Response]:
+    ) -> typing.Union[Response, NodeUptime]:
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
@@ -67,25 +66,11 @@ class Client():
         :returns: Node uptime information.
 
         """
-        response: Response = await self.proxy.get_response(
+        response: Response = await self.proxy.invoke_endpoint(
             Endpoint.Get_Information_Uptime,
             request_id,
         )
 
-        return response
+        # return Response if decode is False else codec.decode_u64(response.payload)
 
-
-    async def _get_response(self, request: Request, decode: bool) -> typing.Union[bytes, Response]:
-        """Encodes & hands request to proxy, awaits & optionally decodes response.
-
-        """
-        # codec.encode(request, True)
-        response: Response = await self.proxy.get_response(request)
-        # if decode is False:
-        #     return response_bytes
-
-        # bstream, response = codec.decode(response_bytes, Response)
-        # assert \
-        #     len(bstream) == 0, \
-        #     "Response decoding error: unconsumed bytes"
-        return response
+        return Response if decode is False else codec.decode(response.payload, NodeUptime)

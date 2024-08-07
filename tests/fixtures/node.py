@@ -87,7 +87,7 @@ def NODE_SSE_PORT() -> int:
 
 @pytest.fixture()
 def REQUEST_ID() -> int:
-    return random.randint(0, int(1e4))
+    return random.randint(0, int(1e2))
 
 
 @pytest.fixture(scope="session")

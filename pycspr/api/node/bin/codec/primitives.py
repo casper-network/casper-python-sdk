@@ -4,55 +4,33 @@ from pycspr.api.node.bin.codec.constants import \
     TAG_OPTIONAL_NONE, \
     TAG_OPTIONAL_VALUE
 
+from pycspr.api.node.bin.types.primitives import U8x, U16x, U32x, U64x
+from pycspr.api.node.bin.codec import utils
 
-def decode_u8(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    return decode_uint(bytes_in, 1)
-
-
-def decode_u16(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    return decode_uint(bytes_in, 2)
-
-
-def decode_u32(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    return decode_uint(bytes_in, 4)
+from pycspr.api.node.bin.codec.utils import \
+    decode, \
+    encode, \
+    register_decoder, \
+    register_encoder
 
 
-def decode_u64(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    return decode_uint(bytes_in, 8)
+register_decoder(U8x, lambda x: _decode_uint(x, 1))
+register_decoder(U16x, lambda x: _decode_uint(x, 2))
+register_decoder(U32x, lambda x: _decode_uint(x, 4))
+register_decoder(U64x, lambda x: _decode_uint(x, 8))
+
+register_encoder(bytes, lambda x: encode(len(x), U32x) + x)
+register_encoder(U8x, lambda x: _encode_uint(x, 1))
+register_encoder(U16x, lambda x: _encode_uint(x, 2))
+register_encoder(U32x, lambda x: _encode_uint(x, 4))
+register_encoder(U64x, lambda x: _encode_uint(x, 8))
 
 
-def decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int]:
+def _decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int]:
     return \
         bytes_in[encoded_length:], \
         int.from_bytes(bytes_in[:encoded_length], "little", signed=False)
 
 
-def encode_bytes(entity: bytes) -> bytes:
-    return encode_u32(len(entity)) + entity
-
-
-def encode_optional(entity: object, encoder: typing.Callable) -> bytes:
-    if entity is None:
-        return encode_u8(TAG_OPTIONAL_NONE)
-    else:
-        return encode_u8(TAG_OPTIONAL_VALUE) + encoder(entity)
-
-
-def encode_u8(entity: int) -> bytes:
-    return encode_uint(entity, 1)
-
-
-def encode_u16(entity: int) -> bytes:
-    return encode_uint(entity, 2)
-
-
-def encode_u32(entity: int) -> bytes:
-    return encode_uint(entity, 4)
-
-
-def encode_u64(entity: int) -> bytes:
-    return encode_uint(entity, 8)
-
-
-def encode_uint(entity: int, encoded_length: int) -> bytes:
+def _encode_uint(entity: int, encoded_length: int) -> bytes:
     return entity.to_bytes(encoded_length, "little", signed=False)

@@ -26,89 +26,42 @@ class Proxy:
         """
         self.connection_info = connection_info
 
-    async def get_response(
+    async def invoke_endpoint(
         self,
         endpoint: Endpoint,
         request_id: RequestID,
     ) -> Response:
         """Dispatches request to a remote node binary port & returns response.
 
-        :param request: Request to be dispatched.
+        :param endpoint: Endpoint to be invoked.
+        :param request_id: Identifier of request to be dispatched.
         :returns: Remote node binary server response.
 
         """
-        request_bytes: bytes = _get_request_bytes(
-            endpoint,
-            request_id,
-            self.connection_info
+        # Set request.
+        request: Request = Request(
+            header=RequestHeader(
+                self.connection_info.binary_request_version,
+                ProtocolVersion.from_semvar(self.connection_info.chain_protocol_version),
+                endpoint,
+                request_id,
+            )
         )
-        response_bytes: bytes = await _get_response_bytes(
-            self.connection_info,
-            request_bytes
-        )
-        print(response_bytes.hex())
 
-        return _get_response(request_bytes, response_bytes)
+        # Set request bytes.
+        bytes_request: bytes = codec.encode(request, prepend_length=True)
 
+        # Set response bytes - i.e. call server.
+        bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
 
-def _get_request_bytes(
-    endpoint: Endpoint,
-    request_id: RequestID,
-    connection_info: ConnectionInfo,
-) -> bytes:
-    """Returns a binary server request.
+        # Set response.
+        bytes_rem, response = codec.decode(bytes_response, Response)
+        assert len(bytes_rem) == 0, "Uncomsumed response bytes"
 
-    """
-    request: Request = Request(
-        endpoint=endpoint,
-        header=RequestHeader(
-            connection_info.binary_request_version,
-            ProtocolVersion.from_semvar(connection_info.chain_protocol_version),
-            request_id,
-        )
-    )
-
-    return codec.encode(request, True)
+        return response
 
 
-def _get_response(request_bytes: bytes, response_bytes: bytes) -> Response:
-    """Parses a node's binary port response.
-
-    :param request: Original request.
-    :param request_bytes: Original request as raw bytes.
-    :param response_bytes: Server response as raw bytes.
-    :returns: Parsed, i.e. decoded, response.
-
-    """
-    # Assert response data type.
-    assert \
-        isinstance(response_bytes, bytes) is True, \
-        "Response decoding error: response is not bytes"
-
-    # Assert length of inner byte stream.
-    bytes_rem, length = codec.decode_u32(response_bytes)
-    assert \
-        len(bytes_rem) == length, \
-        "Response decoding error: inner byte length mismatch"
-
-    # TODO: clarify why need to offset by 2
-    bytes_rem = bytes_rem[2:]
-
-    # Assert request echo.
-    assert \
-        bytes_rem.find(request_bytes) == 0, \
-        "Response decoding error: request bytes not found"
-
-    # Assert response decoding.
-    bytes_rem, response = codec.decode(response_bytes, Response)
-    assert \
-        len(bytes_rem) == 0, \
-        "Response decoding error: unconsumed bytes"
-
-    return response
-
-
-async def _get_response_bytes(connection_info: ConnectionInfo, request_bytes: bytes) -> bytes:
+async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: bytes) -> bytes:
     """Dispatches a remote binary server request and returns the request/response pair.
 
     """
@@ -116,14 +69,35 @@ async def _get_response_bytes(connection_info: ConnectionInfo, request_bytes: by
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
     # Write request.
-    writer.write(request_bytes)
+    writer.write(bytes_request)
     writer.write_eof()
 
     # Read response.
-    response_bytes: bytes = (await reader.read(-1))
+    bytes_response: bytes = (await reader.read(-1))
 
     # Close stream.
     writer.close()
     await writer.wait_closed()
 
-    return response_bytes
+    return _parse_response(bytes_request, bytes_response)
+
+
+def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
+    """Parses a node's binary port response.
+
+    """
+    assert \
+        isinstance(bytes_response, bytes) is True, \
+        "Response decoding error: response is not bytes"
+
+    bytes_rem, length = U32.from_bytes(bytes_response)
+    assert \
+        len(bytes_rem) == length, \
+        "Response decoding error: inner byte length mismatch"
+
+    # TODO: clarify why need to offset by 2
+    assert \
+        bytes_rem[2:].find(bytes_request) == 0, \
+        "Response decoding error: request bytes not found"
+
+    return bytes_response

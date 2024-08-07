@@ -1,96 +1,88 @@
 import typing
 
+print(999)
+
 from pycspr.api.node.bin.codec.constants import \
     ENDPOINT_TO_TAGS, \
-    ENDPOINT_TO_TAG_BYTES, \
     TAGS_TO_ENDPOINTS, \
-    TAG_ENDPOINT, \
     TAG_GET, \
-    TAG_GET_INFORMATION, \
-    TAG_GET_RECORD, \
-    TAG_GET_STATE, \
     TAG_TRY_ACCEPT_TRANSACTION, \
     TAG_TRY_SPECULATIVE_TRANSACTION
-from pycspr.api.node.bin.codec.primitives import \
-    decode_u8, \
-    decode_u16, \
-    decode_u32, \
-    encode_u8, \
-    encode_u16
-from pycspr.api.node.bin.codec.domain import \
-    decode_protocol_version, \
-    encode_protocol_version
 from pycspr.api.node.bin.types.core import \
     Endpoint, \
+    ErrorCode, \
     Request, \
     RequestHeader, \
     Response, \
     ResponseHeader
+from pycspr.api.node.bin.types.domain import \
+    ProtocolVersion
+from pycspr.api.node.bin.types.primitives import \
+    U8x, \
+    U32x, \
+    U16x
+from pycspr.api.node.bin.codec.utils import register_decoder, register_encoder, decode, encode
 
 
 def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-    def _decode_endpoint(bytes_in: bytes, header_tag: int) -> typing.Tuple[bytes, Endpoint]:
-        if header_tag == TAG_TRY_ACCEPT_TRANSACTION:
-            return bytes_in, Endpoint.Try_AcceptTransaction
-        elif header_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
-            return bytes_in, Endpoint.Try_AcceptTransaction
-        elif header_tag == TAG_GET:
-            bytes_rem, query_type = decode_u8(bytes_in)
-            bytes_rem, query_subtype = decode_u8(bytes_rem)
-            try:
-                return bytes_rem, TAGS_TO_ENDPOINTS[(header_tag, query_type, query_subtype)]
-            except KeyError:
-                raise ValueError("Invalid endpoint get tag")
-        raise ValueError("Invalid endpoint header tag")
+    def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
+        bytes_rem, request_version = decode(bytes_in, U16x)
+        bytes_rem, protocol_version = decode(bytes_rem, ProtocolVersion)
+        bytes_rem, header_tag = decode(bytes_rem, U8x)
+        bytes_rem, request_id = decode(bytes_rem, U16x)
 
-    def _decode_request_payload(bytes_in: bytes, endpoint: Endpoint) -> typing.Tuple[bytes, object]:
+        if header_tag == TAG_TRY_ACCEPT_TRANSACTION:
+            endpoint = Endpoint.Try_AcceptTransaction
+        elif header_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
+            endpoint = Endpoint.Try_AcceptTransaction
+        elif header_tag == TAG_GET:
+            bytes_rem, query_type = decode(bytes_rem, U8x)
+            bytes_rem, query_subtype = decode(bytes_rem, U8x)
+            endpoint = TAGS_TO_ENDPOINTS[(header_tag, query_type, query_subtype)]
+        else:
+            raise ValueError("Invalid request header tag")
+
+        return bytes_rem, RequestHeader(
+            binary_request_version=request_version,
+            chain_protocol_version=protocol_version,
+            endpoint=endpoint,
+            id=request_id
+        )
+
+    def _decode_payload(bytes_in: bytes, header: RequestHeader) -> typing.Tuple[bytes, object]:
         # TODO map endpoint to domain type.
         # TODO invoke decoder
         return b'', bytes_in
 
-    # Header fields.
-    bytes_rem, binary_request_version = decode_u16(bytes_in)
-    bytes_rem, chain_protocol_version = decode_protocol_version(bytes_rem)
-    bytes_rem, header_type_tag = decode_u8(bytes_rem)
-    bytes_rem, request_id = decode_u16(bytes_rem)
+    bytes_rem, header = _decode_header(bytes_in)
+    bytes_rem, payload = _decode_payload(bytes_rem, header)
 
-    # Endpoint.
-    bytes_rem, endpoint = _decode_endpoint(bytes_rem, header_type_tag)
-
-    # Payload.
-    bytes_rem, payload = _decode_request_payload(bytes_rem, endpoint)
-
-    return bytes_rem, Request(
-        endpoint=endpoint,
-        header=RequestHeader(
-            binary_request_version=binary_request_version,
-            chain_protocol_version=chain_protocol_version,
-            id=request_id
-        ),
-        payload=payload,
-    )
+    return bytes_rem, Request(header, payload)
 
 
 def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
-    # Destructure inner bytes.
-    bytes_rem, length = decode_u32(bytes_in)
+    def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
+        bytes_rem, protocol_version = decode(bytes_in, ProtocolVersion)
+        bytes_rem, error_code = decode(bytes_rem, U16x)
+        bytes_rem, response_payload_tag = decode(bytes_rem, U8x, True)
 
-    # Decode original request.
-    # TODO: why need for an offset of 2 ?
-    bytes_rem = bytes_rem[2:]
-    bytes_rem, length = decode_u32(bytes_rem)
-    _, request = decode_request(bytes_rem[:length])
+        return bytes_rem, ResponseHeader(
+            protocol_version=protocol_version,
+            error_code=ErrorCode(error_code),
+            returned_data_type_tag=response_payload_tag
+        )
 
-    # Decode response header.
-    bytes_rem = bytes_rem[length:]
-    bytes_rem, protocol_version = decode_protocol_version(bytes_rem)
-    bytes_rem, error = decode_u16(bytes_rem)
-    bytes_rem, returned_data_type_tag = decode_u8(bytes_rem)
-    header = ResponseHeader(
-        protocol_version=protocol_version,
-        error=error,
-        returned_data_type_tag=returned_data_type_tag
-    )
+    def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
+        bytes_rem, length = decode(bytes_in, U32x)
+        # TODO: why need for this offset.
+        bytes_rem = bytes_rem[2:]
+        bytes_rem, length = decode(bytes_rem, U32x)
+        _, request = decode_request(bytes_rem[:length])
+
+        return bytes_rem[length:], request
+
+    bytes_rem, request = _decode_request(bytes_in)
+    bytes_rem, header = _decode_header(bytes_rem)
 
     return b'', Response(
         bytes_raw=bytes_in,
@@ -101,31 +93,29 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
 
 def encode_request(entity: Request) -> bytes:
-    def encode_header() -> bytes:
+    def encode_header(entity: RequestHeader) -> bytes:
         return \
-            encode_u16(entity.header.binary_request_version) + \
-            encode_protocol_version(entity.header.chain_protocol_version) + \
-            ENDPOINT_TO_TAG_BYTES[entity.endpoint][:1] + \
-            encode_u16(entity.header.id)
+            encode(entity.binary_request_version, U16x) + \
+            encode(entity.chain_protocol_version.major, U8x) + \
+            encode(entity.chain_protocol_version.minor, U8x) + \
+            encode(entity.chain_protocol_version.patch, U8x) + \
+            encode(ENDPOINT_TO_TAGS[entity.endpoint][0], U8x) + \
+            encode(entity.id, U16x)
 
     def encode_payload() -> bytes:
-        if entity.payload is None:
-            return b''
-
         print("TODO: _encode_request_payload")
         return b''
 
-    def encode_payload_tag() -> bytes:
-        return ENDPOINT_TO_TAG_BYTES[entity.endpoint][1:]
+    def encode_payload_tags() -> bytes:
+        return \
+            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8x) + \
+            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U8x)
 
-    return encode_header() + encode_payload_tag() + encode_payload()
+    return \
+        encode_header(entity.header) + \
+        encode_payload_tags() + \
+        encode_payload()
 
-
-DECODERS: typing.Dict[typing.Type, typing.Callable] = {
-    Request: decode_request,
-    Response: decode_response,
-}
-
-ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
-    Request: encode_request,
-}
+register_decoder(Request, decode_request)
+register_decoder(Response, decode_response)
+register_encoder(Request, encode_request)

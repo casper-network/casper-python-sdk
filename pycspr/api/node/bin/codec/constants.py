@@ -3,28 +3,6 @@ import typing
 from pycspr.api.node.bin.types.core import Endpoint
 
 
-TAG_ENDPOINT: typing.Dict[Endpoint, int] = {
-    Endpoint.Get_Information_AvailableBlockRange: 10,
-    Endpoint.Get_Information_BlockHeader: 0,
-    Endpoint.Get_Information_BlockSynchronizerStatus: 9,
-    Endpoint.Get_Information_ChainspecRawBytes: 13,
-    Endpoint.Get_Information_ConsensusStatus: 12,
-    Endpoint.Get_Information_ConsensusValidatorChanges: 8,
-    Endpoint.Get_Information_LastProgress: 5,
-    Endpoint.Get_Information_LatestSwitchBlockHeader: 15,
-    Endpoint.Get_Information_NetworkName: 7,
-    Endpoint.Get_Information_NextUpgrade: 11,
-    Endpoint.Get_Information_NodeStatus: 14,
-    Endpoint.Get_Information_Peers: 3,
-    Endpoint.Get_Information_ReactorState: 6,
-    Endpoint.Get_Information_Reward: 16,
-    Endpoint.Get_Information_SignedBlock: 1,
-    Endpoint.Get_Information_Transaction: 2,
-    Endpoint.Get_Information_Uptime: 4,
-    Endpoint.Try_AcceptTransaction: 1,
-    Endpoint.Try_SpeculativeExec: 2,
-}
-
 # Set of named codec tags.
 TAG_DOMAIN_BLOCK_HASH: int = 0
 TAG_DOMAIN_BLOCK_HEIGHT: int = 1
@@ -99,11 +77,4 @@ ENDPOINT_TO_TAGS: typing.Dict[Endpoint, typing.Tuple[int, typing.Optional[int], 
 # Map of endpoint to a tuple of type tag as bytes.  This permits simplified decoding.
 TAGS_TO_ENDPOINTS: typing.Dict[typing.Tuple[int, typing.Optional[int], typing.Optional[int]], Endpoint] = {
     v: k for k,v in ENDPOINT_TO_TAGS.items()
-}
-
-# Map of endpoint to a tuple of type tag as bytes.  This permits simplified decoding.
-ENDPOINT_TO_TAG_BYTES: typing.Dict[Endpoint, bytes] = {
-    k: b''.join(
-        [i.to_bytes(1, "little") if i is not None else b'' for i in v]
-    ) for k,v in ENDPOINT_TO_TAGS.items()
 }

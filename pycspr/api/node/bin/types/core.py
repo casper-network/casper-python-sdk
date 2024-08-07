@@ -64,14 +64,79 @@ class Endpoint(enum.Enum):
     Try_SpeculativeExec = enum.auto()
 
 
+class ErrorCode(enum.Enum):
+    """Enumeration over set of binary request error codes.
+
+    """
+    NoError = 0
+    FunctionDisabled = 1
+    NotFound = 2
+    RootNotFound = 3
+    InvalidItemVariant = 4
+    WasmPreprocessing = 5
+    UnsupportedProtocolVersion = 6
+    InternalError = 7
+    FailedQuery = 8
+    BadRequest = 9
+    UnsupportedRequest = 10
+    DictionaryURefNotFound = 11
+    NoCompleteBlocks = 12
+    InvalidDeployChainName = 13
+    InvalidDeployDependenciesNoLongerSupported = 14
+    InvalidDeployExcessiveSize = 15
+    InvalidDeployExcessiveTimeToLive = 16
+    InvalidDeployTimestampInFuture = 17
+    InvalidDeployBodyHash = 18
+    InvalidDeployHash = 19
+    InvalidDeployEmptyApprovals = 20
+    InvalidDeployApproval = 21
+    InvalidDeployExcessiveSessionArgsLength = 22
+    InvalidDeployExcessivePaymentArgsLength = 23
+    InvalidDeployMissingPaymentAmount = 24
+    InvalidDeployFailedToParsePaymentAmount = 25
+    InvalidDeployExceededBlockGasLimit = 26
+    InvalidDeployMissingTransferAmount = 27
+    InvalidDeployFailedToParseTransferAmount = 28
+    InvalidDeployInsufficientTransferAmount = 29
+    InvalidDeployExcessiveApprovals = 30
+    InvalidDeployUnableToCalculateGasLimit = 31
+    InvalidDeployUnableToCalculateGasCost = 32
+    InvalidDeployUnspecified = 33
+    InvalidTransactionChainName = 34
+    InvalidTransactionExcessiveSize = 35
+    InvalidTransactionExcessiveTimeToLive = 36
+    InvalidTransactionTimestampInFuture = 37
+    InvalidTransactionBodyHash = 38
+    InvalidTransactionHash = 39
+    InvalidTransactionEmptyApprovals = 40
+    InvalidTransactionInvalidApproval = 41
+    InvalidTransactionExcessiveArgsLength = 42
+    InvalidTransactionExcessiveApprovals = 43
+    InvalidTransactionExceedsBlockGasLimit = 44
+    InvalidTransactionMissingArg = 45
+    InvalidTransactionUnexpectedArgType = 46
+    InvalidTransactionInvalidArg = 47
+    InvalidTransactionInsufficientTransferAmount = 48
+    InvalidTransactionEntryPointCannotBeCustom = 49
+    InvalidTransactionEntryPointMustBeCustom = 50
+    InvalidTransactionEmptyModuleBytes = 51
+    InvalidTransactionGasPriceConversion = 52
+    InvalidTransactionUnableToCalculateGasLimit = 53
+    InvalidTransactionUnableToCalculateGasCost = 54
+    InvalidTransactionPricingMode = 55
+    InvalidTransactionUnspecified = 56
+    InvalidTransactionOrDeployUnspecified = 57
+    SwitchBlockNotFound = 58
+    SwitchBlockParentNotFound = 59
+    UnsupportedRewardsV1Request = 60
+    BinaryProtocolVersionMismatch = 61
+
+
 @dataclasses.dataclass
 class Request():
     """Encapsulates information required to dispatch an API request.
 
     """
-    # Request endpoint.
-    endpoint: Endpoint
-
     # Request header encapsulating API metadata.
     header: "RequestHeader"
 
@@ -80,7 +145,6 @@ class Request():
 
     def __eq__(self, other: Request) -> bool:
         return \
-            self.endpoint == other.endpoint and \
             self.header == other.header and \
             self.payload == self.payload
 
@@ -96,8 +160,18 @@ class RequestHeader():
     # Version of chain protocol.
     chain_protocol_version: ProtocolVersion
 
+    # Request endpoint.
+    endpoint: Endpoint
+
     # Request correlation identifier.
-    id: "RequestID"
+    id: int
+
+    def __eq__(self, other: Request) -> bool:
+        return \
+            self.binary_request_version == other.binary_request_version and \
+            self.chain_protocol_version == self.chain_protocol_version and \
+            self.endpoint == other.endpoint and \
+            self.id == other.id
 
 
 RequestID = typing.NewType(
@@ -122,6 +196,10 @@ class Response():
     # Original request.
     request: Request
 
+    @property
+    def payload(self) -> bytes:
+        return self.bytes_payload
+
 
 @dataclasses.dataclass
 class ResponseHeader():
@@ -132,7 +210,7 @@ class ResponseHeader():
     protocol_version: ProtocolVersion
 
     # Server error code.
-    error: int
+    error_code: ErrorCode
 
     # Server data type.
     returned_data_type_tag: typing.Optional[int]

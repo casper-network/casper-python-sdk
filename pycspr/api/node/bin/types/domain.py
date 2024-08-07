@@ -1,6 +1,8 @@
 import dataclasses
 import typing
 
+from pycspr.api.node.bin import utils
+
 
 BlockHash = typing.NewType(
     "Digest over a block.", bytes
@@ -14,6 +16,10 @@ BlockID = typing.Union[BlockHash, BlockHeight]
 
 EraID = typing.NewType(
     "Ordinal identifier of an era measured by how many era precede it.", int
+)
+
+NodeUptime = typing.NewType(
+    "Number of milliseconds since a node has been up.", int
 )
 
 PublicKey = typing.NewType(
@@ -35,11 +41,6 @@ class BlockRange():
 
 
 @dataclasses.dataclass
-class NodeUptime():
-    pass
-
-
-@dataclasses.dataclass
 class ProtocolVersion():
     # Major semantic version.
     major: int
@@ -57,3 +58,11 @@ class ProtocolVersion():
             int(minor),
             int(patch)
         )
+
+    # @staticmethod
+    # def from_bytes(bytes_in: bytes) -> typing.Tuple[bytes, "ProtocolVersion"]:
+    #     bytes_rem, major = U8.from_bytes(bytes_in)
+    #     bytes_rem, minor = U8.from_bytes(bytes_rem)
+    #     bytes_rem, patch = U8.from_bytes(bytes_rem)
+
+    #     return bytes_rem, ProtocolVersion(major, minor, patch)

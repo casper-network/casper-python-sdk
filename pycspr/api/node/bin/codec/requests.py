@@ -1,22 +1,16 @@
 import typing
 
-from pycspr.api.node.bin.codec.domain import \
-    encode_block_id
-from pycspr.api.node.bin.codec.primitives import \
-    encode_optional, \
-    encode_u8
 from pycspr.api.node.bin.types.core import \
     Endpoint
+from pycspr.api.node.bin.types.domain import \
+    BlockID
 from pycspr.api.node.bin.types.requests import \
     Get_Information_BlockHeader_RequestPayload
-
+from pycspr.api.node.bin.codec.utils import encode, register_encoder
 
 
 def encode_get_block_header_request(payload: Get_Information_BlockHeader_RequestPayload) -> bytes:
-    return \
-        encode_optional(payload.block_id, encode_block_id)
+    return encode(payload.block_id, BlockID, is_optional=True)
 
 
-ENCODERS: typing.Dict[typing.Type, typing.Callable] = {
-    Get_Information_BlockHeader_RequestPayload: encode_get_block_header_request,
-}
+register_encoder(Get_Information_BlockHeader_RequestPayload, encode_get_block_header_request)
