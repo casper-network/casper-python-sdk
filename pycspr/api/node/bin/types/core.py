@@ -4,10 +4,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.api.node.bin.constants import \
-    DEFAULT_HOST, \
-    DEFAULT_PORT, \
-    DEFAULT_REQUEST_VERSION
+from pycspr.api.node.bin import constants
 from pycspr.api.node.bin.types.domain import ProtocolVersion
 
 
@@ -20,13 +17,13 @@ class ConnectionInfo:
     chain_protocol_version: str
 
     # Host address.
-    host: str = DEFAULT_HOST
+    host: str = constants.DEFAULT_HOST
 
     # Number of exposed speculative SSE port.
-    port: int = DEFAULT_PORT
+    port: int = constants.DEFAULT_PORT
 
     # Version of binary server API.
-    binary_request_version: int = DEFAULT_REQUEST_VERSION
+    binary_request_version: int = constants.DEFAULT_REQUEST_VERSION
 
     def get_url(self, eid: int = 0) -> str:
         """Returns URL for remote BIN server connection.
@@ -144,9 +141,7 @@ class Request():
     payload: object = None
 
     def __eq__(self, other: Request) -> bool:
-        return \
-            self.header == other.header and \
-            self.payload == self.payload
+        return self.header == other.header and self.payload == self.payload
 
 
 @dataclasses.dataclass
@@ -166,7 +161,7 @@ class RequestHeader():
     # Request correlation identifier.
     id: int
 
-    def __eq__(self, other: Request) -> bool:
+    def __eq__(self, other: RequestHeader) -> bool:
         return \
             self.binary_request_version == other.binary_request_version and \
             self.chain_protocol_version == self.chain_protocol_version and \
