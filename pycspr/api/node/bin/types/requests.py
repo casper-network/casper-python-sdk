@@ -6,7 +6,7 @@ from pycspr.api.node.bin.types.core import \
 from pycspr.api.node.bin.types.domain import \
     BlockID, \
     EraID, \
-    PublicKey, \
+    PublicKeyBytes, \
     TransactionHash
 
 
@@ -23,9 +23,9 @@ class Get_Information_Reward_RequestPayload():
     """Request payload: Get.Information.Reward endpoint.
 
     """
-    delegator: typing.Optional[PublicKey]
+    delegator: typing.Optional[PublicKeyBytes]
     era_id: typing.Optional[EraID]
-    validator: PublicKey
+    validator: PublicKeyBytes
 
 
 @dataclasses.dataclass
