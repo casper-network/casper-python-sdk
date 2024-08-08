@@ -1,7 +1,6 @@
 import typing
 
-print(999)
-
+from pycspr.api.node.bin.codec import utils
 from pycspr.api.node.bin.codec.constants import \
     ENDPOINT_TO_TAGS, \
     TAGS_TO_ENDPOINTS, \
@@ -15,29 +14,24 @@ from pycspr.api.node.bin.types.core import \
     RequestHeader, \
     Response, \
     ResponseHeader
-from pycspr.api.node.bin.types.domain import \
-    ProtocolVersion
-from pycspr.api.node.bin.types.primitives import \
-    U8, \
-    U32, \
-    U16
-from pycspr.api.node.bin.codec.utils import register_decoder, register_encoder, decode, encode
+from pycspr.api.node.bin.types.domain import ProtocolVersion
+from pycspr.api.node.bin.types.primitives import U8, U32, U16
 
 
 def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
-        bytes_rem, request_version = decode(bytes_in, U16)
-        bytes_rem, protocol_version = decode(bytes_rem, ProtocolVersion)
-        bytes_rem, header_tag = decode(bytes_rem, U8)
-        bytes_rem, request_id = decode(bytes_rem, U16)
+        bytes_rem, request_version = utils.decode(bytes_in, U16)
+        bytes_rem, protocol_version = utils.decode(bytes_rem, ProtocolVersion)
+        bytes_rem, header_tag = utils.decode(bytes_rem, U8)
+        bytes_rem, request_id = utils.decode(bytes_rem, U16)
 
         if header_tag == TAG_TRY_ACCEPT_TRANSACTION:
             endpoint = Endpoint.Try_AcceptTransaction
         elif header_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
             endpoint = Endpoint.Try_AcceptTransaction
         elif header_tag == TAG_GET:
-            bytes_rem, query_type = decode(bytes_rem, U8)
-            bytes_rem, query_subtype = decode(bytes_rem, U8)
+            bytes_rem, query_type = utils.decode(bytes_rem, U8)
+            bytes_rem, query_subtype = utils.decode(bytes_rem, U8)
             endpoint = TAGS_TO_ENDPOINTS[(header_tag, query_type, query_subtype)]
         else:
             raise ValueError("Invalid request header tag")
@@ -62,9 +56,9 @@ def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
 
 def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
-        bytes_rem, protocol_version = decode(bytes_in, ProtocolVersion)
-        bytes_rem, error_code = decode(bytes_rem, U16)
-        bytes_rem, response_payload_tag = decode(bytes_rem, U8, True)
+        bytes_rem, protocol_version = utils.decode(bytes_in, ProtocolVersion)
+        bytes_rem, error_code = utils.decode(bytes_rem, U16)
+        bytes_rem, response_payload_tag = utils.decode(bytes_rem, U8, True)
 
         return bytes_rem, ResponseHeader(
             protocol_version=protocol_version,
@@ -73,10 +67,10 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
         )
 
     def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-        bytes_rem, length = decode(bytes_in, U32)
+        bytes_rem, length = utils.decode(bytes_in, U32)
         # TODO: why need for this offset.
         bytes_rem = bytes_rem[2:]
-        bytes_rem, length = decode(bytes_rem, U32)
+        bytes_rem, length = utils.decode(bytes_rem, U32)
         _, request = decode_request(bytes_rem[:length])
 
         return bytes_rem[length:], request
@@ -95,12 +89,12 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 def encode_request(entity: Request) -> bytes:
     def encode_header(entity: RequestHeader) -> bytes:
         return \
-            encode(entity.binary_request_version, U16) + \
-            encode(entity.chain_protocol_version.major, U8) + \
-            encode(entity.chain_protocol_version.minor, U8) + \
-            encode(entity.chain_protocol_version.patch, U8) + \
-            encode(ENDPOINT_TO_TAGS[entity.endpoint][0], U8) + \
-            encode(entity.id, U16)
+            utils.encode(entity.binary_request_version, U16) + \
+            utils.encode(entity.chain_protocol_version.major, U8) + \
+            utils.encode(entity.chain_protocol_version.minor, U8) + \
+            utils.encode(entity.chain_protocol_version.patch, U8) + \
+            utils.encode(ENDPOINT_TO_TAGS[entity.endpoint][0], U8) + \
+            utils.encode(entity.id, U16)
 
     def encode_payload() -> bytes:
         print("TODO: _encode_request_payload")
@@ -108,14 +102,14 @@ def encode_request(entity: Request) -> bytes:
 
     def encode_payload_tags() -> bytes:
         return \
-            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8) + \
-            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U8)
+            utils.encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8) + \
+            utils.encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U8)
 
     return \
         encode_header(entity.header) + \
         encode_payload_tags() + \
         encode_payload()
 
-register_decoder(Request, decode_request)
-register_decoder(Response, decode_response)
-register_encoder(Request, encode_request)
+utils.register_decoder(Request, decode_request)
+utils.register_decoder(Response, decode_response)
+utils.register_encoder(Request, encode_request)
