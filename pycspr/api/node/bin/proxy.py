@@ -12,6 +12,7 @@ from pycspr.api.node.bin.types import \
     Response
 from pycspr.api.node.bin.types.domain import \
     ProtocolVersion
+from pycspr.api.node.bin.types.primitives import U32
 
 
 class Proxy:
@@ -90,7 +91,7 @@ def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
         isinstance(bytes_response, bytes) is True, \
         "Response decoding error: response is not bytes"
 
-    bytes_rem, length = U32.from_bytes(bytes_response)
+    bytes_rem, length = codec.decode(bytes_response, U32)
     assert \
         len(bytes_rem) == length, \
         "Response decoding error: inner byte length mismatch"

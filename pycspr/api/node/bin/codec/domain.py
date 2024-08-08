@@ -21,8 +21,8 @@ from pycspr.api.node.bin.types.domain import \
     PublicKey, \
     TransactionHash
 from pycspr.api.node.bin.types.primitives import \
-    U8x, \
-    U64x
+    U8, \
+    U64
 
 
 def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
@@ -30,13 +30,13 @@ def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
 
 
 def decode_node_uptime(bytes_in: bytes) -> typing.Tuple[bytes, NodeUptime]:
-    return decode(bytes_in, U64x)
+    return decode(bytes_in, U64)
 
 
 def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
-    bytes_rem, major = decode(bytes_in, U8x)
-    bytes_rem, minor = decode(bytes_rem, U8x)
-    bytes_rem, patch = decode(bytes_rem, U8x)
+    bytes_rem, major = decode(bytes_in, U8)
+    bytes_rem, minor = decode(bytes_rem, U8)
+    bytes_rem, patch = decode(bytes_rem, U8)
 
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
@@ -46,11 +46,11 @@ utils.register_decoder(NodeUptime, decode_node_uptime)
 utils.register_decoder(ProtocolVersion, decode_protocol_version)
 
 utils.register_encoder(BlockHash, lambda x:
-    encode(TAG_DOMAIN_BLOCK_HASH, U8x) + encode(x, bytes)
+    encode(TAG_DOMAIN_BLOCK_HASH, U8) + encode(x, bytes)
 )
 
 utils.register_encoder(BlockHeight, lambda x:
-    encode(TAG_DOMAIN_BLOCK_HEIGHT, U8x) + encode(x, U64x)
+    encode(TAG_DOMAIN_BLOCK_HEIGHT, U8) + encode(x, U64)
 )
 
 utils.register_encoder(BlockID, lambda x:
@@ -59,7 +59,7 @@ utils.register_encoder(BlockID, lambda x:
 )
 
 utils.register_encoder(ProtocolVersion, lambda x:
-    encode(x.major, U8x) +
-    encode(x.minor, U8x) +
-    encode(x.patch, U8x)
+    encode(x.major, U8) +
+    encode(x.minor, U8) +
+    encode(x.patch, U8)
 )

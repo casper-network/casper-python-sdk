@@ -18,26 +18,26 @@ from pycspr.api.node.bin.types.core import \
 from pycspr.api.node.bin.types.domain import \
     ProtocolVersion
 from pycspr.api.node.bin.types.primitives import \
-    U8x, \
-    U32x, \
-    U16x
+    U8, \
+    U32, \
+    U16
 from pycspr.api.node.bin.codec.utils import register_decoder, register_encoder, decode, encode
 
 
 def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
-        bytes_rem, request_version = decode(bytes_in, U16x)
+        bytes_rem, request_version = decode(bytes_in, U16)
         bytes_rem, protocol_version = decode(bytes_rem, ProtocolVersion)
-        bytes_rem, header_tag = decode(bytes_rem, U8x)
-        bytes_rem, request_id = decode(bytes_rem, U16x)
+        bytes_rem, header_tag = decode(bytes_rem, U8)
+        bytes_rem, request_id = decode(bytes_rem, U16)
 
         if header_tag == TAG_TRY_ACCEPT_TRANSACTION:
             endpoint = Endpoint.Try_AcceptTransaction
         elif header_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
             endpoint = Endpoint.Try_AcceptTransaction
         elif header_tag == TAG_GET:
-            bytes_rem, query_type = decode(bytes_rem, U8x)
-            bytes_rem, query_subtype = decode(bytes_rem, U8x)
+            bytes_rem, query_type = decode(bytes_rem, U8)
+            bytes_rem, query_subtype = decode(bytes_rem, U8)
             endpoint = TAGS_TO_ENDPOINTS[(header_tag, query_type, query_subtype)]
         else:
             raise ValueError("Invalid request header tag")
@@ -63,8 +63,8 @@ def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
 def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
         bytes_rem, protocol_version = decode(bytes_in, ProtocolVersion)
-        bytes_rem, error_code = decode(bytes_rem, U16x)
-        bytes_rem, response_payload_tag = decode(bytes_rem, U8x, True)
+        bytes_rem, error_code = decode(bytes_rem, U16)
+        bytes_rem, response_payload_tag = decode(bytes_rem, U8, True)
 
         return bytes_rem, ResponseHeader(
             protocol_version=protocol_version,
@@ -73,10 +73,10 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
         )
 
     def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-        bytes_rem, length = decode(bytes_in, U32x)
+        bytes_rem, length = decode(bytes_in, U32)
         # TODO: why need for this offset.
         bytes_rem = bytes_rem[2:]
-        bytes_rem, length = decode(bytes_rem, U32x)
+        bytes_rem, length = decode(bytes_rem, U32)
         _, request = decode_request(bytes_rem[:length])
 
         return bytes_rem[length:], request
@@ -95,12 +95,12 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 def encode_request(entity: Request) -> bytes:
     def encode_header(entity: RequestHeader) -> bytes:
         return \
-            encode(entity.binary_request_version, U16x) + \
-            encode(entity.chain_protocol_version.major, U8x) + \
-            encode(entity.chain_protocol_version.minor, U8x) + \
-            encode(entity.chain_protocol_version.patch, U8x) + \
-            encode(ENDPOINT_TO_TAGS[entity.endpoint][0], U8x) + \
-            encode(entity.id, U16x)
+            encode(entity.binary_request_version, U16) + \
+            encode(entity.chain_protocol_version.major, U8) + \
+            encode(entity.chain_protocol_version.minor, U8) + \
+            encode(entity.chain_protocol_version.patch, U8) + \
+            encode(ENDPOINT_TO_TAGS[entity.endpoint][0], U8) + \
+            encode(entity.id, U16)
 
     def encode_payload() -> bytes:
         print("TODO: _encode_request_payload")
@@ -108,8 +108,8 @@ def encode_request(entity: Request) -> bytes:
 
     def encode_payload_tags() -> bytes:
         return \
-            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8x) + \
-            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U8x)
+            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8) + \
+            encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U8)
 
     return \
         encode_header(entity.header) + \
