@@ -8,7 +8,7 @@ DigestBytes = typing.NewType(
 
 # Hexadecimal encoded crryptographic fingerprint of data.
 DigestHex = typing.NewType(
-    "Cryptographic fingerprint of data.", str
+    "64 char cryptographic fingerprint of data.", str
     )
 
 # Cryptographic proof over a merkle trie.

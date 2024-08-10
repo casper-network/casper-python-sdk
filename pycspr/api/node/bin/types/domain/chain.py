@@ -1,7 +1,6 @@
 import dataclasses
 import typing
 
-from pycspr.api.node.bin import utils
 from pycspr.api.node.bin.types.crypto import DigestBytes
 from pycspr.api.node.bin.types.primitives import U64
 
@@ -23,6 +22,7 @@ EraID = typing.NewType(
 TransactionHash = typing.NewType(
     "Digest over a transaction.", DigestBytes
     )
+
 
 @dataclasses.dataclass
 class BlockHeader():

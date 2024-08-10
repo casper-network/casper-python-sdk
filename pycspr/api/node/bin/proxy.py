@@ -1,6 +1,4 @@
 import asyncio
-import random
-import typing
 
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.types import \

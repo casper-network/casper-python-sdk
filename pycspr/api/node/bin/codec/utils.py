@@ -6,7 +6,7 @@ _DECODERS = dict()
 _ENCODERS = dict()
 
 
-def decode(encoded: bytes, typedef: type, is_optional = False) -> typing.Tuple[bytes, object]:
+def decode(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
     :param encoded: A stream of bytes.
@@ -31,7 +31,12 @@ def decode(encoded: bytes, typedef: type, is_optional = False) -> typing.Tuple[b
             return decoder(encoded)
 
 
-def encode(entity: object, typedef = None, prepend_length: bool = False, is_optional: bool = False):
+def encode(
+    entity: object,
+    typedef: typing.Type = None,
+    prepend_length: bool = False,
+    is_optional: bool = False
+):
     """Encodes an entity as a byte stream.
 
     :param entity: Entity to be encoded.

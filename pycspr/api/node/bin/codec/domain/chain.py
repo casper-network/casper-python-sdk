@@ -11,9 +11,7 @@ from pycspr.api.node.bin.types.domain import \
     BlockHeader, \
     BlockHeight, \
     BlockID, \
-    EraID, \
-    ProtocolVersion, \
-    TransactionHash
+    ProtocolVersion
 from pycspr.api.node.bin.types.primitives import \
     U8, \
     U64
@@ -34,18 +32,31 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
 utils.register_decoder(BlockHeader, _decode_block_header)
 utils.register_decoder(ProtocolVersion, _decode_protocol_version)
 
-utils.register_encoder(BlockHash, lambda x:
-    utils.encode(TAG_DOMAIN_BLOCK_HASH, U8) + utils.encode(x, bytes)
-)
-utils.register_encoder(BlockHeight, lambda x:
-    utils.encode(TAG_DOMAIN_BLOCK_HEIGHT, U8) + utils.encode(x, U64)
-)
-utils.register_encoder(BlockID, lambda x:
-    utils.encode(x, BlockHash) if isinstance(x, bytes) else
-    utils.encode(x, BlockHeight)
-)
-utils.register_encoder(ProtocolVersion, lambda x:
-    utils.encode(x.major, U8) +
-    utils.encode(x.minor, U8) +
-    utils.encode(x.patch, U8)
+utils.register_encoder(
+    BlockHash,
+    lambda x:
+        utils.encode(TAG_DOMAIN_BLOCK_HASH, U8) +
+        utils.encode(x, bytes)
+    )
+
+utils.register_encoder(
+    BlockHeight,
+    lambda x:
+        utils.encode(TAG_DOMAIN_BLOCK_HEIGHT, U8) +
+        utils.encode(x, U64)
+    )
+
+utils.register_encoder(
+    BlockID,
+    lambda x:
+        utils.encode(x, BlockHash) if isinstance(x, bytes) else
+        utils.encode(x, BlockHeight)
+    )
+
+utils.register_encoder(
+    ProtocolVersion,
+    lambda x:
+        utils.encode(x.major, U8) +
+        utils.encode(x.minor, U8) +
+        utils.encode(x.patch, U8)
 )

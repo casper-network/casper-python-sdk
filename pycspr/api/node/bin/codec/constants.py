@@ -33,48 +33,54 @@ TAG_TRY_ACCEPT_TRANSACTION: int = 1
 TAG_TRY_SPECULATIVE_TRANSACTION: int = 2
 
 # Map of endpoint to a tuple of type tags.  This permits simplified encoding.
-ENDPOINT_TO_TAGS: typing.Dict[Endpoint, typing.Tuple[int, typing.Optional[int], typing.Optional[int]]] = {
-    Endpoint.Get_Information_AvailableBlockRange: \
+ENDPOINT_TO_TAGS: typing.Dict[
+    Endpoint,
+    typing.Tuple[int, typing.Optional[int], typing.Optional[int]]
+] = {
+    Endpoint.Get_Information_AvailableBlockRange:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_AVAILABLE_BLOCK_RANGE),
-    Endpoint.Get_Information_BlockHeader: \
+    Endpoint.Get_Information_BlockHeader:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_BLOCK_HEADER),
-    Endpoint.Get_Information_BlockSynchronizerStatus: \
+    Endpoint.Get_Information_BlockSynchronizerStatus:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_BLOCK_SYNCHRONIZER_STATUS),
-    Endpoint.Get_Information_ChainspecRawBytes: \
+    Endpoint.Get_Information_ChainspecRawBytes:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_CHAINSPEC_RAW_BYTES),
-    Endpoint.Get_Information_ConsensusStatus: \
+    Endpoint.Get_Information_ConsensusStatus:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_CONSENSUS_STATUS),
-    Endpoint.Get_Information_ConsensusValidatorChanges: \
+    Endpoint.Get_Information_ConsensusValidatorChanges:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_CONSENSUS_VALIDATOR_CHANGES),
-    Endpoint.Get_Information_LastProgress: \
+    Endpoint.Get_Information_LastProgress:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_LAST_PROGRESS),
-    Endpoint.Get_Information_LatestSwitchBlockHeader: \
+    Endpoint.Get_Information_LatestSwitchBlockHeader:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_LATEST_SWITCH_BLOCK_HEADER),
-    Endpoint.Get_Information_NetworkName: \
+    Endpoint.Get_Information_NetworkName:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_NETWORK_NAME),
-    Endpoint.Get_Information_NextUpgrade: \
+    Endpoint.Get_Information_NextUpgrade:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_NEXT_UPGRADE),
-    Endpoint.Get_Information_NodeStatus: \
+    Endpoint.Get_Information_NodeStatus:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_NODE_STATUS),
-    Endpoint.Get_Information_Peers: \
+    Endpoint.Get_Information_Peers:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_PEERS),
-    Endpoint.Get_Information_ReactorState: \
+    Endpoint.Get_Information_ReactorState:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_REACTOR_STATE),
-    Endpoint.Get_Information_Reward: \
+    Endpoint.Get_Information_Reward:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_REWARD),
-    Endpoint.Get_Information_SignedBlock: \
+    Endpoint.Get_Information_SignedBlock:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_SIGNED_BLOCK),
-    Endpoint.Get_Information_Transaction: \
+    Endpoint.Get_Information_Transaction:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_TRANSACTION),
-    Endpoint.Get_Information_Uptime: \
+    Endpoint.Get_Information_Uptime:
         (TAG_GET, TAG_GET_INFORMATION, TAG_GET_INFORMATION_UPTIME),
-    Endpoint.Try_AcceptTransaction: \
+    Endpoint.Try_AcceptTransaction:
         (TAG_TRY_ACCEPT_TRANSACTION, None, None),
-    Endpoint.Try_SpeculativeExec: \
+    Endpoint.Try_SpeculativeExec:
         (TAG_TRY_SPECULATIVE_TRANSACTION, None, None),
 }
 
 # Map of endpoint to a tuple of type tag as bytes.  This permits simplified decoding.
-TAGS_TO_ENDPOINTS: typing.Dict[typing.Tuple[int, typing.Optional[int], typing.Optional[int]], Endpoint] = {
-    v: k for k,v in ENDPOINT_TO_TAGS.items()
+TAGS_TO_ENDPOINTS: typing.Dict[
+    typing.Tuple[int, typing.Optional[int], typing.Optional[int]],
+    Endpoint
+] = {
+    v: k for k, v in ENDPOINT_TO_TAGS.items()
 }

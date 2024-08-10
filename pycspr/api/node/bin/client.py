@@ -6,7 +6,6 @@ from pycspr.api.node.bin.proxy import \
 from pycspr.api.node.bin.types import \
     ConnectionInfo, \
     Endpoint, \
-    Request, \
     RequestID, \
     Response
 from pycspr.api.node.bin.types.domain import \
@@ -70,7 +69,5 @@ class Client():
             Endpoint.Get_Information_Uptime,
             request_id,
         )
-
-        # return Response if decode is False else codec.decode_u64(response.payload)
 
         return Response if decode is False else codec.decode(response.payload, NodeUptime)

@@ -110,6 +110,7 @@ def encode_request(entity: Request) -> bytes:
         encode_payload_tags() + \
         encode_payload()
 
+
 utils.register_decoder(Request, decode_request)
 utils.register_decoder(Response, decode_response)
 utils.register_encoder(Request, encode_request)
