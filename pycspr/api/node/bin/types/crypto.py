@@ -3,7 +3,7 @@ import typing
 
 # Cryptographic fingerprint of data.
 DigestBytes = typing.NewType(
-    "Cryptographic fingerprint of data.", bytes
+    "32 byte cryptographic fingerprint over data.", bytes
     )
 
 # Hexadecimal encoded crryptographic fingerprint of data.

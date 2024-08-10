@@ -2,14 +2,16 @@ import dataclasses
 import typing
 
 from pycspr.api.node.bin import utils
+from pycspr.api.node.bin.types.crypto import DigestBytes
+from pycspr.api.node.bin.types.primitives import U64
 
 
 BlockHash = typing.NewType(
-    "Digest over a block.", bytes
+    "Digest over a block.", DigestBytes
     )
 
 BlockHeight = typing.NewType(
-    "Ordinal identifier of a block measured by how many finalised blocks precede it.", int
+    "Ordinal identifier of a block measured by how many finalised blocks precede it.", U64
 )
 
 BlockID = typing.Union[BlockHash, BlockHeight]
@@ -19,7 +21,7 @@ EraID = typing.NewType(
 )
 
 TransactionHash = typing.NewType(
-    "Digest over a transaction.", bytes
+    "Digest over a transaction.", DigestBytes
     )
 
 @dataclasses.dataclass
@@ -34,10 +36,15 @@ class BlockRange():
 
 @dataclasses.dataclass
 class ProtocolVersion():
+    """Version of protocol.
+
+    """
     # Major semantic version.
     major: int
+
     # Minor semantic version.
     minor: int
+
     # Patch semantic version.
     patch: int
 
@@ -50,11 +57,3 @@ class ProtocolVersion():
             int(minor),
             int(patch)
         )
-
-    # @staticmethod
-    # def from_bytes(bytes_in: bytes) -> typing.Tuple[bytes, "ProtocolVersion"]:
-    #     bytes_rem, major = U8.from_bytes(bytes_in)
-    #     bytes_rem, minor = U8.from_bytes(bytes_rem)
-    #     bytes_rem, patch = U8.from_bytes(bytes_rem)
-
-    #     return bytes_rem, ProtocolVersion(major, minor, patch)

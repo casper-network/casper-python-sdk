@@ -19,7 +19,7 @@ class ConnectionInfo:
     # Host address.
     host: str = constants.DEFAULT_HOST
 
-    # Number of exposed speculative SSE port.
+    # Host binary port.
     port: int = constants.DEFAULT_PORT
 
     # Version of binary server API.
