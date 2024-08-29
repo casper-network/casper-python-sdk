@@ -18,7 +18,7 @@ from pycspr.api.node.bin.types.domain import ProtocolVersion
 from pycspr.api.node.bin.types.primitives import U8, U32, U16
 
 
-def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
+def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
         bytes_rem, request_version = utils.decode(bytes_in, U16)
         bytes_rem, protocol_version = utils.decode(bytes_rem, ProtocolVersion)
@@ -54,7 +54,7 @@ def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     return bytes_rem, Request(header, payload)
 
 
-def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
+def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
         bytes_rem, protocol_version = utils.decode(bytes_in, ProtocolVersion)
         bytes_rem, error_code = utils.decode(bytes_rem, U16)
@@ -66,17 +66,21 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
             returned_data_type_tag=response_payload_tag
         )
 
-    def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-        bytes_rem, length = utils.decode(bytes_in, U32)
-        # TODO: why need for this offset.
-        bytes_rem = bytes_rem[2:]
+    def _decode_request_out(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
+        bytes_rem = bytes_in[2:]        # TODO: understand necessity for this
         bytes_rem, length = utils.decode(bytes_rem, U32)
-        _, request = decode_request(bytes_rem[:length])
+        _, request = _decode_request(bytes_rem[:length])
 
         return bytes_rem[length:], request
 
-    bytes_rem, request = _decode_request(bytes_in)
+    print(bytes_in.hex())
+    bytes_rem, _ = utils.decode(bytes_in, U32)
+    print(bytes_rem.hex())
+    bytes_rem, request = _decode_request_out(bytes_rem)
+    print(bytes_rem.hex())
     bytes_rem, header = _decode_header(bytes_rem)
+    print(bytes_rem.hex())
+    print(header.returned_data_type_tag)
 
     return b'', Response(
         bytes_raw=bytes_in,
@@ -86,7 +90,7 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     )
 
 
-def encode_request(entity: Request) -> bytes:
+def _encode_request(entity: Request) -> bytes:
     def encode_header(entity: RequestHeader) -> bytes:
         return \
             utils.encode(entity.binary_request_version, U16) + \
@@ -111,6 +115,6 @@ def encode_request(entity: Request) -> bytes:
         encode_payload()
 
 
-utils.register_decoder(Request, decode_request)
-utils.register_decoder(Response, decode_response)
-utils.register_encoder(Request, encode_request)
+utils.register_decoder(Request, _decode_request)
+utils.register_decoder(Response, _decode_response)
+utils.register_encoder(Request, _encode_request)

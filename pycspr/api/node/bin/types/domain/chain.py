@@ -57,3 +57,6 @@ class ProtocolVersion():
             int(minor),
             int(patch)
         )
+
+    def __str__(self) -> str:
+        return f"{self.major}.{self.minor}.{self.patch}"

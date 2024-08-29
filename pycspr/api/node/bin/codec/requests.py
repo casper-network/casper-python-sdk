@@ -3,7 +3,7 @@ from pycspr.api.node.bin.types.domain import BlockID
 from pycspr.api.node.bin.types.requests import Get_Information_BlockHeader_RequestPayload
 
 
-def encode_get_block_header_request(
+def _encode_get_block_header_request(
     payload: Get_Information_BlockHeader_RequestPayload
 ) -> bytes:
     return utils.encode(payload.block_id, BlockID, is_optional=True)
@@ -11,5 +11,5 @@ def encode_get_block_header_request(
 
 utils.register_encoder(
     Get_Information_BlockHeader_RequestPayload,
-    encode_get_block_header_request
+    _encode_get_block_header_request
 )

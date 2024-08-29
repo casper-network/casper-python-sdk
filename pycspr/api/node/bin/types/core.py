@@ -143,6 +143,8 @@ class Request():
     def __eq__(self, other: Request) -> bool:
         return self.header == other.header and self.payload == self.payload
 
+    def __str__(self) -> str:
+        return f"Request: {self.header}"
 
 @dataclasses.dataclass
 class RequestHeader():
@@ -167,6 +169,9 @@ class RequestHeader():
             self.chain_protocol_version == self.chain_protocol_version and \
             self.endpoint == other.endpoint and \
             self.id == other.id
+
+    def __str__(self) -> str:
+        return f"ID={self.id} | API={self.binary_request_version} | Protocol={self.chain_protocol_version} | EndPoint={self.endpoint.name}"
 
 
 RequestID = typing.NewType(
@@ -195,6 +200,9 @@ class Response():
     def payload(self) -> bytes:
         return self.bytes_payload
 
+    def __str__(self) -> str:
+        return f"Response: {self.header}"
+
 
 @dataclasses.dataclass
 class ResponseHeader():
@@ -209,3 +217,6 @@ class ResponseHeader():
 
     # Server data type.
     returned_data_type_tag: typing.Optional[int]
+
+    def __str__(self) -> str:
+        return f"Protocol={self.protocol_version} | Error={self.error_code} | Data Type={self.returned_data_type_tag}"

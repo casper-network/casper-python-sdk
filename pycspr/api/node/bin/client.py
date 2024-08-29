@@ -53,6 +53,28 @@ class Client():
         """
         pass
 
+    async def get_information_chainspec_raw_bytes(
+        self,
+        request_id: RequestID,
+        decode: bool = True
+    ) -> typing.Union[Response, NodeUptime]:
+        """Returns chainspec as raw bytes.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode API response.
+        :returns: Node uptime information.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_ChainspecRawBytes,
+            request_id,
+        )
+
+        print(444, response.bytes_payload)
+
+        return response if decode is False else response.bytes_payload
+
+
     async def get_information_uptime(
         self,
         request_id: RequestID,
@@ -70,4 +92,6 @@ class Client():
             request_id,
         )
 
-        return Response if decode is False else codec.decode(response.payload, NodeUptime)
+        print(444, response.bytes_payload, codec.decode(response.bytes_payload, NodeUptime))
+
+        return response if decode is False else codec.decode(response.bytes_payload, NodeUptime)
