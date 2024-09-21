@@ -74,7 +74,6 @@ class Client():
 
         return response if decode is False else response.bytes_payload
 
-
     async def get_information_uptime(
         self,
         request_id: RequestID,

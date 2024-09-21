@@ -56,24 +56,14 @@ def encode(
     return encode(encoder(entity), bytes) if prepend_length is True else encoder(entity)
 
 
-def register_decoder(typedef: typing.Type, decoder: typing.Callable):
-    """Registers a decoding function.
+def register_decoders(decoders):
+    """Registers a set of encoding functions.
 
-    :param typedef: Type of entity to be decoded.
-    :param encoder: Decoding function.
-
-    """
-    _DECODERS[typedef] = decoder
-
-
-def register_encoder(typedef: typing.Type, encoder: typing.Callable):
-    """Registers an encoding function.
-
-    :param typedef: Type of entity being encoded.
-    :param encoder: Encoding function.
+    :param encoders: Set of encoding functions.
 
     """
-    _ENCODERS[typedef] = encoder
+    for typedef, decoder in decoders:
+        _DECODERS[typedef] = decoder
 
 
 def register_encoders(encoders):
@@ -83,4 +73,4 @@ def register_encoders(encoders):
 
     """
     for typedef, encoder in encoders:
-        register_encoder(typedef, encoder)
+        _ENCODERS[typedef] = encoder

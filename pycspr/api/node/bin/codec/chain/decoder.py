@@ -1,10 +1,8 @@
 import typing
 
-from pycspr.api.node.bin.codec.utils import decode, register_decoder
-from pycspr.api.node.bin.types.domain import \
-    BlockHeader, \
-    ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U8, U32
+from pycspr.api.node.bin.codec.utils import decode, register_decoders
+from pycspr.api.node.bin.types.domain import BlockHeader, ProtocolVersion
+from pycspr.api.node.bin.types.primitives import U32
 
 
 def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
@@ -19,5 +17,7 @@ def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVers
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
-register_decoder(BlockHeader, decode_block_header)
-register_decoder(ProtocolVersion, decode_protocol_version)
+register_decoders({
+    (BlockHeader, decode_block_header),
+    (ProtocolVersion, decode_protocol_version)
+})

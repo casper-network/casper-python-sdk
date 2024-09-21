@@ -146,6 +146,7 @@ class Request():
     def __str__(self) -> str:
         return f"Request: {self.header}"
 
+
 @dataclasses.dataclass
 class RequestHeader():
     """Encapsulates API request header information.
@@ -171,7 +172,7 @@ class RequestHeader():
             self.id == other.id
 
     def __str__(self) -> str:
-        return f"ID={self.id} | API={self.binary_request_version} | Protocol={self.chain_protocol_version} | EndPoint={self.endpoint.name}"
+        return f"EndPoint={self.endpoint.name} | ID={self.id}"
 
 
 RequestID = typing.NewType(
@@ -219,4 +220,8 @@ class ResponseHeader():
     returned_data_type_tag: typing.Optional[int]
 
     def __str__(self) -> str:
-        return f"Protocol={self.protocol_version} | Error={self.error_code} | Data Type={self.returned_data_type_tag}"
+        return "{} | Err={} | Data Type={}".format(
+            self.protocol_version,
+            self.error_code,
+            self.returned_data_type_tag
+        )
