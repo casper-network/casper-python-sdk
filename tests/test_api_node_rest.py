@@ -2,8 +2,8 @@ import typing
 
 from pycspr.api.node.rest import Client
 from pycspr.api.node.rest.types import NodeStatus
-
-from pycspr.types.node import ValidatorChanges, ValidatorStatusChange
+from pycspr.types.node import ValidatorChanges
+from pycspr.types.node import ValidatorStatusChange
 
 
 async def test_that_client_is_instantiated(NODE_REST_CLIENT: Client):
@@ -20,7 +20,7 @@ async def test_get_chainspec(NODE_REST_CLIENT: Client):
 
 
 async def test_get_chain_heights_1(NODE_REST_CLIENT: Client):
-    heights: typing.Tuple[int, int] = await NODE_REST_CLIENT.ext.get_chain_heights()
+    heights: typing.Tuple[int, int] = await NODE_REST_CLIENT.get_chain_heights()
     assert isinstance(heights[0], int)
     assert heights[0] > 0
     assert isinstance(heights[1], int)
@@ -29,13 +29,13 @@ async def test_get_chain_heights_1(NODE_REST_CLIENT: Client):
 
 
 async def test_get_chain_heights_2(NODE_REST_CLIENT: Client):
-    height: int = await NODE_REST_CLIENT.ext.get_era_height()
+    height: int = await NODE_REST_CLIENT.get_era_height()
     assert isinstance(height, int)
     assert height > 0
 
 
 async def test_get_chain_heights_3(NODE_REST_CLIENT: Client):
-    height: int = await NODE_REST_CLIENT.ext.get_block_height()
+    height: int = await NODE_REST_CLIENT.get_block_height()
     assert isinstance(height, int)
     assert height > 0
 
