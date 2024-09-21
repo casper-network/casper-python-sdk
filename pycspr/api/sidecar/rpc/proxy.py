@@ -5,8 +5,8 @@ import requests
 
 from pycspr import serializer
 from pycspr.api import constants
-from pycspr.api.rpc import params as param_utils
-from pycspr.api.rpc.connection import ConnectionInfo
+from pycspr.api.sidecar.rpc import params as param_utils
+from pycspr.api.sidecar.rpc.connection import ConnectionInfo
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.node import Deploy
 from pycspr.types.node import Address

@@ -46,6 +46,7 @@ def verify_block(
         raise InvalidBlockException(InvalidBlockExceptionType.NotFound)
 
     # BL-001: Exception if recomputed block hash is not equal to actual block hash.
+    # TODO: implement digest computation
     if block.hash != factory.create_digest_of_block(block.header):
         pass
         # raise InvalidBlockException(InvalidBlockExceptionType.InvalidHash)

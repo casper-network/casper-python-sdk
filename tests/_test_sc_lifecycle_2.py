@@ -5,7 +5,7 @@ import pytest
 import pycctl
 import pycspr
 from pycctl.types import AccountType
-from pycspr.api.rpc import Client as NodeClient
+from pycspr.api.sidecar.rpc import Client as NodeClient
 from pycspr.types.node import Deploy
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8

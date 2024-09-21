@@ -2,8 +2,8 @@ import time
 import typing
 
 from pycspr import serializer
-from pycspr.api.rpc.connection import ConnectionInfo
-from pycspr.api.rpc.proxy import Proxy
+from pycspr.api.sidecar.rpc.connection import ConnectionInfo
+from pycspr.api.sidecar.rpc.proxy import Proxy
 from pycspr.types.cl import CLV_Key
 from pycspr.types.crypto import DigestBytes
 from pycspr.types.node import Address

@@ -1,8 +1,8 @@
 from pycspr import serializer
 from pycspr.api import constants
-from pycspr.api.rpc import params as param_utils
-from pycspr.api.rpc.proxy import get_response
-from pycspr.api.rpc_speculative.connection import ConnectionInfo
+from pycspr.api.sidecar.rpc import params as param_utils
+from pycspr.api.sidecar.rpc.proxy import get_response
+from pycspr.api.sidecar.rpc_speculative.connection import ConnectionInfo
 from pycspr.types.node import Deploy
 from pycspr.types.node import BlockID
 
