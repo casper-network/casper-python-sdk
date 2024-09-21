@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.types.primitives import U64
+from pycspr.api.node.bin.types.primitives.numeric import U64
 
 
 NodeUptime = typing.NewType(

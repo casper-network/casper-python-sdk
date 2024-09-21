@@ -8,9 +8,8 @@ from pycspr.api.node.bin.types import \
     RequestHeader, \
     RequestID, \
     Response
-from pycspr.api.node.bin.types.domain import \
-    ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U32
+from pycspr.api.node.bin.types.domain import ProtocolVersion
+from pycspr.api.node.bin.types.primitives.numeric import U32
 
 
 class Proxy:

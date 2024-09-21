@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.node.bin.codec.utils import register_decoders
 from pycspr.api.node.bin.codec import utils
-from pycspr.api.node.bin.types.primitives import U8, U16, U32, U64
+from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32, U64
 
 
 def decode_bytes(bytes_in: bytes) -> bytes:

@@ -7,7 +7,7 @@ from pycspr.api.node.bin.types.domain import \
     BlockHeight, \
     BlockID, \
     ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U8, U64
+from pycspr.api.node.bin.types.primitives.numeric import U8, U64
 
 
 def encode_block_hash(entity: BlockHash) -> bytes:

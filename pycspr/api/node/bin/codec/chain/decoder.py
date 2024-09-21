@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.types.domain import BlockHeader, ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U32
+from pycspr.api.node.bin.types.primitives.numeric import U32
 
 
 def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:

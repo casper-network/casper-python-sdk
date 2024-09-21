@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.types.primitives import U8
+from pycspr.api.node.bin.types.primitives.numeric import U8
 
 _DECODERS = dict()
 _ENCODERS = dict()

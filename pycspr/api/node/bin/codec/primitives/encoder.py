@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
-from pycspr.api.node.bin.types.primitives import U8, U16, U32, U64
+from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32, U64
 
 
 def encode_uint(entity: int, encoded_length: int) -> bytes:
