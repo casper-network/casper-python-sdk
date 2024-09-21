@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.types.core import Endpoint
+from pycspr.api.node.bin.types.transport.core import Endpoint
 
 
 # Set of named codec tags.

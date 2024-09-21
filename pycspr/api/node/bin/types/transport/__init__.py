@@ -1,7 +1,7 @@
-from pycspr.api.node.bin.types import domain
-from pycspr.api.node.bin.types.transport import \
+from pycspr.api.node.bin.types.transport.core import \
     ConnectionInfo, \
     Endpoint, \
+    ErrorCode, \
     Response, \
     Request, \
     RequestHeader, \
