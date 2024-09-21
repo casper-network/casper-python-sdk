@@ -25,12 +25,12 @@ async def test_sc_exists():
     assert pycctl.fsys.get_path_to_binary(_CONTRACT_FNAME).exists()
 
 
-async def test_sc_installation(RPC_CLIENT: NodeClient):
+async def test_sc_installation(SIDECAR_RPC_CLIENT: NodeClient):
     # Set installation tx.
     tx: Deploy = await _get_tx()
 
     # Dispatch tx.
-    await _dispatch(RPC_CLIENT, tx)
+    await _dispatch(SIDECAR_RPC_CLIENT, tx)
 
     # Install SC
     #   dispatch wasm

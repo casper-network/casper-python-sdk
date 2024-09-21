@@ -119,8 +119,8 @@ async def _test_sc_invocation_3(ctx: TestContext):
     pass
 
 
-async def test_01(RPC_CLIENT) -> None:
-    ctx = TestContext(RPC_CLIENT)
+async def test_01(SIDECAR_RPC_CLIENT) -> None:
+    ctx = TestContext(SIDECAR_RPC_CLIENT)
     for func in {
         _test_pre_requisites,
         _test_sc_installation,

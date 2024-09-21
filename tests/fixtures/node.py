@@ -7,22 +7,11 @@ import pycspr
 
 
 @pytest.fixture(scope="session")
-def RPC_CLIENT(CONNECTION_RPC: pycspr.NodeRpcConnectionInfo) -> pycspr.NodeRpcClient:
-    return pycspr.NodeRpcClient(CONNECTION_RPC)
-
-
-@pytest.fixture(scope="session")
-def SPECULATIVE_RPC_CLIENT(
-    CONNECTION_RPC_SPECULATIVE: pycspr.NodeSpeculativeRpcConnectionInfo
-) -> pycspr.NodeSpeculativeRpcClient:
-    return pycspr.NodeSpeculativeRpcClient(CONNECTION_RPC_SPECULATIVE)
-
-
-@pytest.fixture(scope="session")
 def NODE_BINARY_CLIENT(
     NODE_BINARY_CONNECTION_INFO: pycspr.NodeBinaryConnectionInfo
 ) -> pycspr.NodeBinaryClient:
     return pycspr.NodeBinaryClient(NODE_BINARY_CONNECTION_INFO)
+
 
 @pytest.fixture(scope="session")
 def NODE_BINARY_CONNECTION_INFO(
@@ -34,6 +23,7 @@ def NODE_BINARY_CONNECTION_INFO(
         NODE_HOST,
         NODE_BINARY_PORT
     )
+
 
 @pytest.fixture(scope="session")
 def NODE_BINARY_PORT() -> int:
@@ -91,23 +81,40 @@ def REQUEST_ID() -> int:
 
 
 @pytest.fixture(scope="session")
-def PORT_RPC() -> int:
-    return int(os.getenv("PYCSPR_TEST_NODE_PORT_RPC", 11101))
+def SIDECAR_HOST() -> str:
+    return os.getenv("PYCSPR_TEST_SIDECAR_HOST", "localhost")
 
 
 @pytest.fixture(scope="session")
-def PORT_RPC_SPECULATIVE() -> int:
-    return int(os.getenv("PYCSPR_TEST_NODE_PORT_RPC_SPECULATIVE", 25101))
+def SIDECAR_RPC_CLIENT(SIDECAR_RPC_CONNECTION: pycspr.NodeRpcConnectionInfo) -> pycspr.NodeRpcClient:
+    return pycspr.NodeRpcClient(SIDECAR_RPC_CONNECTION)
 
 
 @pytest.fixture(scope="session")
-def CONNECTION_RPC(NODE_HOST: str, PORT_RPC: int) -> pycspr.NodeRpcConnectionInfo:
-    return pycspr.NodeRpcConnectionInfo(NODE_HOST, PORT_RPC)
+def SIDECAR_RPC_CONNECTION(SIDECAR_HOST: str, SIDECAR_RPC_PORT: int) -> pycspr.NodeRpcConnectionInfo:
+    return pycspr.NodeRpcConnectionInfo(SIDECAR_HOST, SIDECAR_RPC_PORT)
 
 
 @pytest.fixture(scope="session")
-def CONNECTION_RPC_SPECULATIVE(
-    NODE_HOST: str,
-    PORT_RPC_SPECULATIVE: int
+def SIDECAR_RPC_PORT() -> int:
+    return int(os.getenv("PYCSPR_TEST_SIDECAR_RPC_PORT", 21101))
+
+
+@pytest.fixture(scope="session")
+def SIDECAR_SPECULATIVE_RPC_CLIENT(
+    SIDECAR_SPECULATIVE_RPC_CONNECTION: pycspr.NodeSpeculativeRpcConnectionInfo
+) -> pycspr.NodeSpeculativeRpcClient:
+    return pycspr.NodeSpeculativeRpcClient(SIDECAR_SPECULATIVE_RPC_CONNECTION)
+
+
+@pytest.fixture(scope="session")
+def SIDECAR_SPECULATIVE_RPC_CONNECTION(
+    SIDECAR_HOST: str,
+    SIDECAR_SPECULATIVE_RPC_PORT: int
 ) -> pycspr.NodeSpeculativeRpcConnectionInfo:
-    return pycspr.NodeSpeculativeRpcConnectionInfo(NODE_HOST, PORT_RPC_SPECULATIVE)
+    return pycspr.NodeSpeculativeRpcConnectionInfo(SIDECAR_HOST, SIDECAR_SPECULATIVE_RPC_PORT)
+
+
+@pytest.fixture(scope="session")
+def SIDECAR_SPECULATIVE_RPC_PORT() -> int:
+    return int(os.getenv("PYCSPR_TEST_SIDECAR_SPECULATIVE_RPC_PORT", 22101))

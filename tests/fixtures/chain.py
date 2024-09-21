@@ -12,21 +12,21 @@ from pycspr.types.node import URef
 
 @pytest.fixture(scope="session")
 async def account_main_purse_uref(
-    RPC_CLIENT: NodeRpcClient,
+    SIDECAR_RPC_CLIENT: NodeRpcClient,
     account_key: AccountKey
 ) -> URef:
     """Returns an on-chain account's main purse unforgeable reference.
 
     """
-    return await RPC_CLIENT.get_account_main_purse_uref(account_key)
+    return await SIDECAR_RPC_CLIENT.get_account_main_purse_uref(account_key)
 
 
 @pytest.fixture(scope="session")
-async def block(RPC_CLIENT: NodeRpcClient) -> Block:
+async def block(SIDECAR_RPC_CLIENT: NodeRpcClient) -> Block:
     """Returns most recent block.
 
     """
-    return await RPC_CLIENT.get_block()
+    return await SIDECAR_RPC_CLIENT.get_block()
 
 
 @pytest.fixture(scope="session")
@@ -46,19 +46,19 @@ def global_state_id(state_root_hash: StateRootHash) -> GlobalStateID:
 
 
 @pytest.fixture(scope="session")
-async def state_root_hash(RPC_CLIENT: NodeRpcClient) -> StateRootHash:
+async def state_root_hash(SIDECAR_RPC_CLIENT: NodeRpcClient) -> StateRootHash:
     """Returns current state root hash.
 
     """
-    return await RPC_CLIENT.get_state_root_hash()
+    return await SIDECAR_RPC_CLIENT.get_state_root_hash()
 
 
 @pytest.fixture(scope="session")
-async def switch_block(RPC_CLIENT: NodeRpcClient) -> dict:
+async def switch_block(SIDECAR_RPC_CLIENT: NodeRpcClient) -> dict:
     """Returns hash of most recent switch block.
 
     """
-    return await RPC_CLIENT.get_block_at_era_switch()
+    return await SIDECAR_RPC_CLIENT.get_block_at_era_switch()
 
 
 @pytest.fixture(scope="session")

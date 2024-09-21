@@ -37,12 +37,12 @@ from tests.fixtures.node import NODE_SSE_CONNECTION_INFO
 from tests.fixtures.node import NODE_SSE_PORT
 from tests.fixtures.node import REQUEST_ID
 
-from tests.fixtures.node import CONNECTION_RPC
-from tests.fixtures.node import CONNECTION_RPC_SPECULATIVE
-from tests.fixtures.node import RPC_CLIENT
-from tests.fixtures.node import SPECULATIVE_RPC_CLIENT
-from tests.fixtures.node import PORT_RPC
-from tests.fixtures.node import PORT_RPC_SPECULATIVE
+from tests.fixtures.node import SIDECAR_RPC_CONNECTION
+from tests.fixtures.node import SIDECAR_SPECULATIVE_RPC_CONNECTION
+from tests.fixtures.node import SIDECAR_RPC_CLIENT
+from tests.fixtures.node import SIDECAR_SPECULATIVE_RPC_CLIENT
+from tests.fixtures.node import SIDECAR_RPC_PORT
+from tests.fixtures.node import SIDECAR_SPECULATIVE_RPC_CLIENT
 
 from tests.fixtures.vectors import cl_types as cl_types_vector
 from tests.fixtures.vectors import cl_values as cl_values_vector

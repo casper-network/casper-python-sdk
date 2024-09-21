@@ -4,12 +4,12 @@ from pycspr.types.node import Address
 
 
 async def test_get_state_item(
-    RPC_CLIENT: NodeRpcClient,
+    SIDECAR_RPC_CLIENT: NodeRpcClient,
     account_hash: Address,
     state_root_hash: StateRootHash
 ):
     account_hash = f"account-hash-{account_hash.hex()}"
-    data = await RPC_CLIENT.get_state_item(account_hash, [], state_root_hash)
+    data = await SIDECAR_RPC_CLIENT.get_state_item(account_hash, [], state_root_hash)
 
     assert isinstance(data, dict)
     assert "Account" in data
