@@ -78,14 +78,9 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
         return bytes_rem[length:], request
 
-    print(bytes_in.hex())
     bytes_rem, _ = decode(bytes_in, U32)
-    print(bytes_rem.hex())
     bytes_rem, request = _decode_request_out(bytes_rem)
-    print(bytes_rem.hex())
     bytes_rem, header = _decode_header(bytes_rem)
-    print(bytes_rem.hex())
-    print(header.returned_data_type_tag)
 
     return b'', Response(
         bytes_raw=bytes_in,

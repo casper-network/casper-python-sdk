@@ -74,3 +74,13 @@ def register_encoder(typedef: typing.Type, encoder: typing.Callable):
 
     """
     _ENCODERS[typedef] = encoder
+
+
+def register_encoders(encoders):
+    """Registers a set of encoding functions.
+
+    :param encoders: Set of encoding functions.
+
+    """
+    for typedef, encoder in encoders:
+        register_encoder(typedef, encoder)

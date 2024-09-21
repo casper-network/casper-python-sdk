@@ -46,7 +46,6 @@ class Proxy:
                 request_id,
             )
         )
-        print(request)
 
         # Set response.
         bytes_rem, response = \
@@ -58,7 +57,6 @@ class Proxy:
                 Response
             )
         assert len(bytes_rem) == 0, "Unconsumed response bytes"
-        print(response)
 
         return response
 
@@ -71,13 +69,11 @@ async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: by
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
     # Write request.
-    print([i for i in bytes_request], len(bytes_request))
     writer.write(bytes_request)
     writer.write_eof()
 
     # Read response.
     bytes_response: bytes = (await reader.read(-1))
-    print([i for i in bytes_response], len(bytes_response))
 
     # Close stream.
     writer.close()
