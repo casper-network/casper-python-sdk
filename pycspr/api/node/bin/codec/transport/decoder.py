@@ -21,39 +21,36 @@ def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     """Decoder: sequence of bytes -> Request.
 
     """
-    def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
-        bytes_rem, request_version = decode(bytes_in, U16)
-        bytes_rem, protocol_version = decode(bytes_rem, ProtocolVersion)
-        bytes_rem, header_tag = decode(bytes_rem, U8)
-        bytes_rem, request_id = decode(bytes_rem, U16)
-
-        if header_tag == TAG_TRY_ACCEPT_TRANSACTION:
-            endpoint = Endpoint.Try_AcceptTransaction
-        elif header_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
-            endpoint = Endpoint.Try_AcceptTransaction
-        elif header_tag == TAG_GET:
-            bytes_rem, query_type = decode(bytes_rem, U8)
-            bytes_rem, query_subtype = decode(bytes_rem, U8)
-            endpoint = TAGS_TO_ENDPOINTS[(header_tag, query_type, query_subtype)]
+    def _decode_endpoint(bytes_in: bytes, tag: int) -> typing.Tuple[bytes, Endpoint]:
+        if tag == TAG_TRY_ACCEPT_TRANSACTION:
+            return bytes_in, Endpoint.Try_AcceptTransaction
+        elif tag == TAG_TRY_SPECULATIVE_TRANSACTION:
+            return bytes_in, Endpoint.Try_SpeculativeExec
+        elif tag == TAG_GET:
+            bytes_out, get_type = decode(bytes_in, U8)
+            bytes_out, get_subtype = decode(bytes_in, U8)
+            return bytes_out, TAGS_TO_ENDPOINTS[(tag, get_type, get_subtype)]
         else:
-            raise ValueError("Invalid request header tag")
+            raise ValueError(f"Invalid request header tag: {tag}")
 
-        return bytes_rem, RequestHeader(
-            binary_request_version=request_version,
-            chain_protocol_version=protocol_version,
-            endpoint=endpoint,
-            id=request_id
-        )
+    def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
+        bytes_out, request_version = decode(bytes_in, U16)
+        bytes_out, protocol_version = decode(bytes_out, ProtocolVersion)
+        bytes_out, tag = decode(bytes_out, U8)
+        bytes_out, request_id = decode(bytes_out, U16)
+        bytes_out, endpoint = _decode_endpoint(bytes_out, tag)
+
+        return bytes_out, RequestHeader(request_version, protocol_version, endpoint, request_id)
 
     def _decode_payload(bytes_in: bytes, header: RequestHeader) -> typing.Tuple[bytes, object]:
         # TODO map endpoint to domain type.
         # TODO invoke decoder
         return b'', bytes_in
 
-    bytes_rem, header = _decode_header(bytes_in)
-    bytes_rem, payload = _decode_payload(bytes_rem, header)
+    bytes_out, header = _decode_header(bytes_in)
+    bytes_out, payload = _decode_payload(bytes_out, header)
 
-    return bytes_rem, Request(header, payload)
+    return bytes_out, Request(header, payload)
 
 
 def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:

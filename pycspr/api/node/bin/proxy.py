@@ -96,8 +96,8 @@ def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
         "Response decoding error: inner byte length mismatch"
 
     # TODO: clarify why need to offset by 2
-    # assert \
-    #     bytes_rem[2:].find(bytes_request) == 0, \
-    #     "Response decoding error: request bytes not found"
+    assert \
+        bytes_rem[2:].find(bytes_request) == 0, \
+        "Response decoding error: request bytes not found"
 
     return bytes_response
