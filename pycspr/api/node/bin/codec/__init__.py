@@ -1,10 +1,8 @@
 import typing
 
 import pycspr.api.node.bin.codec.chain
-# import pycspr.api.node.bin.codec.domain
 import pycspr.api.node.bin.codec.node
 import pycspr.api.node.bin.codec.primitives
-import pycspr.api.node.bin.codec.requests
 import pycspr.api.node.bin.codec.transport
 from pycspr.api.node.bin.codec.utils import decode
 from pycspr.api.node.bin.codec.utils import encode
