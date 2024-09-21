@@ -3,7 +3,7 @@ import typing
 from pycspr.api.node.bin.codec import utils
 
 
-from pycspr.api.node.bin.codec.constants import \
+from pycspr.api.node.bin.codec.domain.constants import \
     TAG_DOMAIN_BLOCK_HASH, \
     TAG_DOMAIN_BLOCK_HEIGHT
 from pycspr.api.node.bin.types.domain import \

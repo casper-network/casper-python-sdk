@@ -106,4 +106,4 @@ def validate_switch_block(
         raise InvalidBlockException(InvalidBlockExceptionType.ExpectedSwitchBlock)
 
     # Rule 3: Apply standard block validation rules.
-    return validate_block(block, switch_block_of_previous_era)
+    return verify_block(block, switch_block_of_previous_era)

@@ -71,16 +71,13 @@ async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: by
     reader, writer = await asyncio.open_connection(connection_info.host, connection_info.port)
 
     # Write request.
-    req = bytes.fromhex("000002000000000000000000000000000001040000000000")
-    print(666, req.hex())
-    print(777, bytes_request.hex())
-
-    writer.write(req)
+    print([i for i in bytes_request], len(bytes_request))
+    writer.write(bytes_request)
     writer.write_eof()
 
     # Read response.
     bytes_response: bytes = (await reader.read(-1))
-    print(888, bytes_response.hex())
+    print([i for i in bytes_response], len(bytes_response))
 
     # Close stream.
     writer.close()

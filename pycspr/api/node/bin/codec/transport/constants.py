@@ -4,8 +4,6 @@ from pycspr.api.node.bin.types.core import Endpoint
 
 
 # Set of named codec tags.
-TAG_DOMAIN_BLOCK_HASH: int = 0
-TAG_DOMAIN_BLOCK_HEIGHT: int = 1
 TAG_GET: int = 0
 TAG_GET_INFORMATION: int = 1
 TAG_GET_INFORMATION_AVAILABLE_BLOCK_RANGE: int = 10
