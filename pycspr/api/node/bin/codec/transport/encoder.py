@@ -2,8 +2,8 @@ from pycspr.api.node.bin.codec.transport.constants import ENDPOINT_TO_TAGS
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
 from pycspr.api.node.bin.types.domain import BlockID
 from pycspr.api.node.bin.types.primitives import U8, U16, U32
-from pycspr.api.node.bin.types.requests import Get_Information_BlockHeader_RequestPayload
 from pycspr.api.node.bin.types.transport.core import Request
+from pycspr.api.node.bin.types.transport.requests import Get_Information_BlockHeader_RequestPayload
 
 
 def encode_request(entity: Request) -> bytes:

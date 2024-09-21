@@ -1,8 +1,8 @@
 import dataclasses
 import typing
 
-from pycspr.api.node.bin.types.crypto import DigestBytes
-from pycspr.api.node.bin.types.primitives import U64
+from pycspr.api.node.bin.types.primitives.crypto import DigestBytes
+from pycspr.api.node.bin.types.primitives.numeric import U64
 
 
 BlockHash = typing.NewType(
