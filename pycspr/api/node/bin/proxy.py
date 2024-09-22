@@ -8,7 +8,7 @@ from pycspr.api.node.bin.types import \
     RequestHeader, \
     RequestID, \
     Response
-from pycspr.api.node.bin.types.domain import ProtocolVersion
+from pycspr.api.node.bin.types.chain import ProtocolVersion
 from pycspr.api.node.bin.types.primitives.numeric import U32
 
 

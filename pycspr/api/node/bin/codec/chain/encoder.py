@@ -2,7 +2,7 @@ from pycspr.api.node.bin.codec.chain.constants import \
     TAG_DOMAIN_BLOCK_HASH, \
     TAG_DOMAIN_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
-from pycspr.api.node.bin.types.domain import \
+from pycspr.api.node.bin.types.chain import \
     BlockHash, \
     BlockHeight, \
     BlockID, \

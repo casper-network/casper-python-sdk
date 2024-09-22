@@ -6,7 +6,7 @@ from pycspr.api.node.bin.codec.transport.constants import \
     TAG_TRY_ACCEPT_TRANSACTION, \
     TAG_TRY_SPECULATIVE_TRANSACTION, \
     TAGS_TO_ENDPOINTS
-from pycspr.api.node.bin.types.domain import ProtocolVersion
+from pycspr.api.node.bin.types.chain import ProtocolVersion
 from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32
 from pycspr.api.node.bin.types.transport import \
     Endpoint, \

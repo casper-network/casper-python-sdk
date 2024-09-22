@@ -8,11 +8,11 @@ from pycspr.api.node.bin.types import \
     Endpoint, \
     RequestID, \
     Response
-from pycspr.api.node.bin.types.domain import \
+from pycspr.api.node.bin.types.chain import \
     BlockID, \
     BlockHeader, \
-    BlockRange, \
-    NodeUptime
+    BlockRange
+from pycspr.api.node.bin.types.domain import NodeUptime
 
 
 class Client():

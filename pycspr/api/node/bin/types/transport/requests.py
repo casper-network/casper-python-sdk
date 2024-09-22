@@ -2,7 +2,7 @@ import dataclasses
 import typing
 
 from pycspr.api.node.bin.types.primitives.crypto import PublicKeyBytes
-from pycspr.api.node.bin.types.domain import \
+from pycspr.api.node.bin.types.chain import \
     BlockID, \
     EraID, \
     TransactionHash

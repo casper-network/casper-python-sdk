@@ -5,7 +5,7 @@ import enum
 import typing
 
 from pycspr.api.node.bin import constants
-from pycspr.api.node.bin.types.domain import ProtocolVersion
+from pycspr.api.node.bin.types.chain import ProtocolVersion
 
 
 @dataclasses.dataclass

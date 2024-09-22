@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.domain import BlockHeader, ProtocolVersion
+from pycspr.api.node.bin.types.chain import BlockHeader, ProtocolVersion
 from pycspr.api.node.bin.types.primitives.numeric import U32
 
 
