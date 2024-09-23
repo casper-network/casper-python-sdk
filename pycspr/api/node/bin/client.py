@@ -12,7 +12,7 @@ from pycspr.api.node.bin.types.chain import \
     BlockID, \
     BlockHeader, \
     BlockRange
-from pycspr.api.node.bin.types.domain import NodeUptime
+from pycspr.api.node.bin.types.node import NodeUptime
 
 
 class Client():
@@ -91,6 +91,7 @@ class Client():
             request_id,
         )
 
-        print(444, response.bytes_payload, codec.decode(response.bytes_payload, NodeUptime))
+        print([i for i in response.bytes_payload], len(response.bytes_payload))
+
 
         return response if decode is False else codec.decode(response.bytes_payload, NodeUptime)
