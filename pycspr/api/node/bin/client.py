@@ -12,7 +12,9 @@ from pycspr.api.node.bin.types.chain import \
     BlockID, \
     BlockHeader, \
     BlockRange
-from pycspr.api.node.bin.types.node import NodeUptime
+from pycspr.api.node.bin.types.node import \
+    NodePeerEntry, \
+    NodeUptime
 
 
 class Client():
@@ -29,52 +31,55 @@ class Client():
 
     async def get_information_available_block_range(
         self,
-        request_id: RequestID
+        request_id: RequestID,
+        decode: bool = True,
     ) -> BlockRange:
         """Returns a node's available block range.
 
         :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: A node's available block range.
 
         """
-        pass
+        raise NotImplementedError()
 
     async def get_information_block_header(
         self,
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
+        decode: bool = True,
     ) -> BlockHeader:
-        """Returns a block header.
+        """Returns a block header. Defaults to most recent.
 
-        :param block_id: Identifier of a finalised block.
         :param request_id: Request correlation identifier.
+        :param block_id: Identifier of a finalised block.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: A block header.
 
         """
-        pass
+        raise NotImplementedError()
 
-    async def get_information_chainspec_raw_bytes(
+    async def get_information_node_peers(
         self,
         request_id: RequestID,
-        decode: bool = True
-    ) -> typing.Union[Response, NodeUptime]:
-        """Returns chainspec as raw bytes.
+        decode: bool = True,
+    ) -> typing.Union[Response, typing.List[NodePeerEntry]]:
+        """Returns node peers information.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode API response.
-        :returns: Node uptime information.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: Node peers information.
 
         """
         response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_ChainspecRawBytes,
+            Endpoint.Get_Information_Peers,
             request_id,
         )
 
-        print(444, response.bytes_payload)
+        return _get_decoded_sequence(response, NodePeerEntry, decode)
 
-        return response if decode is False else response.bytes_payload
 
-    async def get_information_uptime(
+    async def get_information_node_uptime(
         self,
         request_id: RequestID,
         decode: bool = True
@@ -82,16 +87,43 @@ class Client():
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode API response.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Node uptime information.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
+        response = await self.proxy.invoke_endpoint(
             Endpoint.Get_Information_Uptime,
             request_id,
         )
 
-        print([i for i in response.bytes_payload], len(response.bytes_payload))
+        return _get_decoded(response, NodeUptime, decode)
 
 
-        return response if decode is False else codec.decode(response.bytes_payload, NodeUptime)
+def _get_decoded(
+    response: Response,
+    typedef: type,
+    decode: bool
+) -> typing.Union[Response, object]:
+    """Utility function to decode a response.
+
+    """
+    if decode is False:
+        return response
+    else:
+        _, decoded = codec.decode(response.bytes_payload, typedef)
+        return decoded
+
+
+def _get_decoded_sequence(
+    response: Response,
+    typedef: type,
+    decode: bool
+) -> typing.Union[Response, typing.List[object]]:
+    """Utility function to decode a sequence from a response.
+
+    """
+    if decode is False:
+        return response
+    else:
+        _, decoded = codec.decode_sequence(response.bytes_payload, typedef)
+        return decoded

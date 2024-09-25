@@ -46,15 +46,14 @@ class Proxy:
             )
         )
 
+        # Set request bytes.
+        bytes_request: bytes = codec.encode(request, prepend_length=True)
+
+        # Set response bytes.
+        bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
+
         # Set response.
-        bytes_rem, response = \
-            codec.decode(
-                await _get_response_bytes(
-                    self.connection_info,
-                    codec.encode(request, prepend_length=True)
-                ),
-                Response
-            )
+        bytes_rem, response = codec.decode(bytes_response, Response)
         assert len(bytes_rem) == 0, "Unconsumed response bytes"
 
         return response
@@ -85,18 +84,15 @@ def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
     """Parses a node's binary port response.
 
     """
-    assert \
-        isinstance(bytes_response, bytes) is True, \
-        "Response decoding error: response is not bytes"
+    assert isinstance(bytes_response, bytes) is True, \
+           "Response decoding error: response is not bytes"
 
-    bytes_rem, length = codec.decode(bytes_response, U32)
-    assert \
-        len(bytes_rem) == length, \
-        "Response decoding error: inner byte length mismatch"
+    bytes_response_rem, length = codec.decode(bytes_response, U32)
+    assert len(bytes_response_rem) == length, \
+           "Response decoding error: inner byte length mismatch"
 
     # TODO: clarify why need to offset by 2
-    assert \
-        bytes_rem[2:].find(bytes_request) == 0, \
-        "Response decoding error: request bytes not found"
+    assert bytes_response_rem[2:].find(bytes_request) == 0, \
+           "Response decoding error: request bytes not found"
 
     return bytes_response

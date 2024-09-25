@@ -75,13 +75,20 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
         return bytes_out[length:], request
 
+    def _decode_response_payload(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
+        bytes_out, length = decode(bytes_in, U32)
+        assert(len(bytes_out) == length)
+
+        return bytes_out, bytes_out
+
     bytes_out, _ = decode(bytes_in, U32)
     bytes_out, request = _decode_request_out(bytes_out)
     bytes_out, header = _decode_header(bytes_out)
+    bytes_out, payload = _decode_response_payload(bytes_out)
 
     return b'', Response(
         bytes_raw=bytes_in,
-        bytes_payload=bytes_out,
+        bytes_payload=payload,
         header=header,
         request=request
     )

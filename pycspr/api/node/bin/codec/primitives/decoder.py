@@ -1,14 +1,21 @@
 import typing
 
-from pycspr.api.node.bin.codec.utils import register_decoders
-from pycspr.api.node.bin.codec import utils
+from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32, U64
 
 
-def decode_bytes(bytes_in: bytes) -> bytes:
-    bytes_rem, length = utils.decode(bytes_in, U32)
+def decode_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
+    bytes_rem, length = decode(bytes_in, U32)
 
     return bytes_rem
+
+
+def decode_str(bytes_in: bytes) -> typing.Tuple[bytes, str]:
+    bytes_out, size = decode(bytes_in, U32)
+    assert len(bytes_out) >= size
+    bytes_out, encoded = bytes_out[size:], bytes_out[0:size]
+
+    return bytes_out, encoded.decode("utf-8")
 
 
 def decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int]:
@@ -19,6 +26,7 @@ def decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int
 
 register_decoders({
     (bytes, decode_bytes),
+    (str, decode_str),
     (U8, lambda x: decode_uint(x, 1)),
     (U16, lambda x: decode_uint(x, 2)),
     (U32, lambda x: decode_uint(x, 4)),

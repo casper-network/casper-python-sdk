@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.types.primitives.numeric import U8
+from pycspr.api.node.bin.types.primitives.numeric import U32, U8
 
 _DECODERS = dict()
 _ENCODERS = dict()
@@ -11,6 +11,7 @@ def decode(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[byt
 
     :param encoded: A stream of bytes.
     :param typedef: Type to be decoded.
+    :param is_optional: Flag indicating whether to apply an optionality check.
     :returns: A decoded entity.
 
     """
@@ -29,6 +30,33 @@ def decode(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[byt
             raise ValueError(f"Non-decodeable type: {typedef}")
         else:
             return decoder(encoded)
+
+
+def decode_sequence(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[bytes, typing.List[object]]:
+    """Decodes a sequence of entities from a byte stream.
+
+    :param encoded: A stream of bytes.
+    :param typedef: Type to be decoded.
+    :param is_optional: Flag indicating whether to apply an optionality check.
+    :returns: A decoded entity.
+
+    """
+    if is_optional is True:
+        bytes_rem, value = decode(encoded, U8)
+        if value == 0:
+            return bytes_rem, []
+        elif value == 1:
+            return decode_sequence(bytes_rem, typedef)
+        else:
+            raise ValueError("Invalid prefix bit for optional type")
+    else:
+        bytes_rem, sequence_length = decode(encoded, U32)
+        result = []
+        for _ in range(sequence_length):
+            bytes_rem, entity = decode(bytes_rem, typedef, is_optional)
+            result.append(entity)
+
+        return bytes_rem, result
 
 
 def encode(
