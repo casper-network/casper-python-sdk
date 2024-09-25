@@ -76,7 +76,7 @@ class Client():
             request_id,
         )
 
-        return _get_decoded_sequence(response, NodePeerEntry, decode)
+        return _get_decoded(response, NodePeerEntry, decode, is_sequence=True)
 
 
     async def get_information_node_uptime(
@@ -102,28 +102,17 @@ class Client():
 def _get_decoded(
     response: Response,
     typedef: type,
-    decode: bool
-) -> typing.Union[Response, object]:
+    decode: bool,
+    is_sequence: bool = False
+) -> typing.Union[Response, typing.Union[object, typing.List[object]]]:
     """Utility function to decode a response.
 
     """
     if decode is False:
         return response
-    else:
-        _, decoded = codec.decode(response.bytes_payload, typedef)
-        return decoded
 
+    decoder = codec.decode if is_sequence is False else codec.decode_sequence
+    bytes_rem, decoded = decoder(response.bytes_payload, typedef)
+    assert len(bytes_rem) == 0, "Byte stream only partially decoded"
 
-def _get_decoded_sequence(
-    response: Response,
-    typedef: type,
-    decode: bool
-) -> typing.Union[Response, typing.List[object]]:
-    """Utility function to decode a sequence from a response.
-
-    """
-    if decode is False:
-        return response
-    else:
-        _, decoded = codec.decode_sequence(response.bytes_payload, typedef)
-        return decoded
+    return decoded

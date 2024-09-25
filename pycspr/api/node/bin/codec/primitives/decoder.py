@@ -13,9 +13,8 @@ def decode_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
 def decode_str(bytes_in: bytes) -> typing.Tuple[bytes, str]:
     bytes_out, size = decode(bytes_in, U32)
     assert len(bytes_out) >= size
-    bytes_out, encoded = bytes_out[size:], bytes_out[0:size]
 
-    return bytes_out, encoded.decode("utf-8")
+    return bytes_out[size:], bytes_out[0:size].decode("utf-8")
 
 
 def decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int]:
