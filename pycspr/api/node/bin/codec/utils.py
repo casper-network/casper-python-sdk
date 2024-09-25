@@ -6,23 +6,36 @@ _DECODERS = dict()
 _ENCODERS = dict()
 
 
-def decode(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[bytes, object]:
+def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
     :param encoded: A stream of bytes.
     :param typedef: Type to be decoded.
     :param is_optional: Flag indicating whether to apply an optionality check.
+    :param is_optional: Flag indicating whether to decode a sequence.
     :returns: A decoded entity.
 
     """
     if is_optional is True:
-        bytes_rem, value = decode(encoded, U8)
+        bytes_out, value = decode(encoded, U8)
         if value == 0:
-            return bytes_rem, None
+            if is_sequence is True:
+                return []
+            else:
+                return None
         elif value == 1:
-            return decode(bytes_rem, typedef)
+            return decode(bytes_out, typedef, is_sequence=is_sequence)
         else:
             raise ValueError("Invalid prefix bit for optional type")
+
+    elif is_sequence is True:
+        bytes_out, sequence_length = decode(encoded, U32)
+        result = []
+        for _ in range(sequence_length):
+            bytes_out, entity = decode(bytes_out, typedef, is_optional)
+            result.append(entity)
+        return bytes_out, result
+
     else:
         try:
             decoder = _DECODERS[typedef]

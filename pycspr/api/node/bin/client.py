@@ -110,9 +110,7 @@ def _get_decoded(
     """
     if decode is False:
         return response
-
-    decoder = codec.decode if is_sequence is False else codec.decode_sequence
-    bytes_rem, decoded = decoder(response.bytes_payload, typedef)
-    assert len(bytes_rem) == 0, "Byte stream only partially decoded"
-
-    return decoded
+    else:
+        bytes_rem, decoded = codec.decode(response.bytes_payload, typedef, is_sequence=is_sequence)
+        assert len(bytes_rem) == 0, "Byte stream only partially decoded"
+        return decoded
