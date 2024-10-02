@@ -13,7 +13,15 @@ BlockHeight = typing.NewType(
     "Ordinal identifier of a block measured by how many finalised blocks precede it.", U64
 )
 
+BlockBodyHash = typing.NewType(
+    "Digest over a block's body.", DigestBytes
+    )
+
 BlockID = typing.Union[BlockHash, BlockHeight]
+
+GasPrice = typing.NewType(
+    "Multiplier applied to estimation of computational costs (gas).", int
+)
 
 EraID = typing.NewType(
     "Ordinal identifier of an era measured by how many eras precede it.", int
@@ -22,13 +30,3 @@ EraID = typing.NewType(
 TransactionHash = typing.NewType(
     "Digest over a transaction.", DigestBytes
     )
-
-
-@dataclasses.dataclass
-class BlockHeader():
-    pass
-
-
-@dataclasses.dataclass
-class BlockRange():
-    pass

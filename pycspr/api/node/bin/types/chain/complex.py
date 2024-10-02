@@ -6,11 +6,11 @@ import typing
 from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
-    EraID
+    EraID, \
+    GasPrice
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
-
 
 
 @dataclasses.dataclass
@@ -48,22 +48,22 @@ class BlockHeader_V1(BlockHeader):
     body_hash: DigestBytes
 
     # Digest over block body.
-    era_end: typing.Optional["EraEnd_V1"]
+    era_end: typing.Optional[EraEnd_V1]
 
     # Height of era, i.e. number of ancestors.
-    era_id: "EraID"
+    era_id: EraID
 
     # Height of block, i.e. number of ancestors.
-    height: "BlockHeight"
+    height: BlockHeight
 
     # Digest over parent block.
-    parent_hash: "BlockHash"
+    parent_hash: BlockHash
 
     # Future era initializion random bit.
     random_bit: bool
 
     # Network protocol version at point when block was created.
-    protocol_version: "ProtocolVersion"
+    protocol_version: ProtocolVersion
 
     # Digest over post block execution state root.
     state_root_hash: DigestBytes
@@ -84,7 +84,7 @@ class BlockHeader_V2(BlockHeader):
     body_hash: DigestBytes
 
     # The gas price of the era
-    current_gas_price: int
+    current_gas_price: GasPrice
 
     # The `EraEnd` of a block if it is a switch block.
     era_end: typing.Optional[EraEnd_V2]
@@ -93,7 +93,7 @@ class BlockHeader_V2(BlockHeader):
     era_id: EraID
 
     # The height of this block, i.e. the number of ancestors.
-    height: int
+    height: BlockHeight
 
     # The most recent switch block hash.
     last_switch_block_hash: typing.Optional[BlockHash]
@@ -118,7 +118,20 @@ class BlockHeader_V2(BlockHeader):
 
 
 @dataclasses.dataclass
-class EraEnd_V1():
+class BlockRange():
+    pass
+
+
+@dataclasses.dataclass
+class EraEnd():
+    """End of era information.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class EraEnd_V1(EraEnd):
     """End of era information scoped by block header version 1.
 
     """
@@ -126,7 +139,7 @@ class EraEnd_V1():
 
 
 @dataclasses.dataclass
-class EraEnd_V2():
+class EraEnd_V2(EraEnd):
     """End of era information scoped by block header version 2.
 
     """

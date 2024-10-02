@@ -6,10 +6,10 @@ _DECODERS = dict()
 _ENCODERS = dict()
 
 
-def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) -> typing.Tuple[bytes, object]:
+def decode(bytes_in: bytes, typedef: type, is_optional=False, is_sequence=False) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
-    :param encoded: A stream of bytes.
+    :param bytes_in: A sequence of input bytes.
     :param typedef: Type to be decoded.
     :param is_optional: Flag indicating whether to apply an optionality check.
     :param is_sequence: Flag indicating whether a sequence is to be decoded.
@@ -19,25 +19,25 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
     # Optional values are prefixed with a single byte indicating
     # whether the value is declared.
     if is_optional is True:
-        bytes_out, value = decode(encoded, U8)
+        bytes_rem, value = decode(bytes_in, U8)
         if value == 0:
             if is_sequence is True:
-                return []
+                return bytes_rem, []
             else:
-                return None
+                return bytes_rem, None
         elif value == 1:
-            return decode(bytes_out, typedef, is_sequence=is_sequence)
+            return decode(bytes_rem, typedef, is_sequence=is_sequence)
         else:
             raise ValueError("Invalid prefix bit for optional type")
 
     # Sequences are prefixed with sequence length.
     elif is_sequence is True:
-        bytes_out, sequence_length = decode(encoded, U32)
+        bytes_rem, sequence_length = decode(bytes_in, U32)
         result = []
         for _ in range(sequence_length):
-            bytes_out, entity = decode(bytes_out, typedef, is_optional)
+            bytes_rem, entity = decode(bytes_rem, typedef, is_optional)
             result.append(entity)
-        return bytes_out, result
+        return bytes_rem, result
 
     # Otherwise executer decoder mapped by type.
     else:
@@ -46,7 +46,7 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
         except KeyError:
             raise ValueError(f"Non-decodeable type: {typedef}")
         else:
-            return decoder(encoded)
+            return decoder(bytes_in)
 
 
 def encode(
