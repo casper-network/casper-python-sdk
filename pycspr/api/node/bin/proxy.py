@@ -1,4 +1,5 @@
 import asyncio
+import typing
 
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.types import \
@@ -28,7 +29,7 @@ class Proxy:
         self,
         endpoint: Endpoint,
         request_id: RequestID,
-        payload: bytes = b''
+        payload: typing.Optional[bytes] = None
     ) -> Response:
         """Dispatches request to a remote node binary port & returns response.
 
@@ -46,7 +47,7 @@ class Proxy:
                 endpoint,
                 request_id,
             ),
-            payload=payload
+            payload=payload if payload is not None else bytes([])
         )
 
         # Set request bytes.

@@ -57,20 +57,18 @@ class Client():
         :returns: A block header.
 
         """
-        # Set payload.
-        payload = bytes([])
-        if block_id is not None:
-            payload += codec.encode(block_id, BlockID, is_optional=True)
+        def get_payload() -> typing.Optional[bytes]:
+            if block_id is not None:
+                return codec.encode(block_id, BlockID, is_optional=True)
 
-        # Set response.
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_BlockHeader,
-            request_id,
-            payload
-        )
+        async def get_response() -> Response:
+            return await self.proxy.invoke_endpoint(
+                Endpoint.Get_Information_BlockHeader,
+                request_id,
+                get_payload()
+            )
 
-        # Return
-        return _parse_response(response, BlockHeader, decode)
+        return _parse_response(await get_response(), BlockHeader, decode)
 
     async def get_information_node_peers(
         self,
