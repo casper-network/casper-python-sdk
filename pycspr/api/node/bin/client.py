@@ -57,18 +57,20 @@ class Client():
         :returns: A block header.
 
         """
+        # Set payload.
+        payload = bytes([])
         if block_id is not None:
-            print(444, block_id, codec.encode(block_id, BlockID, is_optional=True))
+            payload += codec.encode(block_id, BlockID, is_optional=True)
 
-        # raise ValueError()
-            # print(codec.encode(block_id, BlockID, is_optional=True))
-
+        # Set response.
         response: Response = await self.proxy.invoke_endpoint(
             Endpoint.Get_Information_BlockHeader,
             request_id,
+            payload
         )
 
-        return _get_decoded(response, BlockHeader, decode)
+        # Return
+        return _parse_response(response, BlockHeader, decode)
 
     async def get_information_node_peers(
         self,
@@ -87,8 +89,7 @@ class Client():
             request_id,
         )
 
-        return _get_decoded(response, NodePeerEntry, decode, is_sequence=True)
-
+        return _parse_response(response, NodePeerEntry, decode, is_sequence=True)
 
     async def get_information_node_uptime(
         self,
@@ -107,21 +108,21 @@ class Client():
             request_id,
         )
 
-        return _get_decoded(response, NodeUptime, decode)
+        return _parse_response(response, NodeUptime, decode)
 
 
-def _get_decoded(
+def _parse_response(
     response: Response,
     typedef: type,
     decode: bool,
     is_sequence: bool = False
 ) -> typing.Union[Response, typing.Union[object, typing.List[object]]]:
-    """Utility function to decode a response.
+    """Utility function to parse a response.
 
     """
-    if decode is False:
-        return response
-    else:
-        bytes_rem, decoded = codec.decode(response.bytes_payload, typedef, is_sequence=is_sequence)
+    if decode is True:
+        bytes_rem, entity = codec.decode(response.bytes_payload, typedef, is_sequence=is_sequence)
         assert len(bytes_rem) == 0, "Byte stream only partially decoded"
-        return decoded
+        return entity
+
+    return response

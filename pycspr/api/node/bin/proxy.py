@@ -50,8 +50,6 @@ class Proxy:
         )
 
         # Set request bytes.
-        # bytes_request: bytes = codec.encode(request, prepend_length=True)
-
         bytes_request: bytes = codec.encode(codec.encode(request), bytes)
 
         # Set response bytes.
