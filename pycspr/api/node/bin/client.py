@@ -57,7 +57,18 @@ class Client():
         :returns: A block header.
 
         """
-        raise NotImplementedError()
+        if block_id is not None:
+            print(444, block_id, codec.encode(block_id, BlockID, is_optional=True))
+
+        # raise ValueError()
+            # print(codec.encode(block_id, BlockID, is_optional=True))
+
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_BlockHeader,
+            request_id,
+        )
+
+        return _get_decoded(response, BlockHeader, decode)
 
     async def get_information_node_peers(
         self,

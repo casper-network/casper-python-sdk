@@ -1,8 +1,15 @@
 import typing
 
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.node import NodePeerEntry
-from pycspr.api.node.bin.types.node import NodeUptime
+from pycspr.api.node.bin.types.chain import BlockHeader
+from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
+
+
+async def test_get_information_block_header(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data: BlockHeader = \
+        await NODE_BINARY_CLIENT.get_information_block_header(block_id=18, request_id=REQUEST_ID)
+
+    assert isinstance(data, BlockHeader)
 
 
 async def test_get_information_node_peers(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):

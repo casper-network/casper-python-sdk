@@ -138,13 +138,13 @@ class Request():
     header: "RequestHeader"
 
     # Request payload, i.e. endpoint params.
-    payload: object = None
+    payload: bytes = b''
 
     def __eq__(self, other: Request) -> bool:
         return self.header == other.header and self.payload == self.payload
 
     def __str__(self) -> str:
-        return f"Request: {self.header}"
+        return f"Request: {self.header} :: Payload Length={len(self.payload)}"
 
 
 @dataclasses.dataclass

@@ -12,10 +12,12 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
     :param encoded: A stream of bytes.
     :param typedef: Type to be decoded.
     :param is_optional: Flag indicating whether to apply an optionality check.
-    :param is_optional: Flag indicating whether to decode a sequence.
+    :param is_sequence: Flag indicating whether a sequence is to be decoded.
     :returns: A decoded entity.
 
     """
+    # Optional values are prefixed with a single byte indicating
+    # whether the value is declared.
     if is_optional is True:
         bytes_out, value = decode(encoded, U8)
         if value == 0:
@@ -28,6 +30,7 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
         else:
             raise ValueError("Invalid prefix bit for optional type")
 
+    # Sequences are prefixed with sequence length.
     elif is_sequence is True:
         bytes_out, sequence_length = decode(encoded, U32)
         result = []
@@ -36,6 +39,7 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
             result.append(entity)
         return bytes_out, result
 
+    # Otherwise executer decoder mapped by type.
     else:
         try:
             decoder = _DECODERS[typedef]
@@ -45,37 +49,9 @@ def decode(encoded: bytes, typedef: type, is_optional=False, is_sequence=False) 
             return decoder(encoded)
 
 
-def decode_sequence(encoded: bytes, typedef: type, is_optional=False) -> typing.Tuple[bytes, typing.List[object]]:
-    """Decodes a sequence of entities from a byte stream.
-
-    :param encoded: A stream of bytes.
-    :param typedef: Type to be decoded.
-    :param is_optional: Flag indicating whether to apply an optionality check.
-    :returns: A decoded entity.
-
-    """
-    if is_optional is True:
-        bytes_rem, value = decode(encoded, U8)
-        if value == 0:
-            return bytes_rem, []
-        elif value == 1:
-            return decode_sequence(bytes_rem, typedef)
-        else:
-            raise ValueError("Invalid prefix bit for optional type")
-    else:
-        bytes_rem, sequence_length = decode(encoded, U32)
-        result = []
-        for _ in range(sequence_length):
-            bytes_rem, entity = decode(bytes_rem, typedef, is_optional)
-            result.append(entity)
-
-        return bytes_rem, result
-
-
 def encode(
     entity: object,
-    typedef: typing.Type = None,
-    prepend_length: bool = False,
+    typedef: typing.Optional[typing.Type] = None,
     is_optional: bool = False
 ):
     """Encodes an entity as a byte stream.
@@ -87,14 +63,28 @@ def encode(
     :returns: A byte stream.
 
     """
-    if typedef is None:
-        typedef = type(entity)
+    # Parse optional flag.
+    if is_optional is True:
+        if entity is None or entity == []:
+            return bytes([0])
+        else:
+            bytes_prefix = bytes([1])
+    else:
+        bytes_prefix = bytes([])
+
+    # Set type def.
+    typedef = typedef or type(entity)
+
+    # Set encoder.
     try:
         encoder = _ENCODERS[typedef]
     except KeyError:
         raise ValueError(f"Non-encodeable type: {typedef}")
 
-    return encode(encoder(entity), bytes) if prepend_length is True else encoder(entity)
+    try:
+        return bytes_prefix + encoder(entity)
+    except Exception as err:
+        raise ValueError(f"Encoding error: {typedef} :: {err}")
 
 
 def register_decoders(decoders):

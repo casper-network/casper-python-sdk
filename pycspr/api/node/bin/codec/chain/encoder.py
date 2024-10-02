@@ -19,7 +19,8 @@ def encode_block_height(entity: BlockHeight) -> bytes:
 
 
 def encode_block_id(entity: BlockID) -> bytes:
-    encode_block_hash(entity) if isinstance(entity, bytes) else encode_block_height(entity)
+    return encode_block_hash(entity) if isinstance(entity, bytes) else \
+           encode_block_height(entity)
 
 
 def encode_protocol_version(entity: ProtocolVersion) -> bytes:

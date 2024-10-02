@@ -5,12 +5,10 @@ import pycspr.api.node.bin.codec.node
 import pycspr.api.node.bin.codec.primitives
 import pycspr.api.node.bin.codec.transport
 from pycspr.api.node.bin.codec.utils import decode
-from pycspr.api.node.bin.codec.utils import decode_sequence
 from pycspr.api.node.bin.codec.utils import encode
 
 
 __all__ = [
     "decode",
-    "decode_sequence",
     "encode"
 ]

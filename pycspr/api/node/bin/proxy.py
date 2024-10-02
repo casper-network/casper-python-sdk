@@ -28,11 +28,13 @@ class Proxy:
         self,
         endpoint: Endpoint,
         request_id: RequestID,
+        payload: bytes = b''
     ) -> Response:
         """Dispatches request to a remote node binary port & returns response.
 
         :param endpoint: Endpoint to be invoked.
         :param request_id: Identifier of request to be dispatched.
+        :param payload: Request payload.
         :returns: Remote node binary server response.
 
         """
@@ -43,11 +45,14 @@ class Proxy:
                 ProtocolVersion.from_semvar(self.connection_info.chain_protocol_version),
                 endpoint,
                 request_id,
-            )
+            ),
+            payload=payload
         )
 
         # Set request bytes.
-        bytes_request: bytes = codec.encode(request, prepend_length=True)
+        # bytes_request: bytes = codec.encode(request, prepend_length=True)
+
+        bytes_request: bytes = codec.encode(codec.encode(request), bytes)
 
         # Set response bytes.
         bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)

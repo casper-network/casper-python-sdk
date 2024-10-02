@@ -6,6 +6,7 @@ from pycspr.api.node.bin.types.primitives.numeric import U32
 
 
 def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
+    print(107)
     raise NotImplementedError()
 
 
