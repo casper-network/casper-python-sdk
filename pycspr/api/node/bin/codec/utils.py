@@ -92,7 +92,7 @@ def encode(
         raise ValueError(f"Encoding error: {typedef} :: {err}")
 
 
-def register_decoders(decoders):
+def register_decoders(decoders: typing.List[typing.Tuple[type, typing.Callable]]):
     """Registers a set of encoding functions.
 
     :param encoders: Set of encoding functions.
@@ -102,7 +102,7 @@ def register_decoders(decoders):
         _DECODERS[typedef] = decoder
 
 
-def register_encoders(encoders):
+def register_encoders(encoders: typing.List[typing.Tuple[type, typing.Callable]]):
     """Registers a set of encoding functions.
 
     :param encoders: Set of encoding functions.

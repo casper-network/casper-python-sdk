@@ -11,7 +11,7 @@ from pycspr.api.node.bin.types.primitives.numeric import U8, U64
 
 
 def encode_block_hash(entity: BlockHash) -> bytes:
-    return encode(TAG_BLOCK_HASH, U8) + encode(entity, bytes)
+    return encode(TAG_BLOCK_HASH, U8) + entity
 
 
 def encode_block_height(entity: BlockHeight) -> bytes:

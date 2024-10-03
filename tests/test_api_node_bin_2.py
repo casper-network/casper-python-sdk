@@ -6,34 +6,28 @@ from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
 
 
 async def test_get_information_block_header(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
-    data: BlockHeader = \
+    data_1: BlockHeader = \
         await NODE_BINARY_CLIENT.get_information_block_header(block_id=18, request_id=REQUEST_ID)
-    assert isinstance(data, BlockHeader)
+    assert isinstance(data_1, BlockHeader)
 
-    # print(data.parent_hash.hex())
-    # data: BlockHeader = \
-    #     await NODE_BINARY_CLIENT.get_information_block_header(block_id=data.parent_hash.hex(), request_id=REQUEST_ID)
-    # assert isinstance(data, BlockHeader)
-
-
-    data: BlockHeader = \
-        await NODE_BINARY_CLIENT.get_information_block_header(block_id=11, request_id=REQUEST_ID)
-    assert isinstance(data, BlockHeader)
+    data_2: BlockHeader = \
+        await NODE_BINARY_CLIENT.get_information_block_header(block_id=data_1.parent_hash, request_id=REQUEST_ID)
+    assert isinstance(data_2, BlockHeader)
 
 
-# async def test_get_information_node_peers(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
-#     data: typing.List[NodePeerEntry] = \
-#         await NODE_BINARY_CLIENT.get_information_node_peers(request_id=REQUEST_ID)
+async def test_get_information_node_peers(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data: typing.List[NodePeerEntry] = \
+        await NODE_BINARY_CLIENT.get_information_node_peers(request_id=REQUEST_ID)
 
-#     assert isinstance(data, list)
-#     for entity in data:
-#         assert isinstance(entity, NodePeerEntry)
-#         assert isinstance(entity.address, str)
-#         assert isinstance(entity.node_id, str)
+    assert isinstance(data, list)
+    for entity in data:
+        assert isinstance(entity, NodePeerEntry)
+        assert isinstance(entity.address, str)
+        assert isinstance(entity.node_id, str)
 
 
-# async def test_get_information_node_uptime(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
-#     data: NodeUptime = \
-#         await NODE_BINARY_CLIENT.get_information_node_uptime(request_id=REQUEST_ID)
+async def test_get_information_node_uptime(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data: NodeUptime = \
+        await NODE_BINARY_CLIENT.get_information_node_uptime(request_id=REQUEST_ID)
 
-#     assert isinstance(data, int)
+    assert isinstance(data, int)
