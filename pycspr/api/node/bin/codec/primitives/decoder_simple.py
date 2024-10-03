@@ -13,13 +13,13 @@ def _decode_bool(bytes_in: bytes) -> typing.Tuple[bytes, bool]:
 
 def _decode_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
     assert len(bytes_in) >= 5
-    bytes_rem, _ = decode(bytes_in, U32)
+    bytes_rem, _ = decode(U32, bytes_in)
     return bytes_rem
 
 
 def _decode_str(bytes_in: bytes) -> typing.Tuple[bytes, str]:
     assert len(bytes_in) >= 1
-    bytes_out, size = decode(bytes_in, U32)
+    bytes_out, size = decode(U32, bytes_in)
     assert len(bytes_out) >= size
     return bytes_out[size:], bytes_out[0:size].decode("utf-8")
 

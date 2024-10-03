@@ -12,11 +12,11 @@ from pycspr.api.node.bin.types.primitives.numeric import U8, U64, U512
 
 
 register_decoders({
-    (BlockBodyHash, lambda x: decode(x, DigestBytes)),
-    (BlockHash, lambda x: decode(x, DigestBytes)),
-    (BlockHeight, lambda x: decode(x, U64)),
-    (EraID, lambda x: decode(x, U64)),
-    (GasPrice, lambda x: decode(x, U8)),
-    (Motes, lambda x: decode(x, U512)),
-    (Weight, lambda x: decode(x, U512)),
+    (BlockBodyHash, lambda x: decode(DigestBytes, x)),
+    (BlockHash, lambda x: decode(DigestBytes, x)),
+    (BlockHeight, lambda x: decode(U64, x)),
+    (EraID, lambda x: decode(U64, x)),
+    (GasPrice, lambda x: decode(U8, x)),
+    (Motes, lambda x: decode(U512, x)),
+    (Weight, lambda x: decode(U512, x)),
 })

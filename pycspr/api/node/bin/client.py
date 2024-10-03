@@ -119,7 +119,7 @@ def _parse_response(
 
     """
     if decode is True:
-        bytes_rem, entity = codec.decode(response.bytes_payload, typedef, is_sequence=is_sequence)
+        bytes_rem, entity = codec.decode(typedef, response.bytes_payload, is_sequence=is_sequence)
         assert len(bytes_rem) == 0, "Byte stream only partially decoded"
         return entity
 

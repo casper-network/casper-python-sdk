@@ -12,7 +12,7 @@ def _decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, in
 
 
 def _decode_u512(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    bytes_rem, size = decode(bytes_in, U8)
+    bytes_rem, size = decode(U8, bytes_in)
     bytes_rem, value = _decode_uint(bytes_rem, size)
 
     return bytes_rem, value

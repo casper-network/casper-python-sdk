@@ -7,7 +7,7 @@ from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 def decode_time_timestamp(bytes_in: bytes) -> typing.Tuple[bytes, Timestamp]:
     assert len(bytes_in) >= 4
-    bytes_out, ts_ms = decode(bytes_in, U64)
+    bytes_out, ts_ms = decode(U64, bytes_in)
     return bytes_out, Timestamp(float(ts_ms))
 
 

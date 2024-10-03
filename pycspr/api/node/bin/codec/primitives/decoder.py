@@ -13,12 +13,12 @@ def decode_crypto_digest_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
 
 def decode_crypto_key_algo(bytes_in: bytes) -> typing.Tuple[bytes, KeyAlgorithm]:
     assert len(bytes_in) >= 1
-    bytes_rem, algo_type = decode(bytes_in, U8)
+    bytes_rem, algo_type = decode(U8, bytes_in)
     return bytes_rem, KeyAlgorithm(algo_type)
 
 
 def decode_crypto_public_key_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
-    bytes_rem, key_algo = decode(bytes_in, KeyAlgorithm)
+    bytes_rem, key_algo = decode(KeyAlgorithm, bytes_in)
     if key_algo == KeyAlgorithm.ED25519:
         return bytes_rem[32:], bytes_rem[:32]
     elif key_algo == KeyAlgorithm.ED25519:
@@ -43,20 +43,20 @@ def decode_simple_bool(bytes_in: bytes) -> typing.Tuple[bytes, bool]:
 
 def decode_simple_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
     assert len(bytes_in) >= 5
-    bytes_rem, _ = decode(bytes_in, U32)
+    bytes_rem, _ = decode(U32, bytes_in)
     return bytes_rem
 
 
 def decode_simple_str(bytes_in: bytes) -> typing.Tuple[bytes, str]:
     assert len(bytes_in) >= 1
-    bytes_out, size = decode(bytes_in, U32)
+    bytes_out, size = decode(U32, bytes_in)
     assert len(bytes_out) >= size
     return bytes_out[size:], bytes_out[0:size].decode("utf-8")
 
 
 def decode_time_timestamp(bytes_in: bytes) -> typing.Tuple[bytes, Timestamp]:
     assert len(bytes_in) >= 4
-    bytes_out, ts_ms = decode(bytes_in, U64)
+    bytes_out, ts_ms = decode(U64, bytes_in)
     return bytes_out, Timestamp(float(ts_ms))
 
 

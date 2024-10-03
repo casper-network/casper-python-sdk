@@ -57,7 +57,7 @@ class Proxy:
         bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
 
         # Set response.
-        bytes_rem, response = codec.decode(bytes_response, Response)
+        bytes_rem, response = codec.decode(Response, bytes_response)
         assert len(bytes_rem) == 0, "Unconsumed response bytes"
 
         return response
@@ -91,7 +91,7 @@ def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
     assert isinstance(bytes_response, bytes) is True, \
            "Response decoding error: response is not bytes"
 
-    bytes_response_rem, length = codec.decode(bytes_response, U32)
+    bytes_response_rem, length = codec.decode(U32, bytes_response)
     assert len(bytes_response_rem) == length, \
            "Response decoding error: inner byte length mismatch"
 
