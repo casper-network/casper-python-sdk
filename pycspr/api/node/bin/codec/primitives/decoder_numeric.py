@@ -11,7 +11,7 @@ def _decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, in
         int.from_bytes(bytes_in[:encoded_length], "little", signed=False)
 
 
-def _decode_u512(bytes_in: bytes) -> typing.Tuple[bytes, int]:
+def _decode_uint_big(bytes_in: bytes) -> typing.Tuple[bytes, int]:
     bytes_rem, size = decode(U8, bytes_in)
     bytes_rem, value = _decode_uint(bytes_rem, size)
 
@@ -23,7 +23,7 @@ register_decoders({
     (U16, lambda x: _decode_uint(x, 2)),
     (U32, lambda x: _decode_uint(x, 4)),
     (U64, lambda x: _decode_uint(x, 8)),
-    (U128, lambda x: NotImplementedError()),
-    (U256, lambda x: NotImplementedError()),
-    (U512, _decode_u512),
+    (U128, _decode_uint_big),
+    (U256, _decode_uint_big),
+    (U512, _decode_uint_big),
 })

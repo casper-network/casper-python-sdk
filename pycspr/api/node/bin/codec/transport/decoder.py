@@ -17,7 +17,7 @@ from pycspr.api.node.bin.types.transport import \
     ResponseHeader
 
 
-def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
+def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     """Decoder: sequence of bytes -> Request.
 
     """
@@ -53,7 +53,7 @@ def decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
     return bytes_out, Request(header, payload)
 
 
-def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
+def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     """Decoder: sequence of bytes -> Response.
 
     """
@@ -71,7 +71,7 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     def _decode_request_out(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
         bytes_out = bytes_in[2:]        # TODO: understand necessity for this
         bytes_out, length = decode(U32, bytes_out)
-        _, request = decode_request(bytes_out[:length])
+        _, request = _decode_request(bytes_out[:length])
 
         return bytes_out[length:], request
 
@@ -95,6 +95,6 @@ def decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
 
 register_decoders({
-    (Request, decode_request),
-    (Response, decode_response),
+    (Request, _decode_request),
+    (Response, _decode_response),
 })

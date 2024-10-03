@@ -9,7 +9,7 @@ from pycspr.api.node.bin.types.node import \
 from pycspr.api.node.bin.types.primitives.numeric import U64
 
 
-def decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry]:
+def _decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry]:
     bytes_out, address = decode(NodeAddress, bytes_in)
     bytes_out, node_id = decode(NodeId, bytes_out)
 
@@ -17,7 +17,7 @@ def decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry
 
 
 register_decoders({
-    (NodePeerEntry, decode_node_peer_entry),
+    (NodePeerEntry, _decode_node_peer_entry),
     (NodeAddress, lambda x: decode(str, x)),
     (NodeId, lambda x: decode(str, x)),
     (NodeUptime, lambda x: decode(U64, x)),

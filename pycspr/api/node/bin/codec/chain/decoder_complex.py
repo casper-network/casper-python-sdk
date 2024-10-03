@@ -25,21 +25,21 @@ from pycspr.api.node.bin.types.primitives.numeric import U8, U32
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
-def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
+def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     bytes_rem, type_tag = decode(U8, bytes_in)
     if type_tag == constants.TAG_BLOCK_TYPE_V1:
-        return decode_block_header_v1(bytes_rem)
+        return _decode_block_header_v1(bytes_rem)
     elif type_tag == constants.TAG_BLOCK_TYPE_V2:
-        return decode_block_header_v2(bytes_rem)
+        return _decode_block_header_v2(bytes_rem)
     else:
         raise ValueError("Invalid type tag: block header ")
 
 
-def decode_block_header_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V1]:
+def _decode_block_header_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V1]:
     raise NotImplementedError()
 
 
-def decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V2]:
+def _decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V2]:
     bytes_rem, parent_block_hash = decode(BlockHash, bytes_in)
     bytes_rem, state_root_hash = decode(DigestBytes, bytes_rem)
     bytes_rem, body_hash = decode(BlockBodyHash, bytes_rem)
@@ -71,11 +71,11 @@ def decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V
     )
 
 
-def decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
+def _decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
     raise NotImplementedError()
 
 
-def decode_era_end_v2(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V2]:
+def _decode_era_end_v2(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V2]:
     bytes_rem, equivocators = decode(ValidatorID, bytes_in, is_sequence=True)
     bytes_rem, inactive_validators = decode(ValidatorID, bytes_rem, is_sequence=True)
     bytes_rem, next_era_validator_weights = decode(EraValidatorWeight, bytes_rem, is_sequence=True)
@@ -91,21 +91,21 @@ def decode_era_end_v2(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V2]:
     )
 
 
-def decode_era_validator_reward(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorReward]:
+def _decode_era_validator_reward(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorReward]:
     bytes_rem, validator_id = decode(ValidatorID, bytes_in)
     bytes_rem, rewards = decode(Motes, bytes_rem, is_sequence=True)
 
     return bytes_rem, EraValidatorReward(rewards, validator_id)
 
 
-def decode_era_validator_weight(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorWeight]:
+def _decode_era_validator_weight(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorWeight]:
     bytes_rem, validator_id = decode(ValidatorID, bytes_in)
     bytes_rem, weight = decode(Weight, bytes_rem)
 
     return bytes_rem, EraValidatorWeight(validator_id, weight)
 
 
-def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
+def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
     bytes_rem, major = decode(U32, bytes_in)
     bytes_rem, minor = decode(U32, bytes_rem)
     bytes_rem, patch = decode(U32, bytes_rem)
@@ -115,13 +115,13 @@ def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVers
 
 # Complex types.
 register_decoders({
-    (BlockHeader, decode_block_header),
-    (BlockHeader_V1, decode_block_header_v1),
-    (BlockHeader_V2, decode_block_header_v2),
-    (EraEnd_V1, decode_era_end_v1),
-    (EraEnd_V2, decode_era_end_v2),
-    (EraValidatorReward, decode_era_validator_reward),
-    (EraValidatorWeight, decode_era_validator_weight),
-    (ProtocolVersion, decode_protocol_version),
+    (BlockHeader, _decode_block_header),
+    (BlockHeader_V1, _decode_block_header_v1),
+    (BlockHeader_V2, _decode_block_header_v2),
+    (EraEnd_V1, _decode_era_end_v1),
+    (EraEnd_V2, _decode_era_end_v2),
+    (EraValidatorReward, _decode_era_validator_reward),
+    (EraValidatorWeight, _decode_era_validator_weight),
+    (ProtocolVersion, _decode_protocol_version),
     (ValidatorID, lambda x: decode(PublicKey, x)),
 })
