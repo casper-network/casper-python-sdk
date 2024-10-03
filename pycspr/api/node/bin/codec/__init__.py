@@ -1,5 +1,3 @@
-import typing
-
 import pycspr.api.node.bin.codec.chain
 import pycspr.api.node.bin.codec.node
 import pycspr.api.node.bin.codec.primitives

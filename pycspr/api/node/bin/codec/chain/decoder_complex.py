@@ -6,7 +6,6 @@ from pycspr.api.node.bin.types.chain.complex import \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
-    EraEnd, \
     EraEnd_V1, \
     EraEnd_V2, \
     EraValidatorReward, \
@@ -22,7 +21,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     Motes, \
     Weight
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
-from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
+from pycspr.api.node.bin.types.primitives.numeric import U8, U32
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 

@@ -1,4 +1,3 @@
-import dataclasses
 import typing
 
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes

@@ -1,4 +1,3 @@
-from requests import request
 from pycspr.api.node.bin.codec.transport.constants import ENDPOINT_TO_TAGS
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
 from pycspr.api.node.bin.types.chain import BlockID

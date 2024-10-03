@@ -7,13 +7,13 @@ from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
     EraID, \
+    Motes, \
     GasPrice, \
     Weight
 from pycspr.api.node.bin.types.primitives.crypto import \
     DigestBytes, \
     PublicKey, \
     PublicKeyBytes
-from pycspr.api.node.bin.types.primitives.numeric import U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
