@@ -27,6 +27,10 @@ GasPrice = typing.NewType(
     "Multiplier applied to estimation of computational costs (gas).", int
 )
 
+Motes = typing.NewType(
+    "Basic unit of crypto economic system.", int
+    )
+
 TransactionHash = typing.NewType(
     "Digest over a transaction.", DigestBytes
     )

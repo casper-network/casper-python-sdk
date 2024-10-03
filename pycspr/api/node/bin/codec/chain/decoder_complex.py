@@ -9,6 +9,8 @@ from pycspr.api.node.bin.types.chain.complex import \
     EraEnd, \
     EraEnd_V1, \
     EraEnd_V2, \
+    EraValidatorReward, \
+    EraValidatorWeight, \
     ProtocolVersion, \
     ValidatorID
 from pycspr.api.node.bin.types.chain.simple import \
@@ -16,7 +18,9 @@ from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
     EraID, \
-    GasPrice
+    GasPrice, \
+    Motes, \
+    Weight
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
@@ -69,19 +73,37 @@ def decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V
 
 
 def decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
-
     raise NotImplementedError()
 
 
 def decode_era_end_v2(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V2]:
-    bytes_rem, equivocators = decode(bytes_in, ValidatorID)
-    raise NotImplementedError(length)
+    bytes_rem, equivocators = decode(bytes_in, ValidatorID, is_sequence=True)
+    bytes_rem, inactive_validators = decode(bytes_rem, ValidatorID, is_sequence=True)
+    bytes_rem, next_era_validator_weights = decode(bytes_rem, EraValidatorWeight, is_sequence=True)
+    bytes_rem, rewards = decode(bytes_rem, EraValidatorReward, is_sequence=True)
+    bytes_rem, next_era_gas_price = decode(bytes_rem, GasPrice)
 
-    bytes_rem, equivocators = decode(bytes_in, U8, is_sequence=True)
-    bytes_rem, inactive_validators = decode(bytes_in, U8)
-    bytes_rem, next_era_validator_weights = decode(bytes_in, U8)
-    bytes_rem, rewards = decode(bytes_in, U8)
-    bytes_rem, next_era_gas_price = decode(bytes_in, U8)
+    return bytes_rem, EraEnd_V2(
+        equivocators=equivocators,
+        inactive_validators=inactive_validators,
+        next_era_gas_price=next_era_gas_price,
+        next_era_validator_weights=next_era_validator_weights,
+        rewards=rewards
+    )
+
+
+def decode_era_validator_reward(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorReward]:
+    bytes_rem, validator_id = decode(bytes_in, ValidatorID)
+    bytes_rem, rewards = decode(bytes_rem, Motes, is_sequence=True)
+
+    return bytes_rem, EraValidatorReward(rewards, validator_id)
+
+
+def decode_era_validator_weight(bytes_in: bytes) -> typing.Tuple[bytes, EraValidatorWeight]:
+    bytes_rem, validator_id = decode(bytes_in, ValidatorID)
+    bytes_rem, weight = decode(bytes_rem, Weight)
+
+    return bytes_rem, EraValidatorWeight(validator_id, weight)
 
 
 def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
@@ -99,6 +121,8 @@ register_decoders({
     (BlockHeader_V2, decode_block_header_v2),
     (EraEnd_V1, decode_era_end_v1),
     (EraEnd_V2, decode_era_end_v2),
+    (EraValidatorReward, decode_era_validator_reward),
+    (EraValidatorWeight, decode_era_validator_weight),
     (ProtocolVersion, decode_protocol_version),
     (ValidatorID, lambda x: decode(x, PublicKey)),
 })

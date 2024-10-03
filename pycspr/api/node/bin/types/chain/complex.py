@@ -168,8 +168,8 @@ class EraValidatorReward():
     """Reward distributed to a validator in respect of protocol participation scoped by era.
 
     """
-    # Reward amount in motes.
-    amount: Motes
+    # Reward amounts in motes.
+    rewards: typing.List[Motes]
 
     # Identifier of a validator (i.e. public key).
     validator: ValidatorID
@@ -181,10 +181,13 @@ class EraValidatorWeight():
 
     """
     # Identifier of a validator (i.e. public key).
-    validator: ValidatorID
+    validator_id: ValidatorID
 
     # Consensus weight scoped by era.
     weight: Weight
+
+    def __str__(self) -> str:
+        return f"ValidatorWeight({self.validator_id}::{self.weight})"
 
 
 @dataclasses.dataclass

@@ -101,6 +101,9 @@ class PublicKey():
     def __len__(self) -> int:
         return len(self.pbk) + 1
 
+    def __str__(self) -> str:
+        return f"{self.algo.name}::{self.pbk.hex()}"
+
 
 @dataclasses.dataclass
 class PrivateKey:

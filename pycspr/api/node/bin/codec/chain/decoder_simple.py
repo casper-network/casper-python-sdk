@@ -4,9 +4,11 @@ from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
     EraID, \
-    GasPrice
+    GasPrice, \
+    Motes, \
+    Weight
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes
-from pycspr.api.node.bin.types.primitives.numeric import U8, U64
+from pycspr.api.node.bin.types.primitives.numeric import U8, U64, U512
 
 
 register_decoders({
@@ -15,4 +17,6 @@ register_decoders({
     (BlockHeight, lambda x: decode(x, U64)),
     (EraID, lambda x: decode(x, U64)),
     (GasPrice, lambda x: decode(x, U8)),
+    (Motes, lambda x: decode(x, U512)),
+    (Weight, lambda x: decode(x, U512)),
 })
