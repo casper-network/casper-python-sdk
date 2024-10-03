@@ -19,14 +19,18 @@ BlockBodyHash = typing.NewType(
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 
-GasPrice = typing.NewType(
-    "Multiplier applied to estimation of computational costs (gas).", int
-)
-
 EraID = typing.NewType(
     "Ordinal identifier of an era measured by how many eras precede it.", int
 )
 
+GasPrice = typing.NewType(
+    "Multiplier applied to estimation of computational costs (gas).", int
+)
+
 TransactionHash = typing.NewType(
     "Digest over a transaction.", DigestBytes
+    )
+
+Weight = typing.NewType(
+    "Some form of relative relevance measure.", int
     )

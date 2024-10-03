@@ -1,6 +1,6 @@
 from pycspr.api.node.bin.codec.chain.constants import \
-    TAG_DOMAIN_BLOCK_HASH, \
-    TAG_DOMAIN_BLOCK_HEIGHT
+    TAG_BLOCK_HASH, \
+    TAG_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
 from pycspr.api.node.bin.types.chain import \
     BlockHash, \
@@ -11,16 +11,23 @@ from pycspr.api.node.bin.types.primitives.numeric import U8, U64
 
 
 def encode_block_hash(entity: BlockHash) -> bytes:
-    return encode(TAG_DOMAIN_BLOCK_HASH, U8) + encode(entity, bytes)
+    return encode(TAG_BLOCK_HASH, U8) + encode(entity, bytes)
 
 
 def encode_block_height(entity: BlockHeight) -> bytes:
-    return encode(TAG_DOMAIN_BLOCK_HEIGHT, U8) + encode(entity, U64)
+    return encode(TAG_BLOCK_HEIGHT, U8) + encode(entity, U64)
 
 
 def encode_block_id(entity: BlockID) -> bytes:
-    return encode_block_hash(entity) if isinstance(entity, bytes) else \
-           encode_block_height(entity)
+    if isinstance(entity, bytes):
+        return encode_block_hash(entity)
+    elif isinstance(entity, int):
+        return encode_block_height(entity)
+    elif isinstance(entity, str):
+        print(123, entity.decode("utf-8"))
+        return encode_block_hash(entity.decode("utf-8"))
+    else:
+        raise ValueError("Invalid block identifier")
 
 
 def encode_protocol_version(entity: ProtocolVersion) -> bytes:

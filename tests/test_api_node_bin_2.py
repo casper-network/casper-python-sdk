@@ -8,7 +8,16 @@ from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
 async def test_get_information_block_header(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
     data: BlockHeader = \
         await NODE_BINARY_CLIENT.get_information_block_header(block_id=18, request_id=REQUEST_ID)
+    assert isinstance(data, BlockHeader)
 
+    # print(data.parent_hash.hex())
+    # data: BlockHeader = \
+    #     await NODE_BINARY_CLIENT.get_information_block_header(block_id=data.parent_hash.hex(), request_id=REQUEST_ID)
+    # assert isinstance(data, BlockHeader)
+
+
+    data: BlockHeader = \
+        await NODE_BINARY_CLIENT.get_information_block_header(block_id=11, request_id=REQUEST_ID)
     assert isinstance(data, BlockHeader)
 
 

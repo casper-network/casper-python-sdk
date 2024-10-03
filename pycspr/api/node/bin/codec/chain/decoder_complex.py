@@ -1,6 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
+from pycspr.api.node.bin.codec.chain import constants
 from pycspr.api.node.bin.types.chain.complex import \
     BlockHeader, \
     BlockHeader_V1, \
@@ -8,23 +9,24 @@ from pycspr.api.node.bin.types.chain.complex import \
     EraEnd, \
     EraEnd_V1, \
     EraEnd_V2, \
-    ProtocolVersion
+    ProtocolVersion, \
+    ValidatorID
 from pycspr.api.node.bin.types.chain.simple import \
     BlockBodyHash, \
     BlockHash, \
     BlockHeight, \
     EraID, \
     GasPrice
-from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKeyBytes
+from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
 def decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     bytes_rem, type_tag = decode(bytes_in, U8)
-    if type_tag == 0:
+    if type_tag == constants.TAG_BLOCK_TYPE_V1:
         return decode_block_header_v1(bytes_rem)
-    elif type_tag == 1:
+    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
         return decode_block_header_v2(bytes_rem)
     else:
         raise ValueError("Invalid type tag: block header ")
@@ -35,63 +37,35 @@ def decode_block_header_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V
 
 
 def decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V2]:
-    print([i for i in bytes_in])
-
     bytes_rem, parent_block_hash = decode(bytes_in, BlockHash)
     bytes_rem, state_root_hash = decode(bytes_rem, DigestBytes)
     bytes_rem, body_hash = decode(bytes_rem, BlockBodyHash)
     bytes_rem, random_bit = decode(bytes_rem, bool)
     bytes_rem, accumulated_seed = decode(bytes_rem, DigestBytes)
-
-    print([i for i in bytes_rem])
-    print("-----")
-    print("decoding era_end")
     bytes_rem, era_end = decode(bytes_rem, EraEnd_V2, is_optional=True)
-
-    print("-----")
-    print("decoding timestamp")
     bytes_rem, timestamp = decode(bytes_rem, Timestamp)
-
-    print("-----")
-    print("decoding era_id")
     bytes_rem, era_id = decode(bytes_rem, EraID)
-
-    print("-----")
-    print("decoding height")
     bytes_rem, height = decode(bytes_rem, BlockHeight)
-
-    print("-----")
-    print("decoding protocol_version")
     bytes_rem, protocol_version = decode(bytes_rem, ProtocolVersion)
-
-    print("-----")
-    print("decoding proposer")
     bytes_rem, proposer = decode(bytes_rem, PublicKeyBytes)
-
-    print("-----")
-    print("decoding current_gas_price")
     bytes_rem, current_gas_price = decode(bytes_rem, GasPrice)
+    bytes_rem, last_switch_block_hash = decode(bytes_rem, DigestBytes, is_optional=True)
 
-    print("-----")
-    print("decoding last_switch_block_hash")
-    bytes_rem, last_switch_block_hash = decode(bytes_rem, DigestBytes)
-
-    raise NotImplementedError()
-
-    # self.parent_hash.write_bytes(writer)?;
-    # self.state_root_hash.write_bytes(writer)?;
-    # self.body_hash.write_bytes(writer)?;
-    # self.random_bit.write_bytes(writer)?;
-    # self.accumulated_seed.write_bytes(writer)?;
-    # self.era_end.write_bytes(writer)?;
-    # self.timestamp.write_bytes(writer)?;
-    # self.era_id.write_bytes(writer)?;
-    # self.height.write_bytes(writer)?;
-    # self.protocol_version.write_bytes(writer)?;
-    # self.proposer.write_bytes(writer)?;
-    # self.current_gas_price.write_bytes(writer)?;
-    # self.last_switch_block_hash.write_bytes(writer)
-
+    return bytes_rem, BlockHeader_V2(
+        accumulated_seed=accumulated_seed,
+        body_hash=body_hash,
+        current_gas_price=current_gas_price,
+        era_end=era_end,
+        era_id=era_id,
+        height=height,
+        last_switch_block_hash=last_switch_block_hash,
+        parent_hash=parent_block_hash,
+        proposer=proposer,
+        protocol_version=protocol_version,
+        random_bit=random_bit,
+        state_root_hash=state_root_hash,
+        timestamp=timestamp
+    )
 
 
 def decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
@@ -100,8 +74,14 @@ def decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
 
 
 def decode_era_end_v2(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V2]:
+    bytes_rem, equivocators = decode(bytes_in, ValidatorID)
+    raise NotImplementedError(length)
 
-    raise NotImplementedError()
+    bytes_rem, equivocators = decode(bytes_in, U8, is_sequence=True)
+    bytes_rem, inactive_validators = decode(bytes_in, U8)
+    bytes_rem, next_era_validator_weights = decode(bytes_in, U8)
+    bytes_rem, rewards = decode(bytes_in, U8)
+    bytes_rem, next_era_gas_price = decode(bytes_in, U8)
 
 
 def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
@@ -112,15 +92,13 @@ def decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVers
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
+# Complex types.
 register_decoders({
-    (BlockBodyHash, lambda x: decode(x, DigestBytes)),
-    (BlockHash, lambda x: decode(x, DigestBytes)),
-    (BlockHeight, lambda x: decode(x, DigestBytes)),
     (BlockHeader, decode_block_header),
     (BlockHeader_V1, decode_block_header_v1),
     (BlockHeader_V2, decode_block_header_v2),
     (EraEnd_V1, decode_era_end_v1),
     (EraEnd_V2, decode_era_end_v2),
-    (GasPrice, lambda x: decode(x, U8)),
-    (ProtocolVersion, decode_protocol_version)
+    (ProtocolVersion, decode_protocol_version),
+    (ValidatorID, lambda x: decode(x, PublicKey)),
 })

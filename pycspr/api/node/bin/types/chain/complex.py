@@ -7,8 +7,12 @@ from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
     EraID, \
-    GasPrice
-from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKeyBytes
+    GasPrice, \
+    Weight
+from pycspr.api.node.bin.types.primitives.crypto import \
+    DigestBytes, \
+    PublicKey, \
+    PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
@@ -143,7 +147,44 @@ class EraEnd_V2(EraEnd):
     """End of era information scoped by block header version 2.
 
     """
-    pass
+    # Set of equivocators to be punished.
+    equivocators: typing.List[ValidatorID]
+
+    # Validators that haven't produced any unit during era.
+    inactive_validators: typing.List[ValidatorID]
+
+    # Next era gas price computed from a moving average.
+    next_era_gas_price: GasPrice
+
+    # Next era validator set & their respective weights.
+    next_era_validator_weights: typing.List[EraValidatorWeight]
+
+    # Rewards distributed to validators.
+    rewards: typing.List[EraValidatorReward]
+
+
+@dataclasses.dataclass
+class EraValidatorReward():
+    """Reward distributed to a validator in respect of protocol participation scoped by era.
+
+    """
+    # Reward amount in motes.
+    amount: Motes
+
+    # Identifier of a validator (i.e. public key).
+    validator: ValidatorID
+
+
+@dataclasses.dataclass
+class EraValidatorWeight():
+    """Weight of a validator in respect of protocol participation scoped by era.
+
+    """
+    # Identifier of a validator (i.e. public key).
+    validator: ValidatorID
+
+    # Consensus weight scoped by era.
+    weight: Weight
 
 
 @dataclasses.dataclass
@@ -172,3 +213,8 @@ class ProtocolVersion():
 
     def __str__(self) -> str:
         return f"{self.major}.{self.minor}.{self.patch}"
+
+
+ValidatorID = typing.NewType(
+    "Validator identifier.", PublicKey
+    )

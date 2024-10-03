@@ -6,7 +6,12 @@ _DECODERS = dict()
 _ENCODERS = dict()
 
 
-def decode(bytes_in: bytes, typedef: type, is_optional=False, is_sequence=False) -> typing.Tuple[bytes, object]:
+def decode(
+    bytes_in: bytes,
+    typedef: type,
+    is_optional=False,
+    is_sequence=False
+) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
     :param bytes_in: A sequence of input bytes.
