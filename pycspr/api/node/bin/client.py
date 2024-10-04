@@ -33,7 +33,7 @@ class Client():
         self,
         request_id: RequestID,
         decode: bool = True,
-    ) -> AvailableBlockRange:
+    ) -> typing.Union[Response, AvailableBlockRange]:
         """Returns a node's available block range.
 
         :param request_id: Request correlation identifier.
@@ -53,7 +53,7 @@ class Client():
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
         decode: bool = True,
-    ) -> BlockHeader:
+    ) -> typing.Union[Response, BlockHeader]:
         """Returns a block header. Defaults to most recent.
 
         :param request_id: Request correlation identifier.
@@ -74,6 +74,25 @@ class Client():
             )
 
         return _parse_response(await get_response(), BlockHeader, decode)
+
+    async def get_information_network_name(
+        self,
+        request_id: RequestID,
+        decode: bool = True,
+    ) -> typing.Union[Response, str]:
+        """Returns name of network in which a node is participating within.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: Name of network.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_NetworkName,
+            request_id,
+        )
+
+        return _parse_response(response, str, decode)
 
     async def get_information_node_peers(
         self,
@@ -98,7 +117,7 @@ class Client():
         self,
         request_id: RequestID,
         decode: bool = True,
-    ) -> typing.Union[Response, typing.List[NodePeerEntry]]:
+    ) -> typing.Union[Response, str]:
         """Returns node peers information.
 
         :param request_id: Request correlation identifier.

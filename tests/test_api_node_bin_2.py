@@ -22,6 +22,12 @@ async def test_get_information_block_header(NODE_BINARY_CLIENT: Client, REQUEST_
     assert isinstance(data_2, BlockHeader)
 
 
+async def test_get_information_network_name(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data = \
+        await NODE_BINARY_CLIENT.get_information_network_name(request_id=REQUEST_ID)
+    assert isinstance(data, str)
+
+
 async def test_get_information_node_peers(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
     data: typing.List[NodePeerEntry] = \
         await NODE_BINARY_CLIENT.get_information_node_peers(request_id=REQUEST_ID)
