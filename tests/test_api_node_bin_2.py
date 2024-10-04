@@ -1,8 +1,15 @@
 import typing
 
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.chain import BlockHeader
+from pycspr.api.node.bin.types.chain import AvailableBlockRange, BlockHeader
 from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
+
+
+async def test_get_information_available_block_range(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data: AvailableBlockRange = \
+        await NODE_BINARY_CLIENT.get_information_available_block_range(request_id=REQUEST_ID)
+    assert isinstance(data, AvailableBlockRange)
+    assert data.low <= data.high
 
 
 async def test_get_information_block_header(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):

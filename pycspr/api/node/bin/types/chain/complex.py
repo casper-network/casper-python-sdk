@@ -18,6 +18,18 @@ from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
 @dataclasses.dataclass
+class AvailableBlockRange():
+    """A range of block heights that a node may be aware of.
+
+    """
+    # End lower bound.
+    low: int
+
+    # End upper bound.
+    high: int
+
+
+@dataclasses.dataclass
 class Block():
     """A block after execution, with the resulting global state root hash.
 
@@ -119,11 +131,6 @@ class BlockHeader_V2(BlockHeader):
 
     # The timestamp from when the block was proposed.
     timestamp: Timestamp
-
-
-@dataclasses.dataclass
-class BlockRange():
-    pass
 
 
 @dataclasses.dataclass

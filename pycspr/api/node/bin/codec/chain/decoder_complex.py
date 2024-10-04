@@ -3,6 +3,7 @@ import typing
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.codec.chain import constants
 from pycspr.api.node.bin.types.chain.complex import \
+    AvailableBlockRange, \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
@@ -21,8 +22,15 @@ from pycspr.api.node.bin.types.chain.simple import \
     Motes, \
     Weight
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
-from pycspr.api.node.bin.types.primitives.numeric import U8, U32
+from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import Timestamp
+
+
+def _decode_available_block_range(bytes_in: bytes) -> typing.Tuple[bytes, AvailableBlockRange]:
+    bytes_rem, low = decode(U64, bytes_in)
+    bytes_rem, high = decode(U64, bytes_rem)
+
+    return bytes_rem, AvailableBlockRange(low, high)
 
 
 def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
@@ -115,6 +123,7 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
 
 # Complex types.
 register_decoders({
+    (AvailableBlockRange, _decode_available_block_range),
     (BlockHeader, _decode_block_header),
     (BlockHeader_V1, _decode_block_header_v1),
     (BlockHeader_V2, _decode_block_header_v2),

@@ -9,9 +9,9 @@ from pycspr.api.node.bin.types import \
     RequestID, \
     Response
 from pycspr.api.node.bin.types.chain import \
+    AvailableBlockRange, \
     BlockID, \
-    BlockHeader, \
-    BlockRange
+    BlockHeader
 from pycspr.api.node.bin.types.node import \
     NodePeerEntry, \
     NodeUptime
@@ -33,7 +33,7 @@ class Client():
         self,
         request_id: RequestID,
         decode: bool = True,
-    ) -> BlockRange:
+    ) -> AvailableBlockRange:
         """Returns a node's available block range.
 
         :param request_id: Request correlation identifier.
@@ -41,7 +41,12 @@ class Client():
         :returns: A node's available block range.
 
         """
-        raise NotImplementedError()
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_AvailableBlockRange,
+            request_id,
+        )
+
+        return _parse_response(response, AvailableBlockRange, decode)
 
     async def get_information_block_header(
         self,
