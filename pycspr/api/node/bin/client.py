@@ -89,6 +89,25 @@ class Client():
 
         return _parse_response(response, NodePeerEntry, decode, is_sequence=True)
 
+    async def get_information_node_reactor_state(
+        self,
+        request_id: RequestID,
+        decode: bool = True,
+    ) -> typing.Union[Response, typing.List[NodePeerEntry]]:
+        """Returns node peers information.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: Node peers information.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_ReactorState,
+            request_id,
+        )
+
+        return _parse_response(response, str, decode, is_sequence=False)
+
     async def get_information_node_uptime(
         self,
         request_id: RequestID,
