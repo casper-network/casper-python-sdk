@@ -134,6 +134,21 @@ class BlockHeader_V2(BlockHeader):
 
 
 @dataclasses.dataclass
+class ChainspecRawBytes():
+    """Raw byte view over a chainspec.
+
+    """
+    # Raw bytes of the current chainspec.toml file.
+    chainspec_bytes: bytes
+
+    # Raw bytes of the current genesis accounts.toml file.
+    maybe_genesis_accounts_bytes: typing.Optional[bytes]
+
+    # Raw bytes of the current global_state.toml file.
+    maybe_global_state_bytes: typing.Optional[bytes]
+
+
+@dataclasses.dataclass
 class EraEnd():
     """End of era information.
 

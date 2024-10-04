@@ -2,15 +2,15 @@ import asyncio
 import typing
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.types import \
+from pycspr.api.node.bin.types.chain import ProtocolVersion
+from pycspr.api.node.bin.types.primitives.numeric import U32
+from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \
     Request, \
     RequestHeader, \
     RequestID, \
     Response
-from pycspr.api.node.bin.types.chain import ProtocolVersion
-from pycspr.api.node.bin.types.primitives.numeric import U32
 
 
 class Proxy:

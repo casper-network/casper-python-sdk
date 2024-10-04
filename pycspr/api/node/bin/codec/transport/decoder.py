@@ -83,11 +83,8 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
     bytes_out, _ = decode(U32, bytes_in)
     bytes_out, request = _decode_request_out(bytes_out)
-    print(123)
     bytes_out, header = _decode_header(bytes_out)
-    print(1234)
     bytes_out, payload = _decode_response_payload(bytes_out)
-    print(12345)
 
     return b'',  Response(
         bytes_raw=bytes_in,

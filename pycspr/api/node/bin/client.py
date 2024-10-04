@@ -3,7 +3,7 @@ import typing
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.proxy import \
     Proxy
-from pycspr.api.node.bin.types import \
+from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \
     RequestID, \
@@ -11,7 +11,8 @@ from pycspr.api.node.bin.types import \
 from pycspr.api.node.bin.types.chain import \
     AvailableBlockRange, \
     BlockID, \
-    BlockHeader
+    BlockHeader, \
+    ChainspecRawBytes
 from pycspr.api.node.bin.types.node import \
     NodePeerEntry, \
     NodeUptime
@@ -74,6 +75,25 @@ class Client():
             )
 
         return _parse_response(await get_response(), BlockHeader, decode)
+
+    async def get_information_chainspec_rawbytes(
+        self,
+        request_id: RequestID,
+        decode: bool = True,
+    ) -> typing.Union[Response, ChainspecRawBytes]:
+        """Returns a block header. Defaults to most recent.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: A block header.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_ChainspecRawBytes,
+            request_id,
+        )
+
+        return _parse_response(response, ChainspecRawBytes, decode)
 
     async def get_information_network_name(
         self,
@@ -161,9 +181,10 @@ def _parse_response(
     """Utility function to parse a response.
 
     """
-    if decode is True:
-        bytes_rem, entity = codec.decode(typedef, response.bytes_payload, is_sequence=is_sequence)
-        assert len(bytes_rem) == 0, "Byte stream only partially decoded"
-        return entity
+    if decode is False:
+        return response
 
-    return response
+    bytes_rem, entity = codec.decode(typedef, response.bytes_payload, is_sequence=is_sequence)
+    assert len(bytes_rem) == 0, "Byte stream only partially decoded"
+
+    return entity
