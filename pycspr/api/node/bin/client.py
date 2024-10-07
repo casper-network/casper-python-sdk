@@ -14,6 +14,7 @@ from pycspr.api.node.bin.types.chain import \
     BlockHeader, \
     ChainspecRawBytes
 from pycspr.api.node.bin.types.node import \
+    NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
 
@@ -113,6 +114,25 @@ class Client():
         )
 
         return _parse_response(response, str, decode)
+
+    async def get_information_node_last_progress(
+        self,
+        request_id: RequestID,
+        decode: bool = True,
+    ) -> typing.Union[Response, NodeLastProgress]:
+        """Returns a node's last progress.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: Timestamp corresponding to when the node's linear chain view last progressed.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_LastProgress,
+            request_id,
+        )
+
+        return _parse_response(response, NodeLastProgress, decode)
 
     async def get_information_node_peers(
         self,

@@ -26,7 +26,9 @@ def decode(
     if is_optional is True:
         bytes_rem, value = decode(U8, bytes_in)
         if value == 0:
-            if is_sequence is True:
+            if typedef is bytes:
+                return bytes_rem, bytes([])
+            elif is_sequence is True:
                 return bytes_rem, []
             else:
                 return bytes_rem, None

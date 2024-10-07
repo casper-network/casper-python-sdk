@@ -1,6 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.types.primitives.numeric import U64
+from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
 NodeAddress = typing.NewType(
@@ -10,6 +11,11 @@ NodeAddress = typing.NewType(
 
 NodeId = typing.NewType(
     "Canonical network wide node identifier.", str
+)
+
+
+NodeLastProgress = typing.NewType(
+    "Timestamp tracking node's linear chain progression.", Timestamp
 )
 
 

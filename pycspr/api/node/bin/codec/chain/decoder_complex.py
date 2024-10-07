@@ -81,9 +81,9 @@ def _decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_
 
 
 def _decode_chainspec_raw_bytes(bytes_in: bytes) -> typing.Tuple[bytes, ChainspecRawBytes]:
-    bytes_rem, chainspec_bytes = decode(bytes, bytes_in[1:])
-    bytes_rem, genesis_accounts_bytes = decode(bytes, bytes_in, is_optional=True)
-    bytes_rem, global_state_bytes = decode(bytes, bytes_in, is_optional=True)
+    bytes_rem, chainspec_bytes = decode(bytes, bytes_in)
+    bytes_rem, genesis_accounts_bytes = decode(bytes, bytes_rem, is_optional=True)
+    bytes_rem, global_state_bytes = decode(bytes, bytes_rem, is_optional=True)
 
     return bytes_rem, ChainspecRawBytes(chainspec_bytes, genesis_accounts_bytes, global_state_bytes)
 
