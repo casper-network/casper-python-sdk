@@ -24,18 +24,19 @@ class Client():
     """Node BINARY server client.
 
     """
-    def __init__(self, connection_info: ConnectionInfo):
+    def __init__(self, connection_info: ConnectionInfo, decode_response: bool = True):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node's BINARY port.
+        :param decode_response: Flag indicating whether API response payloads are to be decoded.
 
         """
+        self.decode_response = decode_response
         self.proxy = Proxy(connection_info)
 
     async def get_information_available_block_range(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, AvailableBlockRange]:
         """Returns a node's available block range.
 
@@ -49,13 +50,12 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, AvailableBlockRange, decode)
+        return _parse_response(response, AvailableBlockRange, self.decode_response)
 
     async def get_information_block_header(
         self,
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
-        decode: bool = True,
     ) -> typing.Union[Response, BlockHeader]:
         """Returns a block header. Defaults to most recent.
 
@@ -76,12 +76,11 @@ class Client():
                 get_payload()
             )
 
-        return _parse_response(await get_response(), BlockHeader, decode)
+        return _parse_response(await get_response(), BlockHeader, self.decode_response)
 
     async def get_information_chainspec_rawbytes(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, ChainspecRawBytes]:
         """Returns raw bytes representation of chain specification.
 
@@ -95,12 +94,11 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, ChainspecRawBytes, decode)
+        return _parse_response(response, ChainspecRawBytes, self.decode_response)
 
     async def get_information_consensus_status(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, ConsensusStatus]:
         """Returns current consensus status.
 
@@ -114,12 +112,29 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, ConsensusStatus, decode)
+        return _parse_response(response, ConsensusStatus, self.decode_response)
+
+    async def get_information_latest_switch_block_header(
+        self,
+        request_id: RequestID,
+    ) -> typing.Union[Response, BlockHeader]:
+        """Returns latest switch block header.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: A block header.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_LatestSwitchBlockHeader,
+            request_id,
+        )
+
+        return _parse_response(response, BlockHeader, self.decode_response)
 
     async def get_information_network_name(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, str]:
         """Returns name of network in which a node is participating within.
 
@@ -133,12 +148,11 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, str, decode)
+        return _parse_response(response, str, self.decode_response)
 
     async def get_information_node_last_progress(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, NodeLastProgress]:
         """Returns a node's last progress.
 
@@ -152,12 +166,11 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, NodeLastProgress, decode)
+        return _parse_response(response, NodeLastProgress, self.decode_response)
 
     async def get_information_node_peers(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, typing.List[NodePeerEntry]]:
         """Returns node peers information.
 
@@ -171,12 +184,11 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, NodePeerEntry, decode, is_sequence=True)
+        return _parse_response(response, NodePeerEntry, self.decode_response, is_sequence=True)
 
     async def get_information_node_reactor_state(
         self,
         request_id: RequestID,
-        decode: bool = True,
     ) -> typing.Union[Response, str]:
         """Returns node peers information.
 
@@ -190,12 +202,11 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, str, decode, is_sequence=False)
+        return _parse_response(response, str, self.decode_response, is_sequence=False)
 
     async def get_information_node_uptime(
         self,
         request_id: RequestID,
-        decode: bool = True
     ) -> typing.Union[Response, NodeUptime]:
         """Returns node uptime information.
 
@@ -209,7 +220,7 @@ class Client():
             request_id,
         )
 
-        return _parse_response(response, NodeUptime, decode)
+        return _parse_response(response, NodeUptime, self.decode_response)
 
 
 def _parse_response(

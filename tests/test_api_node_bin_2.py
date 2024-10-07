@@ -36,6 +36,12 @@ async def test_get_information_consensus_status(NODE_BINARY_CLIENT: Client, REQU
     assert isinstance(data, ConsensusStatus)
 
 
+async def test_get_information_latest_switch_block_header(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data: BlockHeader = \
+        await NODE_BINARY_CLIENT.get_information_latest_switch_block_header(request_id=REQUEST_ID)
+    assert isinstance(data, BlockHeader)
+
+
 async def test_get_information_network_name(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
     data = \
         await NODE_BINARY_CLIENT.get_information_network_name(request_id=REQUEST_ID)
