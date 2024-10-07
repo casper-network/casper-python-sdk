@@ -12,6 +12,7 @@ from pycspr.api.node.bin.types.chain import \
     AvailableBlockRange, \
     BlockID, \
     BlockHeader, \
+    BlockSynchronizerStatus, \
     ChainspecRawBytes, \
     ConsensusStatus
 from pycspr.api.node.bin.types.node import \
@@ -41,7 +42,6 @@ class Client():
         """Returns a node's available block range.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: A node's available block range.
 
         """
@@ -61,7 +61,6 @@ class Client():
 
         :param request_id: Request correlation identifier.
         :param block_id: Identifier of a finalised block.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: A block header.
 
         """
@@ -78,6 +77,23 @@ class Client():
 
         return _parse_response(await get_response(), BlockHeader, self.decode_response)
 
+    async def get_information_block_synchronizer_status(
+        self,
+        request_id: RequestID,
+    ) -> typing.Union[Response, BlockSynchronizerStatus]:
+        """Returns a block syncronization status.
+
+        :param request_id: Request correlation identifier.
+        :returns: A node's available block range.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_BlockSynchronizerStatus,
+            request_id,
+        )
+
+        return _parse_response(response, BlockSynchronizerStatus, self.decode_response)
+
     async def get_information_chainspec_rawbytes(
         self,
         request_id: RequestID,
@@ -85,7 +101,6 @@ class Client():
         """Returns raw bytes representation of chain specification.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Raw shain specification.
 
         """
@@ -103,7 +118,6 @@ class Client():
         """Returns current consensus status.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Current consensus status.
 
         """
@@ -121,7 +135,6 @@ class Client():
         """Returns latest switch block header.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: A block header.
 
         """
@@ -139,7 +152,6 @@ class Client():
         """Returns name of network in which a node is participating within.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Name of network.
 
         """
@@ -157,7 +169,6 @@ class Client():
         """Returns a node's last progress.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Timestamp corresponding to when the node's linear chain view last progressed.
 
         """
@@ -175,7 +186,6 @@ class Client():
         """Returns node peers information.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Node peers information.
 
         """
@@ -193,7 +203,6 @@ class Client():
         """Returns node peers information.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Node peers information.
 
         """
@@ -211,7 +220,6 @@ class Client():
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
-        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
         :returns: Node uptime information.
 
         """

@@ -134,6 +134,33 @@ class BlockHeader_V2(BlockHeader):
 
 
 @dataclasses.dataclass
+class BlockSynchronizerStatus():
+    """Status of the block synchronizer.
+
+    """
+    # The status of syncing a historical block, if any.
+    historical: typing.Optional[BlockSynchronizerStatusInfo]
+
+    # The status of syncing a forward block, if any.
+    forward: typing.Optional[BlockSynchronizerStatusInfo]
+
+
+@dataclasses.dataclass
+class BlockSynchronizerStatusInfo():
+    """Status of the block synchronizer.
+
+    """
+    # The block hash.
+    block_hash: BlockHash
+
+    # The height of the block, if known.
+    block_height: typing.Optional[int]
+
+    # The state of acquisition of the data associated with the block.
+    acquisition_state: str
+
+
+@dataclasses.dataclass
 class ChainspecRawBytes():
     """Raw byte view over a chainspec.
 

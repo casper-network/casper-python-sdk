@@ -7,6 +7,8 @@ from pycspr.api.node.bin.types.chain.complex import \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
+    BlockSynchronizerStatus, \
+    BlockSynchronizerStatusInfo, \
     ChainspecRawBytes, \
     ConsensusStatus, \
     EraEnd_V1, \
@@ -81,6 +83,24 @@ def _decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_
     )
 
 
+def _decode_block_synchronizer_status(bytes_in: bytes) -> typing.Tuple[bytes, BlockSynchronizerStatus]:
+    bytes_rem, historical = decode(BlockSynchronizerStatusInfo, bytes_in, is_optional=True)
+    bytes_rem, forward = decode(BlockSynchronizerStatusInfo, bytes_rem, is_optional=True)
+
+    if historical is None and forward is None:
+        return bytes_rem, None
+    else:
+        return bytes_rem, BlockSynchronizerStatus(historical, forward)
+
+
+def _decode_block_synchronizer_status_info(bytes_in: bytes) -> typing.Tuple[bytes, BlockSynchronizerStatusInfo]:
+    bytes_rem, block_hash = decode(BlockHash, bytes_in)
+    bytes_rem, block_height = decode(BlockHeight, bytes_rem, is_optional=True)
+    bytes_rem, acquisition_state = decode(str, bytes_rem)
+
+    return bytes_rem, BlockSynchronizerStatusInfo(block_hash, block_height, acquisition_state)
+
+
 def _decode_chainspec_raw_bytes(bytes_in: bytes) -> typing.Tuple[bytes, ChainspecRawBytes]:
     bytes_rem, chainspec_bytes = decode(bytes, bytes_in)
     bytes_rem, genesis_accounts_bytes = decode(bytes, bytes_rem, is_optional=True)
@@ -144,6 +164,8 @@ register_decoders({
     (BlockHeader, _decode_block_header),
     (BlockHeader_V1, _decode_block_header_v1),
     (BlockHeader_V2, _decode_block_header_v2),
+    (BlockSynchronizerStatus, _decode_block_synchronizer_status),
+    (BlockSynchronizerStatusInfo, _decode_block_synchronizer_status_info),
     (ChainspecRawBytes, _decode_chainspec_raw_bytes),
     (ConsensusStatus, _decode_consensus_state),
     (EraEnd_V1, _decode_era_end_v1),

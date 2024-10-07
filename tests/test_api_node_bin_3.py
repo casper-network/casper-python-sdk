@@ -1,8 +1,16 @@
 import typing
 
 from pycspr.api.node.bin import Client
+from pycspr.api.node.bin.types.chain import BlockSynchronizerStatus
 from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime, NodeLastProgress
 from pycspr.api.node.bin.types.primitives.time import Timestamp
+
+
+async def test_get_information_block_synchronizer_status(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    # TODO: explore how to ensure node is in fast sync mode.
+    data = \
+        await NODE_BINARY_CLIENT.get_information_block_synchronizer_status(request_id=REQUEST_ID)
+    assert isinstance(data, type(None))
 
 
 async def test_get_information_node_last_progress(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
