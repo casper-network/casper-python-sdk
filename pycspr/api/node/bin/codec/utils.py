@@ -21,6 +21,14 @@ def decode(
     :returns: A decoded entity.
 
     """
+    if bytes_in == bytes([]):
+        if typedef is bytes:
+            return bytes([]), bytes([])
+        elif is_sequence is True:
+            return bytes([]), []
+        else:
+            return bytes([]), None
+
     # Optional values are prefixed with a single byte indicating
     # whether the value is declared.
     if is_optional is True:

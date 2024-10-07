@@ -1,7 +1,12 @@
 import typing
 
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.chain import AvailableBlockRange, BlockHeader, ChainspecRawBytes, ConsensusStatus
+from pycspr.api.node.bin.types.chain import \
+    AvailableBlockRange, \
+    BlockHeader, \
+    ChainspecRawBytes, \
+    ConsensusStatus, \
+    NextUpgrade
 
 
 async def test_get_information_available_block_range(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
@@ -46,3 +51,9 @@ async def test_get_information_network_name(NODE_BINARY_CLIENT: Client, REQUEST_
     data = \
         await NODE_BINARY_CLIENT.get_information_network_name(request_id=REQUEST_ID)
     assert isinstance(data, str)
+
+
+async def test_get_information_network_next_upgrade(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):
+    data = \
+        await NODE_BINARY_CLIENT.get_information_network_next_upgrade(request_id=REQUEST_ID)
+    assert isinstance(data, (NextUpgrade, type(None)))

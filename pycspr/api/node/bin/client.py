@@ -14,7 +14,8 @@ from pycspr.api.node.bin.types.chain import \
     BlockHeader, \
     BlockSynchronizerStatus, \
     ChainspecRawBytes, \
-    ConsensusStatus
+    ConsensusStatus, \
+    NextUpgrade
 from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
@@ -161,6 +162,23 @@ class Client():
         )
 
         return _parse_response(response, str, self.decode_response)
+
+    async def get_information_network_next_upgrade(
+        self,
+        request_id: RequestID,
+    ) -> typing.Union[Response, NextUpgrade]:
+        """Returns next point in time at which network is scheduled to be upgraded.
+
+        :param request_id: Request correlation identifier.
+        :returns: Next point in time at which network is scheduled to be upgraded.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_NextUpgrade,
+            request_id,
+        )
+
+        return _parse_response(response, NextUpgrade, self.decode_response)
 
     async def get_information_node_last_progress(
         self,

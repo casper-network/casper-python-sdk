@@ -18,6 +18,32 @@ from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
 @dataclasses.dataclass
+class ActivationPoint():
+    """Point in time at which next chain upgrade activiation will occur.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class ActivationPoint_Era(ActivationPoint):
+    """Era at which upgrade activiation will occur.
+
+    """
+    # ID of era at which chain upgrade will occur.
+    era_id: EraID
+
+
+@dataclasses.dataclass
+class ActivationPoint_Genesis(ActivationPoint):
+    """Genesis timestamp at which upgrade activiation will occur.
+
+    """
+    # Timestamp upon which genesis started.
+    timestamp: Timestamp
+
+
+@dataclasses.dataclass
 class AvailableBlockRange():
     """A range of block heights that a node may be aware of.
 
@@ -253,6 +279,18 @@ class EraValidatorWeight():
 
     def __str__(self) -> str:
         return f"ValidatorWeight({self.validator_id}::{self.weight})"
+
+
+@dataclasses.dataclass
+class NextUpgrade():
+    """Future point in chain time when an upgrade will be applied.
+
+    """
+    # Activation point of the next upgrade.
+    activation_point: ActivationPoint
+
+    # Network protocol version at point when block was created.
+    protocol_version: ProtocolVersion
 
 
 @dataclasses.dataclass

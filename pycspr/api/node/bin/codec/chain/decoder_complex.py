@@ -3,6 +3,9 @@ import typing
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.codec.chain import constants
 from pycspr.api.node.bin.types.chain.complex import \
+    ActivationPoint, \
+    ActivationPoint_Era, \
+    ActivationPoint_Genesis, \
     AvailableBlockRange, \
     BlockHeader, \
     BlockHeader_V1, \
@@ -15,6 +18,7 @@ from pycspr.api.node.bin.types.chain.complex import \
     EraEnd_V2, \
     EraValidatorReward, \
     EraValidatorWeight, \
+    NextUpgrade, \
     ProtocolVersion, \
     ValidatorID
 from pycspr.api.node.bin.types.chain.simple import \
@@ -28,6 +32,28 @@ from pycspr.api.node.bin.types.chain.simple import \
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
+
+
+def _decode_activation_point(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint]:
+    bytes_rem, type_tag = decode(U8, bytes_in)
+    if type_tag == constants.TAG_ACTIVATION_POINT_ERA:
+        return _decode_activation_point_era_id(bytes_rem)
+    elif type_tag == constants.TAG_ACTIVATION_POINT_GENESIS:
+        return _decode_activation_point_genesis(bytes_rem)
+    else:
+        raise ValueError("Invalid type tag: activation point ")
+
+
+def _decode_activation_point_era_id(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint_Era]:
+    bytes_rem, era_id = decode(EraID, bytes_in)
+
+    return bytes_rem, ActivationPoint_Era(era_id)
+
+
+def _decode_activation_point_genesis(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint_Genesis]:
+    bytes_rem, timestamp = decode(Timestamp, bytes_in)
+
+    return bytes_rem, ActivationPoint_Genesis(timestamp)
 
 
 def _decode_available_block_range(bytes_in: bytes) -> typing.Tuple[bytes, AvailableBlockRange]:
@@ -150,6 +176,13 @@ def _decode_era_validator_weight(bytes_in: bytes) -> typing.Tuple[bytes, EraVali
     return bytes_rem, EraValidatorWeight(validator_id, weight)
 
 
+def _decode_next_upgrade(bytes_in: bytes) -> typing.Tuple[bytes, NextUpgrade]:
+    bytes_rem, activation_point = decode(ActivationPoint, bytes_in)
+    bytes_rem, protocol_version = decode(ProtocolVersion, bytes_rem)
+
+    return bytes_rem, NextUpgrade(activation_point, protocol_version)
+
+
 def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVersion]:
     bytes_rem, major = decode(U32, bytes_in)
     bytes_rem, minor = decode(U32, bytes_rem)
@@ -160,6 +193,7 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
 
 # Complex types.
 register_decoders({
+    (ActivationPoint, _decode_activation_point),
     (AvailableBlockRange, _decode_available_block_range),
     (BlockHeader, _decode_block_header),
     (BlockHeader_V1, _decode_block_header_v1),
@@ -172,6 +206,7 @@ register_decoders({
     (EraEnd_V2, _decode_era_end_v2),
     (EraValidatorReward, _decode_era_validator_reward),
     (EraValidatorWeight, _decode_era_validator_weight),
+    (NextUpgrade, _decode_next_upgrade),
     (ProtocolVersion, _decode_protocol_version),
     (ValidatorID, lambda x: decode(PublicKey, x)),
 })
