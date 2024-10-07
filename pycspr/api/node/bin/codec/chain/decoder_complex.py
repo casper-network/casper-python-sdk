@@ -25,7 +25,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     Weight
 from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
-from pycspr.api.node.bin.types.primitives.time import Timestamp
+from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
 
 
 def _decode_available_block_range(bytes_in: bytes) -> typing.Tuple[bytes, AvailableBlockRange]:
@@ -91,7 +91,7 @@ def _decode_chainspec_raw_bytes(bytes_in: bytes) -> typing.Tuple[bytes, Chainspe
 
 def _decode_consensus_state(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusStatus]:
     bytes_rem, validator_public_key = decode(PublicKey, bytes_in)
-    bytes_rem, round_length = decode(U64, bytes_rem, is_optional=True)
+    bytes_rem, round_length = decode(TimeDifference, bytes_rem, is_optional=True)
 
     return bytes_rem, ConsensusStatus(validator_public_key, round_length)
 
