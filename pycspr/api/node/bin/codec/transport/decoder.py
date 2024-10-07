@@ -76,8 +76,8 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
         return bytes_out[length:], request
 
     def _decode_response_payload(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
-        bytes_out, length = decode(U32, bytes_in)
-        assert(len(bytes_out) == length)
+        bytes_out, size = decode(U32, bytes_in)
+        assert(len(bytes_out) == size)
 
         return bytes_out, bytes_out
 

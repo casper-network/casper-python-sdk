@@ -149,6 +149,22 @@ class ChainspecRawBytes():
 
 
 @dataclasses.dataclass
+class ConsensusStatus():
+    """Current state of consensus.
+
+    """
+    # Consensus round leader.
+    validator_public_key: int
+
+    # Consensus round length (in time).
+    round_length: typing.Optional[int]
+
+# pub struct ConsensusStatus {
+#     validator_public_key: PublicKey,
+#     round_length: Option<TimeDiff>,
+# }
+
+@dataclasses.dataclass
 class EraEnd():
     """End of era information.
 

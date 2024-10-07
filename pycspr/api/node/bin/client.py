@@ -12,7 +12,8 @@ from pycspr.api.node.bin.types.chain import \
     AvailableBlockRange, \
     BlockID, \
     BlockHeader, \
-    ChainspecRawBytes
+    ChainspecRawBytes, \
+    ConsensusStatus
 from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
@@ -82,11 +83,11 @@ class Client():
         request_id: RequestID,
         decode: bool = True,
     ) -> typing.Union[Response, ChainspecRawBytes]:
-        """Returns a block header. Defaults to most recent.
+        """Returns raw bytes representation of chain specification.
 
         :param request_id: Request correlation identifier.
         :param decode: Flag indicating whether to decode response bytes to a domain type instance.
-        :returns: A block header.
+        :returns: Raw shain specification.
 
         """
         response: Response = await self.proxy.invoke_endpoint(
@@ -95,6 +96,25 @@ class Client():
         )
 
         return _parse_response(response, ChainspecRawBytes, decode)
+
+    async def get_information_consensus_status(
+        self,
+        request_id: RequestID,
+        decode: bool = True,
+    ) -> typing.Union[Response, ConsensusStatus]:
+        """Returns current consensus status.
+
+        :param request_id: Request correlation identifier.
+        :param decode: Flag indicating whether to decode response bytes to a domain type instance.
+        :returns: Current consensus status.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_ConsensusStatus,
+            request_id,
+        )
+
+        return _parse_response(response, ConsensusStatus, decode)
 
     async def get_information_network_name(
         self,

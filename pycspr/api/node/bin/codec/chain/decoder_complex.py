@@ -8,6 +8,7 @@ from pycspr.api.node.bin.types.chain.complex import \
     BlockHeader_V1, \
     BlockHeader_V2, \
     ChainspecRawBytes, \
+    ConsensusStatus, \
     EraEnd_V1, \
     EraEnd_V2, \
     EraValidatorReward, \
@@ -88,6 +89,13 @@ def _decode_chainspec_raw_bytes(bytes_in: bytes) -> typing.Tuple[bytes, Chainspe
     return bytes_rem, ChainspecRawBytes(chainspec_bytes, genesis_accounts_bytes, global_state_bytes)
 
 
+def _decode_consensus_state(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusStatus]:
+    bytes_rem, validator_public_key = decode(PublicKey, bytes_in)
+    bytes_rem, round_length = decode(U64, bytes_rem, is_optional=True)
+
+    return bytes_rem, ConsensusStatus(validator_public_key, round_length)
+
+
 def _decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
     raise NotImplementedError()
 
@@ -137,6 +145,7 @@ register_decoders({
     (BlockHeader_V1, _decode_block_header_v1),
     (BlockHeader_V2, _decode_block_header_v2),
     (ChainspecRawBytes, _decode_chainspec_raw_bytes),
+    (ConsensusStatus, _decode_consensus_state),
     (EraEnd_V1, _decode_era_end_v1),
     (EraEnd_V2, _decode_era_end_v2),
     (EraValidatorReward, _decode_era_validator_reward),
