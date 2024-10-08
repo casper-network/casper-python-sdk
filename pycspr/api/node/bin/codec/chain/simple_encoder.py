@@ -21,12 +21,11 @@ def _encode_block_height(entity: BlockHeight) -> bytes:
 
 def _encode_block_id(entity: BlockID) -> bytes:
     if isinstance(entity, bytes):
-        return encode_block_hash(entity)
+        return _encode_block_hash(entity)
     elif isinstance(entity, int):
-        return encode_block_height(entity)
+        return _encode_block_height(entity)
     elif isinstance(entity, str):
-        print(123, entity.decode("utf-8"))
-        return encode_block_hash(entity.decode("utf-8"))
+        return _encode_block_hash(entity.decode("utf-8"))
     else:
         raise ValueError("Invalid block identifier")
 

@@ -189,21 +189,20 @@ class Response():
     """Response wrapper over raw bytes returned from server.
 
     """
+    # Inner payload bytes.
+    bytes_payload: bytes
+
     # Raw bytes.
     bytes_raw: bytes
 
-    # Raw inner payload.
-    bytes_payload: bytes
-
     # Decoded header.
-    header: "ResponseHeader"
+    header: ResponseHeader
 
     # Original request.
     request: Request
 
-    @property
-    def payload(self) -> bytes:
-        return self.bytes_payload
+    # Inner payload.
+    payload: typing.Union[object, typing.List[object]] = None
 
     def __str__(self) -> str:
         return f"Response: {self.header}"

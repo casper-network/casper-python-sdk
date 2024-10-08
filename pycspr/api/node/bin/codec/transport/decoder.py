@@ -57,7 +57,7 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     """Decoder: sequence of bytes -> Response.
 
     """
-    def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
+    def _decode_response_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
         bytes_rem, protocol_version = decode(ProtocolVersion, bytes_in)
         bytes_rem, error_code = decode(U16, bytes_rem)
         bytes_rem, response_payload_tag = decode(U8, bytes_rem, True)
@@ -75,7 +75,7 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
         return bytes_rem[length:], request
 
-    def _decode_response_payload(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
+    def _decode_response_payload_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
         bytes_rem, size = decode(U32, bytes_in)
         assert(len(bytes_rem) == size)
 
@@ -83,13 +83,13 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
 
     bytes_rem, _ = decode(U32, bytes_in)
     bytes_rem, request = _decode_request_out(bytes_rem)
-    bytes_rem, header = _decode_header(bytes_rem)
-    bytes_rem, payload = _decode_response_payload(bytes_rem)
+    bytes_rem, header = _decode_response_header(bytes_rem)
+    bytes_rem, bytes_payload = _decode_response_payload_bytes(bytes_rem)
 
     return b'',  Response(
         bytes_raw=bytes_in,
-        bytes_payload=payload,
         header=header,
+        bytes_payload=bytes_payload,
         request=request
     )
 

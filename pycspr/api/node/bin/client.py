@@ -19,84 +19,45 @@ from pycspr.api.node.bin.types.crypto import PublicKey
 from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \
+    Request, \
+    Request as ProxyRequest, \
     RequestID, \
-    Response
+    Response, \
+    Response as ProxyResponse
 
 
 class Client():
     """Node BINARY server client.
 
     """
-    def __init__(self, connection_info: ConnectionInfo, decode_response: bool = True):
+    def __init__(self, connection_info: ConnectionInfo):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node's BINARY port.
-        :param decode_response: Flag indicating whether API response payloads are to be decoded.
 
         """
-        self.decode_response = decode_response
         self.proxy = Proxy(connection_info)
-
-
-    async def get_information_reward(
-        self,
-        request_id: RequestID,
-        era_id: EraID,
-        validator_id: PublicKey,
-        delegator_id: PublicKey = None,
-    ) -> typing.Union[Response, BlockHeader]:
-        """Returns POS reward information.
-
-        :param request_id: Request correlation identifier.
-        :param era_id: Era for which POS reward information is being requested.
-        :param validator_id: Identity of a network validator.
-        :param delegator_id: Identity of a network delegator.
-        :returns: POS reward information.
-
-        """
-        def get_payload() -> typing.Optional[bytes]:
-            print(codec.encode(era_id, EraID, is_optional=True))
-            print(codec.encode(validator_id, PublicKey))
-
-            return \
-                codec.encode(era_id, EraID, is_optional=True), \
-                codec.encode(validator_id, PublicKey), \
-                codec.encode(delegator_id, PublicKey, is_optional=True)
-
-        async def get_response() -> Response:
-            return await self.proxy.invoke_endpoint(
-                Endpoint.Get_Information_Reward,
-                request_id,
-                get_payload()
-            )
-
-        print(get_payload())
-
-        return _parse_response(await get_response(), BlockHeader, self.decode_response)
-
 
     async def get_information_available_block_range(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, AvailableBlockRange]:
+    ) -> Response:
         """Returns a node's available block range.
 
         :param request_id: Request correlation identifier.
         :returns: A node's available block range.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_AvailableBlockRange,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_AvailableBlockRange,
         )
-
-        return _parse_response(response, AvailableBlockRange, self.decode_response)
 
     async def get_information_block_header(
         self,
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
-    ) -> typing.Union[Response, BlockHeader]:
+    ) -> Response:
         """Returns a block header. Defaults to most recent.
 
         :param request_id: Request correlation identifier.
@@ -104,202 +65,189 @@ class Client():
         :returns: A block header.
 
         """
-        def get_payload() -> typing.Optional[bytes]:
+        def get_request_payload() -> typing.Optional[bytes]:
             return codec.encode(block_id, BlockID, is_optional=True)
 
-        async def get_response() -> Response:
-            return await self.proxy.invoke_endpoint(
-                Endpoint.Get_Information_BlockHeader,
-                request_id,
-                get_payload()
-            )
-
-        return _parse_response(await get_response(), BlockHeader, self.decode_response)
+        return await self.proxy.get_response(
+            request_id,
+            Endpoint.Get_Information_BlockHeader,
+            get_request_payload()
+        )
 
     async def get_information_chainspec_rawbytes(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, ChainspecRawBytes]:
+    ) -> Response:
         """Returns raw bytes representation of chain specification.
 
         :param request_id: Request correlation identifier.
         :returns: Raw shain specification.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_ChainspecRawBytes,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_ChainspecRawBytes,
         )
-
-        return _parse_response(response, ChainspecRawBytes, self.decode_response)
 
     async def get_information_consensus_status(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, ConsensusStatus]:
+    ) -> Response:
         """Returns current consensus status.
 
         :param request_id: Request correlation identifier.
         :returns: Current consensus status.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_ConsensusStatus,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_ConsensusStatus,
         )
-
-        return _parse_response(response, ConsensusStatus, self.decode_response)
 
     async def get_information_latest_switch_block_header(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, BlockHeader]:
+    ) -> Response:
         """Returns latest switch block header.
 
         :param request_id: Request correlation identifier.
         :returns: A block header.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_LatestSwitchBlockHeader,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_LatestSwitchBlockHeader,
         )
-
-        return _parse_response(response, BlockHeader, self.decode_response)
 
     async def get_information_network_name(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, str]:
+    ) -> Response:
         """Returns name of network in which a node is participating within.
 
         :param request_id: Request correlation identifier.
         :returns: Name of network.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_NetworkName,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_NetworkName,
         )
-
-        return _parse_response(response, str, self.decode_response)
 
     async def get_information_network_next_upgrade(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, NextUpgrade]:
+    ) -> Response:
         """Returns next point in time at which network is scheduled to be upgraded.
 
         :param request_id: Request correlation identifier.
         :returns: Next point in time at which network is scheduled to be upgraded.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_NextUpgrade,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_NextUpgrade,
         )
-
-        return _parse_response(response, NextUpgrade, self.decode_response)
 
     async def get_information_node_block_synchronizer_status(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, BlockSynchronizerStatus]:
+    ) -> Response:
         """Returns a block syncronization status.
 
         :param request_id: Request correlation identifier.
         :returns: A node's available block range.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_BlockSynchronizerStatus,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_BlockSynchronizerStatus,
         )
-
-        return _parse_response(response, BlockSynchronizerStatus, self.decode_response)
 
     async def get_information_node_last_progress(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, NodeLastProgress]:
+    ) -> Response:
         """Returns a node's last progress.
 
         :param request_id: Request correlation identifier.
         :returns: Timestamp corresponding to when the node's linear chain view last progressed.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_LastProgress,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_LastProgress,
         )
-
-        return _parse_response(response, NodeLastProgress, self.decode_response)
 
     async def get_information_node_peers(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, typing.List[NodePeerEntry]]:
+    ) -> Response:
         """Returns node peers information.
 
         :param request_id: Request correlation identifier.
         :returns: Node peers information.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_Peers,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_Peers,
         )
-
-        return _parse_response(response, NodePeerEntry, self.decode_response, is_sequence=True)
 
     async def get_information_node_reactor_state(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, str]:
+    ) -> Response:
         """Returns node peers information.
 
         :param request_id: Request correlation identifier.
         :returns: Node peers information.
 
         """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_ReactorState,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_ReactorState,
         )
-
-        return _parse_response(response, str, self.decode_response, is_sequence=False)
 
     async def get_information_node_uptime(
         self,
         request_id: RequestID,
-    ) -> typing.Union[Response, NodeUptime]:
+    ) -> Response:
         """Returns node uptime information.
 
         :param request_id: Request correlation identifier.
         :returns: Node uptime information.
 
         """
-        response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_Uptime,
+        return await self.proxy.get_response(
             request_id,
+            Endpoint.Get_Information_Uptime,
         )
 
-        return _parse_response(response, NodeUptime, self.decode_response)
+    async def get_information_reward(
+        self,
+        request_id: RequestID,
+        validator_id: PublicKey,
+        delegator_id: PublicKey = None,
+        era_id: EraID = None,
+    ) -> Response:
+        """Returns POS reward information.
 
+        :param request_id: Request correlation identifier.
+        :param validator_id: Identity of a network validator.
+        :param era_id: Era for which POS reward information is being requested.
+        :param delegator_id: Identity of a network delegator.
+        :returns: POS reward information.
 
-def _parse_response(
-    response: Response,
-    typedef: type,
-    decode: bool,
-    is_sequence: bool = False
-) -> typing.Union[Response, typing.Union[object, typing.List[object]]]:
-    """Utility function to parse a response.
+        """
+        def get_request_payload() -> bytes:
+            return \
+                codec.encode(era_id, EraID, is_optional=True) + \
+                codec.encode(validator_id, PublicKey) + \
+                codec.encode(delegator_id, PublicKey, is_optional=True)
 
-    """
-    if decode is False:
-        return response
-
-    bytes_rem, entity = codec.decode(typedef, response.bytes_payload, is_sequence=is_sequence)
-    assert len(bytes_rem) == 0, "Byte stream only partially decoded"
-
-    return entity
+        return await self.proxy.get_response(
+            request_id,
+            Endpoint.Get_Information_Reward,
+            get_request_payload()
+        )

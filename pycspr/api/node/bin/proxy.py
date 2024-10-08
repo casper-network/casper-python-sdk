@@ -10,7 +10,8 @@ from pycspr.api.node.bin.types.transport import \
     Request, \
     RequestHeader, \
     RequestID, \
-    Response
+    Response, \
+    RESPONSE_PAYLOAD_TYPE_INFO
 
 
 class Proxy:
@@ -25,22 +26,22 @@ class Proxy:
         """
         self.connection_info = connection_info
 
-    async def invoke_endpoint(
+    async def get_response(
         self,
-        endpoint: Endpoint,
         request_id: RequestID,
+        endpoint: Endpoint,
         payload: typing.Optional[bytes] = None
     ) -> Response:
-        """Dispatches request to a remote node binary port & returns response.
+        """Invokes remote endpoint and returns a response.
 
-        :param endpoint: Endpoint to be invoked.
-        :param request_id: Identifier of request to be dispatched.
-        :param payload: Request payload.
-        :returns: Remote node binary server response.
+        :param request_id: User defined request correlation identifier.
+        :param endpoint: Remote endpoint to be invoked.
+        :param payload: Optional request payload.
+        :returns: Response plus associated payload.
 
         """
         # Set request.
-        request: Request = Request(
+        request = Request(
             header=RequestHeader(
                 self.connection_info.binary_request_version,
                 ProtocolVersion.from_semvar(self.connection_info.chain_protocol_version),
@@ -59,6 +60,12 @@ class Proxy:
         # Set response.
         bytes_rem, response = codec.decode(Response, bytes_response)
         assert len(bytes_rem) == 0, "Unconsumed response bytes"
+
+        # Set response payload.
+        response.payload = _get_response_payload_entity(
+            request.header.endpoint,
+            response.bytes_payload
+        )
 
         return response
 
@@ -82,6 +89,23 @@ async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: by
     await writer.wait_closed()
 
     return _parse_response(bytes_request, bytes_response)
+
+
+def _get_response_payload_entity(
+    endpoint: Endpoint,
+    payload_bytes: bytes
+) -> typing.Union[object, typing.List[object]]:
+    # Set response payload metadata.
+    try:
+        typedef, is_sequence = RESPONSE_PAYLOAD_TYPE_INFO[endpoint]
+    except KeyError:
+        raise ValueError(f"Undefined endpoint response payload type ({endpoint})")
+
+    if typedef is not None:
+        bytes_rem, entity = \
+            codec.decode(typedef, payload_bytes, is_sequence=is_sequence)
+        assert len(bytes_rem) == 0, "Unconsumed response payload bytes"
+        return  entity
 
 
 def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:

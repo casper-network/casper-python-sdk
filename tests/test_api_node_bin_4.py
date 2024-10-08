@@ -3,6 +3,7 @@ from pycspr.api.node.bin import codec
 from pycspr.api.node.bin import Client
 from pycspr.api.node.bin.types.chain import BlockHeader
 from pycspr.api.node.bin.types.crypto import PublicKey
+from pycspr.api.node.bin.types.transport import Response
 
 
 
@@ -12,16 +13,16 @@ async def test_get_information_reward(
     BLOCK_HEADER: BlockHeader
 ):
 
-    print(BLOCK_HEADER.era_id)
-    print(BLOCK_HEADER.height)
+    # print(BLOCK_HEADER.era_id)
+    # print(BLOCK_HEADER.height)
 
     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
     data = await NODE_BINARY_CLIENT.get_information_reward(
         REQUEST_ID,
-        BLOCK_HEADER.era_id,
-        validator_id,
-        None,
+        era_id=BLOCK_HEADER.era_id,
+        validator_id=validator_id,
+        delegator_id=None,
     )
-    assert data is not None
+    assert isinstance(data, Response)
 
     raise ValueError()

@@ -8,6 +8,8 @@ from pycspr.api.node.bin.types.chain import \
     TransactionHash
 
 
+# tx: accept -> propose -> finalise -> execute
+
 @dataclasses.dataclass
 class Get_Information_BlockHeader_RequestPayload():
     """Request payload: Get.Information.BlockHeader endpoint.
