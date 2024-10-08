@@ -18,6 +18,10 @@ BlockBodyHash = typing.NewType(
 
 BlockID = typing.Union[BlockHash, BlockHeight]
 
+DelegationRate = typing.NewType(
+    "Delegation rate of tokens. Range from 0..=100.", int
+    )
+
 EraID = typing.NewType(
     "Ordinal identifier of an era measured by how many eras precede it.", int
 )

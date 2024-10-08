@@ -1,10 +1,12 @@
 from pycspr.api.node.bin.types.transport.core import \
     ConnectionInfo, \
     Endpoint, \
-    ErrorCode, \
+    ErrorCode
+from pycspr.api.node.bin.types.transport.request import \
     Request, \
     RequestHeader, \
-    RequestID, \
+    RequestID
+from pycspr.api.node.bin.types.transport.response import \
     Response, \
-    ResponseHeader
-from pycspr.api.node.bin.types.transport.responses import RESPONSE_PAYLOAD_TYPE_INFO
+    ResponseHeader, \
+    RESPONSE_PAYLOAD_TYPE_INFO

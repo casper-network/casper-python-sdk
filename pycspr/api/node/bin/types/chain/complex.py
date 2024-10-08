@@ -6,6 +6,7 @@ import typing
 from pycspr.api.node.bin.types.chain.simple import \
     BlockHash, \
     BlockHeight, \
+    DelegationRate, \
     EraID, \
     Motes, \
     GasPrice, \
@@ -202,6 +203,21 @@ class ChainspecRawBytes():
 
 
 @dataclasses.dataclass
+class ConsensusReward():
+    """Reward of a validator or a delegator during an era of consensus.
+
+    """
+    # Amount in motes of era reward.
+    amount: Motes
+
+    # Era within which reward was paid out.
+    era_id: EraId
+
+    # Rate of delegation to be paid from validaor to delegator.
+    delegation_rate: DelegationRate
+
+
+@dataclasses.dataclass
 class ConsensusStatus():
     """Current state of consensus.
 
@@ -211,11 +227,6 @@ class ConsensusStatus():
 
     # Consensus round length (in time).
     round_length: typing.Optional[int]
-
-# pub struct ConsensusStatus {
-#     validator_public_key: PublicKey,
-#     round_length: Option<TimeDiff>,
-# }
 
 @dataclasses.dataclass
 class EraEnd():

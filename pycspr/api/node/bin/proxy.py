@@ -57,9 +57,11 @@ class Proxy:
         # Set response bytes.
         bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
 
-        # Set response.
+        # Set response type wrapper.
+        print(111, bytes_response.hex())
         bytes_rem, response = codec.decode(Response, bytes_response)
-        assert len(bytes_rem) == 0, "Unconsumed response bytes"
+        print(222, bytes_rem.hex())
+        _parse_response(bytes_rem, response)
 
         # Set response payload.
         response.payload = _get_response_payload_entity(
@@ -88,13 +90,16 @@ async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: by
     writer.close()
     await writer.wait_closed()
 
-    return _parse_response(bytes_request, bytes_response)
+    return _parse_response_bytes(bytes_request, bytes_response)
 
 
 def _get_response_payload_entity(
     endpoint: Endpoint,
     payload_bytes: bytes
 ) -> typing.Union[object, typing.List[object]]:
+    """Set a response's associated payload.
+
+    """
     # Set response payload metadata.
     try:
         typedef, is_sequence = RESPONSE_PAYLOAD_TYPE_INFO[endpoint]
@@ -108,7 +113,18 @@ def _get_response_payload_entity(
         return  entity
 
 
-def _parse_response(bytes_request: bytes, bytes_response: bytes) -> bytes:
+def _parse_response(bytes_rem: bytes, response: Response) -> bytes:
+    """Parses a node's binary port response.
+
+    """
+    assert len(bytes_rem) == 0, "Unconsumed response bytes"
+
+    print(bytes_rem.hex())
+
+    # TODO: ?
+
+
+def _parse_response_bytes(bytes_request: bytes, bytes_response: bytes) -> bytes:
     """Parses a node's binary port response.
 
     """

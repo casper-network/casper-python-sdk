@@ -2,8 +2,7 @@ from pycspr.api.node.bin.codec.transport.constants import ENDPOINT_TO_TAGS
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
 from pycspr.api.node.bin.types.chain import BlockID
 from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32
-from pycspr.api.node.bin.types.transport.core import Request
-from pycspr.api.node.bin.types.transport.requests import Get_Information_BlockHeader_RequestPayload
+from pycspr.api.node.bin.types.transport.request import Request
 
 
 def encode_request(entity: Request) -> bytes:
@@ -28,13 +27,6 @@ def encode_request(entity: Request) -> bytes:
     return encode_header() + encode_payload_tags() + encode_payload()
 
 
-def encode_request_get_block_header(
-    payload: Get_Information_BlockHeader_RequestPayload
-) -> bytes:
-    return encode(payload.block_id, BlockID, is_optional=True)
-
-
 register_encoders({
     (Request, encode_request),
-    (Get_Information_BlockHeader_RequestPayload, encode_request_get_block_header),
 })
