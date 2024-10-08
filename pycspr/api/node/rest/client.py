@@ -11,12 +11,14 @@ class Client():
     """Node REST server client.
 
     """
-    def __init__(self, connection_info: ConnectionInfo):
+    def __init__(self, connection_info: ConnectionInfo, decode_response: bool = True):
         """Instance constructor.
 
         :param connection_info: Information required to connect to a node.
+        :param decode_response: Flag indicating whether API response payloads are to be decoded.
 
         """
+        self.decode_response = decode_response
         self.proxy = Proxy(connection_info)
 
     async def get_block_height(self) -> int:
@@ -78,18 +80,17 @@ class Client():
         """
         return await self.proxy.get_node_metrics()
 
-    async def get_node_status(self, decode: bool = True) -> typing.Union[dict, NodeStatus]:
+    async def get_node_status(self) -> typing.Union[dict, NodeStatus]:
         """Returns node status information.
 
-        :param decode: Flag indicating whether to decode API response.
         :returns: Node status information.
 
         """
         encoded: dict = await self.proxy.get_node_status()
 
-        return encoded if decode is False else serializer.decode(encoded, NodeStatus)
+        return encoded if self.decode_response is False else serializer.decode(encoded, NodeStatus)
 
-    async def get_validator_changes(self, decode: bool = True) -> typing.List[typing.Union[dict, NodeStatus]]:
+    async def get_validator_changes(self) -> typing.List[typing.Union[dict, NodeStatus]]:
         """Returns validator change information.
 
         :returns: Validator change information.
@@ -98,5 +99,5 @@ class Client():
         encoded: dict = await self.proxy.get_validator_changes()
 
         return \
-            encoded if decode is False else \
+            encoded if self.decode_response is False else \
             [serializer.decode(i, ValidatorChanges) for i in encoded]

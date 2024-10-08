@@ -1,10 +1,9 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.primitives.crypto import \
+from pycspr.api.node.bin.types.crypto import \
     DigestBytes, \
     KeyAlgorithm, \
-    PublicKey, \
     PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8
 
@@ -18,13 +17,6 @@ def _decode_key_algo(bytes_in: bytes) -> typing.Tuple[bytes, KeyAlgorithm]:
     assert len(bytes_in) >= 1
     bytes_rem, algo_type = decode(U8, bytes_in)
     return bytes_rem, KeyAlgorithm(algo_type)
-
-
-def _decode_public_key(bytes_in: bytes) -> typing.Tuple[bytes, PublicKey]:
-    bytes_rem, algo = decode(KeyAlgorithm, bytes_in)
-    bytes_rem, pbk = decode(PublicKeyBytes, bytes_in)
-
-    return bytes_rem, PublicKey(algo, pbk)
 
 
 def _decode_public_key_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
@@ -43,5 +35,4 @@ register_decoders({
     (DigestBytes, _decode_digest_bytes),
     (KeyAlgorithm, _decode_key_algo),
     (PublicKeyBytes, _decode_public_key_bytes),
-    (PublicKey, _decode_public_key),
 })

@@ -45,7 +45,9 @@ class Endpoint(enum.Enum):
     Get_Information_BlockSynchronizerStatus = enum.auto()
     Get_Information_ChainspecRawBytes = enum.auto()
     Get_Information_ConsensusStatus = enum.auto()
+
     Get_Information_ConsensusValidatorChanges = enum.auto()
+
     Get_Information_LastProgress = enum.auto()
     Get_Information_LatestSwitchBlockHeader = enum.auto()
     Get_Information_NetworkName = enum.auto()
@@ -53,9 +55,11 @@ class Endpoint(enum.Enum):
     Get_Information_NodeStatus = enum.auto()
     Get_Information_Peers = enum.auto()
     Get_Information_ReactorState = enum.auto()
+
     Get_Information_Reward = enum.auto()
     Get_Information_SignedBlock = enum.auto()
     Get_Information_Transaction = enum.auto()
+
     Get_Information_Uptime = enum.auto()
     Try_AcceptTransaction = enum.auto()
     Try_SpeculativeExec = enum.auto()

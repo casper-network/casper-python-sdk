@@ -1,7 +1,7 @@
 import dataclasses
 import typing
 
-from pycspr.api.node.bin.types.primitives.crypto import PublicKeyBytes
+from pycspr.api.node.bin.types.crypto import PublicKeyBytes
 from pycspr.api.node.bin.types.chain import \
     BlockID, \
     EraID, \

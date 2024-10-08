@@ -7,7 +7,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     GasPrice, \
     Motes, \
     Weight
-from pycspr.api.node.bin.types.primitives.crypto import DigestBytes
+from pycspr.api.node.bin.types.crypto import DigestBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U64, U512
 
 

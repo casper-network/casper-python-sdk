@@ -10,7 +10,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     Motes, \
     GasPrice, \
     Weight
-from pycspr.api.node.bin.types.primitives.crypto import \
+from pycspr.api.node.bin.types.crypto import \
     DigestBytes, \
     PublicKey, \
     PublicKeyBytes

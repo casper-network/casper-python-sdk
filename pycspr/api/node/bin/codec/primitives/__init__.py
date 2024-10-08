@@ -1,5 +1,4 @@
-import pycspr.api.node.bin.codec.primitives.decoder_crypto
-import pycspr.api.node.bin.codec.primitives.decoder_numeric
-import pycspr.api.node.bin.codec.primitives.decoder_simple
-import pycspr.api.node.bin.codec.primitives.decoder_time
-import pycspr.api.node.bin.codec.primitives.encoder
+import pycspr.api.node.bin.codec.primitives.numeric_decoder
+import pycspr.api.node.bin.codec.primitives.simple_decoder
+import pycspr.api.node.bin.codec.primitives.simple_encoder
+import pycspr.api.node.bin.codec.primitives.time_decoder

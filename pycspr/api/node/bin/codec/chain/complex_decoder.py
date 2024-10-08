@@ -29,7 +29,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     GasPrice, \
     Motes, \
     Weight
-from pycspr.api.node.bin.types.primitives.crypto import DigestBytes, PublicKey, PublicKeyBytes
+from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
 
@@ -191,7 +191,6 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
-# Complex types.
 register_decoders({
     (ActivationPoint, _decode_activation_point),
     (AvailableBlockRange, _decode_available_block_range),

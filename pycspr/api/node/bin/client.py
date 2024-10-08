@@ -1,13 +1,7 @@
 import typing
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.proxy import \
-    Proxy
-from pycspr.api.node.bin.types.transport import \
-    ConnectionInfo, \
-    Endpoint, \
-    RequestID, \
-    Response
+from pycspr.api.node.bin.proxy import Proxy
 from pycspr.api.node.bin.types.chain import \
     AvailableBlockRange, \
     BlockID, \
@@ -15,11 +9,18 @@ from pycspr.api.node.bin.types.chain import \
     BlockSynchronizerStatus, \
     ChainspecRawBytes, \
     ConsensusStatus, \
+    EraID, \
     NextUpgrade
 from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
+from pycspr.api.node.bin.types.crypto import PublicKey
+from pycspr.api.node.bin.types.transport import \
+    ConnectionInfo, \
+    Endpoint, \
+    RequestID, \
+    Response
 
 
 class Client():
@@ -35,6 +36,44 @@ class Client():
         """
         self.decode_response = decode_response
         self.proxy = Proxy(connection_info)
+
+
+    async def get_information_reward(
+        self,
+        request_id: RequestID,
+        era_id: EraID,
+        validator_id: PublicKey,
+        delegator_id: PublicKey = None,
+    ) -> typing.Union[Response, BlockHeader]:
+        """Returns POS reward information.
+
+        :param request_id: Request correlation identifier.
+        :param era_id: Era for which POS reward information is being requested.
+        :param validator_id: Identity of a network validator.
+        :param delegator_id: Identity of a network delegator.
+        :returns: POS reward information.
+
+        """
+        def get_payload() -> typing.Optional[bytes]:
+            print(codec.encode(era_id, EraID, is_optional=True))
+            print(codec.encode(validator_id, PublicKey))
+
+            return \
+                codec.encode(era_id, EraID, is_optional=True), \
+                codec.encode(validator_id, PublicKey), \
+                codec.encode(delegator_id, PublicKey, is_optional=True)
+
+        async def get_response() -> Response:
+            return await self.proxy.invoke_endpoint(
+                Endpoint.Get_Information_Reward,
+                request_id,
+                get_payload()
+            )
+
+        print(get_payload())
+
+        return _parse_response(await get_response(), BlockHeader, self.decode_response)
+
 
     async def get_information_available_block_range(
         self,
@@ -66,8 +105,7 @@ class Client():
 
         """
         def get_payload() -> typing.Optional[bytes]:
-            if block_id is not None:
-                return codec.encode(block_id, BlockID, is_optional=True)
+            return codec.encode(block_id, BlockID, is_optional=True)
 
         async def get_response() -> Response:
             return await self.proxy.invoke_endpoint(
@@ -77,23 +115,6 @@ class Client():
             )
 
         return _parse_response(await get_response(), BlockHeader, self.decode_response)
-
-    async def get_information_block_synchronizer_status(
-        self,
-        request_id: RequestID,
-    ) -> typing.Union[Response, BlockSynchronizerStatus]:
-        """Returns a block syncronization status.
-
-        :param request_id: Request correlation identifier.
-        :returns: A node's available block range.
-
-        """
-        response: Response = await self.proxy.invoke_endpoint(
-            Endpoint.Get_Information_BlockSynchronizerStatus,
-            request_id,
-        )
-
-        return _parse_response(response, BlockSynchronizerStatus, self.decode_response)
 
     async def get_information_chainspec_rawbytes(
         self,
@@ -179,6 +200,23 @@ class Client():
         )
 
         return _parse_response(response, NextUpgrade, self.decode_response)
+
+    async def get_information_node_block_synchronizer_status(
+        self,
+        request_id: RequestID,
+    ) -> typing.Union[Response, BlockSynchronizerStatus]:
+        """Returns a block syncronization status.
+
+        :param request_id: Request correlation identifier.
+        :returns: A node's available block range.
+
+        """
+        response: Response = await self.proxy.invoke_endpoint(
+            Endpoint.Get_Information_BlockSynchronizerStatus,
+            request_id,
+        )
+
+        return _parse_response(response, BlockSynchronizerStatus, self.decode_response)
 
     async def get_information_node_last_progress(
         self,

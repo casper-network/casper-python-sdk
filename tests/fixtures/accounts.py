@@ -97,10 +97,19 @@ def get_account_of_cctl_faucet():
 
 
 def get_account_of_cctl_user(user_id: int):
-    """Returns account information related to CCTL user 1.
+    """Returns account information related to a CCTL user.
 
     """
     path = _PATH_TO_CCTL_ASSETS / "users" / f"user-{user_id}" / "secret_key.pem"
+
+    return pycspr.parse_private_key(path, pycspr.KeyAlgorithm.ED25519)
+
+
+def get_account_of_cctl_validator(validator_id: int):
+    """Returns account information related to a CCTL validator.
+
+    """
+    path = _PATH_TO_CCTL_ASSETS / "nodes" / f"node-{validator_id}" / "secret_key.pem"
 
     return pycspr.parse_private_key(path, pycspr.KeyAlgorithm.ED25519)
 
