@@ -31,7 +31,7 @@ def _encode_block_id(entity: BlockID) -> bytes:
 
 
 def _encode_era_id(entity: EraID) -> bytes:
-    return encode(TAG_BLOCK_HEIGHT, U8) + encode(entity, U64)
+    return encode(entity, U64)
 
 
 def _encode_protocol_version(entity: ProtocolVersion) -> bytes:

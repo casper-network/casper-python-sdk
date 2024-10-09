@@ -20,8 +20,11 @@ class PublicKey():
     # Public key as raw bytes.
     pbk: PublicKeyBytes
 
-    def __eq__(self, other) -> bool:
-        return self.algo == other.algo and self.pbk == other.pbk
+    def __eq__(self, other: "PublicKey") -> bool:
+        if isinstance(other, PublicKey):
+            return self.algo == other.algo and self.pbk == other.pbk
+        else:
+            return False
 
     def __hash__(self) -> bytes:
         return bytes([self.algo.value]) + self.pbk

@@ -16,6 +16,7 @@ from pycspr.api.node.bin.types.node import \
     NodePeerEntry, \
     NodeUptime
 from pycspr.api.node.bin.types.crypto import PublicKey
+from pycspr.api.node.bin.types.primitives.numeric import U8
 from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \
@@ -224,7 +225,26 @@ class Client():
             Endpoint.Get_Information_Uptime,
         )
 
-    async def get_information_reward(
+    async def get_information_reward_by_block(
+        self,
+        request_id: RequestID,
+        validator_id: PublicKey,
+        delegator_id: PublicKey = None,
+        block_id: BlockID = None,
+    ) -> Response:
+        """Returns POS reward information.
+
+        :param request_id: Request correlation identifier.
+        :param validator_id: Identity of a network validator.
+        :param block_id: A block within an era for which POS reward information is being requested.
+        :param delegator_id: Identity of a network delegator.
+        :returns: POS reward information.
+
+        """
+        raise NotImplementedError()
+
+
+    async def get_information_reward_by_era(
         self,
         request_id: RequestID,
         validator_id: PublicKey,
@@ -242,9 +262,12 @@ class Client():
         """
         def get_request_payload() -> bytes:
             return \
+                codec.encode(0, U8) + \
                 codec.encode(era_id, EraID, is_optional=True) + \
                 codec.encode(validator_id, PublicKey) + \
                 codec.encode(delegator_id, PublicKey, is_optional=True)
+
+        print([i for i in get_request_payload()])
 
         return await self.proxy.get_response(
             request_id,

@@ -58,10 +58,8 @@ class Proxy:
         bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
 
         # Set response type wrapper.
-        print(111, bytes_response.hex())
         bytes_rem, response = codec.decode(Response, bytes_response)
-        print(222, bytes_rem.hex())
-        _parse_response(bytes_rem, response)
+        assert len(bytes_rem) == 0, "Unconsumed response bytes"
 
         # Set response payload.
         response.payload = _get_response_payload_entity(
@@ -97,7 +95,7 @@ def _get_response_payload_entity(
     endpoint: Endpoint,
     payload_bytes: bytes
 ) -> typing.Union[object, typing.List[object]]:
-    """Set a response's associated payload.
+    """Returns a decoded response payload.
 
     """
     # Set response payload metadata.
@@ -106,22 +104,13 @@ def _get_response_payload_entity(
     except KeyError:
         raise ValueError(f"Undefined endpoint response payload type ({endpoint})")
 
-    if typedef is not None:
+    if len(payload_bytes) == 0:
+        return [] if is_sequence is True else None
+    else:
         bytes_rem, entity = \
             codec.decode(typedef, payload_bytes, is_sequence=is_sequence)
         assert len(bytes_rem) == 0, "Unconsumed response payload bytes"
         return  entity
-
-
-def _parse_response(bytes_rem: bytes, response: Response) -> bytes:
-    """Parses a node's binary port response.
-
-    """
-    assert len(bytes_rem) == 0, "Unconsumed response bytes"
-
-    print(bytes_rem.hex())
-
-    # TODO: ?
 
 
 def _parse_response_bytes(bytes_request: bytes, bytes_response: bytes) -> bytes:
