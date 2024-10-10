@@ -14,7 +14,8 @@ from pycspr.api.node.bin.types.chain import \
     ConsensusStatus, \
     EraID, \
     NextUpgrade, \
-    ProtocolVersion
+    ProtocolVersion, \
+    SignedBlock
 from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
@@ -82,5 +83,6 @@ RESPONSE_PAYLOAD_TYPE_INFO: typing.Dict[Endpoint, typing.Tuple[type, bool]] = {
     Endpoint.Get_Information_Peers: (NodePeerEntry, True),
     Endpoint.Get_Information_ReactorState: (str, False),
     Endpoint.Get_Information_Reward: (ConsensusReward, False),
+    Endpoint.Get_Information_SignedBlock: (SignedBlock, False),
     Endpoint.Get_Information_Uptime: (NodeUptime, False),
 }

@@ -229,8 +229,8 @@ class Client():
         self,
         request_id: RequestID,
         validator_id: PublicKey,
-        delegator_id: PublicKey = None,
-        block_id: BlockID = None,
+        delegator_id: typing.Optional[PublicKey] = None,
+        block_id: typing.Optional[BlockID] = None,
     ) -> Response:
         """Returns POS reward information.
 
@@ -248,8 +248,8 @@ class Client():
         self,
         request_id: RequestID,
         validator_id: PublicKey,
-        delegator_id: PublicKey = None,
-        era_id: EraID = None,
+        delegator_id: typing.Optional[PublicKey] = None,
+        era_id: typing.Optional[EraID] = None,
     ) -> Response:
         """Returns POS reward information.
 
@@ -271,5 +271,26 @@ class Client():
         return await self.proxy.get_response(
             request_id,
             Endpoint.Get_Information_Reward,
+            get_request_payload()
+        )
+
+    async def get_information_signed_block(
+        self,
+        request_id: RequestID,
+        block_id: typing.Optional[BlockID] = None,
+    ) -> Response:
+        """Returns a signed block. Defaults to most recent.
+
+        :param request_id: Request correlation identifier.
+        :param block_id: Identifier of a finalised block.
+        :returns: A signed block.
+
+        """
+        def get_request_payload() -> typing.Optional[bytes]:
+            return codec.encode(block_id, BlockID, is_optional=True)
+
+        return await self.proxy.get_response(
+            request_id,
+            Endpoint.Get_Information_SignedBlock,
             get_request_payload()
         )

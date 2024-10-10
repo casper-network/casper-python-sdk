@@ -55,8 +55,8 @@ class Endpoint(enum.Enum):
     Get_Information_NodeStatus = enum.auto()
     Get_Information_Peers = enum.auto()
     Get_Information_ReactorState = enum.auto()
-
     Get_Information_Reward = enum.auto()
+
     Get_Information_SignedBlock = enum.auto()
     Get_Information_Transaction = enum.auto()
 

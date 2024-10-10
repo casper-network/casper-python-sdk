@@ -4,17 +4,21 @@ import dataclasses
 import typing
 
 from pycspr.api.node.bin.types.chain.simple import \
+    BlockBodyHash, \
     BlockHash, \
     BlockHeight, \
+    ChainNameDigest, \
     DelegationRate, \
     EraID, \
     Motes, \
     GasPrice, \
+    TransactionHash, \
     Weight
 from pycspr.api.node.bin.types.crypto import \
     DigestBytes, \
     PublicKey, \
-    PublicKeyBytes
+    PublicKeyBytes, \
+    Signature
 from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
@@ -61,14 +65,68 @@ class Block():
     """A block after execution, with the resulting global state root hash.
 
     """
+    pass
+
+
+@dataclasses.dataclass
+class Block_V1(Block):
+    """A version one block after execution, with the resulting global state root hash.
+
+    """
     # Body of block.
-    # body: typing.Union["BlockBody_V1", "BlockBody_V2"]
+    body: BlockBody_V1
 
     # Digest over block.
-    hash: "BlockHash"
+    hash: BlockHash
 
     # Header of block.
-    header: typing.Union["BlockHeader_V1", "BlockHeader_V2"]
+    header: BlockHeader_V1
+
+
+@dataclasses.dataclass
+class Block_V2(Block):
+    """A version two block after execution, with the resulting global state root hash.
+
+    """
+    # Body of block.
+    body: BlockBody_V2
+
+    # Digest over block.
+    hash: BlockHash
+
+    # Header of block.
+    header: BlockHeader_V2
+
+
+@dataclasses.dataclass
+class BlockBody():
+    """A block after execution, with the resulting global state root hash.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class BlockBody_V1(BlockBody):
+    """A version one block body.
+
+    """
+    pass
+
+
+@dataclasses.dataclass
+class BlockBody_V2(BlockBody):
+    """A version two block body.
+
+    """
+    # Digest over block body.
+    hash: BlockBodyHash
+
+    # List of identifiers for finality signatures for a particular past block.
+    rewarded_signatures: RewardedSignatures
+
+    # Map of transactions mapping categories to a list of transaction hashes.
+    transactions: typing.Dict[int, TransactionHash]
 
 
 @dataclasses.dataclass
@@ -158,6 +216,48 @@ class BlockHeader_V2(BlockHeader):
 
     # The timestamp from when the block was proposed.
     timestamp: Timestamp
+
+
+class BlockSignatures():
+    """A collection of signatures for a single block, along
+       with the associated block's hash & era id.
+
+    """
+    pass
+
+
+class BlockSignatures_V1(BlockSignatures):
+    """Block signatures pertaining to version 1 blocks.
+
+    """
+    # Computed digest over block contents.
+    block_hash: BlockHash
+
+    # Era ID in which this block was created.
+    era_id: EraId
+
+    # Set of proofs over block, i.e. collection of validators' signatures over block hash.
+    proofs: typing.Dict[PublicKey, Signature]
+
+
+class BlockSignatures_V2(BlockSignatures):
+    """Block signatures pertaining to version 2 blocks.
+
+    """
+    # Computed digest over block contents.
+    block_hash: BlockHash
+
+    # Height of block within linear block chain.
+    block_height: BlockHeight
+
+    # Era ID in which this block was created.
+    era_id: EraId
+
+    # Digest over block's associated chain name.
+    chain_name_hash: ChainNameDigest
+
+    # Set of proofs over block, i.e. collection of validators' signatures over block hash.
+    proofs: typing.Dict[PublicKey, Signature]
 
 
 @dataclasses.dataclass
@@ -333,6 +433,18 @@ class ProtocolVersion():
 
     def __str__(self) -> str:
         return f"{self.major}.{self.minor}.{self.patch}"
+
+
+@dataclasses.dataclass
+class SignedBlock():
+    """A block plus associated signatures over that block.
+
+    """
+    # A block encapsulating a set of transactions.
+    block: Block
+
+    # Set of signatures over block.
+    signatures: BlockSignatures
 
 
 ValidatorID = typing.NewType(

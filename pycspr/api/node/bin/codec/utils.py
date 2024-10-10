@@ -47,9 +47,9 @@ def decode(
 
     # Sequences are prefixed with sequence length.
     elif is_sequence is True:
-        bytes_rem, sequence_length = decode(U32, bytes_in)
+        bytes_rem, size = decode(U32, bytes_in)
         result = []
-        for _ in range(sequence_length):
+        for _ in range(size):
             bytes_rem, entity = decode(typedef, bytes_rem, is_optional)
             result.append(entity)
         return bytes_rem, result

@@ -7,6 +7,12 @@ from pycspr.api.node.bin.types.chain.complex import \
     ActivationPoint_Era, \
     ActivationPoint_Genesis, \
     AvailableBlockRange, \
+    Block, \
+    Block_V1, \
+    Block_V2, \
+    BlockBody, \
+    BlockBody_V1, \
+    BlockBody_V2, \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
@@ -21,6 +27,7 @@ from pycspr.api.node.bin.types.chain.complex import \
     EraValidatorWeight, \
     NextUpgrade, \
     ProtocolVersion, \
+    SignedBlock, \
     ValidatorID
 from pycspr.api.node.bin.types.chain.simple import \
     BlockBodyHash, \
@@ -30,6 +37,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     EraID, \
     GasPrice, \
     Motes, \
+    TransactionHash, \
     Weight
 from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
@@ -65,6 +73,50 @@ def _decode_available_block_range(bytes_in: bytes) -> typing.Tuple[bytes, Availa
     return bytes_rem, AvailableBlockRange(low, high)
 
 
+def _decode_block(bytes_in: bytes) -> typing.Tuple[bytes, Block]:
+    bytes_rem, type_tag = decode(U8, bytes_in)
+    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+        return decode(Block_V1, bytes_rem)
+    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+        return decode(Block_V2, bytes_rem)
+    else:
+        raise ValueError("Invalid type tag: block ")
+
+
+def _decode_block_v1(bytes_in: bytes) -> typing.Tuple[bytes, Block_V1]:
+    bytes_rem, digest = decode(BlockHash, bytes_in)
+    bytes_rem, header = decode(BlockHeader_V1, bytes_rem)
+    bytes_rem, body = decode(BlockBody_V1, bytes_rem)
+
+    return bytes_rem, Block_V1(body, digest, header)
+
+
+def _decode_block_v2(bytes_in: bytes) -> typing.Tuple[bytes, Block_V2]:
+    bytes_rem, digest = decode(BlockHash, bytes_in)
+    bytes_rem, header = decode(BlockHeader_V2, bytes_rem)
+    bytes_rem, body = decode(BlockBody_V2, bytes_rem)
+
+    return bytes_rem, Block_V2(body, digest, header)
+
+
+def _decode_block_body(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody]:
+    bytes_rem, type_tag = decode(U8, bytes_in)
+    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+        return decode(BlockBody_V1, bytes_rem)
+    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+        return decode(BlockBody_V2, bytes_rem)
+    else:
+        raise ValueError("Invalid type tag: block body")
+
+
+def _decode_block_body_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody_V1]:
+    raise NotImplementedError("_decode_block_body_v1")
+
+
+def _decode_block_body_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody_V2]:
+    raise NotImplementedError("_decode_block_body_v2")
+
+
 def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     bytes_rem, type_tag = decode(U8, bytes_in)
     if type_tag == constants.TAG_BLOCK_TYPE_V1:
@@ -72,7 +124,7 @@ def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     elif type_tag == constants.TAG_BLOCK_TYPE_V2:
         return _decode_block_header_v2(bytes_rem)
     else:
-        raise ValueError("Invalid type tag: block header ")
+        raise ValueError("Invalid type tag: block header")
 
 
 def _decode_block_header_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_V1]:
@@ -202,9 +254,21 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
+def _decode_signed_block(bytes_in: bytes) -> typing.Tuple[bytes, SignedBlock]:
+    bytes_rem, block = decode(Block, bytes_in)
+
+    raise NotImplementedError(bytes_rem.hex())
+
+
 register_decoders({
     (ActivationPoint, _decode_activation_point),
     (AvailableBlockRange, _decode_available_block_range),
+    (Block, _decode_block),
+    (Block_V1, _decode_block_v1),
+    (Block_V2, _decode_block_v2),
+    (BlockBody, _decode_block_body),
+    (BlockBody_V1, _decode_block_body_v1),
+    (BlockBody_V2, _decode_block_body_v2),
     (BlockHeader, _decode_block_header),
     (BlockHeader_V1, _decode_block_header_v1),
     (BlockHeader_V2, _decode_block_header_v2),
@@ -219,5 +283,6 @@ register_decoders({
     (EraValidatorWeight, _decode_era_validator_weight),
     (NextUpgrade, _decode_next_upgrade),
     (ProtocolVersion, _decode_protocol_version),
+    (SignedBlock, _decode_signed_block),
     (ValidatorID, lambda x: decode(PublicKey, x)),
 })

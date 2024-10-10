@@ -4,6 +4,10 @@ from pycspr.api.node.bin.types.crypto import DigestBytes
 from pycspr.api.node.bin.types.primitives.numeric import U64
 
 
+BlockBodyHash = typing.NewType(
+    "Digest over a block's body.", DigestBytes
+    )
+
 BlockHash = typing.NewType(
     "Digest over a block.", DigestBytes
     )
@@ -12,11 +16,11 @@ BlockHeight = typing.NewType(
     "Ordinal identifier of a block measured by how many finalised blocks precede it.", U64
 )
 
-BlockBodyHash = typing.NewType(
-    "Digest over a block's body.", DigestBytes
-    )
-
 BlockID = typing.Union[BlockHash, BlockHeight]
+
+ChainNameDigest = typing.NewType(
+    "Digest over a network's chain name.", DigestBytes
+    )
 
 DelegationRate = typing.NewType(
     "Delegation rate of tokens. Range from 0..=100.", int
