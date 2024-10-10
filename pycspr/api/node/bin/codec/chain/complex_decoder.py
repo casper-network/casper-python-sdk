@@ -13,6 +13,7 @@ from pycspr.api.node.bin.types.chain.complex import \
     BlockSynchronizerStatus, \
     BlockSynchronizerStatusInfo, \
     ChainspecRawBytes, \
+    ConsensusReward, \
     ConsensusStatus, \
     EraEnd_V1, \
     EraEnd_V2, \
@@ -25,6 +26,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     BlockBodyHash, \
     BlockHash, \
     BlockHeight, \
+    DelegationRate, \
     EraID, \
     GasPrice, \
     Motes, \
@@ -135,6 +137,15 @@ def _decode_chainspec_raw_bytes(bytes_in: bytes) -> typing.Tuple[bytes, Chainspe
     return bytes_rem, ChainspecRawBytes(chainspec_bytes, genesis_accounts_bytes, global_state_bytes)
 
 
+def _decode_consensus_reward(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusReward]:
+    bytes_rem, amount = decode(Motes, bytes_in)
+    bytes_rem, era_id = decode(EraID, bytes_rem)
+    bytes_rem, delegation_rate = decode(DelegationRate, bytes_rem)
+    bytes_rem, switch_block_hash = decode(DigestBytes, bytes_rem)
+
+    return bytes_rem, ConsensusReward(amount, era_id, delegation_rate, switch_block_hash)
+
+
 def _decode_consensus_state(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusStatus]:
     bytes_rem, validator_public_key = decode(PublicKey, bytes_in)
     bytes_rem, round_length = decode(TimeDifference, bytes_rem, is_optional=True)
@@ -200,6 +211,7 @@ register_decoders({
     (BlockSynchronizerStatus, _decode_block_synchronizer_status),
     (BlockSynchronizerStatusInfo, _decode_block_synchronizer_status_info),
     (ChainspecRawBytes, _decode_chainspec_raw_bytes),
+    (ConsensusReward, _decode_consensus_reward),
     (ConsensusStatus, _decode_consensus_state),
     (EraEnd_V1, _decode_era_end_v1),
     (EraEnd_V2, _decode_era_end_v2),

@@ -262,12 +262,11 @@ class Client():
         """
         def get_request_payload() -> bytes:
             return \
+                codec.encode(1, U8) + \
                 codec.encode(0, U8) + \
-                codec.encode(era_id, EraID, is_optional=True) + \
+                codec.encode(era_id, EraID) + \
                 codec.encode(validator_id, PublicKey) + \
                 codec.encode(delegator_id, PublicKey, is_optional=True)
-
-        print([i for i in get_request_payload()])
 
         return await self.proxy.get_response(
             request_id,

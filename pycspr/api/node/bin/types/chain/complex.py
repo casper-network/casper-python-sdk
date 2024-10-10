@@ -216,6 +216,9 @@ class ConsensusReward():
     # Rate of delegation to be paid from validaor to delegator.
     delegation_rate: DelegationRate
 
+    # Identifier of switch block in which reward was distributed.
+    switch_block_hash: BlockHash
+
 
 @dataclasses.dataclass
 class ConsensusStatus():
