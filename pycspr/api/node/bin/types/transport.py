@@ -5,8 +5,27 @@ import enum
 import typing
 
 from pycspr.api.node.bin import constants
-from pycspr.api.node.bin.types.chain import ProtocolVersion
+from pycspr.api.node.bin.types.chain import \
+    AvailableBlockRange, \
+    BlockID, \
+    BlockHeader, \
+    BlockSynchronizerStatus, \
+    ChainspecRawBytes, \
+    ConsensusReward, \
+    ConsensusStatus, \
+    EraID, \
+    NextUpgrade, \
+    ProtocolVersion, \
+    SignedBlock
+from pycspr.api.node.bin.types.node import \
+    NodeLastProgress, \
+    NodePeerEntry, \
+    NodeUptime
 
+
+RequestID = typing.NewType(
+    "Request identifier specified by end user typically used to correlate responses.", int
+)
 
 @dataclasses.dataclass
 class ConnectionInfo:
@@ -131,3 +150,120 @@ class ErrorCode(enum.Enum):
     SwitchBlockParentNotFound = 59
     UnsupportedRewardsV1Request = 60
     BinaryProtocolVersionMismatch = 61
+
+
+@dataclasses.dataclass
+class Request():
+    """Encapsulates information required to dispatch an API request.
+
+    """
+    # Request header encapsulating API metadata.
+    header: RequestHeader
+
+    # Request payload, i.e. endpoint params.
+    payload: bytes = bytes([])
+
+    def __eq__(self, other: Request) -> bool:
+        return self.header == other.header and self.payload == self.payload
+
+    def __str__(self) -> str:
+        return f"Request: {self.header} :: Payload Length={len(self.payload)}"
+
+
+@dataclasses.dataclass
+class RequestHeader():
+    """Encapsulates API request header information.
+
+    """
+    # Version of binary server API.
+    binary_request_version: int
+
+    # Version of chain protocol.
+    chain_protocol_version: ProtocolVersion
+
+    # Request endpoint.
+    endpoint: Endpoint
+
+    # Request correlation identifier.
+    id: int
+
+    def __eq__(self, other: RequestHeader) -> bool:
+        return \
+            self.binary_request_version == other.binary_request_version and \
+            self.chain_protocol_version == self.chain_protocol_version and \
+            self.endpoint == other.endpoint and \
+            self.id == other.id
+
+    def __str__(self) -> str:
+        return f"EndPoint={self.endpoint.name} | ID={self.id}"
+
+
+@dataclasses.dataclass
+class Response():
+    """Response wrapper over raw bytes returned from server.
+
+    """
+    # Decoded header.
+    header: ResponseHeader
+
+    # Inner payload bytes.
+    payload_bytes: bytes
+
+    # Inner payload.
+    payload: typing.Union[object, typing.List[object]] = None
+
+    def __str__(self) -> str:
+        return f"Response: {self.header}"
+
+
+@dataclasses.dataclass
+class ResponseHeader():
+    """Decoded response header.
+
+    """
+    # Chain protocol version.
+    protocol_version: ProtocolVersion
+
+    # Server error code.
+    error_code: ErrorCode
+
+    # Server data type.
+    returned_data_type_tag: typing.Optional[int]
+
+    def __str__(self) -> str:
+        return "{} | Err={} | Data Type={}".format(
+            self.protocol_version,
+            self.error_code,
+            self.returned_data_type_tag
+        )
+
+
+@dataclasses.dataclass
+class ResponseAndRequest():
+    """Decoded response request concatanation.
+
+    """
+    # Dispatched request.
+    request: Request
+
+    # Received response.
+    response: Response
+
+
+# Map: Endpoint <-> (type, is_sequence)
+RESPONSE_PAYLOAD_TYPE_INFO: typing.Dict[Endpoint, typing.Tuple[type, bool]] = {
+    Endpoint.Get_Information_AvailableBlockRange: (AvailableBlockRange, False),
+    Endpoint.Get_Information_BlockHeader: (BlockHeader, False),
+    Endpoint.Get_Information_BlockSynchronizerStatus: (BlockSynchronizerStatus, False),
+    Endpoint.Get_Information_ChainspecRawBytes: (ChainspecRawBytes, False),
+    Endpoint.Get_Information_ConsensusStatus: (ConsensusStatus, False),
+    Endpoint.Get_Information_LatestSwitchBlockHeader: (BlockHeader, False),
+    Endpoint.Get_Information_LastProgress: (NodeLastProgress, False),
+    Endpoint.Get_Information_NetworkName: (str, False),
+    Endpoint.Get_Information_NextUpgrade: (NextUpgrade, False),
+    Endpoint.Get_Information_Peers: (NodePeerEntry, True),
+    Endpoint.Get_Information_ReactorState: (str, False),
+    Endpoint.Get_Information_Reward: (ConsensusReward, False),
+    Endpoint.Get_Information_SignedBlock: (SignedBlock, False),
+    Endpoint.Get_Information_Uptime: (NodeUptime, False),
+}
