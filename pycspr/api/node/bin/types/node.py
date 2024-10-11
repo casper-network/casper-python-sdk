@@ -1,7 +1,7 @@
 import dataclasses
 import typing
 
-from pycspr.api.node.bin.types.numeric import U64, Timestamp
+from pycspr.api.node.bin.types.primitives import U64, Timestamp
 
 
 NodeAddress = typing.NewType(

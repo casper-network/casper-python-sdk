@@ -2,8 +2,15 @@ import typing
 
 from pycspr.api.node.bin.types.transport import Endpoint
 
+# Codec tags: chain.
+TAG_ACTIVATION_POINT_ERA: int = 0
+TAG_ACTIVATION_POINT_GENESIS: int = 1
+TAG_BLOCK_HASH: int = 0
+TAG_BLOCK_HEIGHT: int = 1
+TAG_BLOCK_TYPE_V1: int = 0
+TAG_BLOCK_TYPE_V2: int = 1
 
-# Set of named codec tags.
+# Codec tags: transport.
 TAG_GET: int = 0
 TAG_GET_INFORMATION: int = 1
 TAG_GET_INFORMATION_AVAILABLE_BLOCK_RANGE: int = 10
@@ -30,6 +37,7 @@ TAG_OPTIONAL_VALUE: int = 1
 TAG_TRY_ACCEPT_TRANSACTION: int = 1
 TAG_TRY_SPECULATIVE_TRANSACTION: int = 2
 
+# Codec tags: transport.
 # Map of endpoint to a tuple of type tags.  This permits simplified encoding.
 ENDPOINT_TO_TAGS: typing.Dict[
     Endpoint,
@@ -75,6 +83,7 @@ ENDPOINT_TO_TAGS: typing.Dict[
         (TAG_TRY_SPECULATIVE_TRANSACTION, None, None),
 }
 
+# Codec tags: transport.
 # Map of endpoint to a tuple of type tag as bytes.  This permits simplified decoding.
 TAGS_TO_ENDPOINTS: typing.Dict[
     typing.Tuple[int, typing.Optional[int], typing.Optional[int]],

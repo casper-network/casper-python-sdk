@@ -3,7 +3,7 @@ import typing
 from pycspr.api.node.bin import Client
 from pycspr.api.node.bin.types.chain import BlockSynchronizerStatus
 from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
-from pycspr.api.node.bin.types.numeric import Timestamp
+from pycspr.api.node.bin.types.primitives import Timestamp
 from pycspr.api.node.bin.types.transport import Response
 
 

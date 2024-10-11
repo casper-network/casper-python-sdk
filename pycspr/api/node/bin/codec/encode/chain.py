@@ -1,4 +1,4 @@
-from pycspr.api.node.bin.codec.chain.constants import \
+from pycspr.api.node.bin.codec.constants import \
     TAG_BLOCK_HASH, \
     TAG_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
@@ -8,7 +8,7 @@ from pycspr.api.node.bin.types.chain import \
     BlockID, \
     EraID, \
     ProtocolVersion
-from pycspr.api.node.bin.types.numeric import U8, U64
+from pycspr.api.node.bin.types.primitives import U8, U64
 
 
 def _encode_block_hash(entity: BlockHash) -> bytes:

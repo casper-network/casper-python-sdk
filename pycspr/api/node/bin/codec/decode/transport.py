@@ -1,13 +1,13 @@
 import typing
 
-from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.codec.transport.constants import \
+from pycspr.api.node.bin.codec.constants import \
     TAG_GET, \
     TAG_TRY_ACCEPT_TRANSACTION, \
     TAG_TRY_SPECULATIVE_TRANSACTION, \
     TAGS_TO_ENDPOINTS
+from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.types.chain import ProtocolVersion
-from pycspr.api.node.bin.types.numeric import U8, U16, U32
+from pycspr.api.node.bin.types.primitives import U8, U16, U32
 from pycspr.api.node.bin.types.transport import \
     Endpoint, \
     ErrorCode, \
@@ -56,7 +56,6 @@ def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
     rem, error_code = decode(U16, rem)
     rem, returned_data_type_tag = decode(U8, rem, True)
     rem, payload_bytes = decode(bytes, rem)
-    print(55, rem.hex(), payload_bytes.hex())
 
     return rem,  Response(
         header=ResponseHeader(

@@ -16,7 +16,7 @@ from pycspr.api.node.bin.types.node import \
     NodePeerEntry, \
     NodeUptime
 from pycspr.api.node.bin.types.crypto import PublicKey
-from pycspr.api.node.bin.types.numeric import U8
+from pycspr.api.node.bin.types.primitives import U8
 from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \

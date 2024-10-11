@@ -1,9 +1,21 @@
 import typing
 
+from pycspr.api.node.bin.codec.constants import \
+    TAG_ACTIVATION_POINT_ERA, \
+    TAG_ACTIVATION_POINT_GENESIS, \
+    TAG_BLOCK_TYPE_V1, \
+    TAG_BLOCK_TYPE_V2
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.codec.chain import constants
-
-
+from pycspr.api.node.bin.types.chain import \
+    BlockBodyHash, \
+    BlockHash, \
+    BlockHeight, \
+    ChainNameDigest, \
+    DelegationRate, \
+    EraID, \
+    GasPrice, \
+    Motes, \
+    Weight
 from pycspr.api.node.bin.types.chain import \
     ActivationPoint, \
     ActivationPoint_Era, \
@@ -45,14 +57,14 @@ from pycspr.api.node.bin.types.chain import \
     ValidatorID, \
     Weight
 from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes, Signature
-from pycspr.api.node.bin.types.numeric import U8, U32, U64, TimeDifference, Timestamp
+from pycspr.api.node.bin.types.primitives import U8, U32, U64, U512, TimeDifference, Timestamp
 
 
 def _decode_activation_point(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint]:
     rem, type_tag = decode(U8, bytes_in)
-    if type_tag == constants.TAG_ACTIVATION_POINT_ERA:
+    if type_tag == TAG_ACTIVATION_POINT_ERA:
         return _decode_activation_point_era_id(rem)
-    elif type_tag == constants.TAG_ACTIVATION_POINT_GENESIS:
+    elif type_tag == TAG_ACTIVATION_POINT_GENESIS:
         return _decode_activation_point_genesis(rem)
     else:
         raise ValueError("Invalid type tag: activation point ")
@@ -79,9 +91,9 @@ def _decode_available_block_range(bytes_in: bytes) -> typing.Tuple[bytes, Availa
 
 def _decode_block(bytes_in: bytes) -> typing.Tuple[bytes, Block]:
     rem, type_tag = decode(U8, bytes_in)
-    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+    if type_tag == TAG_BLOCK_TYPE_V1:
         return decode(Block_V1, rem)
-    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+    elif type_tag == TAG_BLOCK_TYPE_V2:
         return decode(Block_V2, rem)
     else:
         raise ValueError("Invalid type tag: block ")
@@ -119,9 +131,9 @@ def _decode_block_body_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody_V2]:
 
 def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
     rem, type_tag = decode(U8, bytes_in)
-    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+    if type_tag == TAG_BLOCK_TYPE_V1:
         return _decode_block_header_v1(rem)
-    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+    elif type_tag == TAG_BLOCK_TYPE_V2:
         return _decode_block_header_v2(rem)
     else:
         raise ValueError("Invalid type tag: block header")
@@ -165,9 +177,9 @@ def _decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_
 
 def _decode_block_signatures(bytes_in: bytes) -> typing.Tuple[bytes, BlockSignatures]:
     rem, type_tag = decode(U8, bytes_in)
-    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+    if type_tag == TAG_BLOCK_TYPE_V1:
         return _decode_block_signatures_v1(rem)
-    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+    elif type_tag == TAG_BLOCK_TYPE_V2:
         return _decode_block_signatures_v2(rem)
     else:
         raise ValueError("Invalid type tag: block signatures")
@@ -304,6 +316,18 @@ def _decode_signed_block(bytes_in: bytes) -> typing.Tuple[bytes, SignedBlock]:
 def _decode_single_block_rewarded_signatures(bytes_in: bytes) -> typing.Tuple[bytes, SingleBlockRewardedSignatures]:
     return decode(bytes, bytes_in)
 
+
+register_decoders({
+    (BlockBodyHash, lambda x: decode(DigestBytes, x)),
+    (BlockHash, lambda x: decode(DigestBytes, x)),
+    (BlockHeight, lambda x: decode(U64, x)),
+    (ChainNameDigest, lambda x: decode(DigestBytes, x)),
+    (DelegationRate, lambda x: decode(U8, x)),
+    (EraID, lambda x: decode(U64, x)),
+    (GasPrice, lambda x: decode(U8, x)),
+    (Motes, lambda x: decode(U512, x)),
+    (Weight, lambda x: decode(U512, x)),
+})
 
 register_decoders({
     (ActivationPoint, _decode_activation_point),

@@ -1,15 +1,15 @@
 import typing
 
-from pycspr.api.node.bin.types.numeric import U32, U8
+from pycspr.api.node.bin.types.primitives import U32, U8
 
 _DECODERS = dict()
 _ENCODERS = dict()
 
-
-# Targets
-# Map: T` <-> T`
-# Seq: T
-# T: simple | complex
+# Codec entity targets:
+#   Map: T` <-> T`
+#   Seq: T
+#   T: simple | complex
+#   T: chain | crypto | node | primitives | transport
 
 def decode(
     typedef: typing.Union[type, typing.Tuple[type, type]],

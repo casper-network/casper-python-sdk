@@ -7,7 +7,7 @@ from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
-from pycspr.api.node.bin.types.numeric import U64, Timestamp
+from pycspr.api.node.bin.types.primitives import U64, Timestamp
 
 
 def _decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry]:

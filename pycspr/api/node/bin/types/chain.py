@@ -8,7 +8,7 @@ from pycspr.api.node.bin.types.crypto import \
     PublicKey, \
     PublicKeyBytes, \
     Signature
-from pycspr.api.node.bin.types.numeric import U64, Timestamp
+from pycspr.api.node.bin.types.primitives import U64, Timestamp
 
 
 BlockBodyHash = typing.NewType(
