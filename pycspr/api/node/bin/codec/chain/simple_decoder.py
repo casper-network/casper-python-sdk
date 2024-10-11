@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.chain.simple import \
+from pycspr.api.node.bin.types.chain import \
     BlockBodyHash, \
     BlockHash, \
     BlockHeight, \
@@ -10,7 +10,7 @@ from pycspr.api.node.bin.types.chain.simple import \
     Motes, \
     Weight
 from pycspr.api.node.bin.types.crypto import DigestBytes
-from pycspr.api.node.bin.types.primitives.numeric import U8, U64, U512
+from pycspr.api.node.bin.types.numeric import U8, U64, U512
 
 
 register_decoders({

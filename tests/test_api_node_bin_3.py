@@ -7,7 +7,7 @@ from pycspr.api.node.bin.types.chain import \
     ConsensusStatus, \
     NextUpgrade, \
     SignedBlock
-from pycspr.api.node.bin.types.chain.simple import BlockID
+from pycspr.api.node.bin.types.chain import BlockID
 from pycspr.api.node.bin.types.transport import Response
 
 

@@ -8,7 +8,7 @@ from pycspr.api.node.bin.types.chain import \
     BlockID, \
     EraID, \
     ProtocolVersion
-from pycspr.api.node.bin.types.primitives.numeric import U8, U64
+from pycspr.api.node.bin.types.numeric import U8, U64
 
 
 def _encode_block_hash(entity: BlockHash) -> bytes:

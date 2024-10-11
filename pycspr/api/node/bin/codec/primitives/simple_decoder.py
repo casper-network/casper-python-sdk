@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.primitives.numeric import U32
+from pycspr.api.node.bin.types.numeric import U32
 
 
 def _decode_bool(bytes_in: bytes) -> typing.Tuple[bytes, bool]:

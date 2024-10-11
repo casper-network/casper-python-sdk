@@ -4,7 +4,7 @@ from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.codec.chain import constants
 
 
-from pycspr.api.node.bin.types.chain.complex import \
+from pycspr.api.node.bin.types.chain import \
     ActivationPoint, \
     ActivationPoint_Era, \
     ActivationPoint_Genesis, \
@@ -14,40 +14,38 @@ from pycspr.api.node.bin.types.chain.complex import \
     Block_V2, \
     BlockBody_V1, \
     BlockBody_V2, \
+    BlockBodyHash, \
+    BlockHash, \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
+    BlockHeight, \
     BlockSignatures, \
     BlockSignatures_V1, \
     BlockSignatures_V2, \
     BlockSynchronizerStatus, \
     BlockSynchronizerStatusInfo, \
+    ChainNameDigest, \
     ChainspecRawBytes, \
     ConsensusReward, \
     ConsensusStatus, \
+    DelegationRate, \
     EraEnd_V1, \
     EraEnd_V2, \
+    EraID, \
     EraValidatorReward, \
     EraValidatorWeight, \
+    GasPrice, \
+    Motes, \
     NextUpgrade, \
     ProtocolVersion, \
     RewardedSignatures, \
     SignedBlock, \
     SingleBlockRewardedSignatures, \
-    ValidatorID
-from pycspr.api.node.bin.types.chain.simple import \
-    BlockBodyHash, \
-    BlockHash, \
-    BlockHeight, \
-    ChainNameDigest, \
-    DelegationRate, \
-    EraID, \
-    GasPrice, \
-    Motes, \
+    ValidatorID, \
     Weight
 from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes, Signature
-from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
-from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
+from pycspr.api.node.bin.types.numeric import U8, U32, U64, TimeDifference, Timestamp
 
 
 def _decode_activation_point(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint]:

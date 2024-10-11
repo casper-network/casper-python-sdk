@@ -1,8 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.primitives.numeric import U64
-from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
+from pycspr.api.node.bin.types.numeric import U64, TimeDifference, Timestamp
 
 
 def _decode_time_difference(bytes_in: bytes) -> typing.Tuple[bytes, TimeDifference]:

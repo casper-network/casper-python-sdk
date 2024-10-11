@@ -3,23 +3,55 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from pycspr.api.node.bin.types.chain.simple import \
-    BlockBodyHash, \
-    BlockHash, \
-    BlockHeight, \
-    ChainNameDigest, \
-    DelegationRate, \
-    EraID, \
-    Motes, \
-    GasPrice, \
-    TransactionHash, \
-    Weight
 from pycspr.api.node.bin.types.crypto import \
     DigestBytes, \
     PublicKey, \
     PublicKeyBytes, \
     Signature
-from pycspr.api.node.bin.types.primitives.time import Timestamp
+from pycspr.api.node.bin.types.numeric import U64, Timestamp
+
+
+BlockBodyHash = typing.NewType(
+    "Digest over a block's body.", DigestBytes
+    )
+
+BlockHash = typing.NewType(
+    "Digest over a block.", DigestBytes
+    )
+
+BlockHeight = typing.NewType(
+    "Ordinal identifier of a block measured by how many finalised blocks precede it.", U64
+)
+
+BlockID = typing.Union[BlockHash, BlockHeight]
+
+ChainNameDigest = typing.NewType(
+    "Digest over a network's chain name.", DigestBytes
+    )
+
+DelegationRate = typing.NewType(
+    "Delegation rate of tokens. Range from 0..=100.", int
+    )
+
+EraID = typing.NewType(
+    "Ordinal identifier of an era measured by how many eras precede it.", int
+)
+
+GasPrice = typing.NewType(
+    "Multiplier applied to estimation of computational costs (gas).", int
+)
+
+Motes = typing.NewType(
+    "Basic unit of crypto economic system.", int
+    )
+
+TransactionHash = typing.NewType(
+    "Digest over a transaction.", DigestBytes
+    )
+
+Weight = typing.NewType(
+    "Some form of relative relevance measure.", int
+    )
 
 
 @dataclasses.dataclass

@@ -3,7 +3,7 @@ import typing
 
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.types.chain import ProtocolVersion
-from pycspr.api.node.bin.types.primitives.numeric import U32
+from pycspr.api.node.bin.types.numeric import U32
 from pycspr.api.node.bin.types.transport import \
     ConnectionInfo, \
     Endpoint, \

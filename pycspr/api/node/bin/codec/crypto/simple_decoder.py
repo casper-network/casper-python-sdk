@@ -6,7 +6,7 @@ from pycspr.api.node.bin.types.crypto import \
     KeyAlgorithm, \
     PublicKeyBytes, \
     SignatureBytes
-from pycspr.api.node.bin.types.primitives.numeric import U8
+from pycspr.api.node.bin.types.numeric import U8
 
 
 def _decode_digest_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:

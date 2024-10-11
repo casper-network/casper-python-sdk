@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.primitives.numeric import U8, U16, U32, U64, U128, U256, U512
+from pycspr.api.node.bin.types.numeric import U8, U16, U32, U64, U128, U256, U512
 
 
 def _decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, int]:
