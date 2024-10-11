@@ -45,18 +45,18 @@ def decode(
 
     # Optional values are prefixed with a single byte predicate.
     if is_optional is True:
-        bytes_rem, value = decode(U8, bytes_in)
+        rem, value = decode(U8, bytes_in)
         if value == 0:
             if is_map is True:
-                return bytes_rem, dict()
+                return rem, dict()
             elif typedef is bytes:
-                return bytes_rem, bytes([])
+                return rem, bytes([])
             elif is_sequence is True:
-                return bytes_rem, []
+                return rem, []
             else:
-                return bytes_rem, None
+                return rem, None
         elif value == 1:
-            return decode(typedef, bytes_rem, is_sequence=is_sequence)
+            return decode(typedef, rem, is_sequence=is_sequence)
         else:
             raise ValueError("Invalid prefix bit for optional type")
 
@@ -73,12 +73,12 @@ def decode(
 
     # Sequences are prefixed with sequence length.
     if is_sequence is True:
-        bytes_rem, size = decode(U32, bytes_in)
+        rem, size = decode(U32, bytes_in)
         result = []
         for _ in range(size):
-            bytes_rem, entity = decode(typedef, bytes_rem, is_optional)
+            rem, entity = decode(typedef, rem, is_optional)
             result.append(entity)
-        return bytes_rem, result
+        return rem, result
 
     # Otherwise invoke type decoder.
     try:

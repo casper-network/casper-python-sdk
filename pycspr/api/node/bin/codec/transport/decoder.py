@@ -125,11 +125,9 @@ def _decode_response_payload(
     if len(bytes_in) == 0:
         return [] if is_sequence is True else None
     else:
-        bytes_rem, entity = decode(typedef, bytes_in, is_sequence=is_sequence)
-        assert len(bytes_rem) == 0, "Unconsumed response payload bytes"
+        rem, entity = decode(typedef, bytes_in, is_sequence=is_sequence)
+        assert len(rem) == 0, "Unconsumed response payload bytes"
         return  entity
-
-
 
 
 register_decoders({

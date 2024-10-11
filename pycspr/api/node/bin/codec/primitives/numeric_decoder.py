@@ -12,10 +12,10 @@ def _decode_uint(bytes_in: bytes, encoded_length: int) -> typing.Tuple[bytes, in
 
 
 def _decode_uint_big(bytes_in: bytes) -> typing.Tuple[bytes, int]:
-    bytes_rem, size = decode(U8, bytes_in)
-    bytes_rem, value = _decode_uint(bytes_rem, size)
+    rem, size = decode(U8, bytes_in)
+    rem, value = _decode_uint(rem, size)
 
-    return bytes_rem, value
+    return rem, value
 
 
 register_decoders({

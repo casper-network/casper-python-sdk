@@ -11,16 +11,16 @@ def _decode_bool(bytes_in: bytes) -> typing.Tuple[bytes, bool]:
 
 def _decode_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
     assert len(bytes_in) >= 4
-    bytes_rem, size = decode(U32, bytes_in)
-    assert len(bytes_rem) >= size
-    return bytes_rem[size:], bytes_rem[:size]
+    rem, size = decode(U32, bytes_in)
+    assert len(rem) >= size
+    return rem[size:], rem[:size]
 
 
 def _decode_str(bytes_in: bytes) -> typing.Tuple[bytes, str]:
     assert len(bytes_in) >= 1
-    bytes_rem, size = decode(U32, bytes_in)
-    assert len(bytes_rem) >= size
-    return bytes_rem[size:], bytes_rem[0:size].decode("utf-8")
+    rem, size = decode(U32, bytes_in)
+    assert len(rem) >= size
+    return rem[size:], rem[0:size].decode("utf-8")
 
 
 # Simple types.

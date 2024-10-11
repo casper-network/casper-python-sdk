@@ -12,10 +12,10 @@ from pycspr.api.node.bin.types.primitives.time import Timestamp
 
 
 def _decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry]:
-    bytes_rem, address = decode(NodeAddress, bytes_in)
-    bytes_rem, node_id = decode(NodeId, bytes_rem)
+    rem, address = decode(NodeAddress, bytes_in)
+    rem, node_id = decode(NodeId, rem)
 
-    return bytes_rem, NodePeerEntry(address, node_id)
+    return rem, NodePeerEntry(address, node_id)
 
 
 register_decoders({
