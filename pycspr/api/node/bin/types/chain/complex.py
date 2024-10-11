@@ -218,6 +218,7 @@ class BlockHeader_V2(BlockHeader):
     timestamp: Timestamp
 
 
+@dataclasses.dataclass
 class BlockSignatures():
     """A collection of signatures for a single block, along
        with the associated block's hash & era id.
@@ -226,6 +227,7 @@ class BlockSignatures():
     pass
 
 
+@dataclasses.dataclass
 class BlockSignatures_V1(BlockSignatures):
     """Block signatures pertaining to version 1 blocks.
 
@@ -240,6 +242,7 @@ class BlockSignatures_V1(BlockSignatures):
     proofs: typing.Dict[PublicKey, Signature]
 
 
+@dataclasses.dataclass
 class BlockSignatures_V2(BlockSignatures):
     """Block signatures pertaining to version 2 blocks.
 
@@ -433,6 +436,16 @@ class ProtocolVersion():
 
     def __str__(self) -> str:
         return f"{self.major}.{self.minor}.{self.patch}"
+
+
+RewardedSignatures = typing.NewType(
+    "Finality signatures to be rewarded within a block.", typing.List["SingleBlockRewardedSignatures"]
+    )
+
+
+SingleBlockRewardedSignatures = typing.NewType(
+    "Finality signature identifiers for a recent block.", bytes
+    )
 
 
 @dataclasses.dataclass

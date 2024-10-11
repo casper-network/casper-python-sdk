@@ -9,4 +9,5 @@ from pycspr.api.node.bin.types.transport.request import \
 from pycspr.api.node.bin.types.transport.response import \
     Response, \
     ResponseHeader, \
+    ResponseAndRequest, \
     RESPONSE_PAYLOAD_TYPE_INFO

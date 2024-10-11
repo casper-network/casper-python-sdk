@@ -24,9 +24,6 @@ def encode_request(entity: Request) -> bytes:
             encode(ENDPOINT_TO_TAGS[entity.header.endpoint][1], U8) + \
             encode(ENDPOINT_TO_TAGS[entity.header.endpoint][2], U16)
 
-    print("req-header", [i for i in encode_header()])
-    print("req-payload", [i for i in encode_payload_tags() + encode_payload()])
-
     return encode_header() + encode_payload_tags() + encode_payload()
 
 

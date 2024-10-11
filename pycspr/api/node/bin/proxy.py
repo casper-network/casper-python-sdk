@@ -11,6 +11,7 @@ from pycspr.api.node.bin.types.transport import \
     RequestHeader, \
     RequestID, \
     Response, \
+    ResponseAndRequest, \
     RESPONSE_PAYLOAD_TYPE_INFO
 
 
@@ -51,23 +52,25 @@ class Proxy:
             payload=payload if payload is not None else bytes([])
         )
 
-        # Set request bytes.
+        # Set bytes: request.
         bytes_request: bytes = codec.encode(codec.encode(request), bytes)
 
-        # Set response bytes.
-        bytes_response: bytes = await _get_response_bytes(self.connection_info, bytes_request)
+        # Set bytes: response and request.
+        bytes_response_and_request: bytes = \
+            await _get_response_bytes(self.connection_info, bytes_request)
 
-        # Set response type wrapper.
-        bytes_rem, response = codec.decode(Response, bytes_response)
-        assert len(bytes_rem) == 0, "Unconsumed response bytes"
+        # Set entity: response and request.
+        bytes_rem, response_and_request = \
+            codec.decode(ResponseAndRequest, bytes_response_and_request)
+        assert len(bytes_rem) == 0
 
         # Set response payload.
-        response.payload = _get_response_payload_entity(
+        response_and_request.response.payload = _get_response_payload_entity(
             request.header.endpoint,
-            response.bytes_payload
+            response_and_request.response.payload_bytes
         )
 
-        return response
+        return response_and_request.response
 
 
 async def _get_response_bytes(connection_info: ConnectionInfo, bytes_request: bytes) -> bytes:

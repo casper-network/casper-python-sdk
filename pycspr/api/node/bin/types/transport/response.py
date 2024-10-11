@@ -29,17 +29,11 @@ class Response():
     """Response wrapper over raw bytes returned from server.
 
     """
-    # Inner payload bytes.
-    bytes_payload: bytes
-
-    # Raw bytes.
-    bytes_raw: bytes
-
     # Decoded header.
     header: ResponseHeader
 
-    # Original request.
-    request: Request
+    # Inner payload bytes.
+    payload_bytes: bytes
 
     # Inner payload.
     payload: typing.Union[object, typing.List[object]] = None
@@ -68,6 +62,19 @@ class ResponseHeader():
             self.error_code,
             self.returned_data_type_tag
         )
+
+
+@dataclasses.dataclass
+class ResponseAndRequest():
+    """Decoded response request concatanation.
+
+    """
+    # Dispatched request.
+    request: Request
+
+    # Received response.
+    response: Response
+
 
 # Map: Endpoint <-> (type, is_sequence)
 RESPONSE_PAYLOAD_TYPE_INFO: typing.Dict[Endpoint, typing.Tuple[type, bool]] = {

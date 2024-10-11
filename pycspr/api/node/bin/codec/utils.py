@@ -6,11 +6,16 @@ _DECODERS = dict()
 _ENCODERS = dict()
 
 
+# Targets
+# Map: T` <-> T`
+# Seq: T
+# T: simple | complex
+
 def decode(
-    typedef: type,
+    typedef: typing.Union[type, typing.Tuple[type, type]],
     bytes_in: bytes,
     is_optional=False,
-    is_sequence=False
+    is_sequence=False,
 ) -> typing.Tuple[bytes, object]:
     """Decodes an entity from a byte stream.
 
@@ -21,20 +26,30 @@ def decode(
     :returns: A decoded entity.
 
     """
+    # Maps are passed as 2 member tuple.
+    is_map = isinstance(typedef, tuple)
+    if is_map:
+        if len(typedef) != 2:
+            raise ValueError("Invalid map declaration")
+
+    # Zero bytes are mapped to defaults.
     if bytes_in == bytes([]):
-        if typedef is bytes:
+        if is_map is True:
+            return bytes([]), dict()
+        elif typedef is bytes:
             return bytes([]), bytes([])
         elif is_sequence is True:
             return bytes([]), []
         else:
             return bytes([]), None
 
-    # Optional values are prefixed with a single byte indicating
-    # whether the value is declared.
+    # Optional values are prefixed with a single byte predicate.
     if is_optional is True:
         bytes_rem, value = decode(U8, bytes_in)
         if value == 0:
-            if typedef is bytes:
+            if is_map is True:
+                return bytes_rem, dict()
+            elif typedef is bytes:
                 return bytes_rem, bytes([])
             elif is_sequence is True:
                 return bytes_rem, []
@@ -45,8 +60,19 @@ def decode(
         else:
             raise ValueError("Invalid prefix bit for optional type")
 
+    if is_map == True:
+        assert is_optional == False, "Optionality cannot apply to a mapping"
+        (K, V) = typedef
+        rem, size = decode(U32, bytes_in)
+        result = dict()
+        for idx in range(size):
+            rem, key = decode(K, rem)
+            rem, value = decode(V, rem)
+            result[key] = value
+        return rem, result
+
     # Sequences are prefixed with sequence length.
-    elif is_sequence is True:
+    if is_sequence is True:
         bytes_rem, size = decode(U32, bytes_in)
         result = []
         for _ in range(size):
@@ -54,14 +80,13 @@ def decode(
             result.append(entity)
         return bytes_rem, result
 
-    # Otherwise executer decoder mapped by type.
+    # Otherwise invoke type decoder.
+    try:
+        decoder = _DECODERS[typedef]
+    except KeyError:
+        raise ValueError(f"Non-decodeable type: {typedef}")
     else:
-        try:
-            decoder = _DECODERS[typedef]
-        except KeyError:
-            raise ValueError(f"Non-decodeable type: {typedef}")
-        else:
-            return decoder(bytes_in)
+        return decoder(bytes_in)
 
 
 def encode(

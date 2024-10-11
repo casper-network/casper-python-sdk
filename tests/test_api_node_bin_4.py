@@ -7,40 +7,40 @@ from pycspr.api.node.bin.types.transport import Response
 
 
 
-# async def test_get_information_reward_by_block_hash(
-#     NODE_BINARY_CLIENT: Client,
-#     REQUEST_ID: int,
-#     BLOCK_HEADER: BlockHeader
-# ):
-#     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
+async def test_get_information_reward_by_block_hash(
+    NODE_BINARY_CLIENT: Client,
+    REQUEST_ID: int,
+    BLOCK_HEADER: BlockHeader
+):
+    _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
 
-#     data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
-#         REQUEST_ID,
-#         block_id=BLOCK_HEADER.parent_hash,
-#         validator_id=validator_id,
-#         delegator_id=None,
-#     )
+    data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
+        REQUEST_ID,
+        block_id=BLOCK_HEADER.parent_hash,
+        validator_id=validator_id,
+        delegator_id=None,
+    )
 
-#     assert isinstance(data, Response)
-#     assert isinstance(data.payload, (ConsensusReward, type(None)))
+    assert isinstance(data, Response)
+    assert isinstance(data.payload, (ConsensusReward, type(None)))
 
 
-# async def test_get_information_reward_by_block_height(
-#     NODE_BINARY_CLIENT: Client,
-#     REQUEST_ID: int,
-#     BLOCK_HEADER: BlockHeader
-# ):
-#     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
+async def test_get_information_reward_by_block_height(
+    NODE_BINARY_CLIENT: Client,
+    REQUEST_ID: int,
+    BLOCK_HEADER: BlockHeader
+):
+    _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
 
-#     data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
-#         REQUEST_ID,
-#         block_id=BLOCK_HEADER.height,
-#         validator_id=validator_id,
-#         delegator_id=None,
-#     )
+    data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
+        REQUEST_ID,
+        block_id=BLOCK_HEADER.height,
+        validator_id=validator_id,
+        delegator_id=None,
+    )
 
-#     assert isinstance(data, Response)
-#     assert isinstance(data.payload, (ConsensusReward, type(None)))
+    assert isinstance(data, Response)
+    assert isinstance(data.payload, (ConsensusReward, type(None)))
 
 
 async def test_get_information_reward_by_era(
@@ -59,7 +59,4 @@ async def test_get_information_reward_by_era(
         delegator_id=None,
     )
     assert isinstance(data, Response)
-    assert isinstance(data.payload, (ConsensusReward, type(None)))
-
-    print(data.payload)
-    raise ValueError()
+    assert isinstance(data.payload, ConsensusReward)

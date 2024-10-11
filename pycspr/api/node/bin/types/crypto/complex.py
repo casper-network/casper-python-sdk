@@ -26,8 +26,8 @@ class PublicKey():
         else:
             return False
 
-    def __hash__(self) -> bytes:
-        return bytes([self.algo.value]) + self.pbk
+    def __hash__(self) -> int:
+        return hash(self.pbk)
 
     def __len__(self) -> int:
         return len(self.pbk) + 1
@@ -53,7 +53,7 @@ class PrivateKey:
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pvk == other.pvk and self.pbk == other.pbk
 
-    def __hash__(self) -> bytes:
+    def __hash__(self) -> int:
         return hash(self.pvk)
 
     def __len__(self) -> int:
@@ -80,7 +80,7 @@ class Signature():
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.sig == other.sig
 
-    def __hash__(self) -> bytes:
+    def __hash__(self) -> int:
         return hash(self.sig)
 
     def __len__(self) -> int:

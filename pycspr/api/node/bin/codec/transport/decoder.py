@@ -14,87 +14,126 @@ from pycspr.api.node.bin.types.transport import \
     Request, \
     RequestHeader, \
     Response, \
-    ResponseHeader
+    ResponseHeader, \
+    ResponseAndRequest, \
+    RESPONSE_PAYLOAD_TYPE_INFO
 
 
 def _decode_request(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-    """Decoder: sequence of bytes -> Request.
-
-    """
     def _decode_endpoint(bytes_in: bytes, request_tag: int) -> typing.Tuple[bytes, Endpoint]:
         if request_tag == TAG_TRY_ACCEPT_TRANSACTION:
             return bytes_in, Endpoint.Try_AcceptTransaction
         elif request_tag == TAG_TRY_SPECULATIVE_TRANSACTION:
             return bytes_in, Endpoint.Try_SpeculativeExec
         elif request_tag == TAG_GET:
-            bytes_rem, get_type = decode(U8, bytes_in)
-            bytes_rem, get_subtype = decode(U8, bytes_in)
-            return bytes_rem, TAGS_TO_ENDPOINTS[(request_tag, get_type, get_subtype)]
+            rem, get_type = decode(U8, bytes_in)
+            rem, get_type_inner = decode(U8, rem)
+            return rem, TAGS_TO_ENDPOINTS[(request_tag, get_type, get_type_inner)]
         else:
             raise ValueError(f"Invalid request header tag: {request_tag}")
 
     def _decode_header(bytes_in: bytes) -> typing.Tuple[bytes, RequestHeader]:
-        bytes_rem, request_version = decode(U16, bytes_in)
-        bytes_rem, protocol_version = decode(ProtocolVersion, bytes_rem)
-        bytes_rem, request_tag = decode(U8, bytes_rem)
-        bytes_rem, request_id = decode(U16, bytes_rem)
-        bytes_rem, endpoint = _decode_endpoint(bytes_rem, request_tag)
+        rem, request_version = decode(U16, bytes_in)
+        rem, protocol_version = decode(ProtocolVersion, rem)
+        rem, request_tag = decode(U8, rem)
+        rem, request_id = decode(U16, rem)
+        rem, endpoint = _decode_endpoint(rem, request_tag)
 
-        return bytes_rem, RequestHeader(request_version, protocol_version, endpoint, request_id)
+        return rem, RequestHeader(request_version, protocol_version, endpoint, request_id)
 
     def _decode_payload(bytes_in: bytes, header: RequestHeader) -> typing.Tuple[bytes, object]:
-        # TODO map endpoint to domain type.
-        # TODO invoke decoder
+        # TODO invoke request payload decoder
         return b'', bytes_in
 
-    bytes_rem, header = _decode_header(bytes_in)
-    bytes_rem, payload = _decode_payload(bytes_rem, header)
+    rem, header = _decode_header(bytes_in)
+    rem, payload = _decode_payload(rem, header)
 
-    return bytes_rem, Request(header, payload)
+    return rem, Request(header, payload)
 
 
 def _decode_response(bytes_in: bytes) -> typing.Tuple[bytes, Response]:
-    """Decoder: sequence of bytes -> Response.
+    rem, protocol_version = decode(ProtocolVersion, bytes_in)
+    rem, error_code = decode(U16, rem)
+    rem, returned_data_type_tag = decode(U8, rem, True)
+    rem, payload_bytes = decode(bytes, rem)
+    print(55, rem.hex(), payload_bytes.hex())
 
-    """
-    def _decode_response_header(bytes_in: bytes) -> typing.Tuple[bytes, ResponseHeader]:
-        bytes_rem, protocol_version = decode(ProtocolVersion, bytes_in)
-        bytes_rem, error_code = decode(U16, bytes_rem)
-        bytes_rem, response_payload_tag = decode(U8, bytes_rem, True)
-
-        return bytes_rem, ResponseHeader(
+    return rem,  Response(
+        header=ResponseHeader(
             protocol_version=protocol_version,
             error_code=ErrorCode(error_code),
-            returned_data_type_tag=response_payload_tag
-        )
-
-    def _decode_request_out(bytes_in: bytes) -> typing.Tuple[bytes, Request]:
-        bytes_rem = bytes_in[2:]        # TODO: understand necessity for this
-        bytes_rem, length = decode(U32, bytes_rem)
-        _, request = _decode_request(bytes_rem[:length])
-
-        return bytes_rem[length:], request
-
-    def _decode_response_payload_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:
-        bytes_rem, size = decode(U32, bytes_in)
-        assert(len(bytes_rem) == size)
-
-        return bytes_rem, bytes_rem
-
-    bytes_rem, _ = decode(U32, bytes_in)
-    bytes_rem, request = _decode_request_out(bytes_rem)
-    bytes_rem, header = _decode_response_header(bytes_rem)
-    bytes_rem, bytes_payload = _decode_response_payload_bytes(bytes_rem)
-
-    return b'',  Response(
-        bytes_raw=bytes_in,
-        header=header,
-        bytes_payload=bytes_payload,
-        request=request
+            returned_data_type_tag=returned_data_type_tag
+        ),
+        payload_bytes=payload_bytes
     )
+
+
+def _decode_response_and_request(bytes_in: bytes) -> ResponseAndRequest:
+    def _decode_original_request_context(bytes_in: bytes) -> typing.Tuple[bytes, typing.Tuple[int, Request]]:
+        rem, request_id = decode(U16, bytes_in)
+        rem, bytes_req = decode(bytes, rem)
+        rem_bytes_req, request = decode(Request, bytes_req)
+
+        assert len(rem_bytes_req) == 0
+        assert request.header.id == request_id
+
+        return rem, (request_id, request)
+
+    def _decode_response_payload(request: Request, response: Response) -> typing.Union[object, typing.List[object]]:
+        try:
+            typedef, is_sequence = RESPONSE_PAYLOAD_TYPE_INFO[request.header.endpoint]
+        except KeyError:
+            raise ValueError(f"Invalid endpoint response payload type ({request.header.endpoint})")
+
+        if len(response.payload_bytes) == 0:
+            return [] if is_sequence is True else None
+
+        rem, entity = decode(typedef, response.payload_bytes, is_sequence=is_sequence)
+        assert len(rem) == 0, "Unconsumed response payload bytes"
+        return entity
+
+    # Strip size.
+    rem, bytes_inner = decode(bytes, bytes_in)
+    assert len(rem) == 0
+
+    # Inner request.
+    rem, (_, request) = _decode_original_request_context(bytes_inner)
+
+    # Inner response.
+    rem, response = decode(Response, rem)
+    assert len(rem) == 0
+
+    # Inner response payload.
+    response.payload = _decode_response_payload(request, response)
+
+    return bytes([]), ResponseAndRequest(request, response)
+
+
+def _decode_response_payload(
+    endpoint: Endpoint,
+    bytes_in: bytes
+) -> typing.Union[object, typing.List[object]]:
+    """Returns a decoded response payload.
+
+    """
+    # Set response payload metadata.
+    try:
+        typedef, is_sequence = RESPONSE_PAYLOAD_TYPE_INFO[endpoint]
+    except KeyError:
+        raise ValueError(f"Undefined endpoint response payload type ({endpoint})")
+
+    if len(bytes_in) == 0:
+        return [] if is_sequence is True else None
+    else:
+        bytes_rem, entity = decode(typedef, bytes_in, is_sequence=is_sequence)
+        assert len(bytes_rem) == 0, "Unconsumed response payload bytes"
+        return  entity
+
+
 
 
 register_decoders({
     (Request, _decode_request),
     (Response, _decode_response),
+    (ResponseAndRequest, _decode_response_and_request),
 })

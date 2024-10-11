@@ -2,6 +2,8 @@ import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.codec.chain import constants
+
+
 from pycspr.api.node.bin.types.chain.complex import \
     ActivationPoint, \
     ActivationPoint_Era, \
@@ -16,6 +18,9 @@ from pycspr.api.node.bin.types.chain.complex import \
     BlockHeader, \
     BlockHeader_V1, \
     BlockHeader_V2, \
+    BlockSignatures, \
+    BlockSignatures_V1, \
+    BlockSignatures_V2, \
     BlockSynchronizerStatus, \
     BlockSynchronizerStatusInfo, \
     ChainspecRawBytes, \
@@ -27,19 +32,22 @@ from pycspr.api.node.bin.types.chain.complex import \
     EraValidatorWeight, \
     NextUpgrade, \
     ProtocolVersion, \
+    RewardedSignatures, \
     SignedBlock, \
+    SingleBlockRewardedSignatures, \
     ValidatorID
 from pycspr.api.node.bin.types.chain.simple import \
     BlockBodyHash, \
     BlockHash, \
     BlockHeight, \
+    ChainNameDigest, \
     DelegationRate, \
     EraID, \
     GasPrice, \
     Motes, \
     TransactionHash, \
     Weight
-from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes
+from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes, Signature
 from pycspr.api.node.bin.types.primitives.numeric import U8, U32, U64
 from pycspr.api.node.bin.types.primitives.time import TimeDifference, Timestamp
 
@@ -85,6 +93,7 @@ def _decode_block(bytes_in: bytes) -> typing.Tuple[bytes, Block]:
 
 def _decode_block_v1(bytes_in: bytes) -> typing.Tuple[bytes, Block_V1]:
     bytes_rem, digest = decode(BlockHash, bytes_in)
+    print(777, digest.hex())
     bytes_rem, header = decode(BlockHeader_V1, bytes_rem)
     bytes_rem, body = decode(BlockBody_V1, bytes_rem)
 
@@ -99,22 +108,18 @@ def _decode_block_v2(bytes_in: bytes) -> typing.Tuple[bytes, Block_V2]:
     return bytes_rem, Block_V2(body, digest, header)
 
 
-def _decode_block_body(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody]:
-    bytes_rem, type_tag = decode(U8, bytes_in)
-    if type_tag == constants.TAG_BLOCK_TYPE_V1:
-        return decode(BlockBody_V1, bytes_rem)
-    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
-        return decode(BlockBody_V2, bytes_rem)
-    else:
-        raise ValueError("Invalid type tag: block body")
-
-
 def _decode_block_body_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody_V1]:
     raise NotImplementedError("_decode_block_body_v1")
 
 
 def _decode_block_body_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockBody_V2]:
-    raise NotImplementedError("_decode_block_body_v2")
+    # TODO: Transactions -> Map: U8 <-> Tx-Hash
+    transactions = dict()
+    bytes_rem, size = decode(U32, bytes_in)
+
+    bytes_rem, rewarded_signatures = decode(RewardedSignatures, bytes_rem)
+
+    return bytes_rem, BlockBody_V2(None, rewarded_signatures, transactions)
 
 
 def _decode_block_header(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader]:
@@ -160,6 +165,37 @@ def _decode_block_header_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockHeader_
         random_bit=random_bit,
         state_root_hash=state_root_hash,
         timestamp=timestamp
+    )
+
+
+def _decode_block_signatures(bytes_in: bytes) -> typing.Tuple[bytes, BlockSignatures]:
+    bytes_rem, type_tag = decode(U8, bytes_in)
+    if type_tag == constants.TAG_BLOCK_TYPE_V1:
+        return _decode_block_signatures_v1(bytes_rem)
+    elif type_tag == constants.TAG_BLOCK_TYPE_V2:
+        return _decode_block_signatures_v2(bytes_rem)
+    else:
+        raise ValueError("Invalid type tag: block signatures")
+
+
+def _decode_block_signatures_v1(bytes_in: bytes) -> typing.Tuple[bytes, BlockSignatures_V1]:
+    raise NotImplementedError("_decode_block_signatures_v1")
+
+
+def _decode_block_signatures_v2(bytes_in: bytes) -> typing.Tuple[bytes, BlockSignatures_V2]:
+    rem, block_hash = decode(BlockHash, bytes_in)
+    rem, block_height = decode(BlockHeight, rem)
+    rem, era_id = decode(EraID, rem)
+    rem, chain_name_hash = decode(ChainNameDigest, rem)
+    print(22, rem.hex())
+    rem, proofs = decode((PublicKey, Signature), rem)
+
+    return rem, BlockSignatures_V2(
+        block_hash=block_hash,
+        block_height=block_height,
+        era_id=era_id,
+        chain_name_hash=chain_name_hash,
+        proofs=proofs,
     )
 
 
@@ -254,10 +290,25 @@ def _decode_protocol_version(bytes_in: bytes) -> typing.Tuple[bytes, ProtocolVer
     return bytes_rem, ProtocolVersion(major, minor, patch)
 
 
-def _decode_signed_block(bytes_in: bytes) -> typing.Tuple[bytes, SignedBlock]:
-    bytes_rem, block = decode(Block, bytes_in)
+def _decode_rewarded_signatures(bytes_in: bytes) -> typing.Tuple[bytes, RewardedSignatures]:
+    f = []
+    bytes_rem, size = decode(U32, bytes_in)
+    for _ in range(size):
+        bytes_rem, sigs = decode(SingleBlockRewardedSignatures, bytes_rem)
+        f.append(sigs)
 
-    raise NotImplementedError(bytes_rem.hex())
+    return bytes_rem, f
+
+
+def _decode_signed_block(bytes_in: bytes) -> typing.Tuple[bytes, SignedBlock]:
+    rem, block = decode(Block, bytes_in)
+    rem, signatures = decode(BlockSignatures, rem)
+
+    return rem, SignedBlock(block, signatures)
+
+
+def _decode_single_block_rewarded_signatures(bytes_in: bytes) -> typing.Tuple[bytes, SingleBlockRewardedSignatures]:
+    return decode(bytes, bytes_in)
 
 
 register_decoders({
@@ -266,12 +317,14 @@ register_decoders({
     (Block, _decode_block),
     (Block_V1, _decode_block_v1),
     (Block_V2, _decode_block_v2),
-    (BlockBody, _decode_block_body),
     (BlockBody_V1, _decode_block_body_v1),
     (BlockBody_V2, _decode_block_body_v2),
     (BlockHeader, _decode_block_header),
     (BlockHeader_V1, _decode_block_header_v1),
     (BlockHeader_V2, _decode_block_header_v2),
+    (BlockSignatures, _decode_block_signatures),
+    (BlockSignatures_V1, _decode_block_signatures_v1),
+    (BlockSignatures_V2, _decode_block_signatures_v2),
     (BlockSynchronizerStatus, _decode_block_synchronizer_status),
     (BlockSynchronizerStatusInfo, _decode_block_synchronizer_status_info),
     (ChainspecRawBytes, _decode_chainspec_raw_bytes),
@@ -283,6 +336,8 @@ register_decoders({
     (EraValidatorWeight, _decode_era_validator_weight),
     (NextUpgrade, _decode_next_upgrade),
     (ProtocolVersion, _decode_protocol_version),
+    (RewardedSignatures, _decode_rewarded_signatures),
     (SignedBlock, _decode_signed_block),
+    (SingleBlockRewardedSignatures, _decode_single_block_rewarded_signatures),
     (ValidatorID, lambda x: decode(PublicKey, x)),
 })
