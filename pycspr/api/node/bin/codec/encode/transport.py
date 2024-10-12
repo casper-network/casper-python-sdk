@@ -1,6 +1,5 @@
 from pycspr.api.node.bin.codec.constants import ENDPOINT_TO_TAGS
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
-from pycspr.api.node.bin.types.chain import BlockID
 from pycspr.api.node.bin.types.primitives import U8, U16, U32
 from pycspr.api.node.bin.types.transport import Request
 

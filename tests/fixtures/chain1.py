@@ -12,6 +12,6 @@ async def BLOCK_HEADER(NODE_BINARY_CLIENT: NodeBinaryClient) -> BlockHeader:
 
     """
     request_id = random.randint(0, int(1e2))
-    response = await NODE_BINARY_CLIENT.get_information_block_header(request_id)
+    response = await NODE_BINARY_CLIENT.information.get_block_header(request_id)
 
     return response.payload

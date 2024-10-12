@@ -7,7 +7,7 @@ from pycspr.api.node.bin.codec.constants import \
     TAGS_TO_ENDPOINTS
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.types.chain import ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U8, U16, U32
+from pycspr.api.node.bin.types.primitives import U8, U16
 from pycspr.api.node.bin.types.transport import \
     Endpoint, \
     ErrorCode, \

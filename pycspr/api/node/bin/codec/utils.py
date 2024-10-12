@@ -43,7 +43,8 @@ def decode(
         else:
             return bytes([]), None
 
-    # Optional values are prefixed with a single byte predicate.
+    # Optional values are prefixed with a single byte predicate - destructure
+    # leading byte and handle accordingly.
     if is_optional is True:
         rem, value = decode(U8, bytes_in)
         if value == 0:
@@ -60,6 +61,7 @@ def decode(
         else:
             raise ValueError("Invalid prefix bit for optional type")
 
+    # Maps: sized sequence of 2-ary tuples.
     if is_map == True:
         assert is_optional == False, "Optionality cannot apply to a mapping"
         (K, V) = typedef
@@ -71,7 +73,7 @@ def decode(
             result[key] = value
         return rem, result
 
-    # Sequences are prefixed with sequence length.
+    # Sequences: sized set of uniform typed entites.
     if is_sequence is True:
         rem, size = decode(U32, bytes_in)
         result = []
@@ -80,7 +82,7 @@ def decode(
             result.append(entity)
         return rem, result
 
-    # Otherwise invoke type decoder.
+    # Entity: invoke type decoder.
     try:
         decoder = _DECODERS[typedef]
     except KeyError:
@@ -104,13 +106,12 @@ def encode(
 
     """
     # Parse optional flag.
-    if is_optional is True:
-        if entity is None or entity == []:
-            return bytes([0])
-        else:
-            bytes_prefix = bytes([1])
-    else:
+    if is_optional is False:
         bytes_prefix = bytes([])
+    elif entity in (None, [], dict()):
+        return bytes([0])
+    else:
+        bytes_prefix = bytes([1])
 
     # Set type def.
     typedef = typedef or type(entity)
@@ -121,6 +122,7 @@ def encode(
     except KeyError:
         raise ValueError(f"Non-encodeable type: {typedef}")
 
+    # Invoke encoder.
     try:
         return bytes_prefix + encoder(entity)
     except Exception as err:

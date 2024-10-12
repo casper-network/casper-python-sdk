@@ -14,7 +14,7 @@ async def test_get_information_reward_by_block_hash(
 ):
     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
 
-    data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
+    data = await NODE_BINARY_CLIENT.information.get_reward_by_block(
         REQUEST_ID,
         block_id=BLOCK_HEADER.parent_hash,
         validator_id=validator_id,
@@ -32,7 +32,7 @@ async def test_get_information_reward_by_block_height(
 ):
     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
 
-    data = await NODE_BINARY_CLIENT.get_information_reward_by_block(
+    data = await NODE_BINARY_CLIENT.information.get_reward_by_block(
         REQUEST_ID,
         block_id=BLOCK_HEADER.height,
         validator_id=validator_id,
@@ -51,7 +51,7 @@ async def test_get_information_reward_by_era(
     _, validator_id = codec.decode(PublicKey, pycctl.accounts.get_validator_public_key_bytes())
     _, delegator_id = codec.decode(PublicKey, pycctl.accounts.get_delegator_public_key_bytes())
 
-    data = await NODE_BINARY_CLIENT.get_information_reward_by_era(
+    data = await NODE_BINARY_CLIENT.information.get_reward_by_era(
         REQUEST_ID,
         era_id=1662,
         # era_id=BLOCK_HEADER.era_id,

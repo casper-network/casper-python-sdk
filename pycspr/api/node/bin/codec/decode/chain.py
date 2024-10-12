@@ -7,16 +7,6 @@ from pycspr.api.node.bin.codec.constants import \
     TAG_BLOCK_TYPE_V2
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
 from pycspr.api.node.bin.types.chain import \
-    BlockBodyHash, \
-    BlockHash, \
-    BlockHeight, \
-    ChainNameDigest, \
-    DelegationRate, \
-    EraID, \
-    GasPrice, \
-    Motes, \
-    Weight
-from pycspr.api.node.bin.types.chain import \
     ActivationPoint, \
     ActivationPoint_Era, \
     ActivationPoint_Genesis, \

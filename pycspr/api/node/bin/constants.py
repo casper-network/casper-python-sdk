@@ -1,3 +1,0 @@
-DEFAULT_HOST: str = "localhost"
-DEFAULT_PORT: int = 7779
-DEFAULT_REQUEST_VERSION: int = 0

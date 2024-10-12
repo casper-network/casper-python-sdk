@@ -4,16 +4,13 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.api.node.bin import constants
 from pycspr.api.node.bin.types.chain import \
     AvailableBlockRange, \
-    BlockID, \
     BlockHeader, \
     BlockSynchronizerStatus, \
     ChainspecRawBytes, \
     ConsensusReward, \
     ConsensusStatus, \
-    EraID, \
     NextUpgrade, \
     ProtocolVersion, \
     SignedBlock
@@ -21,6 +18,12 @@ from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
+
+
+# Default connection settings.
+DEFAULT_HOST: str = "localhost"
+DEFAULT_PORT: int = 7779
+DEFAULT_REQUEST_VERSION: int = 0
 
 
 RequestID = typing.NewType(
@@ -36,13 +39,13 @@ class ConnectionInfo:
     chain_protocol_version: str
 
     # Host address.
-    host: str = constants.DEFAULT_HOST
+    host: str = DEFAULT_HOST
 
     # Host binary port.
-    port: int = constants.DEFAULT_PORT
+    port: int = DEFAULT_PORT
 
     # Version of binary server API.
-    binary_request_version: int = constants.DEFAULT_REQUEST_VERSION
+    binary_request_version: int = DEFAULT_REQUEST_VERSION
 
     def get_url(self, eid: int = 0) -> str:
         """Returns URL for remote BIN server connection.
@@ -75,8 +78,8 @@ class Endpoint(enum.Enum):
     Get_Information_Peers = enum.auto()
     Get_Information_ReactorState = enum.auto()
     Get_Information_Reward = enum.auto()
-
     Get_Information_SignedBlock = enum.auto()
+
     Get_Information_Transaction = enum.auto()
 
     Get_Information_Uptime = enum.auto()
@@ -84,6 +87,7 @@ class Endpoint(enum.Enum):
     Try_SpeculativeExec = enum.auto()
 
 
+# TODO: utilise in proxy error handler
 class ErrorCode(enum.Enum):
     """Enumeration over set of binary response error codes.
 

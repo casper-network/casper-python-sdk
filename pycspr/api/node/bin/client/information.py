@@ -18,28 +18,24 @@ from pycspr.api.node.bin.types.node import \
 from pycspr.api.node.bin.types.crypto import PublicKey
 from pycspr.api.node.bin.types.primitives import U8
 from pycspr.api.node.bin.types.transport import \
-    ConnectionInfo, \
     Endpoint, \
-    Request, \
-    Request as ProxyRequest, \
     RequestID, \
-    Response, \
-    Response as ProxyResponse
+    Response
 
 
-class Client():
-    """Node BINARY server client.
+class InformationClient():
+    """Encapsulates information specifc endpoints.
 
     """
-    def __init__(self, connection_info: ConnectionInfo):
+    def __init__(self, proxy: Proxy):
         """Instance constructor.
 
-        :param connection_info: Information required to connect to a node's BINARY port.
+        :param proxy: Proxy to a node's BINARY port.
 
         """
-        self.proxy = Proxy(connection_info)
+        self.proxy = proxy
 
-    async def get_information_available_block_range(
+    async def get_available_block_range(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -54,7 +50,7 @@ class Client():
             Endpoint.Get_Information_AvailableBlockRange,
         )
 
-    async def get_information_block_header(
+    async def get_block_header(
         self,
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,
@@ -75,7 +71,7 @@ class Client():
             get_request_payload()
         )
 
-    async def get_information_chainspec_rawbytes(
+    async def get_chainspec_rawbytes(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -90,7 +86,7 @@ class Client():
             Endpoint.Get_Information_ChainspecRawBytes,
         )
 
-    async def get_information_consensus_status(
+    async def get_consensus_status(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -105,7 +101,19 @@ class Client():
             Endpoint.Get_Information_ConsensusStatus,
         )
 
-    async def get_information_latest_switch_block_header(
+    async def get_consensus_validator_changes(
+        self,
+        request_id: RequestID,
+    ) -> Response:
+        """Returns set of validator changes within last era of consensus.
+
+        :param request_id: Request correlation identifier.
+        :returns: Set of validator changes within last era of consensus.
+
+        """
+        raise NotImplementedError()
+
+    async def get_latest_switch_block_header(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -120,7 +128,7 @@ class Client():
             Endpoint.Get_Information_LatestSwitchBlockHeader,
         )
 
-    async def get_information_network_name(
+    async def get_network_name(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -135,7 +143,7 @@ class Client():
             Endpoint.Get_Information_NetworkName,
         )
 
-    async def get_information_network_next_upgrade(
+    async def get_network_next_upgrade(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -150,7 +158,7 @@ class Client():
             Endpoint.Get_Information_NextUpgrade,
         )
 
-    async def get_information_node_block_synchronizer_status(
+    async def get_node_block_synchronizer_status(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -165,7 +173,7 @@ class Client():
             Endpoint.Get_Information_BlockSynchronizerStatus,
         )
 
-    async def get_information_node_last_progress(
+    async def get_node_last_progress(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -180,7 +188,7 @@ class Client():
             Endpoint.Get_Information_LastProgress,
         )
 
-    async def get_information_node_peers(
+    async def get_node_peers(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -195,7 +203,7 @@ class Client():
             Endpoint.Get_Information_Peers,
         )
 
-    async def get_information_node_reactor_state(
+    async def get_node_reactor_state(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -210,7 +218,7 @@ class Client():
             Endpoint.Get_Information_ReactorState,
         )
 
-    async def get_information_node_uptime(
+    async def get_node_uptime(
         self,
         request_id: RequestID,
     ) -> Response:
@@ -225,7 +233,7 @@ class Client():
             Endpoint.Get_Information_Uptime,
         )
 
-    async def get_information_reward_by_block(
+    async def get_reward_by_block(
         self,
         request_id: RequestID,
         validator_id: PublicKey,
@@ -243,8 +251,7 @@ class Client():
         """
         raise NotImplementedError()
 
-
-    async def get_information_reward_by_era(
+    async def get_reward_by_era(
         self,
         request_id: RequestID,
         validator_id: PublicKey,
@@ -274,7 +281,7 @@ class Client():
             get_request_payload()
         )
 
-    async def get_information_signed_block(
+    async def get_signed_block(
         self,
         request_id: RequestID,
         block_id: typing.Optional[BlockID] = None,

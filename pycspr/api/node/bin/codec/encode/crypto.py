@@ -1,6 +1,4 @@
-import typing
-
-from pycspr.api.node.bin.codec.utils import encode, register_encoders
+from pycspr.api.node.bin.codec.utils import register_encoders
 from pycspr.api.node.bin.types.crypto import PublicKey
 
 

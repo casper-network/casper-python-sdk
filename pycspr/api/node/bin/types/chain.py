@@ -268,7 +268,7 @@ class BlockSignatures_V1(BlockSignatures):
     block_hash: BlockHash
 
     # Era ID in which this block was created.
-    era_id: EraId
+    era_id: EraID
 
     # Set of proofs over block, i.e. collection of validators' signatures over block hash.
     proofs: typing.Dict[PublicKey, Signature]
@@ -286,7 +286,7 @@ class BlockSignatures_V2(BlockSignatures):
     block_height: BlockHeight
 
     # Era ID in which this block was created.
-    era_id: EraId
+    era_id: EraID
 
     # Digest over block's associated chain name.
     chain_name_hash: ChainNameDigest
@@ -346,7 +346,7 @@ class ConsensusReward():
     amount: Motes
 
     # Era within which reward was paid out.
-    era_id: EraId
+    era_id: EraID
 
     # Rate of delegation to be paid from validaor to delegator.
     delegation_rate: DelegationRate
