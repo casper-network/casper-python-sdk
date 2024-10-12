@@ -11,6 +11,7 @@ from pycspr.api.node.bin.types.chain import \
     ChainspecRawBytes, \
     ConsensusReward, \
     ConsensusStatus, \
+    ConsensusValidatorChanges, \
     NextUpgrade, \
     ProtocolVersion, \
     SignedBlock
@@ -67,9 +68,7 @@ class Endpoint(enum.Enum):
     Get_Information_BlockSynchronizerStatus = enum.auto()
     Get_Information_ChainspecRawBytes = enum.auto()
     Get_Information_ConsensusStatus = enum.auto()
-
     Get_Information_ConsensusValidatorChanges = enum.auto()
-
     Get_Information_LastProgress = enum.auto()
     Get_Information_LatestSwitchBlockHeader = enum.auto()
     Get_Information_NetworkName = enum.auto()
@@ -79,10 +78,9 @@ class Endpoint(enum.Enum):
     Get_Information_ReactorState = enum.auto()
     Get_Information_Reward = enum.auto()
     Get_Information_SignedBlock = enum.auto()
-
-    Get_Information_Transaction = enum.auto()
-
     Get_Information_Uptime = enum.auto()
+    # TODO
+    Get_Information_Transaction = enum.auto()
     Try_AcceptTransaction = enum.auto()
     Try_SpeculativeExec = enum.auto()
 
@@ -261,6 +259,7 @@ RESPONSE_PAYLOAD_TYPE_INFO: typing.Dict[Endpoint, typing.Tuple[type, bool]] = {
     Endpoint.Get_Information_BlockSynchronizerStatus: (BlockSynchronizerStatus, False),
     Endpoint.Get_Information_ChainspecRawBytes: (ChainspecRawBytes, False),
     Endpoint.Get_Information_ConsensusStatus: (ConsensusStatus, False),
+    Endpoint.Get_Information_ConsensusValidatorChanges: (ConsensusValidatorChanges, False),
     Endpoint.Get_Information_LatestSwitchBlockHeader: (BlockHeader, False),
     Endpoint.Get_Information_LastProgress: (NodeLastProgress, False),
     Endpoint.Get_Information_NetworkName: (str, False),

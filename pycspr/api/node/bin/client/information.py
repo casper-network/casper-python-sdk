@@ -105,13 +105,16 @@ class InformationClient():
         self,
         request_id: RequestID,
     ) -> Response:
-        """Returns set of validator changes within last era of consensus.
+        """Returns set of validator changes within eras of consensus.
 
         :param request_id: Request correlation identifier.
-        :returns: Set of validator changes within last era of consensus.
+        :returns: Set of validator changes within eras of consensus.
 
         """
-        raise NotImplementedError()
+        return await self.proxy.get_response(
+            request_id,
+            Endpoint.Get_Information_ConsensusValidatorChanges,
+        )
 
     async def get_latest_switch_block_header(
         self,

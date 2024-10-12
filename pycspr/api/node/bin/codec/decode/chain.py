@@ -31,6 +31,7 @@ from pycspr.api.node.bin.types.chain import \
     ChainspecRawBytes, \
     ConsensusReward, \
     ConsensusStatus, \
+    ConsensusValidatorChanges, \
     DelegationRate, \
     EraEnd_V1, \
     EraEnd_V2, \
@@ -237,6 +238,12 @@ def _decode_consensus_state(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusSta
     return rem, ConsensusStatus(validator_public_key, round_length)
 
 
+def _decode_consensus_validator_changes(bytes_in: bytes) -> typing.Tuple[bytes, ConsensusValidatorChanges]:
+    rem, size = decode(U32, bytes_in)
+    if size == 0:
+        return rem, dict()
+
+
 def _decode_era_end_v1(bytes_in: bytes) -> typing.Tuple[bytes, EraEnd_V1]:
     raise NotImplementedError()
 
@@ -338,6 +345,7 @@ register_decoders({
     (ChainspecRawBytes, _decode_chainspec_raw_bytes),
     (ConsensusReward, _decode_consensus_reward),
     (ConsensusStatus, _decode_consensus_state),
+    (ConsensusValidatorChanges, _decode_consensus_validator_changes),
     (EraEnd_V1, _decode_era_end_v1),
     (EraEnd_V2, _decode_era_end_v2),
     (EraValidatorReward, _decode_era_validator_reward),

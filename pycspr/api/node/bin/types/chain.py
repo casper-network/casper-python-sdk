@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import enum
 import typing
 
 from pycspr.api.node.bin.types.crypto import \
@@ -366,6 +367,15 @@ class ConsensusStatus():
     # Consensus round length (in time).
     round_length: typing.Optional[int]
 
+
+@dataclasses.dataclass
+class ConsensusValidatorChanges():
+    """Set of validator changes within eras of consensus.
+
+    """
+    pass
+
+
 @dataclasses.dataclass
 class EraEnd():
     """End of era information.
@@ -490,6 +500,17 @@ class SignedBlock():
 
     # Set of signatures over block.
     signatures: BlockSignatures
+
+
+class ValidatorChange(enum.Enum):
+    """Enumeration over set of possible validator change reasons.
+
+    """
+    ADDED = enum.auto()
+    REMOVED = enum.auto()
+    BANNED = enum.auto()
+    CANNOT_PROPOSE = enum.auto()
+    SEEN_AS_FAULTY = enum.auto()
 
 
 ValidatorID = typing.NewType(
