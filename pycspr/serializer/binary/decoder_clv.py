@@ -51,7 +51,7 @@ from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URefAccessRights
 from pycspr.types.cl import CLV_URef
-from pycspr.crypto.types import KeyAlgorithm
+from pycspr.type_defs.crypto import KeyAlgorithm
 
 
 def decode(typedef: CLT_Type, bstream: bytes) -> typing.Tuple[bytes, CLV_Value]:

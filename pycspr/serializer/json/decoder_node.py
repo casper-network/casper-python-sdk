@@ -3,11 +3,11 @@ import typing
 from pycspr.serializer.json.decoder_clv import decode as decode_clv
 from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
 from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
-from pycspr.crypto.types import DigestHex
-from pycspr.crypto.types import MerkleProofHex
-from pycspr.crypto.types import PublicKey
-from pycspr.crypto.types import PublicKeyHex
-from pycspr.crypto.types import SignatureHex
+from pycspr.type_defs.crypto import DigestHex
+from pycspr.type_defs.crypto import MerkleProofHex
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.crypto import PublicKeyHex
+from pycspr.type_defs.crypto import SignatureHex
 from pycspr.types.node import Address
 from pycspr.types.node import AccountInfo
 from pycspr.types.node import AccountKey

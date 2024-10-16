@@ -65,15 +65,10 @@ from pycspr.factory import parse_private_key_bytes
 from pycspr.factory import parse_public_key
 from pycspr.factory import parse_public_key_bytes
 
-from pycspr.serializer import to_bytes
-from pycspr.serializer import to_json
-from pycspr.serializer import from_bytes
-from pycspr.serializer import from_json
-
-from pycspr.crypto.types import HashAlgorithm
-from pycspr.crypto.types import KeyAlgorithm
-from pycspr.crypto.types import PublicKey
-from pycspr.crypto.types import PrivateKey
+from pycspr.type_defs.crypto import HashAlgorithm
+from pycspr.type_defs.crypto import KeyAlgorithm
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.crypto import PrivateKey
 
 from pycspr.utils import convertor
 

@@ -1,13 +1,13 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.node import \
+from pycspr.type_defs.node import \
     NodeAddress, \
     NodeId, \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
-from pycspr.api.node.bin.types.primitives import U64, Timestamp
+from pycspr.type_defs.primitives import U64, Timestamp
 
 
 def _decode_node_peer_entry(bytes_in: bytes) -> typing.Tuple[bytes, NodePeerEntry]:

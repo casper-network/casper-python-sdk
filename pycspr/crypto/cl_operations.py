@@ -1,12 +1,12 @@
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
-from pycspr.crypto.types import DigestBytes
-from pycspr.crypto.types import HashAlgorithm
-from pycspr.crypto.types import KeyAlgorithm
-from pycspr.crypto.types import PublicKey
-from pycspr.crypto.types import PrivateKey
-from pycspr.crypto.types import Signature
+from pycspr.type_defs.crypto import DigestBytes
+from pycspr.type_defs.crypto import HashAlgorithm
+from pycspr.type_defs.crypto import KeyAlgorithm
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.crypto import PrivateKey
+from pycspr.type_defs.crypto import Signature
 
 
 # Desired length of hash digest.

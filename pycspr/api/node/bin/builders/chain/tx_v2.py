@@ -1,4 +1,4 @@
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     Motes, \
     PricingMode, \
     TransactionBodyHash, \
@@ -6,7 +6,7 @@ from pycspr.api.node.bin.types.chain import \
     TransactionInitiatorAddress, \
     Transaction_V2 as Transaction, \
     Transaction_V2_Header as Header
-from pycspr.api.node.bin.types.primitives import TimeDifference, Timestamp
+from pycspr.type_defs.primitives import TimeDifference, Timestamp
 from pycspr.api.node.bin.builders.primitives import Timestamp_Builder
 
 

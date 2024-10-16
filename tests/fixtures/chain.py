@@ -1,7 +1,7 @@
 import pytest
 
 from pycspr import NodeBinaryClient
-from pycspr.crypto.types import DigestBytes
+from pycspr.type_defs.crypto import DigestBytes
 from pycspr.types.node import AccountKey
 from pycspr.types.node import Block
 from pycspr.types.node import GlobalStateID

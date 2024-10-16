@@ -1,5 +1,5 @@
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     AvailableBlockRange, \
     Block, \
     BlockHeader, \
@@ -7,8 +7,8 @@ from pycspr.api.node.bin.types.chain import \
     ConsensusStatus, \
     NextUpgrade, \
     SignedBlock
-from pycspr.api.node.bin.types.chain import BlockID
-from pycspr.api.node.bin.types.transport import Response
+from pycspr.type_defs.chain import BlockID
+from pycspr.api.node.bin.type_defs import Response
 
 
 # async def test_get_information_available_block_range(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):

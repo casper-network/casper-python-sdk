@@ -9,9 +9,9 @@ import typing
 import pycspr
 from pycspr.api import NodeSpeculativeRpcClient as NodeClient
 from pycspr.api import NodeSpeculativeRpcConnectionInfo as NodeConnection
-from pycspr.crypto.types import KeyAlgorithm
-from pycspr.crypto.types import PrivateKey
-from pycspr.crypto.types import PublicKey
+from pycspr.type_defs.crypto import KeyAlgorithm
+from pycspr.type_defs.crypto import PrivateKey
+from pycspr.type_defs.crypto import PublicKey
 from pycspr.types.node import Deploy
 
 

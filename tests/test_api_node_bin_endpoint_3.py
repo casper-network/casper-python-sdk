@@ -1,9 +1,9 @@
 import pycctl
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.chain import BlockHeader, ConsensusReward
-from pycspr.crypto.types import PublicKey
-from pycspr.api.node.bin.types.transport import Response
+from pycspr.type_defs.chain import BlockHeader, ConsensusReward
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.api.node.bin.type_defs import Response
 
 
 

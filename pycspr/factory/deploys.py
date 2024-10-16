@@ -2,8 +2,8 @@ import datetime
 import random
 import typing
 
-from pycspr.crypto.types import PrivateKey
-from pycspr.crypto.types import PublicKey
+from pycspr.type_defs.crypto import PrivateKey
+from pycspr.type_defs.crypto import PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body

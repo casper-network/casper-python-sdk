@@ -4,14 +4,14 @@ import typing
 
 from pycspr.crypto import ecc_ed25519 as ed25519
 from pycspr.crypto import ecc_secp256k1 as secp256k1
-from pycspr.crypto.types import DigestBytes
-from pycspr.crypto.types import KeyAlgorithm
-from pycspr.crypto.types import PrivateKeyBase64
-from pycspr.crypto.types import PrivateKeyBytes
-from pycspr.crypto.types import PrivateKeyHex
-from pycspr.crypto.types import PrivateKeyPem
-from pycspr.crypto.types import PublicKeyBytes
-from pycspr.crypto.types import SignatureBytes
+from pycspr.type_defs.crypto import DigestBytes
+from pycspr.type_defs.crypto import KeyAlgorithm
+from pycspr.type_defs.crypto import PrivateKeyBase64
+from pycspr.type_defs.crypto import PrivateKeyBytes
+from pycspr.type_defs.crypto import PrivateKeyHex
+from pycspr.type_defs.crypto import PrivateKeyPem
+from pycspr.type_defs.crypto import PublicKeyBytes
+from pycspr.type_defs.crypto import SignatureBytes
 
 
 # Map: Key algo Type -> Key algo Implementation.

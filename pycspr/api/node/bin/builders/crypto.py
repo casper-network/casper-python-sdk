@@ -1,6 +1,6 @@
 import pathlib
 
-from pycspr.crypto.types import \
+from pycspr.type_defs.crypto import \
     KeyAlgorithm, \
     PrivateKey, \
     PrivateKeyBytes, \

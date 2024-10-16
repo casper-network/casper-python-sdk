@@ -2,13 +2,13 @@ from pycspr.api.node.bin.codec.constants import \
     TAG_BLOCK_HASH, \
     TAG_BLOCK_HEIGHT
 from pycspr.api.node.bin.codec.utils import encode, register_encoders
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     BlockHash, \
     BlockHeight, \
     BlockID, \
     EraID, \
     ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U8, U64
+from pycspr.type_defs.primitives import U8, U64
 
 
 def _encode_block_hash(entity: BlockHash) -> bytes:

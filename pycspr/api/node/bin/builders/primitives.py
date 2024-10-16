@@ -1,6 +1,6 @@
 import datetime as dt
 
-from pycspr.api.node.bin.types.primitives import TimeDifference, Timestamp
+from pycspr.type_defs.primitives import TimeDifference, Timestamp
 
 
 class TimeDifference_Builder():

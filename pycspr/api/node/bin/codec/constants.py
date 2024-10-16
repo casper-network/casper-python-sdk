@@ -1,6 +1,6 @@
 import typing
 
-from pycspr.api.node.bin.types.transport import Endpoint
+from pycspr.api.node.bin.type_defs import Endpoint
 
 # Codec tags: chain.
 TAG_ACTIVATION_POINT_ERA: int = 0

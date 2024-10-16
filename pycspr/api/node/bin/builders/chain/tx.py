@@ -1,9 +1,9 @@
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     Motes, \
     PricingMode_Classic, \
     PricingMode_Fixed, \
     PricingMode_Reserved
-from pycspr.crypto.types import \
+from pycspr.type_defs.crypto import \
     DigestBytes, \
     KeyAlgorithm, \
     PublicKey, \

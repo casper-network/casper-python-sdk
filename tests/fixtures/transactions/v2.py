@@ -1,7 +1,7 @@
 import datetime
 
-from pycspr.api.node.bin.types.chain import Transaction_V2_Header
-from pycspr.api.node.bin.types.primitives import TimeDifference, Timestamp
+from pycspr.type_defs.chain import Transaction_V2_Header
+from pycspr.type_defs.primitives import TimeDifference, Timestamp
 
 
 def get_chain_name() -> str:

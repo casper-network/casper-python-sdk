@@ -24,7 +24,7 @@ from pycspr.types.cl import CLV_Tuple2
 from pycspr.types.cl import CLV_Tuple3
 from pycspr.types.cl import CLV_Unit
 from pycspr.types.cl import CLV_URef
-from pycspr.crypto.types import PublicKey
+from pycspr.type_defs.crypto import PublicKey
 
 
 def yield_cl_values(fixtures: list) -> typing.Iterator[CLV_Value]:

@@ -1,14 +1,14 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.crypto.types import \
+from pycspr.type_defs.crypto import \
     DigestBytes, \
     KeyAlgorithm, \
     PublicKey, \
     PublicKeyBytes, \
     Signature, \
     SignatureBytes
-from pycspr.api.node.bin.types.primitives import U8
+from pycspr.type_defs.primitives import U8
 
 
 def _decode_digest_bytes(bytes_in: bytes) -> typing.Tuple[bytes, bytes]:

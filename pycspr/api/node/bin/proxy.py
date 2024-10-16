@@ -2,9 +2,9 @@ import asyncio
 import typing
 
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.types.chain import ProtocolVersion
-from pycspr.api.node.bin.types.primitives import U32
-from pycspr.api.node.bin.types.transport import \
+from pycspr.type_defs.chain import ProtocolVersion
+from pycspr.type_defs.primitives import U32
+from pycspr.api.node.bin.type_defs import \
     ConnectionInfo, \
     Endpoint, \
     Request, \

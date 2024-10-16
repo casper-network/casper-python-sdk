@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.builders import primitives as builders
-from pycspr.api.node.bin.types.primitives import TimeDifference, Timestamp
+from pycspr.type_defs.primitives import TimeDifference, Timestamp
 from tests.utils import assert_entity
 
 

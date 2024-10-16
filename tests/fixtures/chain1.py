@@ -3,7 +3,7 @@ import random
 import pytest
 
 from pycspr import NodeBinaryClient
-from pycspr.api.node.bin.types.chain import BlockHeader
+from pycspr.type_defs.chain import BlockHeader
 
 
 @pytest.fixture(scope="session")

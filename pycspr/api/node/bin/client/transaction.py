@@ -1,8 +1,8 @@
 import typing
 
 from pycspr.api.node.bin.proxy import Proxy
-from pycspr.api.node.bin.types.chain import Transaction
-from pycspr.api.node.bin.types.transport import \
+from pycspr.type_defs.chain import Transaction
+from pycspr.api.node.bin.type_defs import \
     Endpoint, \
     RequestID, \
     Response

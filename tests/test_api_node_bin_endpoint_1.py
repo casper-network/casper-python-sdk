@@ -1,10 +1,10 @@
 import typing
 
 from pycspr.api.node.bin import Client
-from pycspr.api.node.bin.types.chain import BlockSynchronizerStatus
-from pycspr.api.node.bin.types.node import NodePeerEntry, NodeUptime
-from pycspr.api.node.bin.types.primitives import Timestamp
-from pycspr.api.node.bin.types.transport import Response
+from pycspr.type_defs.chain import BlockSynchronizerStatus
+from pycspr.type_defs.node import NodePeerEntry, NodeUptime
+from pycspr.type_defs.primitives import Timestamp
+from pycspr.api.node.bin.type_defs import Response
 
 
 async def test_get_information_node_block_synchronizer_status(NODE_BINARY_CLIENT: Client, REQUEST_ID: int):

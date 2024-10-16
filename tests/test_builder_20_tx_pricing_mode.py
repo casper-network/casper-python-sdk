@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.builders import chain as builders
-from pycspr.api.node.bin.types.chain import PricingMode
+from pycspr.type_defs.chain import PricingMode
 from tests.utils import assert_entity, test_data_generator as tdgen
 
 

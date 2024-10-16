@@ -8,7 +8,7 @@ from pycspr.types.cl import CLV_PublicKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U64
 from pycspr.types.cl import CLT_ByteArray
-from pycspr.crypto.types import DigestBytes
+from pycspr.type_defs.crypto import DigestBytes
 from pycspr.types.node import Block
 from pycspr.types.node import BlockHeader
 from pycspr.types.node import DeployExecutableItem

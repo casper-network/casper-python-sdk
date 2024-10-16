@@ -6,7 +6,7 @@ from pycspr.api.node.bin.codec.constants import \
     TAG_BLOCK_TYPE_V1, \
     TAG_BLOCK_TYPE_V2
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     ActivationPoint, \
     ActivationPoint_Era, \
     ActivationPoint_Genesis, \
@@ -50,8 +50,8 @@ from pycspr.api.node.bin.types.chain import \
     Transaction_V2, \
     ValidatorID, \
     Weight
-from pycspr.crypto.types import DigestBytes, PublicKey, PublicKeyBytes, Signature
-from pycspr.api.node.bin.types.primitives import U8, U32, U64, U512, TimeDifference, Timestamp
+from pycspr.type_defs.crypto import DigestBytes, PublicKey, PublicKeyBytes, Signature
+from pycspr.type_defs.primitives import U8, U32, U64, U512, TimeDifference, Timestamp
 
 
 def _decode_activation_point(bytes_in: bytes) -> typing.Tuple[bytes, ActivationPoint]:

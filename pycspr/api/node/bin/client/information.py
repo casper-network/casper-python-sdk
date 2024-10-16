@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.node.bin import codec
 from pycspr.api.node.bin.proxy import Proxy
-from pycspr.api.node.bin.types.chain import \
+from pycspr.type_defs.chain import \
     AvailableBlockRange, \
     BlockID, \
     BlockHeader, \
@@ -11,13 +11,13 @@ from pycspr.api.node.bin.types.chain import \
     ConsensusStatus, \
     EraID, \
     NextUpgrade
-from pycspr.api.node.bin.types.node import \
+from pycspr.type_defs.node import \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
-from pycspr.crypto.types import PublicKey
-from pycspr.api.node.bin.types.primitives import U8
-from pycspr.api.node.bin.types.transport import \
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.primitives import U8
+from pycspr.api.node.bin.type_defs import \
     Endpoint, \
     RequestID, \
     Response

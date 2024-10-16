@@ -14,9 +14,9 @@ from pycspr.api.node.rest.types import ValidatorStatusChangeType
 
 from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
 from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
-from pycspr.crypto.types import DigestHex
-from pycspr.crypto.types import PublicKey
-from pycspr.crypto.types import PublicKeyHex
+from pycspr.type_defs.crypto import DigestHex
+from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.crypto import PublicKeyHex
 from pycspr.utils import convertor
 
 

@@ -4,8 +4,8 @@ import typing
 
 from pycspr.crypto import get_account_hash
 from pycspr.crypto import get_account_key
-from pycspr.crypto.types import KeyAlgorithm
-from pycspr.crypto.types import PublicKey
+from pycspr.type_defs.crypto import KeyAlgorithm
+from pycspr.type_defs.crypto import PublicKey
 
 
 class CLT_TypeKey(enum.Enum):

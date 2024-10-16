@@ -13,7 +13,7 @@ _PATH_TO_CCTL_ASSETS = pathlib.Path(os.getenv("CCTL")) / "assets"
 
 
 @pytest.fixture(scope="session")
-def a_test_account(crypto_key_pairs) -> pycspr.crypto.types.PrivateKey:
+def a_test_account(crypto_key_pairs) -> pycspr.type_defs.crypto.PrivateKey:
     """Returns a test account key.
 
     """
@@ -30,7 +30,7 @@ def test_account_1():
     path = _PATH_TO_ACCOUNTS / "account-1" / "secret_key.pem"
     (pvk, pbk) = pycspr.get_key_pair_from_pem_file(path)
 
-    return pycspr.crypto.types.PrivateKey(
+    return pycspr.type_defs.crypto.PrivateKey(
         pbk=pbk,
         pvk=pvk,
         algo=pycspr.KeyAlgorithm.ED25519
@@ -45,7 +45,7 @@ def test_account_2():
     path = _PATH_TO_ACCOUNTS / "account-2" / "secret_key.pem"
     (pvk, pbk) = pycspr.get_key_pair_from_pem_file(path)
 
-    return pycspr.crypto.types.PrivateKey(
+    return pycspr.type_defs.crypto.PrivateKey(
         pbk=pbk,
         pvk=pvk,
         algo=pycspr.KeyAlgorithm.SECP256K1

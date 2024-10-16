@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.builders import crypto as builders
-from pycspr.crypto.types import KeyAlgorithm, PublicKey, PublicKeyBytes
+from pycspr.type_defs.crypto import KeyAlgorithm, PublicKey, PublicKeyBytes
 from tests.utils import assert_entity
 
 

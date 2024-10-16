@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.primitives import \
+from pycspr.type_defs.primitives import \
     U8, U16, U32, U64, U128, U256, U512, \
     TimeDifference, Timestamp
 

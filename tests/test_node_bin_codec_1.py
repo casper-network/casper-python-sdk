@@ -7,7 +7,7 @@ RES = "b403000000003a0000000000020000000000000000000000000000010100220000000100c
 
 import pycspr
 from pycspr.api.node.bin import codec
-from pycspr.api.node.bin.types.transport import \
+from pycspr.api.node.bin.type_defs import \
     Request, \
     Response
 
