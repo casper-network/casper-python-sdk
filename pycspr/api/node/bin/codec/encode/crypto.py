@@ -1,5 +1,5 @@
 from pycspr.api.node.bin.codec.utils import register_encoders
-from pycspr.api.node.bin.types.crypto import PublicKey
+from pycspr.crypto.types import PublicKey
 
 
 register_encoders({

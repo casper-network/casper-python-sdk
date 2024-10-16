@@ -1,9 +1,9 @@
 import pathlib
 import typing
 
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import PublicKey
 from pycspr.crypto import get_key_pair_from_bytes
 from pycspr.crypto import get_key_pair_from_pem_file
 
@@ -66,7 +66,10 @@ def parse_public_key(fpath: pathlib.Path) -> PublicKey:
     with open(fpath) as fstream:
         account_key = bytes.fromhex(fstream.read())
 
-    return PublicKey.from_bytes(account_key)
+    return PublicKey(
+        KeyAlgorithm(account_key[0]),
+        account_key[1:]
+    )
 
 
 def parse_public_key_bytes(

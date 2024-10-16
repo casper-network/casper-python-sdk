@@ -1,11 +1,14 @@
-# Default deploy time to live.
-DEFAULT_DEPLOY_TTL = "5m"
+# Default tx time to live.
+DEFAULT_TX_TTL = "5m"
 
-# Default deploy gas price.
-DEFAULT_GAS_PRICE = 1
+# Default tx gas price.
+DEFAULT_TX_GAS_PRICE = 1
+
+# Default tx gas price tolerance.
+DEFAULT_TX_GAS_PRICE_TOLERANCE = 1
 
 # Maximum deploy time to live = 2 hours.
-DEPLOY_TTL_MS_MAX = 1000 * 60 * 60 * 2
+TX_MAX_TTL_MS = 1000 * 60 * 60 * 2
 
 # Maximum value of a transfer ID.
 MAX_TRANSFER_ID = (2 ** 63) - 1

@@ -6,8 +6,8 @@ import pathlib
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PrivateKey
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PrivateKey
 from pycspr.types.cl import CLV_String
 from pycspr.types.cl import CLV_U8
 from pycspr.types.cl import CLV_U256

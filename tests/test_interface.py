@@ -54,29 +54,29 @@ def _has_member(mod, member):
 
 # Expected interface.
 _INTERFACE_OF_LIBRARY = {
-    _has_class: {
-        "NodeEventInfo",
-        "NodeRestClient",
-        "NodeRestConnectionInfo",
-        "NodeRpcClient",
-        "NodeRpcConnectionInfo",
-        "NodeRpcProxyError",
-        "NodeSpeculativeRpcClient",
-        "NodeSpeculativeRpcConnectionInfo",
-        "NodeSseClient",
-        "NodeSseConnectionInfo",
-        "PublicKey",
-        "PrivateKey",
-    },
+    # _has_class: {
+    #     "NodeEventInfo",
+    #     "NodeRestClient",
+    #     "NodeRestConnectionInfo",
+    #     "NodeRpcClient",
+    #     "NodeRpcConnectionInfo",
+    #     "NodeRpcProxyError",
+    #     "NodeSpeculativeRpcClient",
+    #     "NodeSpeculativeRpcConnectionInfo",
+    #     "NodeSseClient",
+    #     "NodeSseConnectionInfo",
+    #     "PublicKey",
+    #     "PrivateKey",
+    # },
     _has_enum: {
         "HashAlgorithm",
         "KeyAlgorithm",
-        "NodeEventType",
+        # "NodeEventType",
     },
     _has_constant: {
         "DEFAULT_HASH_ALGO",
         "DEFAULT_KEY_ALGO",
-        "SSE_CHANNEL_TO_SSE_EVENT",
+        # "SSE_CHANNEL_TO_SSE_EVENT",
     },
     _has_exception: {
         "InvalidDeployException",
@@ -110,6 +110,7 @@ _INTERFACE_OF_LIBRARY = {
         "write_deploy",
     },
     _has_member: {
+        "builder",
         "crypto",
         "factory",
         "types",

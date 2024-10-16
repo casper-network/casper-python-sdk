@@ -1,7 +1,7 @@
 import pytest
 
 from pycspr import NodeRpcClient
-from pycspr.types.crypto import DigestBytes
+from pycspr.crypto.types import DigestBytes
 from pycspr.types.node import AccountKey
 from pycspr.types.node import Block
 from pycspr.types.node import GlobalStateID

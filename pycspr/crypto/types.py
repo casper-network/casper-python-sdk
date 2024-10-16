@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 import enum
 import typing
@@ -5,12 +7,12 @@ import typing
 
 # Cryptographic fingerprint of data.
 DigestBytes = typing.NewType(
-    "Cryptographic fingerprint of data.", bytes
+    "32 byte cryptographic fingerprint over data.", bytes
     )
 
 # Hexadecimal encoded crryptographic fingerprint of data.
 DigestHex = typing.NewType(
-    "Cryptographic fingerprint of data.", str
+    "64 char cryptographic fingerprint of data.", str
     )
 
 # Cryptographic proof over a merkle trie.
@@ -63,7 +65,6 @@ SignatureHex = typing.NewType(
     "Hexadecimal encoded cryptographic signature over data.", str
     )
 
-
 class HashAlgorithm(enum.Enum):
     """Enumeration over set of supported hash algorithms.
 
@@ -76,6 +77,7 @@ class KeyAlgorithm(enum.Enum):
     """Enumeration over set of supported key algorithms.
 
     """
+    SYSTEM = 0
     ED25519 = 1
     SECP256K1 = 2
 
@@ -91,36 +93,20 @@ class PublicKey():
     # Public key as raw bytes.
     pbk: PublicKeyBytes
 
-    @property
-    def account_key(self) -> bytes:
-        return bytes([self.algo.value]) + self.pbk
+    def __eq__(self, other: "PublicKey") -> bool:
+        if isinstance(other, PublicKey):
+            return self.algo == other.algo and self.pbk == other.pbk
+        else:
+            return False
 
-    def to_bytes(self) -> PublicKeyBytes:
-        return bytes([self.algo.value]) + self.pbk
-
-    def to_hex(self) -> PublicKeyHex:
-        return self.to_bytes().hex()
-
-    def to_account_hash(self) -> bytes:
-        """Returns on-chain account address.
-
-        """
-        from pycspr.crypto.cl_operations import get_account_hash
-
-        return get_account_hash(self.account_key)
-
-    def __eq__(self, other) -> bool:
-        return self.algo == other.algo and self.pbk == other.pbk
-
-    def __hash__(self) -> bytes:
-        return hash(self.account_key)
+    def __hash__(self) -> int:
+        return hash(self.pbk)
 
     def __len__(self) -> int:
         return len(self.pbk) + 1
 
-    @staticmethod
-    def from_bytes(account_key: bytes) -> "PublicKey":
-        return PublicKey(KeyAlgorithm(account_key[0]), account_key[1:])
+    def __str__(self) -> str:
+        return f"{self.algo.name}::{self.pbk.hex()}"
 
 
 @dataclasses.dataclass
@@ -128,23 +114,19 @@ class PrivateKey:
     """Encapsulates information associated with an account's private key.
 
     """
+    # Algorithm used to generate ECC key pair.
+    algo: KeyAlgorithm
+
     # Private key as bytes - sensitive material !
     pvk: PrivateKeyBytes
 
     # Public key as bytes.
     pbk: PublicKeyBytes
 
-    # Algorithm used to generate ECC key pair.
-    algo: KeyAlgorithm = KeyAlgorithm.ED25519
-
-    @property
-    def account_key(self) -> bytes:
-        return bytes([self.algo.value]) + self.pbk
-
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.pvk == other.pvk and self.pbk == other.pbk
 
-    def __hash__(self) -> bytes:
+    def __hash__(self) -> int:
         return hash(self.pvk)
 
     def __len__(self) -> int:
@@ -168,27 +150,14 @@ class Signature():
     # Signature as raw bytes.
     sig: SignatureBytes
 
-    def to_bytes(self) -> SignatureBytes:
-        return bytes([self.algo.value]) + self.sig
-
-    def to_hex(self) -> SignatureHex:
-        return self.to_bytes().hex()
-
     def __eq__(self, other) -> bool:
         return self.algo == other.algo and self.sig == other.sig
 
-    def __hash__(self) -> bytes:
+    def __hash__(self) -> int:
         return hash(self.sig)
 
     def __len__(self) -> int:
         return len(self.sig) + 1
-
-    @staticmethod
-    def from_bytes(encoded: bytes) -> "Signature":
-        return Signature(
-            algo=KeyAlgorithm(encoded[0]),
-            sig=encoded[1:]
-            )
 
 
 TYPESET: set = {

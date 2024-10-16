@@ -45,9 +45,12 @@ from pycspr.api.node.bin.types.chain import \
     RewardedSignatures, \
     SignedBlock, \
     SingleBlockRewardedSignatures, \
+    Transaction, \
+    Transaction_V1, \
+    Transaction_V2, \
     ValidatorID, \
     Weight
-from pycspr.api.node.bin.types.crypto import DigestBytes, PublicKey, PublicKeyBytes, Signature
+from pycspr.crypto.types import DigestBytes, PublicKey, PublicKeyBytes, Signature
 from pycspr.api.node.bin.types.primitives import U8, U32, U64, U512, TimeDifference, Timestamp
 
 

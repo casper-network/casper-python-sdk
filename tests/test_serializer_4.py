@@ -1,6 +1,6 @@
 import pycspr
 from pycspr import serializer
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import PublicKey
 
 
 def test_that_node_standard_payment_serialises_to_and_from_bytes(deploys_1):

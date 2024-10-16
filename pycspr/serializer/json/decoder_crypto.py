@@ -1,18 +1,18 @@
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import DigestBytes
-from pycspr.types.crypto import DigestHex
-from pycspr.types.crypto import MerkleProofBytes
-from pycspr.types.crypto import MerkleProofHex
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyBytes
-from pycspr.types.crypto import PublicKeyHex
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import PrivateKeyBytes
-from pycspr.types.crypto import PrivateKeyHex
-from pycspr.types.crypto import Signature
-from pycspr.types.crypto import SignatureBytes
-from pycspr.types.crypto import SignatureHex
-from pycspr.types.crypto import TYPESET
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import DigestBytes
+from pycspr.crypto.types import DigestHex
+from pycspr.crypto.types import MerkleProofBytes
+from pycspr.crypto.types import MerkleProofHex
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PublicKeyBytes
+from pycspr.crypto.types import PublicKeyHex
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import PrivateKeyBytes
+from pycspr.crypto.types import PrivateKeyHex
+from pycspr.crypto.types import Signature
+from pycspr.crypto.types import SignatureBytes
+from pycspr.crypto.types import SignatureHex
+from pycspr.crypto.types import TYPESET
 
 
 def decode(typedef: object, encoded: dict) -> object:

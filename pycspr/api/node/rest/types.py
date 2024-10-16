@@ -4,8 +4,8 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.types.crypto import DigestBytes
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import DigestBytes
+from pycspr.crypto.types import PublicKey
 
 
 BlockHash = typing.NewType(

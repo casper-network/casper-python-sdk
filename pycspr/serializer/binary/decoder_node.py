@@ -8,9 +8,9 @@ from pycspr.types.cl import CLT_U64
 from pycspr.types.cl import CLT_List
 from pycspr.types.cl import CLT_PublicKey
 from pycspr.types.cl import CLT_String
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import Signature
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import Signature
 from pycspr.types.node import Deploy
 from pycspr.types.node import DeployApproval
 from pycspr.types.node import DeployArgument

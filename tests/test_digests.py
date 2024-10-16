@@ -1,5 +1,5 @@
 import pycspr
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import PublicKey
 
 
 def test_derivation_of_a_deploy_body_hash(deploys_1):

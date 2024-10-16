@@ -1,12 +1,12 @@
 from pycspr.crypto.ecc import get_signature
 from pycspr.crypto.ecc import is_signature_valid
 from pycspr.crypto.hashifier import get_hash
-from pycspr.types.crypto import DigestBytes
-from pycspr.types.crypto import HashAlgorithm
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import Signature
+from pycspr.crypto.types import DigestBytes
+from pycspr.crypto.types import HashAlgorithm
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import Signature
 
 
 # Desired length of hash digest.
@@ -35,6 +35,10 @@ def get_account_hash(account_key: bytes) -> bytes:
         public_key
 
     return get_hash(as_bytes, _DIGEST_LENGTH, HashAlgorithm.BLAKE2B)
+
+
+# Synonym to correct domain pollution.
+get_account_address = get_account_hash
 
 
 def get_account_key(algo: KeyAlgorithm, pbk: bytes) -> bytes:

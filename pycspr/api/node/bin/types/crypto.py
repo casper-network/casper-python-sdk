@@ -4,6 +4,7 @@ import dataclasses
 import enum
 import typing
 
+
 # Cryptographic fingerprint of data.
 DigestBytes = typing.NewType(
     "32 byte cryptographic fingerprint over data.", bytes

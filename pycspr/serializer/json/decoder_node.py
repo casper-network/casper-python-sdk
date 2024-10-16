@@ -3,11 +3,11 @@ import typing
 from pycspr.serializer.json.decoder_clv import decode as decode_clv
 from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
 from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
-from pycspr.types.crypto import DigestHex
-from pycspr.types.crypto import MerkleProofHex
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyHex
-from pycspr.types.crypto import SignatureHex
+from pycspr.crypto.types import DigestHex
+from pycspr.crypto.types import MerkleProofHex
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PublicKeyHex
+from pycspr.crypto.types import SignatureHex
 from pycspr.types.node import Address
 from pycspr.types.node import AccountInfo
 from pycspr.types.node import AccountKey
@@ -341,8 +341,8 @@ def _decode_deploy_header(encoded: dict) -> DeployHeader:
 
 def _decode_deploy_time_to_live(encoded: str) -> DeployTimeToLive:
     as_ms = convertor.ms_from_humanized_time_interval(encoded)
-    if as_ms > constants.DEPLOY_TTL_MS_MAX:
-        raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.DEPLOY_TTL_MS_MAX}")
+    if as_ms > constants.TX_MAX_TTL_MS:
+        raise ValueError(f"Invalid deploy ttl. Maximum (ms)={constants.TX_MAX_TTL_MS}")
 
     return DeployTimeToLive(as_ms, encoded)
 

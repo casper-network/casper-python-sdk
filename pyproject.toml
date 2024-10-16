@@ -34,6 +34,7 @@ pytest-asyncio = "^0.23.7"
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
 pytest = "^8.0.0"
+mimesis = "^18.0.0"
 
 [tool.poetry.group.docs]
 optional = true

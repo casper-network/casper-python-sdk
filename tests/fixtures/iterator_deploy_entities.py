@@ -4,8 +4,8 @@ import pytest
 
 import pycspr
 from pycspr.types.cl import CLV_U64
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import Signature
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import Signature
 from pycspr.types.node import DeployApproval
 from pycspr.types.node import DeployArgument
 from pycspr.types.node import DeployOfModuleBytes

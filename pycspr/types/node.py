@@ -6,12 +6,12 @@ import typing
 
 from pycspr import crypto
 from pycspr.types.cl import CLV_Value
-from pycspr.types.crypto import DigestBytes
-from pycspr.types.crypto import MerkleProofBytes
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyBytes
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import Signature
+from pycspr.crypto.types import DigestBytes
+from pycspr.crypto.types import MerkleProofBytes
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PublicKeyBytes
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import Signature
 
 
 AccountKey = typing.NewType(

@@ -2,8 +2,8 @@ import datetime
 import random
 import typing
 
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
 from pycspr.factory.digests import create_digest_of_deploy
 from pycspr.factory.digests import create_digest_of_deploy_body
@@ -121,9 +121,9 @@ def create_deploy_parameters(
     account: typing.Union[PrivateKey, PublicKey],
     chain_name: str,
     dependencies: typing.List[bytes] = [],
-    gas_price: int = constants.DEFAULT_GAS_PRICE,
+    gas_price: int = constants.DEFAULT_TX_GAS_PRICE,
     timestamp: datetime.datetime = None,
-    ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_DEPLOY_TTL
+    ttl: typing.Union[str, DeployTimeToLive] = constants.DEFAULT_TX_TTL
 ) -> DeployParameters:
     """Returns header information associated with a deploy.
 
@@ -150,16 +150,16 @@ def create_deploy_parameters(
     )
 
 
-def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_DEPLOY_TTL) -> DeployTimeToLive:
+def create_deploy_ttl(humanized_ttl: str = constants.DEFAULT_TX_TTL) -> DeployTimeToLive:
     """Returns a deploy's time to live after which it will not longer be accepted by a node.
 
     :param humanized_ttl: A humanized ttl, e.g. 2 hours.
 
     """
     as_milliseconds = convertor.ms_from_humanized_time_interval(humanized_ttl)
-    if as_milliseconds > constants.DEPLOY_TTL_MS_MAX:
+    if as_milliseconds > constants.TX_MAX_TTL_MS:
         raise ValueError(
-            f"Invalid deploy ttl. Max={constants.DEPLOY_TTL_MS_MAX}ms. Actual={humanized_ttl}."
+            f"Invalid deploy ttl. Max={constants.TX_MAX_TTL_MS}ms. Actual={humanized_ttl}."
             )
 
     return DeployTimeToLive(

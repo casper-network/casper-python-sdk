@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.bin.codec.utils import decode, register_decoders
-from pycspr.api.node.bin.types.crypto import \
+from pycspr.crypto.types import \
     DigestBytes, \
     KeyAlgorithm, \
     PublicKey, \

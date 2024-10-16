@@ -4,7 +4,6 @@ from pycspr.serializer.json import decoder_crypto
 from pycspr.serializer.json import decoder_node
 from pycspr.types import TYPESET_CLT
 from pycspr.types import TYPESET_CLV
-from pycspr.types import TYPESET_CRYPTO
 from pycspr.types import TYPESET_NODE
 
 
@@ -20,8 +19,6 @@ def decode(typedef: object, encoded: dict) -> object:
         return decoder_clt.decode(encoded)
     elif typedef in TYPESET_CLV:
         return decoder_clv.decode(encoded)
-    elif typedef in TYPESET_CRYPTO:
-        return decoder_crypto.decode(typedef, encoded)
     elif typedef in TYPESET_NODE:
         return decoder_node.decode(typedef, encoded)
     else:

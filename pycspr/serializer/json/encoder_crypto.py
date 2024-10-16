@@ -1,6 +1,6 @@
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PublicKeyHex
-from pycspr.types.crypto import Signature
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PublicKeyHex
+from pycspr.crypto.types import Signature
 
 
 def encode(entity: object) -> dict:

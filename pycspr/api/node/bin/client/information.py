@@ -15,7 +15,7 @@ from pycspr.api.node.bin.types.node import \
     NodeLastProgress, \
     NodePeerEntry, \
     NodeUptime
-from pycspr.api.node.bin.types.crypto import PublicKey
+from pycspr.crypto.types import PublicKey
 from pycspr.api.node.bin.types.primitives import U8
 from pycspr.api.node.bin.types.transport import \
     Endpoint, \
@@ -24,7 +24,7 @@ from pycspr.api.node.bin.types.transport import \
 
 
 class InformationClient():
-    """Encapsulates information specifc endpoints.
+    """Encapsulates information specific endpoints.
 
     """
     def __init__(self, proxy: Proxy):

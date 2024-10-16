@@ -1,6 +1,6 @@
 import pycspr
 from pycspr import serializer
-from pycspr.types.crypto import PublicKeyBytes
+from pycspr.crypto.types import PublicKeyBytes
 
 
 def test_that_node_standard_transfer_serialises_to_and_from_json(

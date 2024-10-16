@@ -7,9 +7,9 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PrivateKey
-from pycspr.types.crypto import PublicKey
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PrivateKey
+from pycspr.crypto.types import PublicKey
 from pycspr.types.cl import CLV_ByteArray
 from pycspr.types.cl import CLV_U256
 from pycspr.types.node import Deploy

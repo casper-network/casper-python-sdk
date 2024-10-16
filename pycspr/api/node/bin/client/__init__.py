@@ -1,4 +1,5 @@
 from pycspr.api.node.bin.client.information import InformationClient
+from pycspr.api.node.bin.client.transaction import TransactionClient
 from pycspr.api.node.bin.proxy import Proxy
 from pycspr.api.node.bin.types.transport import ConnectionInfo
 
@@ -15,3 +16,4 @@ class Client():
         """
         proxy = Proxy(connection_info)
         self.information = InformationClient(proxy)
+        self.tx = TransactionClient(proxy)

@@ -5,7 +5,7 @@ from pycspr import serializer
 from pycspr.api.sidecar.rpc.connection import ConnectionInfo
 from pycspr.api.sidecar.rpc.proxy import Proxy
 from pycspr.types.cl import CLV_Key
-from pycspr.types.crypto import DigestBytes
+from pycspr.crypto.types import DigestBytes
 from pycspr.types.node import Address
 from pycspr.types.node import AccountInfo
 from pycspr.types.node import AuctionState

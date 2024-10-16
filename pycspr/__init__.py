@@ -76,10 +76,10 @@ from pycspr.serializer import to_json
 from pycspr.serializer import from_bytes
 from pycspr.serializer import from_json
 
-from pycspr.types.crypto import HashAlgorithm
-from pycspr.types.crypto import KeyAlgorithm
-from pycspr.types.crypto import PublicKey
-from pycspr.types.crypto import PrivateKey
+from pycspr.crypto.types import HashAlgorithm
+from pycspr.crypto.types import KeyAlgorithm
+from pycspr.crypto.types import PublicKey
+from pycspr.crypto.types import PrivateKey
 
 from pycspr.utils import convertor
 
