@@ -1,3 +1,4 @@
+from pycspr.type_builders.builders.chain.accounts import AccountAddress_Builder
 from pycspr.type_defs.chain import \
     Motes, \
     PricingMode_Classic, \
@@ -9,7 +10,6 @@ from pycspr.type_defs.crypto import \
     PublicKey, \
     PublicKeyBytes
 from pycspr.utils.constants import DEFAULT_TX_GAS_PRICE_TOLERANCE
-from pycspr.api.node.bin.builders.chain.accounts import AccountAddress_Builder
 
 
 class InitiatorAddress_Builder():
