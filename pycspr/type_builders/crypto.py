@@ -6,7 +6,9 @@ from pycspr.type_defs.crypto import \
     PrivateKeyBytes, \
     PublicKey, \
     PublicKeyBytes
-from pycspr.crypto import get_key_pair_from_bytes, get_key_pair_from_pem_file
+from pycspr.crypto import \
+    get_key_pair_from_bytes, \
+    get_key_pair_from_pem_file
 
 
 class PrivateKey_Builder():

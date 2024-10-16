@@ -1,5 +1,5 @@
-from pycspr.api.node.bin.builders import primitives as builders
-from pycspr.type_defs.primitives import TimeDifference, Timestamp
+import pycspr.type_builders.primitives as builders
+import pycspr.type_defs.primitives as types
 from tests.utils import assert_entity
 
 
@@ -8,7 +8,7 @@ async def test_build_time_difference():
         builders.TimeDifference_Builder()
             .set_delta(int(1e9))
             .build(),
-        TimeDifference
+        types.TimeDifference
     )
 
 
@@ -17,5 +17,5 @@ async def test_build_timestamp():
         builders.Timestamp_Builder()
             .set_ts(1e9)
             .build(),
-        Timestamp
+        types.Timestamp
     )

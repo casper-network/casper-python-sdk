@@ -1,7 +1,7 @@
 import pathlib
 
 import pycspr
-from pycspr.api.node.bin.builders import crypto as builders
+from pycspr.type_builders import crypto as builders
 from pycspr.type_defs.crypto import \
     KeyAlgorithm, \
     PrivateKey, \

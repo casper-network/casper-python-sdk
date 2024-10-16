@@ -1,7 +1,7 @@
 import random
 
 from pycspr.api.node.bin.builders.chain.tx_v2 import HeaderBuilder
-from pycspr.api.node.bin.builders.primitives import TimeDifference_Builder, Timestamp_Builder
+from pycspr.type_builders.primitives import TimeDifference_Builder, Timestamp_Builder
 from pycspr.type_defs.chain import Transaction_V2_Header as Tx_Header
 from tests.utils import test_data_generator as tdgen
 
