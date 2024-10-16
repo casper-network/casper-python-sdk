@@ -4,7 +4,7 @@ import typing
 import requests
 import sseclient
 
-from pycspr.api.node.sse.types import \
+from pycspr.api.node.sse.type_defs import \
     ConnectionInfo, \
     EventInfo, \
     EventType

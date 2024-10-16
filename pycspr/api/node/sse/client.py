@@ -2,7 +2,7 @@ import typing
 
 from pycspr.api.node.sse.proxy import \
     Proxy
-from pycspr.api.node.sse.types import \
+from pycspr.api.node.sse.type_defs import \
     ConnectionInfo, \
     EventInfo, \
     EventType

@@ -1,7 +1,7 @@
 import typing
 
 from pycspr.api.node.rest import Client
-from pycspr.api.node.rest.types import NodeStatus
+from pycspr.api.node.rest.type_defs import NodeStatus
 from pycspr.types.node import ValidatorChanges
 from pycspr.types.node import ValidatorStatusChange
 

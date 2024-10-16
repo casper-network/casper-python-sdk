@@ -4,34 +4,15 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.type_defs.crypto import DigestBytes
-from pycspr.type_defs.crypto import PublicKey
-
-
-BlockHash = typing.NewType(
-    "Digest over a block.", DigestBytes
-    )
-
-BlockHeight = typing.NewType(
-    "Ordinal identifier of a block measured by how many finalised blocks precede it.", int
-)
-
-EraID = typing.NewType(
-    "Identifier of an era in chain time.", int
-    )
-
-StateRootHash = typing.NewType(
-    "Root digest of a node's global state.", DigestBytes
-    )
-
-
-class ReactorState(enum.Enum):
-    INITIALIZE = "Initialize"
-    CATCH_UP = "CatchUp"
-    UPGRADING = "Upgrading"
-    KEEP_UP = "KeepUp"
-    VALIDATE = "Validate"
-    SHUTDOWN_FOR_UPGRADE = "ShutdownForUpgrade"
+from pycspr.type_defs.crypto import DigestBytes, PublicKey
+from pycspr.type_defs.chain import \
+    AvailableBlockRange as BlockRange, \
+    BlockHash, \
+    BlockHeight, \
+    EraID, \
+    StateRootHash
+from pycspr.type_defs.node import ReactorState
+from pycspr.type_defs.primitives import Timestamp
 
 
 class ValidatorStatusChangeType(enum.Enum):
@@ -40,12 +21,6 @@ class ValidatorStatusChangeType(enum.Enum):
     BANNED = "Banned"
     CANNOT_PROPOSE = "CannotPropose"
     SEEN_AS_FAULTY = "SeenAsFaulty"
-
-
-@dataclasses.dataclass
-class BlockRange():
-    low: int
-    high: int
 
 
 @dataclasses.dataclass
@@ -87,11 +62,6 @@ class NodeStatus():
     round_length: str
     starting_state_root_hash: StateRootHash
     uptime: str
-
-
-@dataclasses.dataclass
-class Timestamp():
-    value: float
 
 
 @dataclasses.dataclass

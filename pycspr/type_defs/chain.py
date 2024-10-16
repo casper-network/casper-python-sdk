@@ -59,6 +59,10 @@ Motes = typing.NewType(
     "Basic unit of crypto economic system.", int
     )
 
+StateRootHash = typing.NewType(
+    "Root digest of a node's global state.", DigestBytes
+    )
+
 TransactionBodyHash = typing.NewType(
     "Digest over a transaction body.", DigestBytes
     )

@@ -1,4 +1,5 @@
 import dataclasses
+import enum
 import typing
 
 from pycspr.type_defs.primitives import U64, Timestamp
@@ -24,3 +25,12 @@ NodeUptime = typing.NewType(
 class NodePeerEntry():
     address: NodeAddress
     node_id: NodeId
+
+
+class ReactorState(enum.Enum):
+    INITIALIZE = "Initialize"
+    CATCH_UP = "CatchUp"
+    UPGRADING = "Upgrading"
+    KEEP_UP = "KeepUp"
+    VALIDATE = "Validate"
+    SHUTDOWN_FOR_UPGRADE = "ShutdownForUpgrade"

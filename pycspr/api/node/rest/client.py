@@ -1,10 +1,10 @@
 import typing
 
-from pycspr.api.node.rest import serializer
+from pycspr.api.node.rest import codec
 from pycspr.api.node.rest.connection import ConnectionInfo
 from pycspr.api.node.rest.proxy import Proxy
-from pycspr.api.node.rest.types import NodeStatus
-from pycspr.api.node.rest.types import ValidatorChanges
+from pycspr.api.node.rest.type_defs import NodeStatus
+from pycspr.api.node.rest.type_defs import ValidatorChanges
 
 
 class Client():
@@ -88,7 +88,7 @@ class Client():
         """
         encoded: dict = await self.proxy.get_node_status()
 
-        return encoded if self.decode_response is False else serializer.decode(encoded, NodeStatus)
+        return encoded if self.decode_response is False else codec.decode(encoded, NodeStatus)
 
     async def get_validator_changes(self) -> typing.List[typing.Union[dict, NodeStatus]]:
         """Returns validator change information.
@@ -100,4 +100,4 @@ class Client():
 
         return \
             encoded if self.decode_response is False else \
-            [serializer.decode(i, ValidatorChanges) for i in encoded]
+            [codec.decode(i, ValidatorChanges) for i in encoded]

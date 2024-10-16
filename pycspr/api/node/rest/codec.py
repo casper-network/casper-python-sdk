@@ -1,22 +1,21 @@
-from pycspr.api.node.rest.types import BlockHash
-from pycspr.api.node.rest.types import BlockRange
-from pycspr.api.node.rest.types import BlockHeight
-from pycspr.api.node.rest.types import EraID
-from pycspr.api.node.rest.types import MinimalBlockInfo
-from pycspr.api.node.rest.types import NextUpgradeInfo
-from pycspr.api.node.rest.types import NodePeer
-from pycspr.api.node.rest.types import NodeStatus
-from pycspr.api.node.rest.types import ReactorState
-from pycspr.api.node.rest.types import StateRootHash
-from pycspr.api.node.rest.types import Timestamp
-from pycspr.api.node.rest.types import ValidatorChanges
-from pycspr.api.node.rest.types import ValidatorStatusChangeType
-
+from pycspr.api.node.rest.type_defs import \
+    MinimalBlockInfo, \
+    NextUpgradeInfo, \
+    NodePeer, \
+    NodeStatus, \
+    ReactorState, \
+    ValidatorChanges, \
+    ValidatorStatusChangeType
+from pycspr.type_defs.chain import \
+    AvailableBlockRange as BlockRange, \
+    BlockHash, \
+    BlockHeight, \
+    EraID, \
+    StateRootHash
+from pycspr.type_defs.primitives import Timestamp
 from pycspr.serializer.json.decoder_crypto import DECODERS as CRYPTO_DECODERS
 from pycspr.serializer.json.decoder_primitives import DECODERS as PRIMITIVES_DECODERS
-from pycspr.type_defs.crypto import DigestHex
-from pycspr.type_defs.crypto import PublicKey
-from pycspr.type_defs.crypto import PublicKeyHex
+from pycspr.type_defs.crypto import DigestHex, PublicKey, PublicKeyHex
 from pycspr.utils import convertor
 
 
@@ -34,6 +33,7 @@ def decode(encoded: object, typedef: object) -> object:
         raise ValueError(f"Cannot decode {typedef} from json")
     else:
         return decoder(encoded)
+
 
 def _decode_block_range(encoded: dict) -> BlockRange:
     return BlockRange(
