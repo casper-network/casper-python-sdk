@@ -25,12 +25,6 @@ from pycspr.api.node.sse import ConnectionInfo as NodeSseConnectionInfo
 from pycspr.api.node.sse import EventInfo as NodeSseEventInfo
 from pycspr.api.node.sse import EventType as NodeSseEventType
 
-from pycspr.api import NodeRpcClient
-from pycspr.api import NodeRpcConnectionInfo
-from pycspr.api import NodeRpcProxyError
-from pycspr.api import NodeSpeculativeRpcClient
-from pycspr.api import NodeSpeculativeRpcConnectionInfo
-
 from pycspr.crypto import DEFAULT_HASH_ALGO
 from pycspr.crypto import DEFAULT_KEY_ALGO
 from pycspr.crypto import checksummer
