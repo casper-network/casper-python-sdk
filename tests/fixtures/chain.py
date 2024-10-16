@@ -8,6 +8,7 @@ from pycspr.types.node import GlobalStateID
 from pycspr.types.node import GlobalStateIDType
 from pycspr.types.node import StateRootHash
 from pycspr.types.node import URef
+from pycspr.type_defs.chain import BlockHeader
 
 
 @pytest.fixture(scope="session")
@@ -35,6 +36,17 @@ async def block_hash(block: Block) -> DigestBytes:
 
     """
     pass
+
+
+@pytest.fixture(scope="session")
+async def BLOCK_HEADER(NODE_BINARY_CLIENT: NodeBinaryClient) -> BlockHeader:
+    """Returns most recent block.
+
+    """
+    request_id = random.randint(0, int(1e2))
+    response = await NODE_BINARY_CLIENT.information.get_block_header(request_id)
+
+    return response.payload
 
 
 @pytest.fixture(scope="session")
