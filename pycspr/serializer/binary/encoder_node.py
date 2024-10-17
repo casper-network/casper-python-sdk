@@ -3,12 +3,12 @@ import typing
 from pycspr.serializer.binary.encoder_clt import encode as encode_clt
 from pycspr.serializer.binary.encoder_clv import encode as encode_clv
 from pycspr.serializer.utils import clv_to_clt
-from pycspr.types.cl import CLV_ByteArray
-from pycspr.types.cl import CLV_U32
-from pycspr.types.cl import CLV_U64
-from pycspr.types.cl import CLV_List
-from pycspr.types.cl import CLV_PublicKey
-from pycspr.types.cl import CLV_String
+from pycspr.type_defs.cl_values import CLV_ByteArray
+from pycspr.type_defs.cl_values import CLV_U32
+from pycspr.type_defs.cl_values import CLV_U64
+from pycspr.type_defs.cl_values import CLV_List
+from pycspr.type_defs.cl_values import CLV_PublicKey
+from pycspr.type_defs.cl_values import CLV_String
 from pycspr.types.node import Deploy
 from pycspr.types.node import DeployApproval
 from pycspr.types.node import DeployArgument

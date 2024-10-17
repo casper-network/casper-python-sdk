@@ -5,13 +5,14 @@ import enum
 import typing
 
 from pycspr import crypto
-from pycspr.types.cl import CLV_Value
-from pycspr.type_defs.crypto import DigestBytes
-from pycspr.type_defs.crypto import MerkleProofBytes
-from pycspr.type_defs.crypto import PublicKey
-from pycspr.type_defs.crypto import PublicKeyBytes
-from pycspr.type_defs.crypto import PrivateKey
-from pycspr.type_defs.crypto import Signature
+from pycspr.type_defs.cl_values import CLV_Value
+from pycspr.type_defs.crypto import \
+    DigestBytes, \
+    MerkleProofBytes, \
+    PublicKey, \
+    PublicKeyBytes, \
+    PrivateKey, \
+    Signature
 
 
 AccountKey = typing.NewType(

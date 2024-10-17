@@ -4,7 +4,7 @@ from pycspr.crypto import checksummer
 from pycspr.serializer.json.encoder_clv import encode as encode_clv
 from pycspr.serializer.json.encoder_crypto import ENCODERS as CRYPTO_ENCODERS
 from pycspr.serializer.json.encoder_primitives import ENCODERS as CRYPTO_PRIMITIVES
-from pycspr.types.cl import CLV_Value
+from pycspr.type_defs.cl_values import CLV_Value
 from pycspr.type_defs.crypto import DigestHex
 from pycspr.types.node import Deploy
 from pycspr.types.node import DeployHeader

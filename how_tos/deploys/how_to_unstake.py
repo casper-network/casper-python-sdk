@@ -9,7 +9,7 @@ from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
 from pycspr.type_defs.crypto import KeyAlgorithm
 from pycspr.type_defs.crypto import PrivateKey
 from pycspr.types.node import Deploy
-from pycspr.types.cl import CLV_URef
+from pycspr.type_defs.cl_values import CLV_URef
 
 
 # Path to CCTL assets.

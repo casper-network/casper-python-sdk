@@ -1,29 +1,29 @@
 import typing
 
-from pycspr.types.cl import CLV_Value
-from pycspr.types.cl import CLV_Any
-from pycspr.types.cl import CLV_Bool
-from pycspr.types.cl import CLV_ByteArray
-from pycspr.types.cl import CLV_I32
-from pycspr.types.cl import CLV_I64
-from pycspr.types.cl import CLV_U8
-from pycspr.types.cl import CLV_U32
-from pycspr.types.cl import CLV_U64
-from pycspr.types.cl import CLV_U128
-from pycspr.types.cl import CLV_U256
-from pycspr.types.cl import CLV_U512
-from pycspr.types.cl import CLV_Key
-from pycspr.types.cl import CLV_List
-from pycspr.types.cl import CLV_Map
-from pycspr.types.cl import CLV_Option
-from pycspr.types.cl import CLV_PublicKey
-from pycspr.types.cl import CLV_Result
-from pycspr.types.cl import CLV_String
-from pycspr.types.cl import CLV_Tuple1
-from pycspr.types.cl import CLV_Tuple2
-from pycspr.types.cl import CLV_Tuple3
-from pycspr.types.cl import CLV_Unit
-from pycspr.types.cl import CLV_URef
+from pycspr.type_defs.cl_values import CLV_Value
+from pycspr.type_defs.cl_values import CLV_Any
+from pycspr.type_defs.cl_values import CLV_Bool
+from pycspr.type_defs.cl_values import CLV_ByteArray
+from pycspr.type_defs.cl_values import CLV_I32
+from pycspr.type_defs.cl_values import CLV_I64
+from pycspr.type_defs.cl_values import CLV_U8
+from pycspr.type_defs.cl_values import CLV_U32
+from pycspr.type_defs.cl_values import CLV_U64
+from pycspr.type_defs.cl_values import CLV_U128
+from pycspr.type_defs.cl_values import CLV_U256
+from pycspr.type_defs.cl_values import CLV_U512
+from pycspr.type_defs.cl_values import CLV_Key
+from pycspr.type_defs.cl_values import CLV_List
+from pycspr.type_defs.cl_values import CLV_Map
+from pycspr.type_defs.cl_values import CLV_Option
+from pycspr.type_defs.cl_values import CLV_PublicKey
+from pycspr.type_defs.cl_values import CLV_Result
+from pycspr.type_defs.cl_values import CLV_String
+from pycspr.type_defs.cl_values import CLV_Tuple1
+from pycspr.type_defs.cl_values import CLV_Tuple2
+from pycspr.type_defs.cl_values import CLV_Tuple3
+from pycspr.type_defs.cl_values import CLV_Unit
+from pycspr.type_defs.cl_values import CLV_URef
 
 
 def encode(entity: CLV_Value) -> bytes:

@@ -2,12 +2,12 @@ import typing
 
 from pycspr.serializer.binary.decoder_clt import decode as decode_clt
 from pycspr.serializer.binary.decoder_clv import decode as decode_clv
-from pycspr.types.cl import CLT_ByteArray
-from pycspr.types.cl import CLT_U32
-from pycspr.types.cl import CLT_U64
-from pycspr.types.cl import CLT_List
-from pycspr.types.cl import CLT_PublicKey
-from pycspr.types.cl import CLT_String
+from pycspr.type_defs.cl_types import CLT_ByteArray
+from pycspr.type_defs.cl_types import CLT_U32
+from pycspr.type_defs.cl_types import CLT_U64
+from pycspr.type_defs.cl_types import CLT_List
+from pycspr.type_defs.cl_types import CLT_PublicKey
+from pycspr.type_defs.cl_types import CLT_String
 from pycspr.type_defs.crypto import KeyAlgorithm
 from pycspr.type_defs.crypto import PublicKey
 from pycspr.type_defs.crypto import Signature

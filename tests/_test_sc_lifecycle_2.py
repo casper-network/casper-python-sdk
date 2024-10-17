@@ -7,9 +7,9 @@ import pycspr
 from pycctl.types import AccountType
 from pycspr.api.sidecar.rpc import Client as NodeClient
 from pycspr.types.node import Deploy
-from pycspr.types.cl import CLV_String
-from pycspr.types.cl import CLV_U8
-from pycspr.types.cl import CLV_U256
+from pycspr.type_defs.cl_values import CLV_String
+from pycspr.type_defs.cl_values import CLV_U8
+from pycspr.type_defs.cl_values import CLV_U256
 from pycspr.types.node import DeployOfModuleBytes
 from pycctl.fsys import get_path_to_account_private_key
 

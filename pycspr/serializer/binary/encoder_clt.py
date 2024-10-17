@@ -1,7 +1,7 @@
 from pycspr.serializer.binary.encoder_clv import encode as encode_clv
-from pycspr.types.cl import CLT_Type
-from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLV_U32
+from pycspr.type_defs.cl_types import CLT_Type
+from pycspr.type_defs.cl_types import CLT_TypeKey
+from pycspr.type_defs.cl_values import CLV_U32
 
 
 def encode(entity: CLT_Type) -> bytes:

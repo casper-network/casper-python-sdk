@@ -6,7 +6,7 @@ import typing
 import pytest
 
 import pycspr
-from pycspr.types.cl import CLT_TypeKey
+from pycspr.type_defs.cl_types import CLT_TypeKey
 from tests.fixtures.iterator_cl_types import yield_cl_types
 from tests.fixtures.iterator_cl_values import yield_cl_values
 

@@ -1,30 +1,30 @@
 import typing
 
-from pycspr.types.cl import CLT_Type
-from pycspr.types.cl import CLT_TypeKey
-from pycspr.types.cl import CLT_Any
-from pycspr.types.cl import CLT_Bool
-from pycspr.types.cl import CLT_ByteArray
-from pycspr.types.cl import CLT_I32
-from pycspr.types.cl import CLT_I64
-from pycspr.types.cl import CLT_U8
-from pycspr.types.cl import CLT_U32
-from pycspr.types.cl import CLT_U64
-from pycspr.types.cl import CLT_U128
-from pycspr.types.cl import CLT_U256
-from pycspr.types.cl import CLT_U512
-from pycspr.types.cl import CLT_Key
-from pycspr.types.cl import CLT_List
-from pycspr.types.cl import CLT_Map
-from pycspr.types.cl import CLT_Option
-from pycspr.types.cl import CLT_PublicKey
-from pycspr.types.cl import CLT_Result
-from pycspr.types.cl import CLT_String
-from pycspr.types.cl import CLT_Tuple1
-from pycspr.types.cl import CLT_Tuple2
-from pycspr.types.cl import CLT_Tuple3
-from pycspr.types.cl import CLT_Unit
-from pycspr.types.cl import CLT_URef
+from pycspr.type_defs.cl_types import CLT_Type
+from pycspr.type_defs.cl_types import CLT_TypeKey
+from pycspr.type_defs.cl_types import CLT_Any
+from pycspr.type_defs.cl_types import CLT_Bool
+from pycspr.type_defs.cl_types import CLT_ByteArray
+from pycspr.type_defs.cl_types import CLT_I32
+from pycspr.type_defs.cl_types import CLT_I64
+from pycspr.type_defs.cl_types import CLT_U8
+from pycspr.type_defs.cl_types import CLT_U32
+from pycspr.type_defs.cl_types import CLT_U64
+from pycspr.type_defs.cl_types import CLT_U128
+from pycspr.type_defs.cl_types import CLT_U256
+from pycspr.type_defs.cl_types import CLT_U512
+from pycspr.type_defs.cl_types import CLT_Key
+from pycspr.type_defs.cl_types import CLT_List
+from pycspr.type_defs.cl_types import CLT_Map
+from pycspr.type_defs.cl_types import CLT_Option
+from pycspr.type_defs.cl_types import CLT_PublicKey
+from pycspr.type_defs.cl_types import CLT_Result
+from pycspr.type_defs.cl_types import CLT_String
+from pycspr.type_defs.cl_types import CLT_Tuple1
+from pycspr.type_defs.cl_types import CLT_Tuple2
+from pycspr.type_defs.cl_types import CLT_Tuple3
+from pycspr.type_defs.cl_types import CLT_Unit
+from pycspr.type_defs.cl_types import CLT_URef
 
 
 def yield_cl_types(fixtures: list) -> typing.Iterator[CLT_Type]:

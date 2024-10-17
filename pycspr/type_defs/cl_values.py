@@ -2,7 +2,7 @@ import dataclasses
 import enum
 import typing
 
-from pycspr.type_defs.clt import CLT_Type
+from pycspr.type_defs.cl_types import CLT_Type
 from pycspr.type_defs.crypto import KeyAlgorithm, PublicKey
 
 

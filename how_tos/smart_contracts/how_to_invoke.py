@@ -7,15 +7,16 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.type_defs.crypto import KeyAlgorithm
-from pycspr.type_defs.crypto import PrivateKey
-from pycspr.type_defs.crypto import PublicKey
-from pycspr.types.cl import CLV_ByteArray
-from pycspr.types.cl import CLV_U256
-from pycspr.types.node import Deploy
-from pycspr.types.node import DeployParameters
-from pycspr.types.node import DeployOfModuleBytes
-from pycspr.types.node import DeployOfStoredContractByHash
+from pycspr.type_defs.crypto import \
+    KeyAlgorithm, \
+    PrivateKey, \
+    PublicKey
+from pycspr.type_defs.cl_values import CLV_ByteArray, CLV_U256
+from pycspr.types.node import \
+    Deploy, \
+    DeployParameters, \
+    DeployOfModuleBytes, \
+    DeployOfStoredContractByHash
 
 
 # Path to CCTL network assets.

@@ -2,33 +2,31 @@ import datetime
 import random
 import typing
 
-from pycspr.type_defs.crypto import PrivateKey
-from pycspr.type_defs.crypto import PublicKey
+from pycspr.type_defs.crypto import PrivateKey, PublicKey
 from pycspr.crypto import get_signature_for_deploy_approval
-from pycspr.factory.digests import create_digest_of_deploy
-from pycspr.factory.digests import create_digest_of_deploy_body
-from pycspr.types.node import Deploy
-from pycspr.types.node import DeployBody
-from pycspr.types.node import DeployHeader
-from pycspr.types.node import DeployParameters
-from pycspr.types.node import DeployTimeToLive
-from pycspr.types.cl import CLV_Option
-from pycspr.types.cl import CLT_U64
-from pycspr.types.cl import CLV_U8
-from pycspr.types.cl import CLV_U64
-from pycspr.types.cl import CLV_U512
-from pycspr.types.cl import CLV_PublicKey
-from pycspr.types.cl import CLV_URef
-from pycspr.types.cl import CLV_Value
-from pycspr.types.node import DeployApproval
-from pycspr.types.node import DeployArgument
-from pycspr.types.node import DeployExecutableItem
-from pycspr.types.node import DeployOfModuleBytes
-from pycspr.types.node import DeployOfTransfer
-from pycspr.types.node import Timestamp
-from pycspr.utils import constants
-from pycspr.utils import convertor
-from pycspr.utils import io as _io
+from pycspr.factory.digests import create_digest_of_deploy, create_digest_of_deploy_body
+from pycspr.types.node import \
+    Deploy, \
+    DeployBody, \
+    DeployHeader, \
+    DeployParameters, \
+    DeployTimeToLive
+from pycspr.type_defs.cl_types import CLT_U64
+from pycspr.type_defs.cl_values import \
+    CLV_U8, \
+    CLV_U64, \
+    CLV_U512, \
+    CLV_PublicKey, \
+    CLV_URef, \
+    CLV_Value
+from pycspr.types.node import \
+    DeployApproval, \
+    DeployArgument, \
+    DeployExecutableItem, \
+    DeployOfModuleBytes, \
+    DeployOfTransfer, \
+    Timestamp
+from pycspr.utils import constants, convertor, io as _io
 
 
 def create_deploy(

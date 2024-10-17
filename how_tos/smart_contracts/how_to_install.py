@@ -6,14 +6,9 @@ import pathlib
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.type_defs.crypto import KeyAlgorithm
-from pycspr.type_defs.crypto import PrivateKey
-from pycspr.types.cl import CLV_String
-from pycspr.types.cl import CLV_U8
-from pycspr.types.cl import CLV_U256
-from pycspr.types.node import Deploy
-from pycspr.types.node import DeployParameters
-from pycspr.types.node import DeployOfModuleBytes
+from pycspr.type_defs.crypto import KeyAlgorithm, PrivateKey
+from pycspr.type_defs.cl_values import CLV_String, CLV_U8, CLV_U256
+from pycspr.types.node import Deploy, DeployParameters, DeployOfModuleBytes
 
 
 # Path to CCTL assets.

@@ -1,5 +1,5 @@
 from pycspr import serializer
-from pycspr.types.cl import CLT_Type
+from pycspr.type_defs.cl_types import CLT_Type
 
 
 def test_that_cl_types_serialisation_to_and_from_bytes(cl_types_vector):

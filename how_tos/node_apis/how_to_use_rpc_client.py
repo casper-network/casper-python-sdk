@@ -7,7 +7,7 @@ import typing
 import pycspr
 from pycspr import NodeRpcClient as NodeClient
 from pycspr import NodeRpcConnectionInfo as NodeConnectionInfo
-from pycspr.types.cl import CLV_URef
+from pycspr.type_defs.cl_values import CLV_URef
 from pycspr.types.node import AccountInfo
 from pycspr.types.node import AuctionState
 from pycspr.types.node import Block
