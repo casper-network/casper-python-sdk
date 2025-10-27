@@ -4,9 +4,9 @@ Python library for interacting with a CSPR node.
 
 ##  Installation
 
-```
+
 pip3 install pycspr
-```
+
 
 ##  Usage
 
